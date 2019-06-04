@@ -1,6 +1,6 @@
 <?php
 session_start(); //session start
-include_once("Model/DBManager.php");
+//include_once("Model/DBManager.php");
 require_once ('libraries/Google/autoload.php');
 require_once 'Model/Config.php';
 
