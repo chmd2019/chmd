@@ -1,0 +1,54 @@
+
+
+
+/*
+
+input
+{
+    background: url("../images/iconos.gif") no-repeat scroll 0 0 transparent;
+    border: 1px solid #BFBFBF;
+    color: #BFBFBF;
+    padding: 5px 5px 5px 25px;
+    width: 230px;
+    margin-bottom: 20px;
+}
+
+
+
+input.user{ background-position: 4px -18px; }
+
+*/
+
+#fecha1{
+        background:url("../images/calen.png") no-repeat;
+        color: #BFBFBF;
+        width:292px;
+        height:25px;
+        top:15px;       /*podrías sustituir los top y los left por un margin*/
+        left:0px;
+        border: 1px solid #BFBFBF;
+        font-size:12px;
+    }
+    
+    #fechaini{
+        background:url("../images/calen.png") no-repeat scroll 0 0 transparent;
+        color: #000000;
+        width:292px;
+       padding: 8px 8px 8px 20px;
+        border: 1px solid #BFBFBF;
+        font-size:15px;
+    }
+    
+    
+    #fechater{
+       background:url("../images/calen.png") no-repeat scroll 0 0 transparent;
+        color: #000000;
+        width:292px;
+       padding: 8px 8px 8px 20px;
+        border: 1px solid #BFBFBF;
+        font-size:15px;
+    }
+    
+    
+    
+    

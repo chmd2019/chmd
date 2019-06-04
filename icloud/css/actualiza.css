@@ -1,0 +1,242 @@
+
+form {
+  width: 95em;
+  margin: 0 auto;
+  padding: 10px 0px;
+ 
+}
+
+form ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+form ul li {
+  margin: .9em 0 0 0;
+  padding: 0;
+}
+
+@charset "utf-8";
+*{
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:11px;
+	padding:0;
+	margin:0;
+	text-transform:uppercase;
+}
+
+
+form h3 {
+  margin: 0 0 0.5em 0;
+  padding: 0;
+  text-align: center;
+}
+
+fieldset {
+  padding: 0 10px 20px;
+  margin: 0 0 30px;
+  border: 5px solid #2D35A9;
+  background: #FFFFFF;
+  border-radius: 10px;
+  
+
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+}
+
+td{
+	border-bottom:0px solid #D3D3D3;
+	
+}
+
+
+legend {
+  color: #000;
+  background: #FFFFFF;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.9em;
+  font-weight: bold;
+  text-align: center;
+  padding: 5px;
+  margin: 0;
+  width: 9em;
+  border: 5px solid #2D35A9;
+
+}
+
+label {
+  display: block;
+  float: left;
+  clear: left;
+  text-align: right;
+  width: 95%;
+  padding: .4em 0 0 0;
+  margin: .15em .5em 0 0;
+}
+
+input, select, textarea {
+  display: block;
+  margin: 0;
+  padding: .4em;
+  width: 80%;
+}
+
+input, textarea, .date {
+  border: 2px solid #eae1c0;
+  border-radius: 5px;
+  box-shadow: rgba(0,0,0,.5) 1px 1px 1px 1px inset;
+  background: #fff;
+  
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;  
+  -moz-box-shadow: rgba(0,0,0,.5) 1px 1px 1px 1px inset;
+  -webkit-box-shadow: rgba(0,0,0,.5) 1px 1px 1px 1px inset;
+}
+
+input {
+  font-size: .9em;
+}
+
+select {
+  padding: 0;
+  margin-bottom: 2.5em;
+  position: relative;
+  top: .7em;
+}
+
+textarea {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-size: .9em;
+  height: 5em;
+}
+
+form *:focus {
+  border: 2px solid #CA1C39;
+  outline: none;
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+}
+
+input:valid, textarea:valid {
+  background: #efe;
+}
+
+input[type="submit"] {
+  margin: 50px auto 0 auto;
+  width: 12em;
+  padding: 10px;
+  border: 2px solid #2D35A9;
+  border-radius: 10px;
+  box-shadow: 0 0 .5em rgba(0, 0, 0, .8);
+  color: #fff;
+  background: #2D35A9;
+  font-size: 1.2em;
+  font-weight: bold;
+  
+  -moz-box-shadow: 0 0 .5em rgba(0, 0, 0, .8);
+  -webkit-box-shadow: 0 0 .5em rgba(0, 0, 0, .8);
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;  
+  -webkit-appearance: none;
+}
+
+input[type="submit"]:hover, input[type="submit"]:active {
+  cursor: pointer;
+  background: #fff;
+  color: #593131;
+}
+
+input[type="submit"]:active {
+  background: #5159CC;
+  box-shadow: 0 0 .5em rgba(0, 0, 0, .8) inset;
+  
+  -moz-box-shadow: 0 0 .5em rgba(0, 0, 0, .8) inset;
+  -webkit-box-shadow: 0 0 .5em rgba(0, 0, 0, .8) inset;
+}
+
+
+#SexyAlertBox-Box {
+  padding-bottom: 24px;
+  background: url('../images/bg-box-bottom.png') bottom left no-repeat !important;
+  background: url('../images/bg-box-bottom.gif') bottom left no-repeat;
+}
+
+#SexyAlertBox-InBox {
+  padding-top: 15px;
+  background: url('../images/bg-box-top.png') top left no-repeat !important;	
+  background: url('../images/bg-box-top.gif') top left no-repeat;	
+}
+
+#SexyAlertBox-BoxContent {
+  background: url('../images/bg-box-body.png') top left repeat-y !important;
+  background: url('../images/bg-box-body.gif') top left repeat-y;
+  padding: 0px 20px;
+}
+
+#SexyAlertBox-BoxContenedor {
+  padding: 0px 0px 5px 55px;
+  text-align: left;
+  font-family:Verdana;
+  font-size:18px;
+  color:#000;
+}
+
+#SexyAlertBox-BoxContenedor h1,#SexyAlertBox-BoxContenedor h2,#SexyAlertBox-BoxContenedor h3,#SexyAlertBox-BoxContenedor b,#SexyAlertBox-BoxContenedor strong{
+  text-align: left;
+  font-family:Verdana;
+  font-size:12px;
+  color:#000;
+  font-weight:bold;
+  margin:0px;
+  padding:0px;
+}
+
+#SexyAlertBox-Buttons{
+text-align:right;
+background: #222 url(http://sites.google.com/site/zavaletaster/Home/overlay.png) repeat-x;
+display: inline-block;
+padding: 5px 10px 6px;
+color: #FFF;
+text-decoration: none;
+-moz-border-radius: 6px;
+-webkit-border-radius: 6px;
+-moz-box-shadow: 0 1px 3px rgba(0,0,0,0.6);
+-webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.6);
+text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
+border-top: 0px;
+border-left: 0px;
+border-right: 0px;
+border-bottom: 1px solid rgba(0,0,0,0.25);
+position: relative;
+cursor:pointer
+}
+
+#SexyAlertBox-Buttons input {
+  margin: 1% 1%;
+}
+
+#SexyAlertBox-BoxContenedor #BoxPromptInput{
+  margin-top:5px;
+}
+
+#SexyAlertBox-Box .BoxAlert {
+  background: url('../images/dialog-warning.png') top left no-repeat;
+}
+
+#SexyAlertBox-Box .BoxConfirm {
+  background: url('../images/dialog-help.png') top left no-repeat;
+}
+
+#SexyAlertBox-Box .BoxPrompt {
+  background: url('../images/dialog-help.png') top left no-repeat;
+}
+
+#SexyAlertBox-Box .BoxInfo {
+  background: url('../images/dialog-information.png') top left no-repeat;
+}
+
+#SexyAlertBox-Box .BoxError {
+  background: url('../images/dialog-error.png') top left no-repeat;
+}

@@ -1,0 +1,32 @@
+.info, .exito, .alerta, .error {
+    font-family:Arial, Helvetica, sans-serif; 
+    font-size:10px;
+    border: 1px solid;
+    margin: 13px 50px;
+    padding:12px 12px 12px 12px;
+    background-repeat: no-repeat;
+    background-position: 5px ;
+    width:200px; 
+   height:23px
+   left:334px
+}
+.info {
+    color: #00529B;
+    background-color: #BDE5F8;
+    background-image: url('../images/info.png');
+}
+.exito {
+    color: #4F8A10;
+    background-color: #DFF2BF;
+    background-image:url('../images/exito.png');
+}
+.alerta {
+    color: #9F6000;
+    background-color: #FEEFB3;
+    background-image: url('../images/alerta.png');
+}
+.error {
+    color: #D8000C;
+    background-color: #FFBABA;
+    background-image: url('../images/error.png');
+}

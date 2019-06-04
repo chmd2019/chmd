@@ -1,0 +1,126 @@
+h4 {
+     
+  
+    color: #6ec2ed;
+    display: block;
+    font-family: arial;
+    font-size: 20px;
+    padding: 5px;
+    text-align:center;
+    width: 733px;
+    text-transform: uppercase;
+    
+    
+ 
+}
+
+
+h3 {
+     
+  
+    color: #124A7B;
+    display: block;
+    font-family: arial;
+    font-size: 10px;
+    padding: 5px;
+    text-align:right;
+    width: 733px;
+    text-transform: uppercase;
+    
+    
+ 
+}
+
+h2 {
+     
+   
+    color: #124A7B;
+    display: block;
+    font-family: arial;
+    font-size: 15px;
+    padding: 5px;
+    text-align:left;
+    width: 733px;
+    text-transform: uppercase;
+    
+    
+ 
+}
+
+.parrafo {
+     
+   
+    color: #124A7B;
+    display: block;
+    font-family: arial;
+    font-size: 14px;
+    padding: 5px;
+    text-align:justify;
+    width: 100%;
+    
+    
+    
+ 
+}
+
+
+
+
+input:focus 
+{
+	background: #fff; 
+	border:1px solid #555; 
+	box-shadow: 0 0 3px #aaa; 
+	padding-right:80px;
+}
+
+
+#gradient-style
+{
+	width: 1800px;
+        font-family:arial;
+	font-size: 10px;
+	margin: 5px;
+	text-align: left;
+	border-collapse: collapse;
+}
+#gradient-style th
+{
+	font-size: 10px;
+	font-weight: normal;
+	padding: 8px;
+	background: #b9c9fe;
+	border-top: 2px solid #d3ddff;
+	border-bottom: 1px solid #fff;
+	color: #039;
+}
+#gradient-style td
+{
+	padding: 4px; 
+	border-bottom: 1px solid #fff;
+	color: #669;
+	border-top: 1px solid #fff;
+	background: #e8edff;
+}
+#gradient-style tfoot tr td
+{
+	background: #e8edff;
+	font-size: 10px;
+	color: #99c;
+}
+#gradient-style tbody tr:hover td
+{
+	background: #d0dafd;
+	color: #339;
+}
+.span{
+color: black;
+font-family: arial;
+font-size: 10px;
+ 
+ text-align:center;
+}
+
+.mayuscula{  
+text-transform: uppercase;  
+} 

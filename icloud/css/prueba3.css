@@ -1,0 +1,99 @@
+
+
+#respon  {
+  background: #ffffff;
+  border: 0px solid #DDDDDD;
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  table-layout: fixed;
+   text-align:center;
+   align:center;
+}
+#respon  caption {
+  font-size: 1.5em;
+  margin: .5em 0 .75em;
+}
+#respon tr {
+  background: #ffffff;
+  
+  padding: .35em;
+}
+#respon th,
+#respon td {
+  padding: 1em;
+  text-align: center;
+}
+#respon th {
+  font-size: .85em;
+text-align: center;
+}
+@media screen and (max-width: 600px) 
+{
+  #respon 
+  {
+     border: 1px solid #DDDDDD;
+    align:center;
+  }
+  #respon caption {
+    font-size: 1.3em;
+  }
+ 
+  #respon tr {
+    border-bottom: 1px solid #DDDDDD;
+    border: 1px solid #DDDDDD;
+    display: inline-block;
+   
+    align:center;
+  }
+  #respon td {
+    border-bottom: 1px solid #DDDDDD;
+    display: inline-block;
+    
+     width: 100%;
+    align:center;
+  }
+  #respon td:before {
+
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  #respon td:last-child {
+    border-bottom: 0;
+  }
+}
+
+
+
+#permisos
+{
+	width: 100%;
+	text-align: center;
+	border: 10px solid #DDDDDD;
+}
+
+
+#permisos td
+{
+    border-bottom: 1px solid #DDDDDD;
+    border: 1px solid #DDDDDD;
+    //width: 100%;
+ border: 5px;
+
+text-align: center;
+align: center;
+}
+#permisos  tr
+{  
+ border-bottom: 1px solid #DDDDDD;
+    border: 1px solid #DDDDDD;
+    width: 100%;
+ border: 5px;
+
+text-align: center;
+align: center;
+   
+}

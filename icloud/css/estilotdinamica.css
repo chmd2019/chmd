@@ -1,0 +1,67 @@
+
+
+		table td {
+			transition: all .5s;
+		}
+		
+		/* Table */
+		.tabla_datos {
+			border-collapse: collapse;
+			font-size: 12px;
+			min-width: 337px;
+		}
+
+		.tabla_datos th, 
+		.tabla_datos td {
+			border: 0px solid #e1edff;
+			padding: 7px 17px;
+		}
+		.tabla_datos caption {
+			margin: 7px;
+		}
+
+		/* Table Header */
+		#titulo {
+			background-color: #508abb;
+			color: #FFFFFF;
+			border-color: #6ea1cc !important;
+			text-transform: uppercase;
+		}
+               .confondo {
+			background-color: #508abb;
+			color: #FFFFFF;
+			border-color: #6ea1cc !important;
+			text-transform: uppercase;
+                        padding:8px;display:block;border:none;border-bottom:1px solid #ccc;width:100%
+		}
+
+		/* Table Body */
+		.tabla_datos tbody td {
+			color: #353535;
+		}
+		.tabla_datos tbody td:first-child,
+		.tabla_datos tbody td:nth-child(4),
+		.tabla_datos tbody td:last-child {
+			text-align: left;
+		}
+
+		.tabla_datos tbody tr:nth-child(odd) td {
+			background-color: #f4fbff;
+		}
+		.tabla_datos tbody tr:hover td {
+			background-color: #ffffa2;
+			border-color: #ffff0f;
+		}
+
+		/* Table Footer */
+		.tabla_datos tfoot th {
+			background-color: #e5f5ff;
+			text-align: left;
+		}
+		.tabla_datos tfoot th:first-child {
+			text-align: left;
+		}
+		.tabla_datos tbody td:empty
+		{
+			background-color: #ffcccc;
+		}

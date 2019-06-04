@@ -1,0 +1,238 @@
+* { 
+	margin:0; padding:0; 
+}			
+body { 
+	font-size: 80%; 
+	font-family: Lucida Sans Unicode, Arial, Helvetica;
+	background: #ffffff;
+	text-align: center;
+	
+}
+
+@charset "utf-8";
+*{
+	font-family:Candara;
+	font-size:15px;
+	padding:0;
+	margin:0;
+	
+}
+a{
+	text-decoration:none;
+}
+img{
+	border:none;
+}
+ header {
+ width: 100%;
+ padding: 25px -5px;
+ padding-top: 12px; 
+
+ }
+
+footer {
+ width: 100%;
+ padding: 0px -5px;
+padding-top: 355px;
+
+}
+#header1 {
+position:absolute; 
+width:70%;          
+height:10%;
+top:1%;
+left:16%;
+z-index:1;
+}
+#header2 {
+position:absolute; 
+width:100%;          
+height:5%;
+top:10%;
+left:0%;
+z-index:1;
+}
+#body1 {
+border: 0px outset #cccccc; 
+position:absolute; 
+justify-content:center;
+width:100%;          
+height:140%;
+top:17%;
+left:0%;
+z-index:1;
+background:#ffffff;
+
+
+}
+
+.contact_form h2 {
+    background: none repeat scroll 0 0 #F3F3F3;
+    border-radius: 5px;
+    color: #2D35A9;
+    display: block;
+    font-family: sans-serif;
+    font-size: 20px;
+    padding: 5px;
+    text-shadow: 1px 1px 1px #ffffff;
+    width: 733px;
+}
+/*--- estilos para los ul y li del formulario ---*/
+.contact_form ul {
+    width:750px;
+    list-style-type:none;
+	margin:0px;
+	padding:0px;
+}
+.contact_form li{
+	padding:12px; 
+	border-bottom:1px solid #eee;
+	position:relative;
+} 
+.contact_form label {
+    
+    display: inline-block;
+    float: left;
+    font-family: sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    margin-top: 3px;
+    padding: 3px;
+    width: 120px;
+    
+   text-shadow: 0px 1px 0px #ffffff;
+}
+
+.contact_form input[type="text"]   {
+	height:20px; 
+	width:550px; 
+	padding:5px 8px;
+}
+
+
+.contact_form input[type="checkbox"]   {
+	height:50px; 
+	width:50px; 
+	padding:5px 8px;
+}
+
+.contact_form select   {
+	height:50px; 
+	width:150px; 
+	padding:5px 8px;
+}
+
+
+.contact_form textarea {
+	padding:8px; 
+	width:300px;
+}
+.contact_form button {
+	margin-left:90px;
+}
+
+/*----- estilos visuales de los elementos --------*/
+
+.contact_form input, .contact_form textarea { 
+	border:1px solid #aaa;
+	box-shadow: 0px 0px 3px #ccc, 0 10px 15px #eee inset;
+	border-radius:2px;
+	color: #888;
+	font-size: 12px;
+	padding-right:30px;
+	-moz-transition: padding .25s; 
+	-webkit-transition: padding .25s; 
+	-o-transition: padding .25s;
+	transition: padding .25s;
+}
+.contact_form input:focus, .contact_form textarea:focus {
+	background: #fff; 
+	border:1px solid #555; 
+	box-shadow: 0 0 3px #aaa; 
+	padding-right:80px;
+}
+
+/* === Estilos de Validacion === */	
+
+.contact_form input:required:valid, .contact_form textarea:required:valid {
+	box-shadow: 0 0 5px #5cd053;
+	border-color: #28921f;
+}
+.contact_form input:focus:invalid, .contact_form textarea:focus:invalid {
+	box-shadow: 0 0 5px #d45252;
+	border-color: #b03535
+}
+input[type="submit"] {
+  margin: 20px auto 0 auto;
+  width: 11em;
+  padding: 22px;
+  border: 2px solid #2D35A9;
+  border-radius: 10px;
+  box-shadow: 0 0 .5em rgba(0, 0, 0, .8);
+  color: #fff;
+  background: #2D35A9;
+  font-size: 1.3em;
+  font-weight: bold;
+  
+  -moz-box-shadow: 0 0 .5em rgba(0, 0, 0, .8);
+  -webkit-box-shadow: 0 0 .5em rgba(0, 0, 0, .8);
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;  
+  -webkit-appearance: none;
+}
+
+input[type="submit"]:hover, input[type="submit"]:active {
+  cursor: pointer;
+  background: #fff;
+  color: #593131;
+}
+
+input[type="submit"]:active {
+  background: #5159CC;
+  box-shadow: 0 0 .5em rgba(0, 0, 0, .8) inset;
+  
+  -moz-box-shadow: 0 0 .5em rgba(0, 0, 0, .8) inset;
+  -webkit-box-shadow: 0 0 .5em rgba(0, 0, 0, .8) inset;
+}
+
+#gradient-style
+{
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+	font-size: 12px;
+	margin: 5px;
+	//width: 600px;
+	text-align: left;
+	border-collapse: collapse;
+}
+#gradient-style th
+{
+	font-size: 13px;
+	font-weight: normal;
+	padding: 8px;
+	background: #b9c9fe url('../images/gradhead.png') repeat-x;
+	border-top: 2px solid #d3ddff;
+	border-bottom: 1px solid #fff;
+	color: #039;
+}
+#gradient-style td
+{
+	padding: 8px; 
+	border-bottom: 1px solid #fff;
+	color: #669;
+	border-top: 1px solid #fff;
+	
+}
+#gradient-style tfoot tr td
+{
+	background: #e8edff;
+	font-size: 12px;
+	color: #99c;
+}
+#gradient-style tbody tr:hover td
+{
+	background: #d0dafd url('../images/gradhover.png') repeat-x;
+	color: #339;
+}
+
+
+

@@ -1,0 +1,98 @@
+/*-------------------------
+	Simple reset
+--------------------------*/
+
+
+*{
+	margin:0;
+	padding:0;
+}
+
+
+/*-------------------------
+	General Styles
+--------------------------*/
+
+
+html{
+	background:url('../img/bg.jpg') repeat #e4e4e4;
+}
+
+body{
+	font:14px/1.3 'Segoe UI',Arial, sans-serif;
+}
+
+a{color:#FFF; }
+a:hover{
+	text-decoration:none;
+}
+
+
+
+/*-------------------------
+	Main Area
+--------------------------*/
+
+#barra{
+	/*Altura y margen interno*/
+	height: 40px;
+	/*Fija*/
+	position: fixed;
+	top:0px;
+	left:0px;
+	right:0px;
+	padding-top:10px;
+	padding-left:20px;
+	padding-right:20px;
+	/*Capa, sobre todo*/
+	background:#000;
+}
+
+#barra h1{
+	font:36px 'Open Sans Condensed', sans-serif;
+	color:#4a4a4a;
+	text-align:center;
+	margin-top:75px;
+}
+
+.loginboton {
+    font-weight: bold;
+    background: #4387FD;
+    border: 1px solid #4387FD;
+    line-height: 28px;
+    padding: 0px 12px;
+    border-radius: 2px;
+	float:right;
+	color:#FFF;
+	text-decoration:none;
+
+}
+#barra .sastifactorio{
+	font:15px 'Open Sans Condensed', sans-serif;
+	color:#CCC;
+	text-align:left;
+}
+
+
+#barra .avatar{
+	background:url('../img/default_avatar.jpg') no-repeat center bottom;
+	width:30px;
+	height:30px;
+	display:block;
+	float:right;
+	border-radius:50%;
+}
+
+#barra .logoutBoton{
+	background-color:#a3a3a3;
+	box-shadow:0 -5px 2px #999 inset, 0 1px 1px #ccc;
+	border:1px solid #999;
+	color:#fff !important;
+	font-weight:bold;
+	display:inherit;
+	width:60px;
+	text-decoration:none;
+	border-radius:3px;
+	font-size:11px;
+	padding:5px;
+}
