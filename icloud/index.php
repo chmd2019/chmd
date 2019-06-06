@@ -156,20 +156,17 @@ if (isset($authUrl)) {
 } else {
     $user = $service->userinfo->get(); //get user info
     $correo=$user->email;
+
     require('Model/Login.php');
+
     $objCliente=new Login();
-    $consulta=$objCliente->Acceso($correo);
-      
-        
-    
-    
+    $consulta=$objCliente->Acceso('ecareaga@chmd.edu.mx');
     if ($consulta) { //if user already exist change greeting text to "Welcome Back"
-        if ($cliente = mysql_fetch_array($consulta)) {
+        if ($cliente = mysqli_fetch_array($consulta)) {
             $id=$cliente[0];
             $correo1=$cliente[1];
             $perfil=$cliente[2];
             $estatus=$cliente[3];
-                    
                     
             if ($perfil==3) {
                     
@@ -195,8 +192,6 @@ if (isset($authUrl)) {
         -->
          </div>";
       
-      
-      
                 $Colegium= "  <div class='source-code runnable'  style='display:none;'>
         <!--
         BootstrapDialog.show({
@@ -205,8 +200,7 @@ if (isset($authUrl)) {
         });
         -->
          </div>";
-       
-       
+
                 $Uniformes= "<div class='source-code runnable'  style='display:none;'>
         <!--
         BootstrapDialog.show({
@@ -279,7 +273,6 @@ if (isset($authUrl)) {
             }   //fin validacion de perfil padre de familia
             elseif ($perfil==4) /*****************padre y comite***********************************/
       {
-                  
                     
                     ///////////////////////////////////////////
                   //  $consulta1=$objCliente->Acceso1($id);

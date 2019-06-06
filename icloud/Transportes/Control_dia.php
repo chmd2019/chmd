@@ -1,88 +1,71 @@
-
-<?php 
+<?php
 //require_once("Class_login.php");
-include_once("Model/DBManager.php");
-
-
+include_once("../Model/DBManager.php");
 class Control_dia
 {
- //constructor	
- 	var $con;
- 	function Control_dia(){
- 		$this->con=new DBManager;
- 	    }
-            
-    
-             function mostrar_diario($familia)
-        {
-		if($this->con->conectar1()==true)
-               {
-	        return mysql_query("select * from Ventana_Permiso_diario where nfamilia='$familia' and  year(fecha)=YEAR(NOW())  and MONTH(fecha)=MONTH(NOW())  order by id desc limit 3");
-		}
-	}
-            
-            
-            
-
-          
-        
-              function mostrar_domicilio($fam)
-        {
-		if($this->con->conectar1()==true)
-                    {
-                    mysql_set_charset('utf8');
-		   return mysql_query("select papa,calle,colonia,cp from usuarios where password='$fam'");
-		}
-	} 
-        
-        
-        
-          function mostrar_dias($folio)
-        {
-		if($this->con->conectar1()==true)
-                    {
-                    mysql_set_charset('utf8');
-			return mysql_query("select vpd.id,
-                                                   vpd.fecha2,
-                                                   vs.correo,
-                                                   usu.calle,
-                                                   usu.colonia,
-                                                   usu.cp,
-                                                   vpd.calle_numero,
-                                                   vpd.colonia,
-                                                   vpd.cp,
-                                                   vpd.ruta,
-                                                   vpd.comentarios,
-                                                   vpd.alumno1,
-                                                   vpd.alumno2,
-                                                   vpd.alumno3,
-                                                   vpd.alumno4,
-                                                   vpd.alumno5,
-                                                   vpd.mensaje,
-                                                   vpd.fecha1
-from 
-Ventana_Permiso_diario vpd
-LEFT JOIN Ventana_user vs on vpd.idusuario=vs.id
-LEFT JOIN usuarios usu on vpd.nfamilia=usu.`password` where vpd.id='$folio'");
-		}
-	} 
-            
-            
-            
-        ///formato DIario
-        function Diario_Alta($campos)
-        {
-		$hoy = date("Y-m-d"); 
-          
-            
-            if($this->con->conectar1()==true)
-               {
-               mysql_query("SET NAMES 'utf8'");
-               mysql_query("SET AUTOCOMMIT=0");
-               mysql_query("START TRANSACTION");
-              
-                         
-                    $Insertar=  mysql_query("INSERT INTO Ventana_Permiso_diario(
+    //constructor
+    public $con;
+    public function Control_dia()
+    {
+        $this->con=new DBManager;
+    }
+    public function mostrar_diario($familia)
+    {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT * from Ventana_Permiso_diario WHERE nfamilia='$familia' AND year(fecha)=YEAR(NOW()) AND MONTH(fecha)=MONTH(NOW())  order by id desc limit 3";
+            return mysqli_query($connection, $sql);
+        }
+    }
+                    
+    public function mostrar_domicilio($fam)
+    {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT papa,calle,colonia,cp from usuarios WHERE password='$fam'";
+            return mysqli_query($connection, $sql);
+        }
+    }
+         
+    public function mostrar_dias($folio)
+    {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT vpd.id,
+                    vpd.fecha2,
+                    vs.correo,
+                    usu.calle,
+                    usu.colonia,
+                    usu.cp,
+                    vpd.calle_numero,
+                    vpd.colonia,
+                    vpd.cp,
+                    vpd.ruta,
+                    vpd.comentarios,
+                    vpd.alumno1,
+                    vpd.alumno2,
+                    vpd.alumno3,
+                    vpd.alumno4,
+                    vpd.alumno5,
+                    vpd.mensaje,
+                    vpd.fecha1
+                    from Ventana_Permiso_diario vpd LEFT JOIN Ventana_user vs on vpd.idusuario=vs.id LEFT JOIN usuarios usu on vpd.nfamilia=usu.`password` where vpd.id='$folio'";
+            return mysqli_query($connection, $sql);
+        }
+    }
+    ///formato DIario
+    public function Diario_Alta($campos)
+    {
+        $hoy = date("Y-m-d");
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql1 = "SET NAMES 'utf8'";
+            $sql2 = "SET AUTOCOMMIT=0";
+            $sql3 = "START TRANSACTION";
+            mysqli_query($connection, $sql1);
+            mysqli_query($connection, $sql2);
+            mysqli_query($connection, $sql3);
+            $sql4 = "INSERT INTO Ventana_Permiso_diario(
 idusuario,
 alumno1,
 alumno2,
@@ -112,32 +95,23 @@ fecha2,fecha1)
  '".$campos[11]."',
  '".$campos[12]."',
  '".$campos[13]."',
- '".$campos[14]."')");  
-                if (!$Insertar) 
-              {
-                    
-                    die("error:". mysql_error());
-                    return false;
-               
-                
-              }
-           
-             if ($Insertar)
-                             {
-                             mysql_query("COMMIT");
-                             }
-                             else 
-                                 {        
-                             mysql_query("ROLLBACK");
-                                 }
-		}
-               // Close connection
-                mysql_close($conexion);
-	}
-            
-  
+ '".$campos[14]."')";
+            $Insertar= mysqli_query($connection, $sql4);
 
-  
-        
+            if (!$Insertar) {
+                die("error:". mysqli_error());
+                return false;
+            }
+           
+            if ($Insertar) {
+                $sql ="COMMIT";
+                mysqli_query($connection, $sql);
+            } else {
+                $sql ="ROLLBACK";
+                mysqli_query($connection, $sql);
+            }
+        }
+        // Close connection
+        mysqli_close($connection);
+    }
 }
-?>

@@ -4,13 +4,13 @@
 session_start(); //session start
 
 include_once("../Model/DBManager.php");
-require_once ('../libraries/Google/autoload.php');
-require_once '../Model/Config.php';
+require_once("../libraries/Google/autoload.php");
+require_once("../Model/Config.php");
 
-
+echo "Diario alta";
 //incase of logout request, just unset the session var
 if (isset($_GET['logout'])) {
-  unset($_SESSION['access_token']);
+    unset($_SESSION['access_token']);
 }
 
 
@@ -18,87 +18,105 @@ $service = new Google_Service_Oauth2($client);
 
 //echo "$service";
   
-if (isset($_GET['code'])) 
-    {
-  $client->authenticate($_GET['code']);
-  $_SESSION['access_token'] = $client->getAccessToken();
-  header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
-  exit;
+if (isset($_GET['code'])) {
+    $client->authenticate($_GET['code']);
+    $_SESSION['access_token'] = $client->getAccessToken();
+    header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
+    exit;
 }
 
 
 if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
-  $client->setAccessToken($_SESSION['access_token']);
+    $client->setAccessToken($_SESSION['access_token']);
 } else {
-  $authUrl = $client->createAuthUrl();
+    $authUrl = $client->createAuthUrl();
 }
 /*Agregar diseño*/
-if (isset($authUrl))
-    { 
-    
-	 header('Location: ../index.php');
-	
-
-        
-        
-    } 
-else 
-{
+if (isset($authUrl)) {
+    header('Location: ../index.php');
+} else {
     /*enviar datos a procesar */
     
-if(isset($_POST['submit']))
- {
- 
-require('Control_dia.php');
+    if (isset($_POST['submit'])) {
+        require('Control_dia.php');
 
-$idusuario= htmlspecialchars(trim($_POST['idusuario']));
-$alumno1 = htmlspecialchars(trim($_POST['alumno1']));
-$alumno2 = htmlspecialchars(trim($_POST['alumno2']));
-$alumno3 = htmlspecialchars(trim($_POST['alumno3']));
-$alumno4 = htmlspecialchars(trim($_POST['alumno4']));
-$alumno5 = htmlspecialchars(trim($_POST['alumno5']));
-$calle = htmlspecialchars(trim($_POST['calle']));
-$colonia = htmlspecialchars(trim($_POST['colonia']));
-$cp = htmlspecialchars(trim($_POST['cp']));
+        $idusuario= htmlspecialchars(trim($_POST['idusuario']));
+        $alumno1 = htmlspecialchars(trim($_POST['alumno1']));
+        $alumno2 = htmlspecialchars(trim($_POST['alumno2']));
+        $alumno3 = htmlspecialchars(trim($_POST['alumno3']));
+        $alumno4 = htmlspecialchars(trim($_POST['alumno4']));
+        $alumno5 = htmlspecialchars(trim($_POST['alumno5']));
+        $calle = htmlspecialchars(trim($_POST['calle']));
+        $colonia = htmlspecialchars(trim($_POST['colonia']));
+        $cp = htmlspecialchars(trim($_POST['cp']));
 
-$ruta = htmlspecialchars(trim($_POST['ruta']));
-$comentarios = htmlspecialchars(trim($_POST['comentarios']));
-$talumnos = htmlspecialchars(trim($_POST['suma']));
-$nfamilia = htmlspecialchars(trim($_POST['nfamilia']));
-$fecha = htmlspecialchars(trim($_POST['fecha']));
-$fecha1 = htmlspecialchars(trim($_POST['fecha1']));
+        $ruta = htmlspecialchars(trim($_POST['ruta']));
+        $comentarios = htmlspecialchars(trim($_POST['comentarios']));
+        $talumnos = htmlspecialchars(trim($_POST['suma']));
+        $nfamilia = htmlspecialchars(trim($_POST['nfamilia']));
+        $fecha = htmlspecialchars(trim($_POST['fecha']));
+        $fecha1 = htmlspecialchars(trim($_POST['fecha1']));
 
 
-if(is_null($idusuario)){echo 'Error intentar de nuevo'; return false;}
-if(is_null($nfamilia)){echo 'Error intentar de nuevo'; return false;}
-if(is_null($alumno1)){echo 'Error intentar de nuevo'; return false;}
-if(is_null($alumno2)){echo 'Error intentar de nuevo'; return false;}
-if(is_null($alumno3)){echo 'Error intentar de nuevo'; return false;}
-if(is_null($alumno4)){echo 'Error intentar de nuevo'; return false;}
-if(is_null($alumno5)){echo 'Error intentar de nuevo'; return false;}
-if(is_null($calle)){echo 'Error intentar de nuevo'; return false;}
-if(is_null($colonia)){echo 'Error intentar de nuevo'; return false;}
-if(is_null($cp)){echo 'Error intentar de nuevo'; return false;}
-if(is_null($ruta)){echo 'Error intentar de nuevo'; return false;}
+        if (is_null($idusuario)) {
+            echo 'Error intentar de nuevo';
+            return false;
+        }
+        if (is_null($nfamilia)) {
+            echo 'Error intentar de nuevo';
+            return false;
+        }
+        if (is_null($alumno1)) {
+            echo 'Error intentar de nuevo';
+            return false;
+        }
+        if (is_null($alumno2)) {
+            echo 'Error intentar de nuevo';
+            return false;
+        }
+        if (is_null($alumno3)) {
+            echo 'Error intentar de nuevo';
+            return false;
+        }
+        if (is_null($alumno4)) {
+            echo 'Error intentar de nuevo';
+            return false;
+        }
+        if (is_null($alumno5)) {
+            echo 'Error intentar de nuevo';
+            return false;
+        }
+        if (is_null($calle)) {
+            echo 'Error intentar de nuevo';
+            return false;
+        }
+        if (is_null($colonia)) {
+            echo 'Error intentar de nuevo';
+            return false;
+        }
+        if (is_null($cp)) {
+            echo 'Error intentar de nuevo';
+            return false;
+        }
+        if (is_null($ruta)) {
+            echo 'Error intentar de nuevo';
+            return false;
+        }
 
-//validacion despues de las 11:30 el mismo dia
+        //validacion despues de las 11:30 el mismo dia
 
-$dia=date("d");
-$mes=date("m");
-$anio=date("Y");
+        $dia=date("d");
+        $mes=date("m");
+        $anio=date("Y");
 
-$validafecha=$dia."/".$mes."/".$anio;
+        $validafecha=$dia."/".$mes."/".$anio;
 
-if($validafecha==$fecha1)
-{
-  echo "<font color='red'>fuera de horrario y fecha</font> ";
-
-}
- else 
-  {
-     $objCliente=new Control_dia();
+        if ($validafecha==$fecha1) {
+            echo "<font color='red'>fuera de horrario y fecha</font> ";
+        } else {
+            $objCliente=new Control_dia();
         
-	if ( $objCliente->Diario_Alta(array($idusuario,
+            if ($objCliente->Diario_Alta(array($idusuario,
                                           $alumno1,
                                           $alumno2,
                                           $alumno3,
@@ -106,80 +124,66 @@ if($validafecha==$fecha1)
                                           $alumno5,
                                           $calle,
                                           $colonia,
-                                          $cp,                                         
+                                          $cp,
                                           $ruta,
                                           $comentarios,
                                           $talumnos,
                                           $nfamilia,
                                         $fecha,
-                                        $fecha1)) == false)
-                {
-		echo 'Solicitud Guardada';
-	}else{
-		echo 'Se produjo un error. Intente nuevamente ';
-	}
-    
-}
+                                        $fecha1)) == false) {
+                echo 'Solicitud Guardada';
+            } else {
+                echo 'Se produjo un error. Intente nuevamente ';
+            }
+        }
 
-////////////////////////VIN DE VALIDACION
-
-
-	
-} 
-    else
- {
+        ////////////////////////VIN DE VALIDACION
+    } else {
     
     
     
     /*fin de guardar datos a procesar*/
-    $time = time();
- $arrayMeses = array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+        $time = time();
+        $arrayMeses = array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
  
-   $arrayDias = array( 'Domingo', 'Lunes', 'Martes',
+        $arrayDias = array( 'Domingo', 'Lunes', 'Martes',
        'Miercoles', 'Jueves', 'Viernes', 'Sabado');
    
    
    
     
-         $user = $service->userinfo->get(); //get user info 
-	$correo=$user->email;
+        $user = $service->userinfo->get(); //get user info
+        $correo=$user->email;
         require('../Model/Login.php');
-       $objCliente=new Login();
-       $consulta=$objCliente->Acceso($correo);
-       if($consulta) //if user already exist change greeting text to "Welcome Back"
-    {
-    
-           
-            if( $cliente = mysql_fetch_array($consulta) )
-              
-        {
+        $objCliente=new Login();
+        $consulta=$objCliente->Acceso($correo);
+        if ($consulta) { //if user already exist change greeting text to "Welcome Back"
+            if ($cliente = mysql_fetch_array($consulta)) {
+                $id=$cliente[0];
+                $correo1=$cliente[1];
+                $perfil=$cliente[2];
+                $estatus=$cliente[3];
+                $fam=$cliente[4];
+                $_SESSION['permiso'] =1;
 
-$id=$cliente[0];
-$correo1=$cliente[1];
-$perfil=$cliente[2];
-$estatus=$cliente[3];
-$fam=$cliente[4];
-$_SESSION['permiso'] =1;
-
-$_SESSION['nickname']  = $fam;
+                $_SESSION['nickname']  = $fam;
 
 
-/////////////////////datos de domicilio de familia//////////////////////////////////
-  require('Control_dia.php');
-  $objDia=new Control_dia();
-  $consulta2=$objDia->mostrar_domicilio($fam);
-  $cliente2 = mysql_fetch_array($consulta2);
+                /////////////////////datos de domicilio de familia//////////////////////////////////
+                require('Control_dia.php');
+                $objDia=new Control_dia();
+                $consulta2=$objDia->mostrar_domicilio($fam);
+                $cliente2 = mysql_fetch_array($consulta2);
   
-  $papa=$cliente2[0];
-   $calle1=$cliente2[1];
-   $colonia1=$cliente2[2];
-   $cp1=$cliente2[3];
-   $idusuario=1;
-///////////////////////////////////////////////////////////////////////////////////
+                $papa=$cliente2[0];
+                $calle1=$cliente2[1];
+                $colonia1=$cliente2[2];
+                $cp1=$cliente2[3];
+                $idusuario=1;
+                ///////////////////////////////////////////////////////////////////////////////////
                 
-                 ///Ingreso codigo de alta//
-                ?>
+                ///Ingreso codigo de alta//?>
 <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 <link href="../css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
 <script type="text/javascript">
@@ -302,12 +306,12 @@ $(function() {
    <center>
 <p>
 <label for="fecha"><font face="Candara" size="3" COLOR="#2D35A9">Fecha de solicitud:</font></label>
-<input class="w3-input" name="fecha" type="text"  id="fecha" value="<?php echo $arrayDias[date('w')].", ".date('d')." de ".$arrayMeses[date('m')-1]." de ".date('Y').",".date("H:i:s");?>" readonly="readonly" />        
+<input class="w3-input" name="fecha" type="text"  id="fecha" value="<?php echo $arrayDias[date('w')].", ".date('d')." de ".$arrayMeses[date('m')-1]." de ".date('Y').",".date("H:i:s"); ?>" readonly="readonly" />        
 </p> 
 
 <p>
 <label for="idusuario"><font face="Candara" size="3" COLOR="#2D35A9">Solicitante:</font></label>
-<input class="w3-input" name="correo" type="text"  id="correo" value="<?php echo "$correo";?>"  readonly="readonly"/>             
+<input class="w3-input" name="correo" type="text"  id="correo" value="<?php echo "$correo"; ?>"  readonly="readonly"/>             
 
 </p>   
 <label for="papa"><font face="Candara" size="3" COLOR="#2D35A9">Para el día:</font></label><br>
@@ -387,15 +391,11 @@ jQuery(document).ready(function($) {
        </thead>
        <?php
 $consulta1=$objCliente->mostrar_alumnos($fam);
-if($consulta1)
-    {
-             $counter = 0;
-            // $numero = mysql_num_rows($consulta);
-	while( $cliente1 = mysql_fetch_array($consulta1) )
-                {
-            
-            $counter = $counter + 1;
-	?>
+                if ($consulta1) {
+                    $counter = 0;
+                    // $numero = mysql_num_rows($consulta);
+                    while ($cliente1 = mysql_fetch_array($consulta1)) {
+                        $counter = $counter + 1; ?>
 	
 		  <tr id="fila-<?php echo $cliente['id'] ?>">
                           <!--<td bgcolor="#ffffff"><?php echo $cliente1['id'] ?></td>-->
@@ -407,31 +407,25 @@ if($consulta1)
 			 
 		  </tr>
 	<?php
-       
-	}
+                    }
         
-        $talumnos=$counter;
-        
-}
-
-
-
-?>
+                    $talumnos=$counter;
+                } ?>
     </table>
        
 <h2><font color="#124A7B">Dirección de Casa</font> </h2>
 <p>
 <label for="calle1"><font face="Candara" size="3" COLOR="#2D35A9">Calle y Número:</font></label>
-   <input name="calle1" class="w3-input" type="text"  id="calle1"  value="<?php echo "$calle1";?>" readonly/>      
+   <input name="calle1" class="w3-input" type="text"  id="calle1"  value="<?php echo "$calle1"; ?>" readonly/>      
 </p>
 <p>      
   <label for="colonia1"><font face="Candara" size="3" COLOR="#2D35A9">Colonia:</font></label>
-  <input name="colonia1" class="w3-input" type="text"  id="colonia1"   value="<?php echo "$colonia1";?>" readonly/>
+  <input name="colonia1" class="w3-input" type="text"  id="colonia1"   value="<?php echo "$colonia1"; ?>" readonly/>
 </p>
 
 <p>      
   <label for="cp1"><font face="Candara" size="3" COLOR="#2D35A9">CP:</font></label>
-  <input name="cp1" class="w3-input" type="text"  id="cp1"  value="<?php echo "$cp1";?>" readonly />
+  <input name="cp1" class="w3-input" type="text"  id="cp1"  value="<?php echo "$cp1"; ?>" readonly />
 </p>
 
 
@@ -478,9 +472,8 @@ if($consulta1)
                     </td>
                <?php
  $dias=$arrayDias[date("w")];
- if($dias=='Viernes')
-{
-     ?>
+                if ($dias=='Viernes') {
+                    ?>
                       <td>
  <select type="select" name="ruta"  id="ruta"> 
 <option value="0" >selecciona opción </option> 
@@ -488,11 +481,9 @@ if($consulta1)
 <option value="Taller 4:30 PM">Taller 4:30 PM</option> 
  </select>
                     </td>
-    <?php 
- }
- else
-     {
-     ?>
+    <?php
+                } else {
+                    ?>
   <td>
  <select type="select" name="ruta"  id="ruta"> 
 <option value="0">selecciona opción </option> 
@@ -502,10 +493,10 @@ if($consulta1)
    </td>
     
    <?php
- }
+                }
  
  
- // echo "Buenos d&iacute;as, hoy es ".$dias;
+                // echo "Buenos d&iacute;as, hoy es ".$dias;
 ?>
                     
 
@@ -539,30 +530,12 @@ if($consulta1)
                
            
            <?php
-         }
-         
-         
-         
-         
-          else
-      {
-                  echo 'Este usuario no tiene Acceso:'.$user->email.',<br> !Favor de comunicarse para validar datos! <br> Salir del sitema [<a href="'.$redirect_uri.'?logout=1"> Log Out</a>]';
-                  
-      }
-         
-        
-     
-       
-    }
-    
-    
-       else //error en cosulta
-        { 
-            
+            } else {
+                echo 'Este usuario no tiene Acceso:'.$user->email.',<br> !Favor de comunicarse para validar datos! <br> Salir del sitema [<a href="'.$redirect_uri.'?logout=1"> Log Out</a>]';
+            }
+        } else { //error en cosulta
             echo 'Error en cosulta';
-          
-          
-       }
-}//
+        }
+    }//
 }
 ?>
