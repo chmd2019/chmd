@@ -1,7 +1,7 @@
 <?php
 session_start(); //session start
 //include_once("Model/DBManager.php");
-require_once ('libraries/Google/autoload.php');
+require_once('libraries/Google/autoload.php');
 require_once 'Model/Config.php';
 
 
@@ -9,7 +9,7 @@ require_once 'Model/Config.php';
 
 //incase of logout request, just unset the session var
 if (isset($_GET['logout'])) {
-  unset($_SESSION['access_token']);
+    unset($_SESSION['access_token']);
 }
 
 
@@ -17,19 +17,18 @@ $service = new Google_Service_Oauth2($client);
 
 //echo "$service";
   
-if (isset($_GET['code'])) 
-    {
-  $client->authenticate($_GET['code']);
-  $_SESSION['access_token'] = $client->getAccessToken();
-  header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
-  exit;
+if (isset($_GET['code'])) {
+    $client->authenticate($_GET['code']);
+    $_SESSION['access_token'] = $client->getAccessToken();
+    header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
+    exit;
 }
 
 
 if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
-  $client->setAccessToken($_SESSION['access_token']);
+    $client->setAccessToken($_SESSION['access_token']);
 } else {
-  $authUrl = $client->createAuthUrl();
+    $authUrl = $client->createAuthUrl();
 }
 /*Agregar diseño*/
 
@@ -146,63 +145,48 @@ type="text/css" rel="stylesheet">
 
 ////////////// fin agregar diseño////////////////////////////////
 
-if (isset($authUrl))
-    { 
+if (isset($authUrl)) {
     
-	//show login url
-	echo '<div align="center">';
-	echo '<h2><font color="#124A7B">Mi Maguen</font></h2>';
-	
-	echo '<br><br><a  href="' . $authUrl . '"><img src="images/google.png"  id="total"/></a>';
-	echo '</div>';
-	
-
-        
-        
-    } 
-else 
-{
-	$user = $service->userinfo->get(); //get user info 
-	$correo=$user->email;
-        require('Model/Login.php');
-       $objCliente=new Login();
-       $consulta=$objCliente->Acceso($correo);
+    //show login url
+    echo '<div align="center">';
+    echo '<h2><font color="#124A7B">Mi Maguen</font></h2>';
+    
+    echo '<br><br><a  href="' . $authUrl . '"><img src="images/google.png"  id="total"/></a>';
+    echo '</div>';
+} else {
+    $user = $service->userinfo->get(); //get user info
+    $correo=$user->email;
+    require('Model/Login.php');
+    $objCliente=new Login();
+    $consulta=$objCliente->Acceso($correo);
       
         
-	
-	
-	if($consulta) //if user already exist change greeting text to "Welcome Back"
-    {
-            
-            if( $cliente = mysql_fetch_array($consulta) )
-              
-              {
-            
-                   
-                    
-$id=$cliente[0];
-$correo1=$cliente[1];
-$perfil=$cliente[2];
-$estatus=$cliente[3];
+    
+    
+    if ($consulta) { //if user already exist change greeting text to "Welcome Back"
+        if ($cliente = mysql_fetch_array($consulta)) {
+            $id=$cliente[0];
+            $correo1=$cliente[1];
+            $perfil=$cliente[2];
+            $estatus=$cliente[3];
                     
                     
-       if($perfil==3)
-{            
+            if ($perfil==3) {
                     
                     ///////////////////////////////////////////
-                  //  $consulta1=$objCliente->Acceso1($id);
-                  //  $cliente1 = mysql_fetch_array($consulta1);
-                  //  $bb=$cliente1[0];
-                    echo '<center><h2> <font color="#124A7B">Mi Maguen</font></h2></center>';  
+                //  $consulta1=$objCliente->Acceso1($id);
+                //  $cliente1 = mysql_fetch_array($consulta1);
+                //  $bb=$cliente1[0];
+                echo '<center><h2> <font color="#124A7B">Mi Maguen</font></h2></center>';
                     
                     
-                    ///////////////////////////////////
-                     echo '<h3> [<a href="'.$redirect_uri.'?logout=1">Salir</a>]<br>&nbsp; &nbsp;&nbsp; &nbsp;</h3>';
-                    // echo '<br><b>Correo:</b>'.$user->email.' [<a href="'.$redirect_uri.'?logout=1">Cerrar sesión</a>]<br>&nbsp; &nbsp;&nbsp; &nbsp;';
-                    // echo '<br>otra pantalla '.$user->name.'! [<a href="prueba.php">Ir: </a>]';
+                ///////////////////////////////////
+                echo '<h3> [<a href="'.$redirect_uri.'?logout=1">Salir</a>]<br>&nbsp; &nbsp;&nbsp; &nbsp;</h3>';
+                // echo '<br><b>Correo:</b>'.$user->email.' [<a href="'.$redirect_uri.'?logout=1">Cerrar sesión</a>]<br>&nbsp; &nbsp;&nbsp; &nbsp;';
+                // echo '<br>otra pantalla '.$user->name.'! [<a href="prueba.php">Ir: </a>]';
                      
-                     //////////////////////////////
-                      $Trasportes= " <div class='source-code runnable'  style='display:none;'>
+                //////////////////////////////
+                $Trasportes= " <div class='source-code runnable'  style='display:none;'>
         <!--
         BootstrapDialog.show({
             title: 'Ayuda',
@@ -213,7 +197,7 @@ $estatus=$cliente[3];
       
       
       
-       $Colegium= "  <div class='source-code runnable'  style='display:none;'>
+                $Colegium= "  <div class='source-code runnable'  style='display:none;'>
         <!--
         BootstrapDialog.show({
             title: 'Galeria Escolar',
@@ -223,7 +207,7 @@ $estatus=$cliente[3];
          </div>";
        
        
-        $Uniformes= "<div class='source-code runnable'  style='display:none;'>
+                $Uniformes= "<div class='source-code runnable'  style='display:none;'>
         <!--
         BootstrapDialog.show({
             title: 'Uniformes',
@@ -233,7 +217,7 @@ $estatus=$cliente[3];
          </div>";
         
         
-         $Choferes= "<div class='source-code runnable'  style='display:none;'>
+                $Choferes= "<div class='source-code runnable'  style='display:none;'>
         <!--
         BootstrapDialog.show({
             title: 'Choferes',
@@ -241,7 +225,7 @@ $estatus=$cliente[3];
         });
         -->
          </div>";
-          $Facturas= "<div class='source-code runnable'  style='display:none;'>
+                $Facturas= "<div class='source-code runnable'  style='display:none;'>
         <!--
         BootstrapDialog.show({
             title: 'Facturas',
@@ -250,7 +234,7 @@ $estatus=$cliente[3];
         -->
          </div>";
           
-           $Citas= "<div class='source-code runnable'  style='display:none;'>
+                $Citas= "<div class='source-code runnable'  style='display:none;'>
         <!--
         BootstrapDialog.show({
             title: 'Citas de evaluación',
@@ -261,7 +245,7 @@ $estatus=$cliente[3];
        
        
      
-    echo "  
+                echo "  
     <table id='respon'>
   <tbody>
     <tr>
@@ -292,8 +276,8 @@ $estatus=$cliente[3];
    
   
 </tbody></table>";
-      }   //fin validacion de perfil padre de familia
-      else if($perfil==4)/*****************padre y comite***********************************/
+            }   //fin validacion de perfil padre de familia
+            elseif ($perfil==4) /*****************padre y comite***********************************/
       {
                   
                     
@@ -301,7 +285,7 @@ $estatus=$cliente[3];
                   //  $consulta1=$objCliente->Acceso1($id);
                   //  $cliente1 = mysql_fetch_array($consulta1);
                   //  $bb=$cliente1[0];
-                    echo '<center><h2> <font color="#124A7B">Mi Maguen 2019</font></h2></center>';  
+                    echo '<center><h2> <font color="#124A7B">Mi Maguen 2019</font></h2></center>';
                     
                     
                     ///////////////////////////////////
@@ -421,11 +405,8 @@ $estatus=$cliente[3];
 </tbody></table>";
 
         
-      }
-      
-   else
-{
- echo ' 
+      } else {
+          echo ' 
 <center>     
   <table>
   <tbody>
@@ -449,33 +430,21 @@ $estatus=$cliente[3];
   </tbody>
 	
 </table></center>';
-
-    
-}   
-      //fin validacion de alumno o maestro
-              }//fin de consulta principal
-              else{
+      }
+            //fin validacion de alumno o maestro
+        }//fin de consulta principal
+              else {
                   echo 'Este usuario no tiene Acceso:'.$user->email.',<br> !Favor de comunicarse para validar datos! <br> Salir del sitema [<a href="'.$redirect_uri.'?logout=1"> Log Out</a>]';
-                  
               }
-              
-       
+    } else { //else greeting text "Thanks for registering"
+        echo 'Error';
+          
+        //echo 'Hi '.$user->email.',<br> Thanks for Registering! [<a href="'.$redirect_uri.'?logout=1">Log Out</a>]';
+        //$statement = $mysqli->prepare("INSERT INTO google_users (google_id, google_name, google_email, google_link, google_picture_link) VALUES (?,?,?,?,?)");
+        //$statement->bind_param('issss', $user->id,  $user->name, $user->email, $user->link, $user->picture);
+        //$statement->execute();
+        ///echo $mysqli->error;
     }
-	else //else greeting text "Thanks for registering"
-	{ 
-            
-            echo 'Error';
-          
-                //echo 'Hi '.$user->email.',<br> Thanks for Registering! [<a href="'.$redirect_uri.'?logout=1">Log Out</a>]';
-		//$statement = $mysqli->prepare("INSERT INTO google_users (google_id, google_name, google_email, google_link, google_picture_link) VALUES (?,?,?,?,?)");
-		//$statement->bind_param('issss', $user->id,  $user->name, $user->email, $user->link, $user->picture);
-		//$statement->execute();
-		///echo $mysqli->error;
-          
-         }
-	
-       
-	
 }
 
 
@@ -553,7 +522,7 @@ c-1.6,0-2.6,0.8-3.3,1.8v-0.1C10.8,14.3,10.1,13.6,9.2,13.6z"/>
 </g>
 </svg>
 Cultura Digital</a>
-<a href="/apps/pages/index.jsp?uREC_ID=803683&type=d&pREC_ID=1192607"><?xml version="1.0" encoding="utf-8"?>
+<a href="/apps/pages/index.jsp?uREC_ID=803683&type=d&pREC_ID=1192607"><?php echo '<?xml version="1.0" encoding="utf-8"?>' ?>
 
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 viewBox="0 0 33.8 31.2" style="enable-background:new 0 0 33.8 31.2;" xml:space="preserve">
