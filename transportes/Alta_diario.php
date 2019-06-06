@@ -67,7 +67,7 @@ fecha2)
  '".$fecha."')";
 
 
-mysql_query ( $query );
+mysqli_query ($conexion, $query );
 
 echo 'Solicitud Guardada';
 
