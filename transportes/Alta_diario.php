@@ -7,9 +7,9 @@ $time = time();
  
    $arrayDias = array( 'Domingo', 'Lunes', 'Martes',
        'Miercoles', 'Jueves', 'Viernes', 'Sabado');
-$conexion = mysql_connect ( $host, $usuario, $password ) or die ( "Fallo en el establecimiento de la conexión" );
-mysql_select_db ( $db );
-mysql_query ( "SET NAMES 'utf8'" );
+$conexion = mysqli_connect ( $host, $usuario, $password ) or die ( "Fallo en el establecimiento de la conexión" );
+mysqli_select_db ($conexion, $db );
+$tildes = $conexion->query("SET NAMES 'utf8'"); //Para que se muestren las tildes
 require_once ('FirePHPCore/FirePHP.class.php');
 $firephp = FirePHP::getInstance ( true );
 ob_start ();
@@ -145,8 +145,8 @@ if (!$_GET)
  else { 
    	$familia=$_GET["nfamilia"]; 
         
-$datos = mysql_query ( "select papa,calle,colonia,cp from usuarios where password='$familia'" );
-if($rows=mysql_fetch_array($datos))
+$datos = mysqli_query ($conexion, "select papa,calle,colonia,cp from usuarios where password='$familia'" );
+if($rows=mysqli_fetch_array($datos))
 {
                       $papa=$rows[0];
                       $calle=$rows[1];
@@ -196,8 +196,8 @@ if($rows=mysql_fetch_array($datos))
                                                    <td style="text-align:center;border-style: groove; ">Selección</td>
                                                 </tr>
                                                 <?php 
-  $existe = mysql_query ( "SELECT * FROM alumnoschmd where idfamilia=$familia" );  
-             while($cliente=mysql_fetch_array($existe))
+  $existe = mysqli_query ($conexion, "SELECT * FROM alumnoschmd where idfamilia=$familia" );  
+             while($cliente=mysqli_fetch_array($existe))
                 {
                    $counter = $counter + 1;
                    ?>
