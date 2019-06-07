@@ -149,8 +149,6 @@ if (isset($authUrl)) {
                                     <th bgcolor="#CDCDCD">Alumno</th>
                                     <th bgcolor="#CDCDCD">Grupo</th>
                                      <!--<th bgcolor="#CDCDCD">Grado</th>-->
-
-
                                 </tr>
                             </thead>
                             <?php
@@ -159,7 +157,6 @@ if (isset($authUrl)) {
                                 $counter = 0;
                                 // $numero = mysql_num_rows($consulta);
                                 while ($cliente1 = mysqli_fetch_array($consulta1)) {
-
                                     $counter = $counter + 1;
                                     $idalu = $row1[0];
                                     $nombre = $cliente1[1];
@@ -207,8 +204,6 @@ if (isset($authUrl)) {
                             </select>
                         </p>
 
-
-
                         <br>
 
                         <p>
@@ -231,9 +226,6 @@ if (isset($authUrl)) {
                         </div>
 
                 </form>
-
-
-
                 <?php
             } else {
                 echo 'Este usuario no tiene Acceso:' . $user->email . ',<br> !Favor de comunicarse para validar datos! <br> Salir del sitema [<a href="' . $redirect_uri . '?logout=1"> Log Out</a>]';
