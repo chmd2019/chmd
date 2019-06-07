@@ -1,7 +1,7 @@
 <?php
 
-$client_id = '144850677714-ghn8l55tdb3jr0phsgcgg8fdk8435dpn.apps.googleusercontent.com';
-$client_secret ='RFuajea3D6BwQeng2eWgdwFv';
+$client_id = '144850677714-m6026buduis4id443pjcvmk31ceu8e3i.apps.googleusercontent.com';
+$client_secret ='CsqLEfWCKZRH7egeKkXhZyn6';
 $redirect_uri = 'https://www.chmd.edu.mx/pruebas/icloud';
 
 $client = new Google_Client();
