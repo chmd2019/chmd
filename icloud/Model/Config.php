@@ -2,7 +2,7 @@
 
 $client_id = '144850677714-ghn8l55tdb3jr0phsgcgg8fdk8435dpn.apps.googleusercontent.com';
 $client_secret ='RFuajea3D6BwQeng2eWgdwFv';
-$redirect_uri = 'http://esteticashirley.com/icloud/';
+$redirect_uri = 'https://www.chmd.edu.mx/pruebas/icloud';
 
 $client = new Google_Client();
 $client->setClientId($client_id);
