@@ -22,7 +22,7 @@ class Control_dia
     {
         $connection = $this->con->conectar1();
         if ($connection) {
-            $sql = "SELECT papa,calle,colonia,cp from usuarios WHERE password='$fam'";
+            $sql = "SELECT papa,calle,colonia,cp from usuarios WHERE PASSWORD='$fam'";
             return mysqli_query($connection, $sql);
         }
     }
@@ -66,36 +66,36 @@ class Control_dia
             mysqli_query($connection, $sql2);
             mysqli_query($connection, $sql3);
             $sql4 = "INSERT INTO Ventana_Permiso_diario(
-idusuario,
-alumno1,
-alumno2,
-alumno3,
-alumno4,
-alumno5,
-calle_numero,
-colonia,
-cp,
-ruta,
-comentarios,
-talumnos,
-nfamilia,
-fecha2,fecha1)
- VALUES ( 
- '".$campos[0]."',
- '".$campos[1]."',
- '".$campos[2]."',
- '".$campos[3]."',
- '".$campos[4]."',
- '".$campos[5]."',
- '".$campos[6]."', 
- '".$campos[7]."',
- '".$campos[8]."',
- '".$campos[9]."',
- '".$campos[10]."',
- '".$campos[11]."',
- '".$campos[12]."',
- '".$campos[13]."',
- '".$campos[14]."')";
+                        idusuario,
+                        alumno1,
+                        alumno2,
+                        alumno3,
+                        alumno4,
+                        alumno5,
+                        calle_numero,
+                        colonia,
+                        cp,
+                        ruta,
+                        comentarios,
+                        talumnos,
+                        nfamilia,
+                        fecha2,fecha1)
+                        VALUES ( 
+                        '".$campos[0]."',
+                        '".$campos[1]."',
+                        '".$campos[2]."',
+                        '".$campos[3]."',
+                        '".$campos[4]."',
+                        '".$campos[5]."',
+                        '".$campos[6]."', 
+                        '".$campos[7]."',
+                        '".$campos[8]."',
+                        '".$campos[9]."',
+                        '".$campos[10]."',
+                        '".$campos[11]."',
+                        '".$campos[12]."',
+                        '".$campos[13]."',
+                        '".$campos[14]."')";
             $Insertar= mysqli_query($connection, $sql4);
 
             if (!$Insertar) {

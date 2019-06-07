@@ -4,7 +4,7 @@
     $correo=$user->email;
       require('../Model/Login.php');
       $objCliente=new Login();
-      $consulta=$objCliente->Acceso('ecareaga@chmd.edu.mx');
+      $consulta=$objCliente->Acceso($correo);
      
     if ($consulta) { //if user already exist change greeting text to "Welcome Back"
         if ($cliente = mysqli_fetch_array($consulta)) {
@@ -23,9 +23,7 @@
        <th bgcolor="#CDCDCD">Estatus</th>
 
         </tr>
-        </thead>
-   
-     
+        </thead>     
  <?php
   $id=$cliente[0];
             $correo=$cliente[1];
@@ -37,7 +35,6 @@
             $objDia=new Control_dia();
             $consulta2=$objDia->mostrar_diario($familia);
             $contador=0;
-
             $total = mysqli_num_rows($consulta2);
 
             if ($total==0) {
@@ -70,8 +67,7 @@
 
                     </tr>  ";*/
               
-                echo "<tr>
-                  
+                echo "<tr>                 
 		   
 		  <td><span class='modi' id='modi'>$fecha</span></td>
                   <td><span class='modi' id='modi'>$staus11</span> <span class='modi' id='modi'><a href='Ver_Diario.php?id=$Idpermiso' title='Nuevo'> <img src='../images/link.png' width='15px' height='15px' alt='Nueva'></a></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
@@ -79,8 +75,6 @@
                    </tr>  ";
             }
             echo "     </table>";
-
-
 
         //fin
         } else {
@@ -95,6 +89,4 @@
         //$statement->execute();
         ///echo $mysqli->error;
     }
-echo "control dia ---OK---";
-
 ?>

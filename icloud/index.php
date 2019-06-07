@@ -1,18 +1,14 @@
 <?php
+echo "ajaertyrete";
 session_start(); //session start
 //include_once("Model/DBManager.php");
 require_once('libraries/Google/autoload.php');
 require_once 'Model/Config.php';
 
-
-
-
 //incase of logout request, just unset the session var
 if (isset($_GET['logout'])) {
     unset($_SESSION['access_token']);
 }
-
-
 $service = new Google_Service_Oauth2($client);
 
 //echo "$service";
@@ -160,7 +156,7 @@ if (isset($authUrl)) {
     require('Model/Login.php');
 
     $objCliente=new Login();
-    $consulta=$objCliente->Acceso('ecareaga@chmd.edu.mx');
+    $consulta=$objCliente->Acceso($correo);
     if ($consulta) { //if user already exist change greeting text to "Welcome Back"
         if ($cliente = mysqli_fetch_array($consulta)) {
             $id=$cliente[0];

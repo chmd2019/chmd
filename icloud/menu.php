@@ -9,7 +9,6 @@ if (isset($_GET['logout'])) {
     unset($_SESSION['access_token']);
 }
 
-
 $service = new Google_Service_Oauth2($client);
 
 //echo "$service";
@@ -20,7 +19,6 @@ if (isset($_GET['code'])) {
     header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
     exit;
 }
-
 
 if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
     $client->setAccessToken($_SESSION['access_token']);
@@ -111,11 +109,7 @@ type="text/css" rel="stylesheet">
 
 		<h1 id="header_title"><a href="#"><span id="logo1" class="first-line">COLEGIO HEBREO</span> <span class="second-line" id="logo2">MAGUEN DAVID</span></a></h1>
 
-		<a id="skip_to_content" href="#content_main">Skip to main content</a>
-
-
-
- 
+		<a id="skip_to_content" href="#content_main">Skip to main content</a> 
 	</div>
 </header>
     <!----------------------adaptacion responsiva-->
@@ -124,10 +118,7 @@ type="text/css" rel="stylesheet">
 
 <div id="content_main">
 
-
 <?php
-
-
 ////////////// fin agregar diseño////////////////////////////////
 
 if (isset($authUrl)) {
@@ -152,17 +143,15 @@ if (isset($authUrl)) {
     echo '<h3> [<a href="'.$redirect_uri.'?logout=1">Salir</a>]<br>&nbsp; &nbsp;&nbsp; &nbsp;</h3>';
     
     //$id1= $_POST["id"];
-    //$idseccion= $_GET["idseccion"];
+    //$idseccion= $_GET["idseccion"];        
         
-        
-    $idseccion= $_GET["idseccion"];
-        
+    $idseccion= $_GET["idseccion"];        
         
     $user = $service->userinfo->get(); //get user info
     $correo=$user->email;
     require('Model/Login.php');
     $objCliente=new Login();
-    $consulta=$objCliente->Acceso('ecareaga@chmd.edu.mx');
+    $consulta=$objCliente->Acceso($correo);
      
     if ($consulta) { //if user already exist change greeting text to "Welcome Back"
         echo '<table  id="respon"><tbody><tr>';
@@ -172,7 +161,7 @@ if (isset($authUrl)) {
             $perfil=$cliente[2];
             $estatus=$cliente[3];
             ///////////////////////////////////////////
-            $consulta1=$objCliente->Acceso2('ecareaga@chmd.edu.mx', $idseccion);
+            $consulta1=$objCliente->Acceso2($correo, $idseccion);
             $contador=0;
             while ($cliente1 = mysqli_fetch_array($consulta1)) {
                 $modulo=$cliente1[0];
@@ -221,7 +210,6 @@ if (isset($authUrl)) {
         -->
     </div>";
                 }
-
  
                 echo '<td data-label="">';
  
@@ -255,8 +243,6 @@ if (isset($authUrl)) {
         ///echo $mysqli->error;
     }
 }
-
-
 
 ?>
 

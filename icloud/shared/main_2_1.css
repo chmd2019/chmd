@@ -44,11 +44,11 @@ html {
 
 
 body {
-  //overflow-x: hidden;
+  /*overflow-x: hidden;*/
   background-color: white;
- // background-image: url(../pics/comite.jpg);
+ /* background-image: url(../pics/comite.jpg);
   //background-repeat: no-repeat;
-  //background-size: cover; }
+  //background-size: cover; }*/
   body.index {
     background-image: none; }
 
