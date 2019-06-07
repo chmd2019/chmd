@@ -14,7 +14,7 @@ if ($consulta) { //if user already exist change greeting text to "Welcome Back"
             <span class='nuevo' id='nuevo'><a href='Diario_Alta.php' title='Nuevo'> <img src='../images/nuevo.png' width='80px' height='80px' alt='Nueva'></a></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <a href='javascript:history.back(1)' title='Regresar'> <img src='../images/atras.png' width='80px' height='80px' alt='$modulo'></a>
         </p>
-        <table id="gradient-style" summary="Meeting Results">
+        <table id="gradient-style" summary="Meeting Results" style="width:90%;">
             <thead>
                 <tr>     
                     <th bgcolor="#CDCDCD">Fecha solicitud</th>
@@ -24,6 +24,7 @@ if ($consulta) { //if user already exist change greeting text to "Welcome Back"
                 </tr>
             </thead>     
             <?php
+
             $id = $cliente[0];
             $correo = $cliente[1];
             $perfil = $cliente[2];
@@ -45,15 +46,22 @@ if ($consulta) { //if user already exist change greeting text to "Welcome Back"
                 $ruta = $cliente2[11]; //ruta
                 $fecha_solicitud = $cliente2[20];
                 $fecha_destino = $cliente2[21]; //fecha
+                echo $fecha_destino;
                 $status1 = $cliente2[14];
-                
-echo "<script>"
-        . "var fechaSolicitud = '$fecha_destino'.split('/');"
-        . "var nuevaFechaSolicitud = fechaSolicitud[1] + '/' +fechaSolicitud[0] +'/' +fechaSolicitud[2];"
-        . "var options = { year: 'numeric', month: 'long', day: 'numeric' };"
-        . "document.write(new Date(nuevaFechaSolicitud).toLocaleDateString('es-MX', options))"
-        . "</script>";
-
+                if (is_null($fecha_destino)) {
+                    $fechaFormateada = "Error al ingresar la fecha";
+                }elseif (empty($fecha_destino)) {
+                    $fechaFormateada = $fecha_solicitud;
+                } 
+                else {
+                    $fechaFormateada = "<script>"
+                            . "var fechaSolicitud = '$fecha_destino'.split('/');"
+                            . "var nuevaFechaSolicitud = fechaSolicitud[1] + '/' +fechaSolicitud[0] +'/' +fechaSolicitud[2];"
+                            . "fechaSolicitud = new Date(nuevaFechaSolicitud);"
+                            . "var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };"
+                            . "document.write(`\${fechaSolicitud.toLocaleDateString('es-MX', options)}`)"
+                            . "</script>";
+                }
                 if ($status1 == 1) {
                     $staus11 = "Pendiente";
                 }
@@ -73,7 +81,7 @@ echo "<script>"
                 echo "<tr>                 
 		   
 		  <td><span class='modi' id='modi'>$fecha_solicitud</span></td>
-		  <td><span class='modi' id='modi'>$fecha_destino</span></td>
+		  <td><span class='modi' id='modi'>$fechaFormateada</span></td>
 		  <td><span class='modi' id='modi'>$ruta</span></td>
                   <td><span class='modi' id='modi'>$staus11</span> <span class='modi' id='modi'><a href='Ver_Diario.php?id=$Idpermiso' title='Nuevo'> <img src='../images/link.png' width='15px' height='15px' alt='Nueva'></a></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                   
