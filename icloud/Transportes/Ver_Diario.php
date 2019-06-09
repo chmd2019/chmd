@@ -91,37 +91,42 @@ if (isset($authUrl)) {
                 $alumno4 = $cliente4[14];
                 $alumno5 = $cliente4[15];
                 $mensaje = $cliente4[16];
-                $fecha1 = $cliente4[17];
+                $fecha1 = date("m-d-Y", strtotime(str_replace('/', '-', $cliente4[17])));
                 ///Ingreso codigo de alta//
+                $fecha_detalle = "<script>"
+                        . "var fecha = new Date('$fecha1');"
+                        . "var opciones = { weekday :'long', year: 'numeric', month:'long', day:'numeric'};"
+                        . "var fecha_detalle = fecha.toLocaleDateString('es-MX', opciones); "
+                        . "$('#fecha-programada').val(fecha_detalle);"
+                        . "</script>";
+                echo $fecha_detalle;
                 ?>
                 <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
                 <link href="../css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
                 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-                <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-
+                <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>                
                 <form id="RegisterUserForm" name="RegisterUserForm" action="Diario_Alta.php" method="post" onsubmit='Alta_Diario(); return false' >    
-
                     <center>
                         <p>
                             <label for="fecha"><font face="Candara" size="3" COLOR="#2D35A9">Fecha de solicitud:</font></label>
                             <input class="w3-input" name="fecha" type="text"  id="fecha" value="<?php echo $fecha2; ?>" readonly="readonly" />        
                         </p> 
-
+                        <p>
+                            <label for="fecha"><font face="Candara" size="3" COLOR="#2D35A9">Fecha programada:</font></label>
+                            <input class="w3-input" name="fecha" type="text" id="fecha-programada" value="" readonly="readonly" />    
+                        </p> 
                         <p>
                             <label for="idusuario"><font face="Candara" size="3" COLOR="#2D35A9">Solicitante:</font></label>
                             <input class="w3-input" name="correo" type="text"  id="correo" value="<?php echo "$correo2"; ?>"  readonly="readonly"/>             
-
                         </p>   
 
                         <div id="formulariomayores1" style="display: none;">
                             <input type="button" value="Para otro día" onclick="mostrar()"> 
                         </div>
-
+                        <!--Este formulario esta oculto-->
                         <div id="formulariomayores" style="display: none;">
                             <br>
                             <label for="papa"><font face="Candara" size="3" COLOR="#2D35A9">Para el día:</font></label>
-
-
                             <div class="form-group">
 
                                 <div class="input-group date form_date col-md-5" data-date="" data-date-format="dd/mm/yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
@@ -170,13 +175,10 @@ if (isset($authUrl)) {
                                     </tr>
                                     <?php
                                 }
-
                                 $talumnos = $counter;
                             }
                             ?>
                         </table>
-
-
                         <h2><font color="#124A7B">Dirección de cambio</font> </h2> 
 
                         <p>
@@ -220,8 +222,6 @@ if (isset($authUrl)) {
                         <input type="hidden" name="talumnos" id="talumnos"  value="<?php echo $talumnos ?>" />
 
                         <div id="custom-speed" class="btn">
-
-
                             <input type="submit"  name="submit" value="Regresar" onclick="Cancelar();return false;" />
                         </div>
 

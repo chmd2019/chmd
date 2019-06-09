@@ -13,7 +13,7 @@ class Control_dia
     {
         $connection = $this->con->conectar1();
         if ($connection) {
-            $sql = "SELECT * from Ventana_Permiso_diario WHERE nfamilia='$familia' AND year(fecha)=YEAR(NOW()) AND MONTH(fecha)=MONTH(NOW())  order by id desc limit 3";
+            $sql = "SELECT * from Ventana_Permiso_diario WHERE nfamilia='$familia' AND estatus = '1' AND year(fecha)=YEAR(NOW()) AND MONTH(fecha)=MONTH(NOW()) order by id desc";
             return mysqli_query($connection, $sql);
         }
     }

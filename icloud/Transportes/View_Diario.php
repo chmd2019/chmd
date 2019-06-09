@@ -6,19 +6,25 @@ require('../Model/Login.php');
 $objCliente = new Login();
 $consulta = $objCliente->Acceso($correo);
 
+$fecha_actual = date('m-d-Y');
+$fecha_actual_impresa_script = "<script>var fecha = new Date('$fecha_actual');"
+        . "var options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };"
+        . "document.write(fecha.toLocaleDateString('es-MX', options))</script>";
+
 if ($consulta) { //if user already exist change greeting text to "Welcome Back"
     if ($cliente = mysqli_fetch_array($consulta)) {
         ?>
-
         <p align='center'>
             <span class='nuevo' id='nuevo'><a href='Diario_Alta.php' title='Nuevo'> <img src='../images/nuevo.png' width='80px' height='80px' alt='Nueva'></a></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <a href='javascript:history.back(1)' title='Regresar'> <img src='../images/atras.png' width='80px' height='80px' alt='$modulo'></a>
         </p>
+        <h3><?php echo $fecha_actual_impresa_script; ?></h3>
+        <br>
         <table id="gradient-style" summary="Meeting Results" style="width:90%;">
             <thead>
                 <tr>     
                     <th bgcolor="#CDCDCD">Fecha solicitud</th>
-                    <th bgcolor="#CDCDCD">Permiso para</th>
+                    <th bgcolor="#CDCDCD">Fecha programada</th>
                     <th bgcolor="#CDCDCD">Ruta</th>
                     <th bgcolor="#CDCDCD">Estatus</th>
                 </tr>
@@ -38,7 +44,7 @@ if ($consulta) { //if user already exist change greeting text to "Welcome Back"
             $total = mysqli_num_rows($consulta2);
 
             if ($total == 0) {
-                echo "<tr><td text-align: center;><b><p align='center'>Sin datos de permisos actualmente</p></b><td></tr>";
+                echo "<tr><td text-align: center;><b><p align='center'>Sin datos de permisos actualmente</p></b><td><td></td><td></td></tr>";
             }
             while ($cliente2 = mysqli_fetch_array($consulta2)) {
                 $contador++;
@@ -46,7 +52,6 @@ if ($consulta) { //if user already exist change greeting text to "Welcome Back"
                 $ruta = $cliente2[11]; //ruta
                 $fecha_solicitud = $cliente2[20];
                 $fecha_destino = $cliente2[21]; //fecha
-                echo $fecha_destino;
                 $status1 = $cliente2[14];
                 if (is_null($fecha_destino)) {
                     $fechaFormateada = "Error al ingresar la fecha";

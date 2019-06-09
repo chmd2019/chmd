@@ -1,17 +1,16 @@
-﻿
-
 <?php
 session_start(); //session start
-
 include_once("../Model/DBManager.php");
 require_once("../libraries/Google/autoload.php");
 require_once("../Model/Config.php");
-
+//zona horaria para America/Mexico_city 
+require '../Helpers/DateHelper.php';
+$objDateHelper = new DateHelper();
+$objDateHelper->set_timezone();
 //incase of logout request, just unset the session var
 if (isset($_GET['logout'])) {
     unset($_SESSION['access_token']);
 }
-
 
 $service = new Google_Service_Oauth2($client);
 
@@ -23,7 +22,6 @@ if (isset($_GET['code'])) {
     header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
     exit;
 }
-
 
 if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
     $client->setAccessToken($_SESSION['access_token']);
@@ -38,7 +36,6 @@ if (isset($authUrl)) {
 
     if (isset($_POST['submit'])) {
         require('Control_dia.php');
-
         $idusuario = htmlspecialchars(trim($_POST['idusuario']));
         $alumno1 = htmlspecialchars(trim($_POST['alumno1']));
         $alumno2 = htmlspecialchars(trim($_POST['alumno2']));
@@ -113,7 +110,6 @@ if (isset($authUrl)) {
             echo "<font color='red'>fuera de horrario y fecha</font> ";
         } else {
             $objCliente = new Control_dia();
-
             if ($objCliente->Diario_Alta(array($idusuario,
                         $alumno1,
                         $alumno2,
@@ -184,29 +180,6 @@ if (isset($authUrl)) {
                             function () {});
                     $(document).ready(function () {
                         //alert("Si su permiso es para el día en que lo solicita, deberá hacerlo antes de las 11:30 A.M. El sistema no permitirá registrar permisos después de esta hora.");  
-                        var fecha = new Date();
-                        var hora = fecha.getHours();
-                        var minutos = fecha.getMinutes();
-                        /*Validar 11:30*/
-
-                        if (hora == 11) {
-                            if (minutos >= '30') {
-                                $("#formulariomayores").css("display", "block");
-                                //$('#formulariomayores1').hide();
-                                document.getElementById("formulariomayores1").style.visibility = "hidden"
-                            } else {
-
-                            }
-                        }
-
-                        if (hora >= 12) {
-                            //alert("hola");
-                            $("#formulariomayores").css("display", "block");
-
-                        } else {
-
-                            $("#formulariomayores1").css("display", "block");
-                        }
 
                         $("#reside").change(function () {
                             var dato = $('select[id=reside]').val();
@@ -254,14 +227,24 @@ if (isset($authUrl)) {
                     <center>
                         <p>
                             <label for="fecha"><font face="Candara" size="3" COLOR="#2D35A9">Fecha de solicitud:</font></label>
-                            <input class="w3-input" name="fecha" type="text" id="fecha" value="<?php echo $arrayDias[date('w')] . " , " . date('d') . " de " . $arrayMeses[date('m') - 1] . " de " . date('Y') . ", " . date("H:i:s "); ?>" readonly="readonly" />
+                            <input class="w3-input" name="fecha" type="text" id="fecha" value="<?php echo $arrayDias[date('w')] . " , " . date('d') . " de " . $arrayMeses[date('m') - 1] . " de " . date('Y') . ", " . date("h:i a"); ?>" readonly="readonly" />
                         </p>
                         <p>
                             <label for="idusuario"><font face="Candara" size="3" COLOR="#2D35A9">Solicitante:</font></label>
                             <input class="w3-input" name="correo" type="text" id="correo" value="<?php echo " $correo "; ?>" readonly="readonly" />
                         </p>
                         <label for="papa"><font face="Candara" size="3" COLOR="#2D35A9">Para el día:</font></label><br>
-                        <b>Si su permiso es para otro día selección aquí.</b>
+                        <?php
+                        if ($objDateHelper->get_time_day()) {
+                            echo "<b>Seleccione la fecha de su permiso.</b>";
+                            echo "<script>$('#formulariomayores').css('display', 'block');"
+                            . "document.getElementById('formulariomayores1').style.visibility = 'hidden';"
+                            . "</script>";
+                        } else {
+                            echo "<b>Si su permiso es para otro día selección aquí.</b>";
+                            echo "<script>$('#formulariomayores1').css('display', 'block');</script>";
+                        }
+                        ?>
                         <div id="formulariomayores1" style="display: none;">
                             <a href="#" onclick="mostrar()"><img src="../pics/calendario.fw.png" width="50" height="50"></a>
                                 <!--<input type="image" src="../pics/calendario.fw.png" onclick="mostrar()">-->
@@ -282,19 +265,32 @@ if (isset($authUrl)) {
                         <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
                         <script type="text/javascript" src="../js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
                         <script type="text/javascript" src="../js/locales/bootstrap-datetimepicker.es.js" charset="UTF-8"></script>
+                        <?php
+                        $i = 0;
+                        $lista_fechas;
+                        $fecha_calendario_escolar = $objDateHelper->get_calendario_escolar();
+                        if ($fecha_calendario_escolar) {
+                            while ($respuesta_calendario_escolar = mysqli_fetch_array($fecha_calendario_escolar)) {
+                                $lista_fechas[$i] = $respuesta_calendario_escolar[1];
+                                $i++;
+                            }
+                        }
+                        ?>
                         <script type="text/javascript">
-                            $('.form_date').datetimepicker({
-                                language: 'es',
-                                weekStart: 1,
-                                todayBtn: 1,
-                                autoclose: 1,
-                                todayHighlight: 1,
-                                startView: 2,
-                                minView: 2,
-                                startDate: '+0d',
-                                daysOfWeekDisabled: [0, 6],
-                                forceParse: 0
-                            });
+                                var calendario_escolar = <?php echo json_encode($lista_fechas) ?>;
+                                $('.form_date').datetimepicker({
+                                    language: 'es',
+                                    weekStart: 1,
+                                    todayBtn: 1,
+                                    autoclose: 1,
+                                    todayHighlight: 1,
+                                    startView: 2,
+                                    minView: 2,
+                                    startDate: '+0d',
+                                    daysOfWeekDisabled: [0, 6],
+                                    datesDisabled: calendario_escolar,
+                                    forceParse: 0, 
+                                });
                         </script>
                         <script>
                             jQuery(document).ready(function ($) {
@@ -332,10 +328,10 @@ if (isset($authUrl)) {
                                     <tr id="fila-<?php echo $cliente['id'] ?>">
                                         <!--<td bgcolor="#ffffff"><?php echo $cliente1['id'] ?></td>-->
                                         <td bgcolor="#ffffff">
-                        <?php echo $cliente1['nombre'] ?>
+                                            <?php echo $cliente1['nombre'] ?>
                                         </td>
                                         <td bgcolor="#ffffff">
-                        <?php echo $cliente1['grupo'] ?>
+                                            <?php echo $cliente1['grupo'] ?>
                                         </td>
                                         <!--<td bgcolor="#ffffff"><?php echo $cliente1['grado'] ?></td>-->
                                         <td>
@@ -420,8 +416,6 @@ if (isset($authUrl)) {
                                                                     </td>
                                                                     <?php
                                                                 }
-
-
                                                                 // echo "Buenos d&iacute;as, hoy es ".$dias;
                                                                 ?>
                                                             </tr>
@@ -439,11 +433,10 @@ if (isset($authUrl)) {
                                             <input type="hidden" name="talumnos" id="talumnos" value="<?php echo $talumnos ?>" />
                                             <div id="custom-speed" class="btn">
                                                 <input type="submit" name="submit" value="Enviar" />
-                                                <input type="submit" name="submit" value="Regresar" onclick="Cancelar();return false;" />
+                                                <input type="submit" name="submit" value="Regresar" onclick="Cancelar();
+                                                        return false;" />
                                             </div>
-                                            </form>      
-
-
+                                            </form>    
                                             <?php
                                         } else {
                                             echo 'Este usuario no tiene Acceso:' . $user->email . ',<br> !Favor de comunicarse para validar datos! <br> Salir del sitema [<a href="' . $redirect_uri . '?logout=1"> Log Out</a>]';
