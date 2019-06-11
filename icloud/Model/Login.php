@@ -25,7 +25,7 @@ class Login {
         if ($connection) {
             $sql = "select  vs.id,vs.correo,vs.estatus,es.nombre,es.id_comite,es.id_perfil from Ventana_user vs
                                             LEFT join evento_usuarios es on vs.id=es.id_correo where vs.correo='$correo'";
-            mysqli_set_charset('utf8');
+            mysqli_set_charset($connection, 'utf8');
             return mysqli_query($connection, $sql);
         }
     }
@@ -36,7 +36,7 @@ class Login {
         if ($connection) {
             $sql = "select  vs.id,vs.correo,vs.estatus,es.nombre,es.id_comite,es.id_perfil from Ventana_user vs
                                             LEFT join evento_usuarios es on vs.id=es.id_correo where vs.correo='$correo' and id_comite='$comite'";
-            mysqli_set_charset('utf8');
+            mysqli_set_charset($connection, 'utf8');
             return mysqli_query($connection, $sql);
         }
     }
@@ -46,7 +46,7 @@ class Login {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "SELECT * from Ventana_user WHERE correo = '$correo'";
-            mysqli_set_charset('utf8');
+            mysqli_set_charset($connection, "utf8");
             return mysqli_query($connection, $sql);
         }
     }
@@ -57,7 +57,7 @@ class Login {
             $sql = "select sec.seccion,sec.imagen,sec.idperfil,sec.idmodulo,sec.id,sec.estatus from Ventana_user us
                                 LEFT JOIN Ventana_perfil p on us.idperfil=p.id
                                 LEFT JOIN Ventana_secciones sec on sec.idperfil=p.id where us.id=$id";
-            mysqli_set_charset('utf8');
+            mysqli_set_charset($connection, 'utf8');
             return mysqli_query($connection, $sql);
         }
     }
@@ -71,7 +71,7 @@ class Login {
                     LEFT JOIN Ventana_secciones sec on sec.idperfil=p.id
                     LEFT JOIN Ventana_modulos md on md.idseccion=sec.id
                     WHERE us.correo='$correo' and md.idseccion=$idseccion ORDER BY md.id desc";
-            mysqli_set_charset('utf8');
+            mysqli_set_charset($connection, 'utf8');
             return mysqli_query($connection, $sql);
         }
     }
@@ -80,7 +80,7 @@ class Login {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "select * from Ventana_modulos where id=$mod";
-            mysqli_set_charset('utf8');
+            mysqli_set_charset($connection, 'utf8');
             return mysqli_query($connection, $sql);
         }
     }
@@ -101,7 +101,7 @@ class Login {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "SELECT * FROM alumnoschmd where idfamilia=$fam";
-            mysqli_set_charset('utf8');
+            mysqli_set_charset($connection, 'utf8');
             return mysqli_query($connection, $sql);
         }
     }
@@ -112,7 +112,7 @@ class Login {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "select id,nombre,grado,grupo from alumnoschmd where id in($alumno1,$alumno2,$alumno3,$alumno4,$alumno5)";
-            mysqli_set_charset('utf8');
+            mysqli_set_charset($connection, 'utf8');
             return mysqli_query($connection, $sql);
         }
     }
@@ -126,7 +126,7 @@ class Login {
                                 vpd.cp,vpd.ruta,vpd.comentarios,vpd.alumno1,vpd.alumno2,vpd.alumno3,vpd.alumno4,vpd.alumno5,
                                 vpd.mensaje,vpd.fecha1 from Ventana_Permiso_diario vpd LEFT JOIN Ventana_user vs on vpd.idusuario=vs.id
                                 LEFT JOIN usuarios usu on vpd.nfamilia=usu.`password` where vpd.id=$id";
-            mysqli_set_charset('utf8');
+            mysqli_set_charset($connection, 'utf8');
             return mysqli_query($connection, $sql);
         }
     }
@@ -137,7 +137,7 @@ class Login {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "select id,nombre,grado,grupo from alumnoschmd where id in($alumno1,$alumno2,$alumno3,$alumno4,$alumno5)";
-            mysqli_set_charset('utf8');
+            mysqli_set_charset($connection, 'utf8');
             return mysqli_query($connection, $sql);
         }
     }
@@ -146,7 +146,7 @@ class Login {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "select * from Acceso_responsables where fotografia='CANCELADO' AND notificacion=0";
-            mysqli_set_charset('utf8');
+            mysqli_set_charset($connection, 'utf8');
             return mysqli_query($connection, $sql);
         }
     }
@@ -167,7 +167,7 @@ class Login {
         if ($connection) {
             $sql = "select vp.id,vs.correo,vp.estatus,vp.notificacion1,vp.notificacion2,vp.notificacion3,vp.mensaje from 
                                 Ventana_Permiso_diario  vp LEFT JOIN Ventana_user vs on vp.idusuario=vs.id";
-            mysqli_set_charset('utf8');
+            mysqli_set_charset($connection, 'utf8');
             return mysqli_query($connection, $sql);
         }
     }
@@ -184,7 +184,7 @@ class Login {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "update Ventana_Permiso_diario set notificacion2=1 where id=" . $id;
-            mysqli_set_charset('utf8');
+            mysqli_set_charset($connection, 'utf8');
             return mysqli_query($connection, $sql);
         }
     }

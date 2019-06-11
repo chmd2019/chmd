@@ -19,7 +19,6 @@ if (isset($_GET['code'])) {
     header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
     exit;
 }
-
 if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
     $client->setAccessToken($_SESSION['access_token']);
 } else {
@@ -65,11 +64,11 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
         <link href="../apps/webapps/features/form-builder/css/public/core-pack-1499875166000.css" type="text/css" rel="stylesheet">
         <script src="../apps/js/common/common-pack-1499875166000.js" type="text/javascript" charset="utf-8"></script>
         <script type="application/ld+json">
-                                {
-                                        "@context": "http://schema.org",
-                                        "@type": "BreadcrumbList",
-                                        "itemListElement": []
-                                }
+            {
+            "@context": "http://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": []
+            }
         </script>
     </head>
     <body >
@@ -86,35 +85,35 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
         <!---------------------- fin adaptacion responsiva-->
 
         <script type="text/javascript">
-$(document).ready(function ()
-{
-    // mostrar formulario de actualizar datos
-    $("#modi a").click(function () {
-        $('#tabla').hide();
-        $("#formulario").show();
-        $.ajax({
-            url: this.href,
-            type: "GET",
-            success: function (datos) {
-                $("#formulario").html(datos);
-            }
-        });
-        return false;
-    });
-    // llamar a formulario nuevo
-    $("#nuevo a").click(function () {
-        $("#formulario").show();
-        $("#tabla").hide();
-        $.ajax({
-            type: "GET",
-            url: 'Diario_Alta.php',
-            success: function (datos) {
-                $("#formulario").html(datos);
-            }
-        });
-        return false;
-    });
-});
+            $(document).ready(function ()
+            {
+                // mostrar formulario de actualizar datos
+                $("#modi a").click(function () {
+                    $('#tabla').hide();
+                    $("#formulario").show();
+                    $.ajax({
+                        url: this.href,
+                        type: "GET",
+                        success: function (datos) {
+                            $("#formulario").html(datos);
+                        }
+                    });
+                    return false;
+                });
+                // llamar a formulario nuevo
+                $("#nuevo a").click(function () {
+                    $("#formulario").show();
+                    $("#tabla").hide();
+                    $.ajax({
+                        type: "GET",
+                        url: 'Diario_Alta.php',
+                        success: function (datos) {
+                            $("#formulario").html(datos);
+                        }
+                    });
+                    return false;
+                });
+            });
 
         </script>  
         <!----------------------------librerias alertyfive-------------------------------------------------->
@@ -146,6 +145,29 @@ $(document).ready(function ()
                 <?php
             }//esta logueado el correo de gmail
             ?>
+        </div>
+
+        <!-- Modales -->
+        <!--Modal de cancelación-->
+        <div class="modal fade" id="modalCancelarPermiso" tabindex="-1" role="dialog" aria-labelledby="modalCancelarPermiso">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Alerta</h4>
+                    </div>
+                    <div class="modal-body">
+                        Confirma la cancelación del permiso seleccionado?
+                    </div>
+                    <form action="Cancela_permiso_diario.php" method="post">
+                        <div class="modal-footer">
+                            <input id="id_permiso_diario" name="id_permiso_diario" hidden/>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                            <button type="submit" class="btn btn-danger">Sí</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
         <footer id="footer_main">
             <div id="footer_top">
@@ -216,6 +238,7 @@ $(document).ready(function ()
             function toggleNav() {
                 topnavDisplay.classList.toggle("open");
             }
+
         </script>
     </body>
 </html>

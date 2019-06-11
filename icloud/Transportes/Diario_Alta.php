@@ -45,7 +45,6 @@ if (isset($authUrl)) {
         $calle = htmlspecialchars(trim($_POST['calle']));
         $colonia = htmlspecialchars(trim($_POST['colonia']));
         $cp = htmlspecialchars(trim($_POST['cp']));
-
         $ruta = htmlspecialchars(trim($_POST['ruta']));
         $comentarios = htmlspecialchars(trim($_POST['comentarios']));
         $talumnos = htmlspecialchars(trim($_POST['suma']));
@@ -130,7 +129,6 @@ if (isset($authUrl)) {
                 echo 'Se produjo un error. Intente nuevamente ';
             }
         }
-
         ////////////////////////VIN DE VALIDACION
     } else {
         /* fin de guardar datos a procesar */
