@@ -19,7 +19,7 @@ class Control_temporal {
     function mostrar_viaje($familia) {
         $connection = $this->con->conectar1();
         if ($connection) {
-            $sql = "select * from Ventana_Permiso_viaje where nfamilia='$familia' and  year(fecha)=YEAR(NOW())  and MONTH(fecha)=MONTH(NOW())";
+            $sql = "select * from Ventana_Permiso_viaje where nfamilia='$familia' and year(fecha)=YEAR(NOW()) and MONTH(fecha)=MONTH(NOW())";
             mysqli_set_charset($connection, 'utf8');
             return mysqli_query($connection, $sql);
         }
@@ -72,7 +72,6 @@ class Control_temporal {
     function Temporal_Alta($campos) {
         $this->objDateHelper->set_timezone();
         $hoy = date("Y-m-d");
-
         $connection = $this->con->conectar1();
         if ($connection) {
             mysqli_query($connection, "SET NAMES 'utf8'");
@@ -108,7 +107,6 @@ class Control_temporal {
             $Insertar = mysqli_query($connection, $sql);
 
             if (!$Insertar) {
-
                 die("error:" . mysqli_error($connection));
                 return false;
             }
@@ -120,7 +118,7 @@ class Control_temporal {
             }
         }
         // Close connection
-        mysql_close($connection);
+        mysqli_close($connection);
     }
 
     public function comprueba_cancelacion_transporte_temporal($id) {

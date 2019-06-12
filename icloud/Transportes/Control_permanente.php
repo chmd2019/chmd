@@ -23,7 +23,7 @@ class Control_permanente {
             if ($this->con->conectar1() == true) {
                 mysqli_set_charset($connection, 'utf8');
                 $sql = "select * from Ventana_Permiso_permanente where nfamilia='$familia' and  "
-                        . "year(fecha)=YEAR(NOW()) and MONTH(fecha)=MONTH(NOW()) order by id desc limit 3";
+                        . "year(fecha)=YEAR(NOW()) and MONTH(fecha)=MONTH(NOW()) order by id desc";
             }
             return mysqli_query($connection, $sql);
         }
@@ -115,7 +115,7 @@ class Control_permanente {
             }
         }
         // Close connection
-        mysql_close($connection);
+        mysqli_close($connection);
     }
     
     public function comprueba_cancelacion_transporte_permanente($id) {

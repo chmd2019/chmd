@@ -150,7 +150,9 @@ if (isset($authUrl)) {
                     $talumnos,
                     $nfamilia,
                     $fecha)) == false) {
-            echo 'Solicitud Guardada';
+                include_once './Modal_exito.php';
+                $modal = new Modal_exito();
+                $modal->redirigir_pagina("./PTemporal.php");
         } else {
             echo 'Se produjo un error. Intente nuevamente ';
         }
@@ -300,8 +302,6 @@ if (isset($authUrl)) {
                                         <td bgcolor="#ffffff"><?php echo $cliente1['grupo'] ?></td>
                                         <!--<td bgcolor="#ffffff"><?php echo $cliente1['grado'] ?></td>-->
                                         <td>  <label><center><input type="checkbox" id="alumno<?php echo $counter ?>" name="alumno[]" value="<?php echo $cliente1[id]; ?> " required></center>  <label></td> 
-
-
                                                     </tr>
                                                     <?php
                                                 }
@@ -394,38 +394,50 @@ if (isset($authUrl)) {
                                             <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
                                             <script type="text/javascript" src="../js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
                                             <script type="text/javascript" src="../js/locales/bootstrap-datetimepicker.es.js" charset="UTF-8"></script>
+                                            <?php
+                                            $i = 0;
+                                            $lista_fechas;
+                                            $fecha_calendario_escolar = $objDateHelper->get_calendario_escolar();
+                                            if ($fecha_calendario_escolar) {
+                                                while ($respuesta_calendario_escolar = mysqli_fetch_array($fecha_calendario_escolar)) {
+                                                    $lista_fechas[$i] = $respuesta_calendario_escolar[1];
+                                                    $i++;
+                                                }
+                                            }
+                                            ?>
                                             <script type="text/javascript">
+                                                var calendario_escolar = <?php echo json_encode($lista_fechas) ?>;
+                                                $('.form_date').datetimepicker({
+                                                    language: 'es',
+                                                    weekStart: 1,
+                                                    todayBtn: 1,
+                                                    autoclose: 1,
+                                                    todayHighlight: 1,
+                                                    startView: 2,
+                                                    minView: 2,
+                                                    startDate: '+3d',
+                                                    daysOfWeekDisabled: [0, 6],
+                                                    datesDisabled: calendario_escolar,
+                                                    forceParse: 0
+                                                });
 
-                                                    $('.form_date').datetimepicker({
-                                                        language: 'es',
-                                                        weekStart: 1,
-                                                        todayBtn: 1,
-                                                        autoclose: 1,
-                                                        todayHighlight: 1,
-                                                        startView: 2,
-                                                        minView: 2,
-                                                        startDate: '+3d',
-                                                        daysOfWeekDisabled: [0, 6],
-                                                        forceParse: 0
-                                                    });
-
-                                                    $('.form_date3').datetimepicker({
-                                                        language: 'es',
-                                                        weekStart: 1,
-                                                        todayBtn: 1,
-                                                        autoclose: 1,
-                                                        todayHighlight: 1,
-                                                        startView: 2,
-                                                        minView: 2,
-                                                        startDate: '+3d',
-                                                        daysOfWeekDisabled: [0, 6],
-                                                        forceParse: 0
-                                                    });
+                                                $('.form_date3').datetimepicker({
+                                                    language: 'es',
+                                                    weekStart: 1,
+                                                    todayBtn: 1,
+                                                    autoclose: 1,
+                                                    todayHighlight: 1,
+                                                    startView: 2,
+                                                    minView: 2,
+                                                    startDate: '+3d',
+                                                    daysOfWeekDisabled: [0, 6],
+                                                    datesDisabled: calendario_escolar,
+                                                    forceParse: 0
+                                                });
 
                                             </script>
                                             <br>
                                             <table border=0>
-
                                                 <tr>
                                                     <td align="left" colspan="5"> <br>
                                                         <table border="0">
@@ -434,7 +446,6 @@ if (isset($authUrl)) {
                                                                     <label for="ruta"><font color="red">*</font><font face="Candara" size="3" COLOR="#2D35A9">Ruta:</font></label>  
                                                                 </td>
                                                                 <td>
-
                                                                     <select type="select" name="ruta"  id="ruta" required> 
                                                                         <option value="0">selecciona opción </option> 
                                                                         <option value="Mañana">Mañana</option> 
@@ -443,7 +454,6 @@ if (isset($authUrl)) {
                                                                     </select>
                                                                 </td>
                                                             </tr>
-
                                                         </table>
                                                     </td>
                                                 </tr>

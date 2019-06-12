@@ -62,12 +62,12 @@ class Control_dia {
         $hoy = date("Y-m-d");
         $connection = $this->con->conectar1();
         if ($connection) {
-            /* $sql1 = "SET NAMES 'utf8'";
+            $sql1 = "SET NAMES 'utf8'";
             $sql2 = "SET AUTOCOMMIT=0";
             $sql3 = "START TRANSACTION";
             mysqli_query($connection, $sql1);
             mysqli_query($connection, $sql2);
-            mysqli_query($connection, $sql3);*/
+            mysqli_query($connection, $sql3);
             $sql4 = "INSERT INTO Ventana_Permiso_diario(
                         idusuario,
                         alumno1,

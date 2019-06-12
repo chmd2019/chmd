@@ -5,15 +5,16 @@ require('../Model/Login.php');
 $objCliente = new Login();
 $consulta = $objCliente->Acceso($correo);
 
-    //zona horaria para America/Mexico_city 
-    require '../Helpers/DateHelper.php';
-    $objDateHelper = new DateHelper();
-    $objDateHelper->set_timezone();
-    
+//zona horaria para America/Mexico_city 
+require '../Helpers/DateHelper.php';
+$objDateHelper = new DateHelper();
+$objDateHelper->set_timezone();    
 $fecha_actual = date('m-d-Y');
 $fecha_actual_impresa_script = "<script>var fecha = new Date('$fecha_actual');"
         . "var options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };"
-        . "document.write(fecha.toLocaleDateString('es-MX', options))</script>";
+        . "fecha = fecha.toLocaleDateString('es-MX', options);"
+        . "fecha = `\${fecha.charAt(0).toUpperCase()}\${fecha.slice(1).toLowerCase()}`;"
+        . "document.write(fecha)</script>";
 
 if ($consulta) { //if user already exist change greeting text to "Welcome Back"
     if ($cliente = mysqli_fetch_array($consulta)) {
@@ -55,17 +56,22 @@ if ($consulta) { //if user already exist change greeting text to "Welcome Back"
                 $fecha_solicitud = $cliente2[20];
                 $fecha_destino = $cliente2[21]; //fecha
                 $status1 = $cliente2[14];
+                
                 if (is_null($fecha_destino)) {
                     $fechaFormateada = "Error al ingresar la fecha";
                 } elseif (empty($fecha_destino)) {
-                    $fechaFormateada = $fecha_solicitud;
+                    $fechaFormateada = "<script>var fecha_solicitud = '$fecha_solicitud';"
+                    . "fecha_solicitud = `\${fecha_solicitud.split(',')[0].trim()}, \${fecha_solicitud.split(',')[1]}`;"
+                    . "document.write(fecha_solicitud);</script>";
                 } else {
                     $fechaFormateada = "<script>"
                             . "var fechaSolicitud = '$fecha_destino'.split('/');"
                             . "var nuevaFechaSolicitud = fechaSolicitud[1] + '/' +fechaSolicitud[0] +'/' +fechaSolicitud[2];"
                             . "fechaSolicitud = new Date(nuevaFechaSolicitud);"
                             . "var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };"
-                            . "document.write(`\${fechaSolicitud.toLocaleDateString('es-MX', options)}`)"
+                            . "fechaSolicitud = fechaSolicitud.toLocaleDateString('es-MX', options);"
+                            . "fechaSolicitud = `\${fechaSolicitud.charAt(0).toUpperCase()}\${fechaSolicitud.slice(1).toLowerCase()}`;"
+                            . "document.write(`\${fechaSolicitud}`)"
                             . "</script>";
                 }
                 if ($status1 == 1) {
@@ -93,14 +99,14 @@ if ($consulta) { //if user already exist change greeting text to "Welcome Back"
                 $mostrar_boton_cancelar_permiso = null;
                 $id_permiso_diario = $permiso_diario[0];
                 if ($consulta_permiso_diario && $status1 != 4) {
-                    $mostrar_boton_cancelar_permiso = "<td><span class='modi' id='modi'><button type='button' class ='btn btn-danger' onclick ='modalCancelarPermiso($id_permiso_diario)'>Cancelar</button><span></td>";
+                    $mostrar_boton_cancelar_permiso = "<td><span class='modi' id='modi'><button type='button' class ='btn btn-danger' onclick ='modalCancelarPermiso($id_permiso_diario)'><span class='glyphicon glyphicon-remove' aria-hidden='true'></span></button><span></td>";
                 }else{
-                    $mostrar_boton_cancelar_permiso = "<td><span class='modi' id='modi'><button type='button' class ='btn btn-danger' disabled>No disponible</button><span></td>";
+                    $mostrar_boton_cancelar_permiso = "<td><span class='modi' id='modi'><button type='button' class ='btn btn-warning' disabled><span class='glyphicon glyphicon-alert' aria-hidden='true'></span></button><span></td>";
                 }
                 echo "<tr> 
 		  <td><span class='modi' id='modi'>$fechaFormateada</span></td>
 		  <td><span class='modi' id='modi'>$ruta</span></td>
-                  <td><span class='modi' id='modi'>$staus11</span> <span class='modi' id='modi'><a href='Ver_Diario.php?id=$Idpermiso' title='Nuevo'> <img src='../images/link.png' width='15px' height='15px' alt='Nueva'></a></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                  <td><span class='modi' id='modi'>$staus11</span> <span class='modi' id='modi'><a href='Ver_Diario.php?id=$Idpermiso' title='Ver'> <img src='../images/link.png' width='15px' height='15px' alt='Nueva'></a></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                   $mostrar_boton_cancelar_permiso
                 </tr>  ";
             }

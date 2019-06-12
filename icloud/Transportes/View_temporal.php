@@ -7,7 +7,13 @@ $consulta = $objCliente->Acceso($correo);
 //zona horaria para America/Mexico_city 
 require '../Helpers/DateHelper.php';
 $objDateHelper = new DateHelper();
-$objDateHelper->set_timezone();
+$objDateHelper->set_timezone();  
+$fecha_actual = date('m-d-Y');
+$fecha_actual_impresa_script = "<script>var fecha = new Date('$fecha_actual');"
+        . "var options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };"
+        . "fecha = fecha.toLocaleDateString('es-MX', options);"
+        . "fecha = `\${fecha.charAt(0).toUpperCase()}\${fecha.slice(1).toLowerCase()}`;"
+        . "document.write(fecha)</script>";
 
 if ($consulta) { //if user already exist change greeting text to "Welcome Back"
     if ($cliente = mysqli_fetch_array($consulta)) {
@@ -16,6 +22,7 @@ if ($consulta) { //if user already exist change greeting text to "Welcome Back"
             <span class='nuevo' id='nuevo'><a href='Temporal_Alta.php' title='Nuevo'> <img src='../images/nuevo.png' width='80px' height='80px' alt='Nueva'></a></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <a href='javascript:history.back(1)' title='Regresar'> <img src='../images/atras.png' width='80px' height='80px' alt='$modulo'></a>
         </p>
+        <h3><?php echo $fecha_actual_impresa_script; ?></h3>
         <table id="gradient-style" summary="Meeting Results" style="width:100%;margin:auto;">
             <thead>
                 <tr>
@@ -72,9 +79,9 @@ if ($consulta) { //if user already exist change greeting text to "Welcome Back"
                 $mostrar_boton_cancelar_permiso = null;
                 $id_permiso_temporal = $permiso_temporal[0];
                 if ($consulta_permiso_temporal && $status1 != 4) {
-                    $mostrar_boton_cancelar_permiso = "<td><span class='modi' id='modi'><button type='button' class ='btn btn-danger' onclick ='modalCancelarPermisoTemporal($id_permiso_temporal)'>Cancelar</button><span></td>";
+                    $mostrar_boton_cancelar_permiso = "<td><span class='modi' id='modi'><button type='button' class ='btn btn-danger' onclick ='modalCancelarPermisoTemporal($id_permiso_temporal)'><span class='glyphicon glyphicon-remove' aria-hidden='true'></span></button><span></td>";
                 } else {
-                    $mostrar_boton_cancelar_permiso = "<td><span class='modi' id='modi'><button type='button' class ='btn btn-danger' disabled>No disponible</button><span></td>";
+                    $mostrar_boton_cancelar_permiso = "<td><span class='modi' id='modi'><button type='button' class ='btn btn-warning' disabled><span class='glyphicon glyphicon-alert' aria-hidden='true'></span></button><span></td>";
                 }
                 echo "<tr>          
                     <td><span class='modi' id='modi'>{$objDateHelper->fecha_formato_datalle($fecha_inicial)}</span></td>

@@ -6,22 +6,17 @@ function Alta_Permante()
  var fecha = document.getElementById('fecha').value;
  var idusuario = document.getElementById('idusuario').value;
  var nfamilia = document.getElementById('nfamilia').value;
-  var talumnos = document.getElementById('talumnos').value;
- 
+ var talumnos = document.getElementById('talumnos').value;
  
   var calle = document.getElementById('calle').value;
   var colonia = document.getElementById('colonia').value;
   var cp = document.getElementById('cp').value;
-  
- 
 
    function checkPassword(str)
   {
     var re = /^(?=.*\d)(?=.*[A-Za-z ]+[0-9 ]).{1,50}$/;
     return re.test(str);
   }
-   
-   
    
  //validacion de alumnos
 var suma = 0;
@@ -358,11 +353,9 @@ function Cancelar123()
 		$("#tabla").show();
 		
 }
-
-
 function Cancelar()
 {
-$("#formulario").hide();
-$("#tabla").show();
-		
+    $("#formulario").hide();
+    $("#tabla").show();
+    window.location = "PPermanente.php";
 }

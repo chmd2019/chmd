@@ -413,8 +413,8 @@ function ConsultaDatos(){
 
 function Cancelar()
 {
-$("#formulario").hide();
-$("#tabla").show();
-		
+    $("#formulario").hide();
+    $("#tabla").show();
+    window.location = "PDiario.php";
 }
 

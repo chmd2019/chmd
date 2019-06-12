@@ -102,7 +102,6 @@ if (isset($authUrl)) {
         $dia = date("d");
         $mes = date("m");
         $anio = date("Y");
-
         $validafecha = $dia . "/" . $mes . "/" . $anio;
 
         if ($validafecha == $fecha1) {

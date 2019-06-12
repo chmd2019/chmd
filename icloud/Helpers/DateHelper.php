@@ -52,9 +52,11 @@ class DateHelper {
     }
     //retorna en el DOM la fecha con formato - Dia de la semana, dia x del mes x del anio xxxx
     public function fecha_formato_datalle($fecha) {
-        return "<script>var fecha_inicial = new Date('$fecha');"
+        return "<script>var fecha = new Date('$fecha');"
                 . "var options = {weekday: 'long', year: 'numeric', month:'long', day:'numeric'};"
-                . "document.write(fecha_inicial.toLocaleDateString('es-MX', options));</script>";
+                . "fecha = fecha.toLocaleDateString('es-MX', options);"
+                . "fecha = `\${fecha.charAt(0).toUpperCase()}\${fecha.slice(1).toLowerCase()}`;"
+                . "document.write(fecha);</script>";
     }
 
 }

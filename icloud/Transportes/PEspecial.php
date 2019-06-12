@@ -1,8 +1,8 @@
 <?php
 session_start(); //session start
-include_once("Model/DBManager.php");
-require_once('libraries/Google/autoload.php');
-require_once 'Model/Config.php';
+include_once("../Model/DBManager.php");
+require_once('../libraries/Google/autoload.php');
+require_once '../Model/Config.php';
 
 //incase of logout request, just unset the session var
 if (isset($_GET['logout'])) {
@@ -19,7 +19,6 @@ if (isset($_GET['code'])) {
     header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
     exit;
 }
-
 if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
     $client->setAccessToken($_SESSION['access_token']);
 } else {
@@ -38,53 +37,32 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
         <meta name="description" content="Colegio Hebreo Maguen David">
         <meta name="generator" content="Edlio CMS">
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <link rel="icon" href="/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="favicon.ico" type="image/x-icon">
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-        <link rel="stylesheet" href="shared/main.css" type="text/css">
+        <link rel="stylesheet" href="../shared/main.css" type="text/css">
 
         <!---------maguen------------------------------------>
-        <link type="text/css" rel="stylesheet" href="css/permanete.css" />  
-        <link href="css/prueba3.css" type="text/css" rel="stylesheet">
-        <script type="text/javascript" src="js/alertify.js"></script>
-        <link rel="stylesheet" href="css/alertify.core.css" />
-        <link rel="stylesheet" href="css/alertify.default.css" />
+        <link type="text/css" rel="stylesheet" href="../css/permanete.css" />  
+        <link href="../css/prueba3.css" type="text/css" rel="stylesheet">
+        <script type="text/javascript" src="../js/alertify.js"></script>
+        <link rel="stylesheet" href="../css/alertify.core.css" />
+        <link rel="stylesheet" href="../css/alertify.default.css" />
+        <script src="../js/Alta_diario.js" type="text/javascript" charset="utf-8"></script>
 
         <!----------------alert-------------------->
 
-        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.9/css/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.9/js/bootstrap-dialog.min.js"></script>
 
         <!----------------Alert------------------------>		
-        <script type="text/javascript">
-            $(function alert(){
-            $('.source-code').each(function(index){
-            var $section = $(this);
-            var code = $(this).html().replace('<!--', '').replace('-->', '');
-            // Code preview
-            var $codePreview = $('<pre class="prettyprint lang-javascript"></pre>');
-            $codePreview.text(code);
-            $section.html($codePreview);
-            // Run code
-            if ($section.hasClass('runnable'))
-            {
-            var $button = $('<button style="background-color: transparent !important; border:0;outline:0 none;"><img src="pics/ayuda.png" alt="Ayuda" width="30px" height="30px" /></button>');
-            $button.on('click', {code: code}, function(event){
-            eval(event.data.code);
-            }); $button.insertAfter($section);
-            $('<div class="clearfix" style="margin-bottom: 10px;"></div>').insertAfter($button);
-            }
-            });
-            });
-        </script>
-        <!----------------------------------------------------------->
 
-        <link href="apps/webapps/features/form-builder/css/public/core-pack-1499875166000.css"
-              type="text/css" rel="stylesheet">
-        <script src="apps/js/common/common-pack-1499875166000.js" type="text/javascript" charset="utf-8"></script>
-        <script src="apps/js/recaptcha/ada-pack-1499875166000.js" charset="utf-8"></script>
+        <!----------------------------------------------------------->
+        <link href="../apps/webapps/features/form-builder/css/public/core-pack-1499875166000.css" type="text/css" rel="stylesheet">
+        <script src="../apps/js/common/common-pack-1499875166000.js" type="text/javascript" charset="utf-8"></script>
         <script type="application/ld+json">
             {
             "@context": "http://schema.org",
@@ -93,20 +71,54 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
             }
         </script>
     </head>
-
     <body >
-
         <header id="header_main">
             <div id="header_inner">
                 <h1 id="header_title"><a href="#"><span id="logo1" class="first-line">COLEGIO HEBREO</span> <span class="second-line" id="logo2">MAGUEN DAVID</span></a></h1>
-                <a id="skip_to_content" href="#content_main">Skip to main content</a> 
+                <a id="skip_to_content" href="#content_main">Skip to main content</a>
             </div>
         </header>
         <!----------------------adaptacion responsiva-->
 
+        <link type="text/css" rel="stylesheet" href="../css/formresponsivos.css" />
+
         <!---------------------- fin adaptacion responsiva-->
 
-        <div id="content_main">
+        <script type="text/javascript">
+            $(document).ready(function ()
+            {
+                // mostrar formulario de actualizar datos
+                $("#modi a").click(function () {
+                    $('#tabla').hide();
+                    $("#formulario").show();
+                    $.ajax({
+                        url: this.href,
+                        type: "GET",
+                        success: function (datos) {
+                            $("#formulario").html(datos);
+                        }
+                    });
+                    return false;
+                });
+                // llamar a formulario nuevo
+                $("#nuevo a").click(function () {
+                    $("#formulario").show();
+                    $("#tabla").hide();
+                    $.ajax({
+                        type: "GET",
+                        url: 'Especial_Alta.php',
+                        success: function (datos) {
+                            $("#formulario").html(datos);
+                        }
+                    });
+                    return false;
+                });
+            });
+
+        </script>  
+        <!----------------------------librerias alertyfive-------------------------------------------------->
+
+        <div id="content_main">   
 
             <?php
 ////////////// fin agregar diseño////////////////////////////////
@@ -117,152 +129,55 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
                 echo '<div align="center">';
                 echo '<h2><font color="#124A7B">Acceso Google</font></h2>';
 
-                echo '<br><br><a  href="' . $authUrl . '"><img src="images/google.png"  id="total"/></a>';
+                echo '<br><br><a  href="' . $authUrl . '"><img src="../images/google.png"  id="total"/></a>';
                 echo '</div>';
-            } else {
-                $idseccion = $_GET["idseccion"];
-                if ($idseccion == 1) {
-                    $titulo = "Cambios de transportes";
-                }
-                if ($idseccion == 5) {
-                    $titulo = "Datos de facturación";
-                }
-
-                echo "<h2> <font color='#124A7B'>$titulo</font></h2>";
-                ///////////////////////////////////
-                echo '<h3> [<a href="' . $redirect_uri . '?logout=1">Salir</a>]<br>&nbsp; &nbsp;&nbsp; &nbsp;</h3>';
-
-                //$id1= $_POST["id"];
-                //$idseccion= $_GET["idseccion"];        
-
-                $idseccion = $_GET["idseccion"];
-
-                $user = $service->userinfo->get(); //get user info
-                $correo = $user->email;
-                require('Model/Login.php');
-                $objCliente = new Login();
-                $consulta = $objCliente->Acceso($correo);
-
-                if ($consulta) { //if user already exist change greeting text to "Welcome Back"
-                    echo '<table  id="respon"><tbody><tr>';
-                    if ($cliente = mysqli_fetch_array($consulta)) {
-                        $id = $cliente[0];
-                        $correo = $cliente[1];
-                        $perfil = $cliente[2];
-                        $estatus = $cliente[3];
-                        ///////////////////////////////////////////
-                        $consulta1 = $objCliente->Acceso2($correo, $idseccion);
-                        $contador = 0;
-                        while ($cliente1 = mysqli_fetch_array($consulta1)) {
-                            $modulo = $cliente1[0];
-                            $link = $cliente1[1];
-                            $imagen = $cliente1[2];
-                            $idseccion = $cliente1[3];
-                            $estatus = $cliente1[4];
-                            $idusuario = $cliente1[5];
-                            $idmodulo = $cliente1[6];
-                            $nfamilia = $cliente1[7];
-                            $contador++;
-                            if ($estatus == 1) {
-                                $estatuis1 = "activos";
-                            } else {
-                                $estatuis1 = "inactivos";
-                            }
-
-                            if ($idmodulo == 1) {
-                                $mensaje = "<div class='source-code runnable'  style='display:none;'>
-        <!--
-        BootstrapDialog.show({
-            title: 'Permanente',
-            message: 'Es la solicitud de cambio de domicilio para recoger y entregar al alumno.<br> Aplica para todo el ciclo escolar.Se puede realizar de lunes a viernes.'
-        });
-        -->
-    </div>";
-                            }
-                            if ($idmodulo == 2) {
-                                $mensaje = "<div class='source-code runnable'  style='display:none;'>
-        <!--
-        BootstrapDialog.show({
-            title: 'Temporal',
-            message: 'Es una solicitud de permiso por un período de tiempo establecido para cambiar la dirección de entrega del menor, por viaje u otra necesidad familiar. Puede ser en cualquiera de las rutas, matutina o vespertina.'
-        });
-        -->
-    </div>";
-                            }
-                            if ($idmodulo == 3) {
-                                $mensaje = "   <div class='source-code runnable'  style='display:none;'>
-        <!--
-        BootstrapDialog.show({
-            title: 'Cambio del día',
-            message: 'Es la solicitud de permiso que los papas efectúan, para un cambio de domicilio de entrega del menor y aplica sólo para el mismo día en que se solicita.'
-        });
-        -->
-    </div>";
-                            }
-                            echo '<td data-label="">';
-                            echo"<a href='$link?idmodulo=$idmodulo&idseccion=$idseccion' title='$modulo'> <img src='pics/$estatuis1/$imagen' width='120px' height='150px' alt='$modulo'></a><br>$mensaje";
-                            //echo"<a href='Transportes/PPermanente.php' title='$modulo'> <img src='pics/$estatuis1/$imagen' width='120px' height='150px' alt='$modulo'></a><br>$mensaje";
-                            echo '</td>';
-                        }
-                        ////////////////////////////// fin de while
-                        echo "</tr>
-        <tr>
-            <td colspan='3'>
-               <a href='index.php' title='Regresar'> <img src='images/home.png' width='150px' height='150px' alt='$modulo'></a>
-            </td>
-        </tr>
-        </tbody></table>";
-                    } else {
-                        echo 'Este usuario no tiene Acceso:' . $user->email . ',<br> !Favor de comunicarse para validar datos! <br> Salir del sitema [<a href="' . $redirect_uri . '?logout=1"> Log Out</a>]';
-                    }
-                } else { //error en cosulta
-                    echo 'Error en cosulta';
-
-                    //echo 'Hi '.$user->email.',<br> Thanks for Registering! [<a href="'.$redirect_uri.'?logout=1">Log Out</a>]';
-                    //$statement = $mysqli->prepare("INSERT INTO google_users (google_id, google_name, google_email, google_link, google_picture_link) VALUES (?,?,?,?,?)");
-                    //$statement->bind_param('issss', $user->id,  $user->name, $user->email, $user->link, $user->picture);
-                    //$statement->execute();
-                    ///echo $mysqli->error;
-                }
-            }
+            } else {//esta logueado el correo de gmail
+                echo '<h2> <font color="#124A7B">Cambio especial</font></h2> <h3> [<a href="' . $redirect_uri . '?logout=1">Salir</a>]<br>&nbsp; &nbsp;&nbsp; &nbsp;</h3>';
+                ?>
+                <!----------------------------------Java script solo para ------------------------------------------->   
+                <div id="formulario" style="display:none;">         
+                </div> 
+                <center>  
+                    <div id="tabla"   class="contenedor">
+                        <?php include('View_especial.php'); ?> 
+                    </div>
+                </center> 
+                <?php
+            }//esta logueado el correo de gmail
             ?>
+        </div>
 
+        <!-- Modales -->
+        <!--Modal de cancelación-->
+        <div class="modal fade" id="modalCancelarPermisoEspecial" tabindex="-1" role="dialog" aria-labelledby="modalCancelarPermisoEspecial">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Alerta</h4>
+                    </div>
+                    <div class="modal-body">
+                        Confirma la cancelación del permiso seleccionado?
+                    </div>
+                    <form action="Cancela_permiso_especial.php" method="post">
+                        <div class="modal-footer">
+                            <input id="id_permiso_diario" name="id_permiso_especial" hidden/>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                            <button type="submit" class="btn btn-danger">Sí</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
         <footer id="footer_main">
             <div id="footer_top">
                 <figure id="footer_logos">
-                    <!--  
-                  <a href="http://www.ibo.org/es/" target="_blank"><img src="pics/footer-logo-1.png" alt="Logo Bachillerato Internacional"></a>
-                  <a href="https://www.iste.org/" target="_blank"><img src="pics/footer-logo-2.jpg" alt="Logo ISTE"></a>
-                    -->
+
                 </figure>
             </div>
             <div id="footer_bottom">
                 <div id="footer_inner">
-                    <a href="/">Colegio Hebreo Maguen David &copy; <script>document.write(new Date().getFullYear());</script></a>
-
-                    <script type="text/javascript">
-                    $(function alert(){
-                    $('.source-code1').each(function(index){
-            var $section = $(this);
-            var code = $(this).html().replace('<!--', '').replace('-->', '');
-                    // Code preview
-                    var $codePreview = $('<pre class="prettyprint lang-javascript"></pre>');
-                                $codePreview.text(code);
-                                $section.html($codePreview);
-                                // Run code
-                                if ($section.hasClass('runnable'))
-                                {
-                                var $button = $('<button style="background-color: transparent !important; border:0;outline:0 none; color: white;">Aviso de privacidad</button>');
-                                $button.on('click', {code: code}, function(event)
-                                {
-                                eval(event.data.code);   });
-                                                                        $button.insertAfter($section);
-                                $('<div class="clearfix" style="margin-bottom: 10px; color: white;" ></div>').insertAfter($button);
-                            }
-                        });
-                    });
-                    </script>   
+                    <a href="/">Colegio Hebreo Maguen David &copy; </a>
                     <div class='source-code1 runnable'  style='display:none;'>
                         <!--
                         BootstrapDialog.alert({
@@ -294,8 +209,8 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
                       c-1.6,0-2.6,0.8-3.3,1.8v-0.1C10.8,14.3,10.1,13.6,9.2,13.6z"/>
                 </g>
                 </svg>
-                Cultura Digital</a>
-            <a href="/apps/pages/index.jsp?uREC_ID=803683&type=d&pREC_ID=1192607"><?php echo '<?xml version="1.0" encoding="utf-8"?>' ?>
+                Mi Maguen</a>
+            <a href="/apps/news/"><?php echo '<?xml version="1.0" encoding="utf-8"?>' ?>
 
                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                      viewBox="0 0 33.8 31.2" style="enable-background:new 0 0 33.8 31.2;" xml:space="preserve">
@@ -314,24 +229,20 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
             <a href="/apps/contact/"><svg width="1792" height="1792" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1792 710v794q0 66-47 113t-113 47h-1472q-66 0-113-47t-47-113v-794q44 49 101 87 362 246 497 345 57 42 92.5 65.5t94.5 48 110 24.5h2q51 0 110-24.5t94.5-48 92.5-65.5q170-123 498-345 57-39 100-87zm0-294q0 79-49 151t-122 123q-376 261-468 325-10 7-42.5 30.5t-54 38-52 32.5-57.5 27-50 9h-2q-23 0-50-9t-57.5-27-52-32.5-54-38-42.5-30.5q-91-64-262-182.5t-205-142.5q-62-42-117-115.5t-55-136.5q0-78 41.5-130t118.5-52h1472q65 0 112.5 47t47.5 113z"/></svg>Contacto</a>
         </nav>
 
-        <script src="apps/js/common/jquery-accessibleMegaMenu.js"></script>
-        <script type="text/javascript" src="shared/tabs.js"></script>
+        <script>
 
-        <script>
-                                $(function() {
-                                $('#topnav').accessibleMegaMenu();
-                                });
-        </script>
-        <script>
-                    window.onload = init;
-                    var topnavButton = document.getElementById('topnav_mobile_toggle');
-                    var topnavDisplay = document.getElementById('topnav');
-                    function toggleNav(){
-                    topnavDisplay.classList.toggle("open");
-                    }
+            window.onload = init;
+            var topnavButton = document.getElementById('topnav_mobile_toggle');
+            var topnavDisplay = document.getElementById('topnav');
+            function toggleNav() {
+                topnavDisplay.classList.toggle("open");
+            }
+
         </script>
     </body>
 </html>
 
 
 <!-- 76ms -->
+
+

@@ -406,8 +406,7 @@ if (isset($authUrl)) {
                         <input type="hidden" name="talumnos" id="talumnos"  value="<?php echo $talumnos ?>" />
                         <div id="custom-speed" class="btn">  
                             <input type="submit" name="submit" value="Enviar"/>
-                            <input type="submit"  name="submit" value="Regresar" onclick="Cancelar();
-                                    return false;" />
+                            <input type="submit"  name="submit" value="Regresar" onclick="Cancelar(); return false;" />
                         </div>       
                 </form>
                 <?php

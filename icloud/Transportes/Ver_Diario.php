@@ -96,7 +96,8 @@ if (isset($authUrl)) {
                 $fecha_detalle = "<script>"
                         . "var fecha = new Date('$fecha1');"
                         . "var opciones = { weekday :'long', year: 'numeric', month:'long', day:'numeric'};"
-                        . "var fecha_detalle = fecha.toLocaleDateString('es-MX', opciones); "
+                        . "var fecha_detalle = fecha.toLocaleDateString('es-MX', opciones);"
+                        . "fecha_detalle = `\${fecha_detalle.charAt(0).toUpperCase()}\${fecha_detalle.slice(1).toLowerCase()}`;"
                         . "$('#fecha-programada').val(fecha_detalle);"
                         . "</script>";
                 echo $fecha_detalle;
