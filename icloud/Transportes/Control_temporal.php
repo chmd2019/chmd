@@ -57,7 +57,10 @@ class Control_temporal {
                     vpv.ficha_final,
                     vpv.turno,
                     vpv.comentarios,
-                    usu.calle,usu.colonia,usu.cp,vpv.mensaje
+                    usu.calle,
+                    usu.colonia,
+                    usu.cp,
+                    vpv.mensaje
                     from 
                     Ventana_Permiso_viaje vpv
                     LEFT JOIN Ventana_user vs on vpv.idusuario=vs.id

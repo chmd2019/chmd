@@ -52,8 +52,9 @@ if ($consulta) { //if user already exist change greeting text to "Welcome Back"
                 $contador++;
                 $Idpermiso = $cliente2[0];
                 $fecha = $cliente2[25];
-                $fecha_inicial = $objDateHelper->fecha_formato_js($cliente2[15]);
-                $fecha_final = $objDateHelper->fecha_formato_js($cliente2[16]);
+                $fecha_inicial = empty($cliente2[15]) || is_null($cliente2[15]) ? date("m-d-Y", strtotime($cliente2[1])) : date("m-d-Y", strtotime(str_replace("/", "-", $cliente2[15])));
+                $fecha_final = empty($cliente2[16]) || is_null($cliente2[16]) ? date("m-d-Y", strtotime($cliente2[1])) : date("m-d-Y", strtotime(str_replace("/", "-", $cliente2[16])));
+               
                 $status1 = $cliente2[20];
                 echo $fecha_inicial_detalle;
                 if ($status1 == 1) {
@@ -76,19 +77,22 @@ if ($consulta) { //if user already exist change greeting text to "Welcome Back"
                 $objControlTemporal = new Control_temporal();
                 $consulta_permiso_temporal = $objControlTemporal->comprueba_cancelacion_transporte_temporal($Idpermiso);
                 $permiso_temporal = mysqli_fetch_array($consulta_permiso_temporal);
-                $mostrar_boton_cancelar_permiso = null;
+                $mostrar_boton_cancelar_permiso_ver = null;
+                $boton_ver = "<span class='modi' id='modi'><a href='Ver_Temporal.php?id=$Idpermiso' class='btn btn-primary'><span class='glyphicon glyphicon-new-window' aria-hidden='true'></span> </a></span>";
                 $id_permiso_temporal = $permiso_temporal[0];
-                if ($consulta_permiso_temporal && $status1 != 4) {
-                    $mostrar_boton_cancelar_permiso = "<td><span class='modi' id='modi'><button type='button' class ='btn btn-danger' onclick ='modalCancelarPermisoTemporal($id_permiso_temporal)'><span class='glyphicon glyphicon-remove' aria-hidden='true'></span></button><span></td>";
+                if ($consulta_permiso_temporal && $status1 != 4|| $objDateHelper->comprobar_solicitud_no_vencida($fecha_final)) {
+                    $mostrar_boton_cancelar_permiso_ver = "<td>$boton_ver | <span class='modi' id='modi'><button type='button' class ='btn btn-danger' onclick ='modalCancelarPermisoTemporal($id_permiso_temporal)'><span class='glyphicon glyphicon-remove' aria-hidden='true'></span></button><span></td>";
                 } else {
-                    $mostrar_boton_cancelar_permiso = "<td><span class='modi' id='modi'><button type='button' class ='btn btn-warning' disabled><span class='glyphicon glyphicon-alert' aria-hidden='true'></span></button><span></td>";
+                    $mostrar_boton_cancelar_permiso_ver = "<td>$boton_ver | <span class='modi' id='modi'><button type='button' class ='btn btn-warning' disabled><span class='glyphicon glyphicon-alert' aria-hidden='true'></span></button><span></td>";
                 }
-                echo "<tr>          
-                    <td><span class='modi' id='modi'>{$objDateHelper->fecha_formato_datalle($fecha_inicial)}</span></td>
-                    <td><span class='modi' id='modi'>{$objDateHelper->fecha_formato_datalle($fecha_final)}</span></td>
-                    <td><span class='modi' id='modi'>$staus11</span></td>   
-                    $mostrar_boton_cancelar_permiso               
-                    </tr>";
+                if ($objDateHelper->comprobar_solicitud_vencida($fecha_final)) {
+                    echo "<tr>          
+                        <td><span class='modi' id='modi'>{$objDateHelper->fecha_formato_datalle($fecha_inicial)}</span></td>
+                        <td><span class='modi' id='modi'>{$objDateHelper->fecha_formato_datalle($fecha_final)}</span></td>
+                        <td><span class='modi' id='modi'>$staus11</span></td>   
+                        $mostrar_boton_cancelar_permiso_ver               
+                        </tr>";
+                }
             }
             echo "</table>";
 //fin 

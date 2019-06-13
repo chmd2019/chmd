@@ -29,7 +29,6 @@ if ($consulta) { //if user already exist change greeting text to "Welcome Back"
             <thead>
                 <tr>     
                     <th bgcolor="#CDCDCD">Fecha programada</th>
-                    <th bgcolor="#CDCDCD">Ruta</th>
                     <th bgcolor="#CDCDCD">Estatus</th>
                     <th bgcolor="#CDCDCD">Acciones</th>
                 </tr>
@@ -54,25 +53,14 @@ if ($consulta) { //if user already exist change greeting text to "Welcome Back"
                 $Idpermiso = $cliente2[0];
                 $ruta = $cliente2[11]; //ruta
                 $fecha_solicitud = $cliente2[20];
-                $fecha_destino = $cliente2[21]; //fecha
+                $fecha_destino = $cliente2[21] != '0' ? date("m-d-Y", strtotime(str_replace("/", "-", $cliente2[21]))) : date("m-d-Y"); //fecha
+                
                 $status1 = $cliente2[14];
                 
                 if (is_null($fecha_destino)) {
                     $fechaFormateada = "Error al ingresar la fecha";
-                } elseif (empty($fecha_destino)) {
-                    $fechaFormateada = "<script>var fecha_solicitud = '$fecha_solicitud';"
-                    . "fecha_solicitud = `\${fecha_solicitud.split(',')[0].trim()}, \${fecha_solicitud.split(',')[1]}`;"
-                    . "document.write(fecha_solicitud);</script>";
                 } else {
-                    $fechaFormateada = "<script>"
-                            . "var fechaSolicitud = '$fecha_destino'.split('/');"
-                            . "var nuevaFechaSolicitud = fechaSolicitud[1] + '/' +fechaSolicitud[0] +'/' +fechaSolicitud[2];"
-                            . "fechaSolicitud = new Date(nuevaFechaSolicitud);"
-                            . "var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };"
-                            . "fechaSolicitud = fechaSolicitud.toLocaleDateString('es-MX', options);"
-                            . "fechaSolicitud = `\${fechaSolicitud.charAt(0).toUpperCase()}\${fechaSolicitud.slice(1).toLowerCase()}`;"
-                            . "document.write(`\${fechaSolicitud}`)"
-                            . "</script>";
+                    $fechaFormateada = $objDateHelper->fecha_formato_datalle($fecha_destino);
                 }
                 if ($status1 == 1) {
                     $staus11 = "Pendiente";
@@ -96,19 +84,21 @@ if ($consulta) { //if user already exist change greeting text to "Welcome Back"
                 $objControlDia = new Control_dia();
                 $consulta_permiso_diario = $objControlDia->comprueba_cancelacion_transporte($Idpermiso);
                 $permiso_diario = mysqli_fetch_array($consulta_permiso_diario);
-                $mostrar_boton_cancelar_permiso = null;
+                $mostrar_boton_cancelar_permiso_ver = null;
+                $boton_ver = "<span class='modi' id='modi'><a href='Ver_Diario.php?id=$Idpermiso' class='btn btn-primary'><span class='glyphicon glyphicon-new-window' aria-hidden='true'></span> </a></span>";
                 $id_permiso_diario = $permiso_diario[0];
-                if ($consulta_permiso_diario && $status1 != 4) {
-                    $mostrar_boton_cancelar_permiso = "<td><span class='modi' id='modi'><button type='button' class ='btn btn-danger' onclick ='modalCancelarPermiso($id_permiso_diario)'><span class='glyphicon glyphicon-remove' aria-hidden='true'></span></button><span></td>";
+                if ($consulta_permiso_diario && $status1 != 4 || $objDateHelper->comprobar_solicitud_no_vencida($fecha_destino)) {
+                    $mostrar_boton_cancelar_permiso_ver = "<td>$boton_ver | <span class='modi' id='modi'><button type='button' class ='btn btn-danger' onclick ='modalCancelarPermiso($id_permiso_diario)'><span class='glyphicon glyphicon-remove' aria-hidden='true'></span></button><span></td>";
                 }else{
-                    $mostrar_boton_cancelar_permiso = "<td><span class='modi' id='modi'><button type='button' class ='btn btn-warning' disabled><span class='glyphicon glyphicon-alert' aria-hidden='true'></span></button><span></td>";
-                }
+                    $mostrar_boton_cancelar_permiso_ver = "<td>$boton_ver | <span class='modi' id='modi'><button type='button' class ='btn btn-warning' disabled><span class='glyphicon glyphicon-alert' aria-hidden='true'></span></button><span></td>";
+                }                        
+                if ($objDateHelper->comprobar_solicitud_vencida($fecha_destino)) {
                 echo "<tr> 
 		  <td><span class='modi' id='modi'>$fechaFormateada</span></td>
-		  <td><span class='modi' id='modi'>$ruta</span></td>
-                  <td><span class='modi' id='modi'>$staus11</span> <span class='modi' id='modi'><a href='Ver_Diario.php?id=$Idpermiso' title='Ver'> <img src='../images/link.png' width='15px' height='15px' alt='Nueva'></a></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                  $mostrar_boton_cancelar_permiso
+                  <td><span class='modi' id='modi'>$staus11</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                  $mostrar_boton_cancelar_permiso_ver
                 </tr>  ";
+                }
             }
             echo "     </table>";
 

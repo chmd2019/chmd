@@ -12,8 +12,6 @@ session_start();
     if($tpermiso==3){$permiso='Vista_domicilio_viaje';}
     
     
-    
-    
 $return_arr = array();
 /* Si la conexión a la base de datos , ejecuta instrucción SQL. */
 if ($con)

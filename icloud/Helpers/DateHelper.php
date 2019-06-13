@@ -58,6 +58,25 @@ class DateHelper {
                 . "fecha = `\${fecha.charAt(0).toUpperCase()}\${fecha.slice(1).toLowerCase()}`;"
                 . "document.write(fecha);</script>";
     }
+    
+    public function comprobar_solicitud_vencida($fecha){    
+        $fecha_actual = strtotime(date("d-m-Y"));
+        $fecha = explode("-", $fecha);
+        $fecha_destino = strtotime("$fecha[1]-$fecha[0]-$fecha[2]");
+        if ($fecha_actual <= $fecha_destino ) {
+            return true;
+        }
+        return false;
+    } 
+    public function comprobar_solicitud_no_vencida($fecha){    
+        $fecha_actual = strtotime(date("d-m-Y"));
+        $fecha = explode("-", $fecha);
+        $fecha_destino = strtotime("$fecha[1]-$fecha[0]-$fecha[2]");
+        if ($fecha_actual < $fecha_destino ) {
+            return true;
+        }
+        return false;
+    } 
 
 }
 /*

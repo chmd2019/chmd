@@ -84,17 +84,19 @@ if ($consulta) { //if user already exist change greeting text to "Welcome Back"
                 $objControlPermanente = new Control_permanente();
                 $consulta_permiso_permanente = $objControlPermanente->comprueba_cancelacion_transporte_permanente($Idpermiso);
                 $permiso_permanente = mysqli_fetch_array($consulta_permiso_permanente);
-                $mostrar_boton_cancelar_permiso = null;
+                $mostrar_boton_cancelar_permiso_ver = null;
                 $id_permiso_permanente = $permiso_permanente[0];
+                $boton_ver = "<span class='modi' id='modi'><a href='Ver_Permanente.php?id=$Idpermiso' class='btn btn-primary'><span class='glyphicon glyphicon-new-window' aria-hidden='true'></span> </a></span>";
+                               
                 if ($consulta_permiso_permanente && $status1 != 4) {
-                    $mostrar_boton_cancelar_permiso = "<td><span class='modi' id='modi'><button type='button' class ='btn btn-danger' onclick ='modalCancelarPermisoPermanente($id_permiso_permanente)'><span class='glyphicon glyphicon-remove' aria-hidden='true'></span></button><span></td>";
+                    $mostrar_boton_cancelar_permiso_ver = "<td>$boton_ver | <span class='modi' id='modi'><button type='button' class ='btn btn-danger' onclick ='modalCancelarPermisoPermanente($id_permiso_permanente)'><span class='glyphicon glyphicon-remove' aria-hidden='true'></span></button><span></td>";
                 } else {
-                    $mostrar_boton_cancelar_permiso = "<td><span class='modi' id='modi'><button type='button' class ='btn btn-warning' disabled><span class='glyphicon glyphicon-alert' aria-hidden='true'></span></button><span></td>";
+                    $mostrar_boton_cancelar_permiso_ver = "<td>$boton_ver | <span class='modi' id='modi'><button type='button' class ='btn btn-warning' disabled><span class='glyphicon glyphicon-alert' aria-hidden='true'></span></button><span></td>";
                 }
                 echo "<tr>      
 		  <td>$dias</td>
                   <td>$staus11</td>
-                  $mostrar_boton_cancelar_permiso
+                  $mostrar_boton_cancelar_permiso_ver
                    </tr>";
         }
             echo "     </table>";
