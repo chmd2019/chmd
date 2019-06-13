@@ -89,7 +89,7 @@ if ($consulta) { //if user already exist change greeting text to "Welcome Back"
                 $boton_ver = "<span class='modi' id='modi'><a href='Ver_Permanente.php?id=$Idpermiso' class='btn btn-primary'><span class='glyphicon glyphicon-new-window' aria-hidden='true'></span> </a></span>";
                                
                 if ($consulta_permiso_permanente && $status1 != 4) {
-                    $mostrar_boton_cancelar_permiso_ver = "<td>$boton_ver | <span class='modi' id='modi'><button type='button' class ='btn btn-danger' onclick ='modalCancelarPermisoPermanente($id_permiso_permanente)'><span class='glyphicon glyphicon-remove' aria-hidden='true'></span></button><span></td>";
+                    $mostrar_boton_cancelar_permiso_ver = "<td>$boton_ver | <span class='modi' id='modi'><button type='button' class ='btn btn-danger' onclick ='modalCancelarPermisoPermanente($Idpermiso)'><span class='glyphicon glyphicon-remove' aria-hidden='true'></span></button><span></td>";
                 } else {
                     $mostrar_boton_cancelar_permiso_ver = "<td>$boton_ver | <span class='modi' id='modi'><button type='button' class ='btn btn-warning' disabled><span class='glyphicon glyphicon-alert' aria-hidden='true'></span></button><span></td>";
                 }

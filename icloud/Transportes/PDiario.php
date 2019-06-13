@@ -146,9 +146,20 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
             }//esta logueado el correo de gmail
             ?>
         </div>
-
+<?php echo $id_permiso_diario; ?>
         <!-- Modales -->
         <!--Modal de cancelación-->
+        <div class="modal fade" id="modal_confirmacion_exitosa" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header"> <h4 class="modal-title">Confirmación</h4>
+                    </div>
+                    <div class="modal-body">
+                        Solicitud realizada con éxito
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="modal fade" id="modalCancelarPermiso" tabindex="-1" role="dialog" aria-labelledby="modalCancelarPermiso">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -159,16 +170,17 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
                     <div class="modal-body">
                         Confirma la cancelación del permiso seleccionado?
                     </div>
-                    <form action="Cancela_permiso_diario.php" method="post">
+                    <form method="post" id="formulario_cancelar_permiso_diario" action="">
                         <div class="modal-footer">
                             <input id="id_permiso_diario" name="id_permiso_diario" hidden/>
                             <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-                            <button type="submit" class="btn btn-danger">Sí</button>
+                            <button type="button" class="btn btn-danger" onclick="cancelarPermisoDiario()">Sí</button>
                         </div>
                     </form>
                 </div>
             </div>
-        </div>
+        </div
+        
         <footer id="footer_main">
             <div id="footer_top">
                 <figure id="footer_logos">
@@ -237,6 +249,20 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
             var topnavDisplay = document.getElementById('topnav');
             function toggleNav() {
                 topnavDisplay.classList.toggle("open");
+            }
+            function cancelarPermisoDiario(){
+                var url = "Cancela_permiso_diario.php";
+                var data = `id_permiso_diario=${$('#id_permiso_diario').val()}`;
+                $.ajax({
+                    type:'POST',
+                    url:url,
+                    data :data,
+                    success:()=>{
+                        $("#modalCancelarPermiso").hide();
+                        $("#modal_confirmacion_exitosa").modal({'show':true}); 
+                        setTimeout(window.location = "PDiario.php",1500);
+                    }                    
+                });
             }
 
         </script>

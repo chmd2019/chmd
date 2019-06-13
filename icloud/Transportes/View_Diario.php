@@ -88,7 +88,7 @@ if ($consulta) { //if user already exist change greeting text to "Welcome Back"
                 $boton_ver = "<span class='modi' id='modi'><a href='Ver_Diario.php?id=$Idpermiso' class='btn btn-primary'><span class='glyphicon glyphicon-new-window' aria-hidden='true'></span> </a></span>";
                 $id_permiso_diario = $permiso_diario[0];
                 if ($consulta_permiso_diario && $status1 != 4 || $objDateHelper->comprobar_solicitud_no_vencida($fecha_destino)) {
-                    $mostrar_boton_cancelar_permiso_ver = "<td>$boton_ver | <span class='modi' id='modi'><button type='button' class ='btn btn-danger' onclick ='modalCancelarPermiso($id_permiso_diario)'><span class='glyphicon glyphicon-remove' aria-hidden='true'></span></button><span></td>";
+                    $mostrar_boton_cancelar_permiso_ver = "<td>$boton_ver | <span class='modi' id='modi'><button type='button' class ='btn btn-danger' onclick ='modalCancelarPermiso($Idpermiso)'><span class='glyphicon glyphicon-remove' aria-hidden='true'></span></button><span></td>";
                 }else{
                     $mostrar_boton_cancelar_permiso_ver = "<td>$boton_ver | <span class='modi' id='modi'><button type='button' class ='btn btn-warning' disabled><span class='glyphicon glyphicon-alert' aria-hidden='true'></span></button><span></td>";
                 }                        
@@ -101,7 +101,6 @@ if ($consulta) { //if user already exist change greeting text to "Welcome Back"
                 }
             }
             echo "     </table>";
-
             //fin
         } else {
             echo 'Este usuario no tiene Acceso:' . $user->email . ',<br> !Favor de comunicarse para validar datos! <br> Salir del sitema [<a href="' . $redirect_uri . '?logout=1"> Log Out</a>]';

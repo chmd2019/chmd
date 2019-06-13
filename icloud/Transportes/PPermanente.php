@@ -153,6 +153,17 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
         </div>        
         <!-- Modales -->
         <!--Modal de cancelación-->
+        <div class="modal fade" id="modal_confirmacion_exitosa" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header"> <h4 class="modal-title">Confirmación</h4>
+                    </div>
+                    <div class="modal-body">
+                        Solicitud realizada con éxito
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="modal fade" id="modalCancelarPermisoPermanente" tabindex="-1" role="dialog" aria-labelledby="modalCancelarPermisoPermanente">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -163,11 +174,11 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
                     <div class="modal-body">
                         Confirma la cancelación del permiso temporal seleccionado?
                     </div>
-                    <form action="Cancela_permiso_permanente.php" method="post">
+                    <form method="post">
                         <div class="modal-footer">
                             <input id="id_permiso_permanente" name="id_permiso_permanente" hidden/>
                             <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-                            <button type="submit" class="btn btn-danger">Sí</button>
+                            <button type="button" class="btn btn-danger" onclick="cancelarPermisoPermanente()">Sí</button>
                         </div>
                     </form>
                 </div>
@@ -242,6 +253,21 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
             function toggleNav() {
                 topnavDisplay.classList.toggle("open");
             }
+            
+    function cancelarPermisoPermanente(){
+        var url = "Cancela_permiso_permanente.php";
+        var data = `id_permiso_permanente=${$('#id_permiso_permanente').val()}`;
+        $.ajax({
+            type:'POST',
+            url:url,
+            data :data,
+            success:()=>{
+                $("#modalCancelarPermisoPermanente").hide();
+                $("#modal_confirmacion_exitosa").modal({'show':true}); 
+                setTimeout(window.location = "PPermanente.php",1500);
+            }                    
+        });
+    }
         </script>
     </body>
 </html>

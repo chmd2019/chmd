@@ -81,7 +81,7 @@ if ($consulta) { //if user already exist change greeting text to "Welcome Back"
                 $boton_ver = "<span class='modi' id='modi'><a href='Ver_Temporal.php?id=$Idpermiso' class='btn btn-primary'><span class='glyphicon glyphicon-new-window' aria-hidden='true'></span> </a></span>";
                 $id_permiso_temporal = $permiso_temporal[0];
                 if ($consulta_permiso_temporal && $status1 != 4|| $objDateHelper->comprobar_solicitud_no_vencida($fecha_final)) {
-                    $mostrar_boton_cancelar_permiso_ver = "<td>$boton_ver | <span class='modi' id='modi'><button type='button' class ='btn btn-danger' onclick ='modalCancelarPermisoTemporal($id_permiso_temporal)'><span class='glyphicon glyphicon-remove' aria-hidden='true'></span></button><span></td>";
+                    $mostrar_boton_cancelar_permiso_ver = "<td>$boton_ver | <span class='modi' id='modi'><button type='button' class ='btn btn-danger' onclick ='modalCancelarPermisoTemporal($Idpermiso)'><span class='glyphicon glyphicon-remove' aria-hidden='true'></span></button><span></td>";
                 } else {
                     $mostrar_boton_cancelar_permiso_ver = "<td>$boton_ver | <span class='modi' id='modi'><button type='button' class ='btn btn-warning' disabled><span class='glyphicon glyphicon-alert' aria-hidden='true'></span></button><span></td>";
                 }
