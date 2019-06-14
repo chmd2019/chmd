@@ -360,11 +360,12 @@ var comentarios =document.RegisterUserForm.comentarios.value;
 &nfamilia="+nfamilia+"\
 &fecha="+fecha,
 			success: function(datos){
+                            alert('ok');
 		        alertify.alert(datos);
 				//$("#tabla").load(" #tabla");
                                 //$("#formulario").hide();
 				//$("#tabla").show();
-                              window.location = window.location;
+                              //window.location = window.location;
                                 
 			}
 		});
