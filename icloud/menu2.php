@@ -170,34 +170,13 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
                             }
 
                             if ($idmodulo == 1) {
-                                $mensaje = "<div class='source-code runnable'  style='display:none;'>
-        <!--
-        BootstrapDialog.show({
-            title: 'Permanente',
-            message: 'Es la solicitud de cambio de domicilio para recoger y entregar al alumno.<br> Aplica para todo el ciclo escolar.Se puede realizar de lunes a viernes.'
-        });
-        -->
-    </div>";
+                                $mensaje = "<div class='source-code runnable'  style='display:none;'></div>";
                             }
                             if ($idmodulo == 2) {
-                                $mensaje = "<div class='source-code runnable'  style='display:none;'>
-        <!--
-        BootstrapDialog.show({
-            title: 'Temporal',
-            message: 'Es una solicitud de permiso por un período de tiempo establecido para cambiar la dirección de entrega del menor, por viaje u otra necesidad familiar. Puede ser en cualquiera de las rutas, matutina o vespertina.'
-        });
-        -->
-    </div>";
+                                $mensaje = "<div class='source-code runnable'  style='display:none;'>div>";
                             }
                             if ($idmodulo == 3) {
-                                $mensaje = "   <div class='source-code runnable'  style='display:none;'>
-        <!--
-        BootstrapDialog.show({
-            title: 'Cambio del día',
-            message: 'Es la solicitud de permiso que los papas efectúan, para un cambio de domicilio de entrega del menor y aplica sólo para el mismo día en que se solicita.'
-        });
-        -->
-    </div>";
+                                $mensaje = "   <div class='source-code runnable'  style='display:none;'></div>";
                             }
                             echo '<td data-label="">';
                             echo"<a href='$link?idmodulo=$idmodulo&idseccion=$idseccion' title='$modulo'> <img src='pics/$estatuis1/$imagen' width='120px' height='150px' alt='$modulo'></a><br>$mensaje";

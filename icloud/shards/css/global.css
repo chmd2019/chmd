@@ -29,3 +29,11 @@ body{
     height: 300px;
     margin: auto;
 }
+@media screen and (min-width: 280px) and (max-width:960px){
+    .caja-login{
+        width:90%;
+    }
+    #total{
+        
+    }
+}
