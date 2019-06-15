@@ -1,16 +1,15 @@
 <?php
 session_start(); //session start
 //include_once("Model/DBManager.php");
-require_once('libraries/Google/autoload.php');
-require_once 'Model/Config.php';
+require_once('../../libraries/Google/autoload.php');
+require_once '../../Model/Config.php';
+require_once '../../Model/Login.php';
 //incase of logout request, just unset the session var
 if (isset($_GET['logout'])) {
     unset($_SESSION['access_token']);
 }
 $service = new Google_Service_Oauth2($client);
-
 //echo "$service";
-
 if (isset($_GET['code'])) {
     $client->authenticate($_GET['code']);
     $_SESSION['access_token'] = $client->getAccessToken();
@@ -28,7 +27,7 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
 <div style="overflow: hidden">
     <br><br>
     <div class="d-flex">
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <img src="pics/LOGO-HEBREO-MAGEN-DAVID.png"/> &nbsp; &nbsp; 
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <img src="../../pics/LOGO-HEBREO-MAGEN-DAVID.png"/> &nbsp; &nbsp; 
         <h3 class="c-blanco">COLEGIO HEBREO<br>MAGUEN DAVID</h3>
     </div>
     <br>

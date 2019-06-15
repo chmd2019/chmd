@@ -139,14 +139,13 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
                 </div> 
                 <center>  
                     <div id="tabla"   class="contenedor">
-                        <?php include('View_Diario.php'); ?> 
+                        <?php include('View_Diario2.php'); ?> 
                     </div>
                 </center> 
                 <?php
             }//esta logueado el correo de gmail
             ?>
         </div>
-<?php echo $id_permiso_diario; ?>
         <!-- Modales -->
         <!--Modal de cancelación-->
         <div class="modal fade" id="modal_confirmacion_exitosa" tabindex="-1" role="dialog">
