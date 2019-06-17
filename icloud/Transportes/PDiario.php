@@ -139,7 +139,7 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
                 </div> 
                 <center>  
                     <div id="tabla"   class="contenedor">
-                        <?php include('View_Diario2.php'); ?> 
+                        <?php include('View_Diario.php'); ?> 
                     </div>
                 </center> 
                 <?php
