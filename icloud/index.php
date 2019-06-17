@@ -41,7 +41,7 @@ if (isset($authUrl)) {
                             <div class='col-sm-12 col-md-3 mb-3'>
                                 <div class='card' style='width: 98%;margin:auto;'>
                                     <br>
-                                    <img class='card-img-top' src='pics/activos/transportesantiguo.png' style='width:50%;margin: auto' >
+                                    <img class='card-img-top' src='pics/activos/transportes.png' style='width:50%;margin: auto' >
                                     <div class='card-body'>
                                         <p class="card-text">Solicitudes de cambio Permanente, Temporal, Del día.</p>    
                                         <a href='menu.php?idseccion=1' class='btn btn-primary'>Entrar</a>         
@@ -61,7 +61,7 @@ if (isset($authUrl)) {
                             <div class='col-sm-12 col-md-3 mb-3'>
                                 <div class='card' style='width: 98%;margin:auto;'>
                                     <br>
-                                    <img class='card-img-top' src='pics/activos/schoolcloudantiguo.png' style='width:50%;margin: auto' >
+                                    <img class='card-img-top' src='pics/activos/schoolcloud.png' style='width:50%;margin: auto' >
                                     <div class='card-body'>
                                         <p class="card-text">Consulta de evaluación.</p><br>
                                         <a href='https://users.schoolcloud.net/campus/chmd' class='btn btn-primary'>Entrar</a>
@@ -129,7 +129,7 @@ if (isset($authUrl)) {
                             <div class='col-sm-12 col-md-3 mb-3'>
                                 <div class='card' style='width: 98%;margin:auto;'>
                                     <br>
-                                    <img class='card-img-top' src='pics/activos/transportesantiguo.png' style='width:50%;margin: auto' >
+                                    <img class='card-img-top' src='pics/activos/transportes.png' style='width:50%;margin: auto' >
                                     <div class='card-body'>
                                         <p class="card-text">Solicitudes de cambio Permanente, Temporal, Del día.</p>    
                                         <a href='menu.php?idseccion=1' class='btn btn-primary'>Entrar</a>
@@ -149,7 +149,7 @@ if (isset($authUrl)) {
                             <div class='col-sm-12 col-md-3 mb-3'>
                                 <div class='card' style='width: 98%;margin:auto;'>
                                     <br>
-                                    <img class='card-img-top' src='pics/activos/schoolcloudantiguo.png' style='width:50%;margin: auto' >
+                                    <img class='card-img-top' src='pics/activos/schoolcloud.png' style='width:50%;margin: auto' >
                                     <div class='card-body'>
                                         <p class="card-text">Consulta de evaluación.</p><br>
                                         <a href='https://users.schoolcloud.net/campus/chmd' class='btn btn-primary'>Entrar</a>
@@ -169,7 +169,7 @@ if (isset($authUrl)) {
                             <div class='col-sm-12 col-md-3 mb-3'>
                                 <div class='card' style='width: 98%;margin:auto;'>
                                     <br>
-                                    <img class='card-img-top' src='pics/inactivos/uniformes.png' style='width:50%;margin: auto'  >
+                                    <img class='card-img-top' src='pics/activos/uniformes.png' style='width:50%;margin: auto'  >
                                     <div class='card-body'>
                                         <p class="card-text">Pedidos de paquete de uniformes incluido en la canasta básica y de uniformes adicionales.</p>
                                         <a href='Uniformes/menu.php' class='btn btn-primary'>Entrar</a>
