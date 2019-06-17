@@ -98,11 +98,22 @@ if (isset($authUrl)) {
                                     </div>
                                 </div>
                             </div>
+                              <div class='col-sm-12 col-md-3 mb-3'>
+                                <div class='card' style='width: 98%;margin:auto;'>
+                                    <br>
+                                    <img class='card-img-top' src='pics/activos/permisos.png' style='width:50%;margin: auto'>
+                                    <div class='card-body mb-3'>
+                                        <p class="card-text">Generar permisos extraordinarios, Cumpleaños, bar mitzvah.</p><br>
+                                        <a href='https://chmd.edu.mx/galeria/' class='btn btn-primary'>Entrar</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>   
                 <?php
-            } elseif ($perfil == 4) {
+            } elseif ($perfil == 4)
+                {
                 ?>  
                 <!--MENU PERFIL4-->
                 <div class="row"><br><br>
@@ -158,7 +169,7 @@ if (isset($authUrl)) {
                             <div class='col-sm-12 col-md-3 mb-3'>
                                 <div class='card' style='width: 98%;margin:auto;'>
                                     <br>
-                                    <img class='card-img-top' src='pics/inactivos/uniformes.png' style='width:50%;margin: auto'  >
+                                    <img class='card-img-top' src='pics/activos/uniformes.png' style='width:50%;margin: auto'  >
                                     <div class='card-body'>
                                         <p class="card-text">Pedidos de paquete de uniformes incluido en la canasta básica y de uniformes adicionales.</p>
                                         <a href='Uniformes/menu.php' class='btn btn-primary'>Entrar</a>
@@ -182,6 +193,16 @@ if (isset($authUrl)) {
                                     <div class='card-body'>
                                         <p class='card-text'>Podrás realizar un evento y generación de minuta del evento.</p><br>
                                         <a href='Eventos/menu.php' class='btn btn-primary'>Entrar</a>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class='col-sm-12 col-md-3 mb-3'>
+                                <div class='card' style='width: 98%;margin:auto;'>
+                                    <br>
+                                    <img class='card-img-top' src='pics/activos/permisos.png' style='width:50%;margin: auto'>
+                                    <div class='card-body mb-3'>
+                                        <p class="card-text">Generar permisos extraordinarios, Cumpleaños, bar mitzvah.</p><br>
+                                        <a href='https://chmd.edu.mx/galeria/' class='btn btn-primary'>Entrar</a>
                                     </div>
                                 </div>
                             </div>
