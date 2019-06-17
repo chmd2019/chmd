@@ -98,6 +98,16 @@ if (isset($authUrl)) {
                                     </div>
                                 </div>
                             </div>
+                              <div class='col-sm-12 col-md-3 mb-3'>
+                                <div class='card' style='width: 98%;margin:auto;'>
+                                    <br>
+                                    <img class='card-img-top' src='pics/activos/transportes.png' style='width:50%;margin: auto'>
+                                    <div class='card-body mb-3'>
+                                        <p class="card-text">Generar permisos extraudidarios,Cumpleaños,bar mitzvah.</p><br>
+                                        <a href='https://chmd.edu.mx/galeria/' class='btn btn-primary'>Entrar</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>   
