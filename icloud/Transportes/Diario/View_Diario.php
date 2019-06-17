@@ -73,10 +73,6 @@ if ($consulta) { //if user already exist change greeting text to "Welcome Back"
                         $fecha_destino = $cliente2[21]; //fecha
                         $status1 = $cliente2[14];
                         //deshabilita input de fecha si se ha pasado la hora
-                        $enabled = "enabled";
-                        if ($objDateHelper->obtener_hora_limite()) {
-                            $enabled = "disabled";
-                        }
                         include_once './Control_dia.php';
                         $objControlDia = new Control_dia();
                         $consulta_permiso_diario = $objControlDia->comprueba_cancelacion_transporte($Idpermiso);
@@ -135,7 +131,7 @@ if ($consulta) { //if user already exist change greeting text to "Welcome Back"
             <?php include './View_consulta_diario.php'; ?> 
             <!-- Modal Nuevo registro -->            
             <?php
-            include './View_diario_alta.php';
+            include './View_alta_diario.php';
         }
     }
 }

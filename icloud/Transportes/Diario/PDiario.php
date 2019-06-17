@@ -49,3 +49,4 @@ if (isset($authUrl)) {
 </div>
 <br><br><br>
 <?php include '../components/layout_bottom.php'; ?>
+
