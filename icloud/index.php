@@ -41,7 +41,7 @@ if (isset($authUrl)) {
                             <div class='col-sm-12 col-md-3 mb-3'>
                                 <div class='card' style='width: 98%;margin:auto;'>
                                     <br>
-                                    <img class='card-img-top' src='pics/activos/transportes.png' style='width:50%;margin: auto' >
+                                    <img class='card-img-top' src='pics/activos/transportesantiguo.png' style='width:50%;margin: auto' >
                                     <div class='card-body'>
                                         <p class="card-text">Solicitudes de cambio Permanente, Temporal, Del día.</p>    
                                         <a href='menu.php?idseccion=1' class='btn btn-primary'>Entrar</a>         
@@ -61,7 +61,7 @@ if (isset($authUrl)) {
                             <div class='col-sm-12 col-md-3 mb-3'>
                                 <div class='card' style='width: 98%;margin:auto;'>
                                     <br>
-                                    <img class='card-img-top' src='pics/activos/schoolcloud.png' style='width:50%;margin: auto' >
+                                    <img class='card-img-top' src='pics/activos/schoolcloudantiguo.png' style='width:50%;margin: auto' >
                                     <div class='card-body'>
                                         <p class="card-text">Consulta de evaluación.</p><br>
                                         <a href='https://users.schoolcloud.net/campus/chmd' class='btn btn-primary'>Entrar</a>
@@ -101,9 +101,9 @@ if (isset($authUrl)) {
                               <div class='col-sm-12 col-md-3 mb-3'>
                                 <div class='card' style='width: 98%;margin:auto;'>
                                     <br>
-                                    <img class='card-img-top' src='pics/activos/transportes.png' style='width:50%;margin: auto'>
+                                    <img class='card-img-top' src='pics/activos/permisos.png' style='width:50%;margin: auto'>
                                     <div class='card-body mb-3'>
-                                        <p class="card-text">Generar permisos extraudidarios,Cumpleaños,bar mitzvah.</p><br>
+                                        <p class="card-text">Generar permisos extraordinarios, Cumpleaños, bar mitzvah.</p><br>
                                         <a href='https://chmd.edu.mx/galeria/' class='btn btn-primary'>Entrar</a>
                                     </div>
                                 </div>
@@ -112,7 +112,8 @@ if (isset($authUrl)) {
                     </div>
                 </div>   
                 <?php
-            } elseif ($perfil == 4) {
+            } elseif ($perfil == 4)
+                {
                 ?>  
                 <!--MENU PERFIL4-->
                 <div class="row"><br><br>
@@ -128,7 +129,7 @@ if (isset($authUrl)) {
                             <div class='col-sm-12 col-md-3 mb-3'>
                                 <div class='card' style='width: 98%;margin:auto;'>
                                     <br>
-                                    <img class='card-img-top' src='pics/activos/transportes.png' style='width:50%;margin: auto' >
+                                    <img class='card-img-top' src='pics/activos/transportesantiguo.png' style='width:50%;margin: auto' >
                                     <div class='card-body'>
                                         <p class="card-text">Solicitudes de cambio Permanente, Temporal, Del día.</p>    
                                         <a href='menu.php?idseccion=1' class='btn btn-primary'>Entrar</a>
@@ -148,7 +149,7 @@ if (isset($authUrl)) {
                             <div class='col-sm-12 col-md-3 mb-3'>
                                 <div class='card' style='width: 98%;margin:auto;'>
                                     <br>
-                                    <img class='card-img-top' src='pics/activos/schoolcloud.png' style='width:50%;margin: auto' >
+                                    <img class='card-img-top' src='pics/activos/schoolcloudantiguo.png' style='width:50%;margin: auto' >
                                     <div class='card-body'>
                                         <p class="card-text">Consulta de evaluación.</p><br>
                                         <a href='https://users.schoolcloud.net/campus/chmd' class='btn btn-primary'>Entrar</a>
@@ -192,6 +193,16 @@ if (isset($authUrl)) {
                                     <div class='card-body'>
                                         <p class='card-text'>Podrás realizar un evento y generación de minuta del evento.</p><br>
                                         <a href='Eventos/menu.php' class='btn btn-primary'>Entrar</a>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class='col-sm-12 col-md-3 mb-3'>
+                                <div class='card' style='width: 98%;margin:auto;'>
+                                    <br>
+                                    <img class='card-img-top' src='pics/activos/permisos.png' style='width:50%;margin: auto'>
+                                    <div class='card-body mb-3'>
+                                        <p class="card-text">Generar permisos extraordinarios, Cumpleaños, bar mitzvah.</p><br>
+                                        <a href='https://chmd.edu.mx/galeria/' class='btn btn-primary'>Entrar</a>
                                     </div>
                                 </div>
                             </div>
