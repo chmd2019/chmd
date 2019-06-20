@@ -8,18 +8,17 @@ $arrayDias = array('Domingo', 'Lunes', 'Martes',
 if ($consulta) { //if user already exist change greeting text to "Welcome Back"
     if ($cliente = mysqli_fetch_array($consulta)) {
         ?>
-
         <div class="d-flex row">
             <span class="col-sm-12 col-md-6">
                 <h4 class="float-left"><?php echo $fecha_actual_impresa_script; ?></h4>
             </span>
             <div class="col-sm-12 col-md-6">
                 <div class="btn-group float-right" role="group">
-                    <button type="button" class="btn btn-primary btn-squared"  data-toggle="modal" 
-                            data-target="#modalNuevoPermiso"><i class='fas fa-file'></i>&nbsp;Nuevo</button>
-                    <a href="javascript:history.back(0)" class="btn btn-primary btn-squared"><i class='fas fa-long-arrow-alt-left'></i>&nbsp;Atrás</a>
+                    <button type="button" class="btn btn-info"  data-toggle="modal" 
+                            data-target="#modal_nuevo_permiso_diario"><i class='fas fa-file'></i>&nbsp;Nuevo</button>
+                    <a href="javascript:history.back(0)" class="btn btn-info"><i class='fas fa-long-arrow-alt-left'></i>&nbsp;Atrás</a>
                     <?php
-                    echo '<a href="' . $redirect_uri . '?logout=1" class="btn btn-primary btn-squared" >'
+                    echo '<a href="' . $redirect_uri . '?logout=1" class="btn btn-info" >'
                     . "<i class='fas fa-sign-out-alt'></i>&nbsp;Salir</a>";
                     ?>
                 </div>
@@ -79,7 +78,7 @@ if ($consulta) { //if user already exist change greeting text to "Welcome Back"
                         $permiso_diario = mysqli_fetch_array($consulta_permiso_diario);
 
                         if (!$objDateHelper->obtener_hora_limite() && !$objDateHelper->comprobar_solicitud_no_vencida($fecha_destino)) {
-                            $mostrar_boton_cancelar_permiso_ver = '<button type="button" class="btn btn-danger btn-squared"><i class="fas fa-trash"></i></button>';
+                            $mostrar_boton_cancelar_permiso_ver = '<button type="button" class="btn btn-danger"><i class="fas fa-trash"></i></button>';
                         }
                         if ($fecha_destino == "0") {
                             $fecha_destino = $fecha_solicitud;
@@ -115,7 +114,7 @@ if ($consulta) { //if user already exist change greeting text to "Welcome Back"
                                 <td>            
                                     <div class="col-sm-12 col-md-6">
                                         <div class="btn-group float-right" role="group">
-                                            <button type="button" class="btn btn-success btn-squared" onclick="consultar_registro('<?php echo "$Idpermiso" ?>', '<?php echo "$familia" ?>')"><i class='fas fa-binoculars'></i></button>
+                                            <button type="button" class="btn btn-success" onclick="consultar_registro('<?php echo "$Idpermiso" ?>', '<?php echo "$familia" ?>')"><i class='fas fa-binoculars'></i></button>
                                             <?php echo $mostrar_boton_cancelar_permiso_ver; ?>
                                         </div>
                                     </div>

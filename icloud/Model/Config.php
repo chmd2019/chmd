@@ -1,12 +1,9 @@
 <?php
 
-/*$client_id = '144850677714-ghn8l55tdb3jr0phsgcgg8fdk8435dpn.apps.googleusercontent.com';
-$client_secret ='RFuajea3D6BwQeng2eWgdwFv';
-$redirect_uri = 'http://esteticashirley.com/icloud/';*/
+$client_id = '144850677714-c4plqe32kmrg8ablofs972e814vvg3b5.apps.googleusercontent.com';
+$client_secret ='A652r3j7R99tTFpPKNpFjAzH';
+$redirect_uri = 'https://www.chmd.edu.mx/pruebascd/icloud/';
 
-$client_id = '144850677714-qbl5vkn02todusjsg52cgrgun9rf8km3.apps.googleusercontent.com';
-$client_secret ='B7B6-lNw0mQrIRzkLU6E5Znq';
-$redirect_uri = 'https://www.chmd.edu.mx/pruebas/icloud/';
 
 $client = new Google_Client();
 $client->setClientId($client_id);

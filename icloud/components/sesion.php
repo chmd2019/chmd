@@ -8,29 +8,15 @@ if (isset($_GET['logout'])) {
     unset($_SESSION['access_token']);
 }
 $service = new Google_Service_Oauth2($client);
-
-//echo "$service";
-
 if (isset($_GET['code'])) {
     $client->authenticate($_GET['code']);
     $_SESSION['access_token'] = $client->getAccessToken();
     header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
     exit;
 }
-
 if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
     $client->setAccessToken($_SESSION['access_token']);
 } else {
     $authUrl = $client->createAuthUrl();
 }
 ?>
-
-<div style="overflow: hidden">
-    <br><br>
-    <div class="d-flex">
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <img src="pics/LOGO-HEBREO-MAGEN-DAVID.png"/> &nbsp; &nbsp; 
-        <h3 class="c-blanco">COLEGIO HEBREO<br>MAGUEN DAVID</h3>
-    </div>
-    <br>
-    <br>
-<div>

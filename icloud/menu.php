@@ -1,12 +1,13 @@
 <?php
 include './components/layout_top.php';
 include './components/sesion.php';
+include './components/navbar.php';
 
 if (isset($authUrl)) {
     //show login url
     ?>
     <div class="caja-login" align="center">
-        <h2 class="alert alert-light text-primary text-center" role="alert">Mi Maguen</h2>
+        <h2 class="alert alert-light text-center c-azul" role="alert">Mi Maguen</h2>
         <br><br>
         <?php echo '<a href="' . $authUrl . '"><img src="images/google.png" id="total"/></a>' ?>
     </div>
@@ -23,16 +24,17 @@ if (isset($authUrl)) {
     <!--MENU-->
     <div class="row"><br><br>
         <div class="col-sm-12 col-md-9 b-blanco" style="margin:auto;">
-            <br><br>
             <?php
-            echo '<h2 class="alert alert-light text-primary text-center" role="alert">' . $titulo . '</h2>';
+            echo '<h2 class="alert alert-light  b-azul c-blanco text-center" role="alert">' . $titulo . '</h2>';
             ?>
-            <div class="btn-group mr-3 right" role="group" aria-label="Basic example">
-                <a href="index.php" class="btn btn-secondary" ><i class="fas fa-home"></i>&nbsp;Menú inicial</a>
-                <?php echo '<a href="' . $redirect_uri . '?logout=1" class="btn btn-primary" >'
-                . "<i class='fas fa-sign-out-alt'></i>&nbsp;Salir</a>";
-                ?>
-            </div>
+            <center>                
+                <div class="btn-group" role="group">
+                    <a href="index.php" class="btn white-text b-azul"><i class="fas fa-home"></i>&nbsp;Menú inicial</a>
+                    <?php echo '<a href="' . $redirect_uri . '?logout=1" class="btn btn-danger" >'
+                    . "<i class='fas fa-sign-out-alt'></i>&nbsp;Salir</a>";
+                    ?>
+                </div>
+            </center>
             <div style="clear:both"></div>
             <br>
             <?php
@@ -69,13 +71,11 @@ if (isset($authUrl)) {
                         }
                         ?>
                         <div class='col-sm-12 col-md-3 mb-3'>
-                            <div class='card' style='width: 98%;margin:auto'>
-                                <br>
-                                <img class='card-img-top' src='<?php echo "pics/$estatuis1/$imagen"; ?>' style='width:50%;margin: auto' >
-                                <div class='card-body'>
-                                    <p class="card-text"><?php echo "$mensaje" ?></p>    
-                                    <a href='<?php echo "$link?idmodulo=$idmodulo&idseccion=$idseccion"; ?>' class='btn btn-primary'>Entrar</a>         
-                                </div>
+                            <div class="view p-3 w-100">
+                                <img src="<?php echo "pics/$estatuis1/$imagen"; ?>" class="img-fluid p-3">
+                                <a href='<?php echo "$link?idmodulo=$idmodulo&idseccion=$idseccion"; ?>'>
+                                    <div class="mask rgba-white-slight"></div>
+                                </a>
                             </div>
                         </div>                        
                         <?php
@@ -90,9 +90,7 @@ if (isset($authUrl)) {
         }
         ?>
     </div>
-</div>   
-}
-?><br><br>
+</div> <br><br>
 </div>
 </div>
 <?php include './components/layout_bottom.php'; ?>

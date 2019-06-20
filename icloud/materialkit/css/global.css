@@ -1,0 +1,109 @@
+*{
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+body, html {
+    height: 100%;
+}
+body{
+    height: 100%; 
+    background-image: url('/pruebascd/icloud/pics/body_bg.jpg');
+    background-attachment: scroll;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: 'Varela Round';
+    font-weight: 400;
+}
+.main{    
+    overflow:hidden;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.content-logo{
+    margin-left: 7%;
+}
+.left-menu{
+    margin-left: 80px;
+}
+.logo{
+    width: 90%;
+}
+.menu-mimaguen{
+    font-size: 14px;
+    margin-right: 7%;
+}
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+.c-blanco{
+    color:white !important;
+}
+.b-blanco{
+    background-color: white !important;
+}
+.c-azul{
+    color: #12487E !important;
+}
+.b-azul{
+    background-color: #12487E !important;
+}
+.b-azul_hover:hover{
+    background-color: #12487E !important;
+}
+.c-blanco_hover:hover{
+    color: #FFFFFF !important;
+}
+.c-azul-claro{
+    color: #66BAE5 !important;
+}
+.b-azul-claro{
+    background-color: #66BAE5 !important;
+}
+.c-gris{
+    color: #787878 !important;
+}
+.b-gris{
+    background-color: #787878 !important;
+}
+.right{
+    float: right;
+}
+.left{
+    float:left;
+}
+.borde_superior_amarillo{
+    border-top: 2px solid #FFC000;
+    padding: 0px 0px;
+}
+.borde_superior_blanco{
+    border-top: 1px solid #FFFFFF;
+    padding: 0px 0px;
+}
+.caja-login{
+    background-color: white;
+    padding: 2rem;
+    width: 60%;
+    height: 400px;
+    margin: 60px auto;
+}
+footer{
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+@media screen and (min-width: 280px) and (max-width:960px){
+    .caja-login{
+        width:90%;
+    }
+    .content-logo{
+        margin-left: 0px;
+    }
+    .logo{
+        width:70%;
+    }
+}

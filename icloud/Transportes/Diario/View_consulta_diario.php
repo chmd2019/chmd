@@ -1,6 +1,5 @@
-<button type="btn" id="botonModalInformacionPermiso" class="btn btn-primary" data-toggle="modal" 
-        data-target="#modalInformacionPermiso" hidden></button>
-<div class="modal fade" id="modalInformacionPermiso" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="modal fade" id="modalInformacionPermiso" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -9,7 +8,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body">          
                 <div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
@@ -80,8 +79,9 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success btn-squared" data-dismiss="modal">Aceptar</button>
+                <button type="button" class="btn btn-success w-100" data-dismiss="modal">Aceptar</button>
             </div>
         </div>
     </div>
 </div>
+

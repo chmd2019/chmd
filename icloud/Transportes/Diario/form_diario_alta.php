@@ -1,64 +1,15 @@
-<?php
-include '../components/layout_top.php';
-include '../components/sesion.php';
-$user = $service->userinfo->get(); //get user info
-$correo = $user->email;
-$objCliente = new Login();
-$consulta = $objCliente->Acceso($correo);
-//zona horaria para America/Mexico_city 
-require '../../Helpers/DateHelper.php';
-$objDateHelper = new DateHelper();
-$objDateHelper->set_timezone();
-$fecha_actual = date('m-d-Y');
-$fecha_actual_impresa_script = "<script>var fecha = new Date('$fecha_actual');"
-        . "var options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };"
-        . "fecha = fecha.toLocaleDateString('es-MX', options);"
-        . "fecha = `\${fecha.charAt(0).toUpperCase()}\${fecha.slice(1).toLowerCase()}`;"
-        . "document.write(fecha)</script>";
-if (isset($authUrl)) {
-    //show login url
-    ?>
-    <div class="caja-login" align="center">
-        <h2 class="alert alert-light text-primary text-center" role="alert">Mi Maguen</h2>
-        <br><br>
-        <?php echo '<a href="' . $authUrl . '"><img src="../../images/google.png" id="total"/></a>' ?>
-    </div>
-<?php } else {
-include '../components/navbar.php';
-    ?>
-    <div class="row"><br><br>
-        <div class="col-sm-12 col-md-9 b-blanco" style="margin:auto;">
-            <br>
-            <br>
-            <h2 class="alert alert-light text-center c-azul" role="alert">Cambio del dia</h2>
-
-            <div class="row">
-                <div class="col-sm-12" style="margin:auto">
-                    <center>  
-                        <div class="container">
-                            <?php include('View_Diario.php'); ?> 
-                        </div>
-                    </center> 
-                </div>                
+<div class="modal fade" id="modal_nuevo_permiso_diario" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header text-center blue-gradient">
+                <h4 class="modal-title white-text w-100 font-weight-bold py-2">Nuevo permiso diario</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="white-text">&times;</span>
+                </button>
             </div>
-            <br>
-            <?php
-        }
-        ?>
-        <?php include('form_diario_alta.php'); ?> 
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-  EDWIN PRUEBA AQUI ESTE MODAL PORFA
-</button>
-            <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header blue-gradient">
-        <h5 class="modal-title white-text" id="exampleModalLabel">Nuevo permiso diario</h5>
-        <button type="button" class="close white-text" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
                 <h4 class="text-warning">Información importante</h4>
                 Los cambios para el mismo día deberán solicitarse antes de las 11:30 horas,
@@ -69,6 +20,8 @@ include '../components/navbar.php';
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+
+            <!--Body-->
             <div class="modal-body">
                 <div class="md-form mb-5">
                     <i class="fas fa-calendar-check prefix grey-text"></i>      
@@ -187,13 +140,11 @@ include '../components/navbar.php';
                 </div>
 
             </div>
-      <div class="modal-footer">
-          <button type="button" class="btn peach-gradient white-text" data-dismiss="modal" style="border-radius:30px">Cancelar</button>
-        <button type="button" class="btn blue-gradient white-text" style="border-radius:30px">Enviar</button>
-      </div>
+            <!--Footer-->
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn blue-gradient z-depth-1a c-blanco" style="border-radius: 30px">Enviar <i class="fas fa-paper-plane-o ml-1"></i></button>
+            </div>
+        </div>
+        <!--/.Content-->
     </div>
-  </div>
 </div>
-    </div>
-</div>
-<?php include '../components/layout_bottom.php'; ?>

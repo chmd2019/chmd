@@ -23,13 +23,3 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
     $authUrl = $client->createAuthUrl();
 }
 ?>
-
-<div style="overflow: hidden">
-    <br><br>
-    <div class="d-flex">
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <img src="../../pics/LOGO-HEBREO-MAGEN-DAVID.png"/> &nbsp; &nbsp; 
-        <h3 class="c-blanco">COLEGIO HEBREO<br>MAGUEN DAVID</h3>
-    </div>
-    <br>
-    <br>
-<div>
