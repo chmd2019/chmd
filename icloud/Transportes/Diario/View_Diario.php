@@ -13,12 +13,12 @@ if ($consulta) { //if user already exist change greeting text to "Welcome Back"
                 <h4 class="float-left"><?php echo $fecha_actual_impresa_script; ?></h4>
             </span>
             <div class="col-sm-12 col-md-6">
-                <div class="btn-group float-right" role="group">
-                    <button type="button" class="btn btn-info"  data-toggle="modal" 
-                            data-target="#modal_nuevo_permiso_diario"><i class='fas fa-file'></i>&nbsp;Nuevo</button>
-                    <a href="javascript:history.back(0)" class="btn btn-info"><i class='fas fa-long-arrow-alt-left'></i>&nbsp;Atrás</a>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn white-text b-azul"  data-toggle="modal" 
+                            data-target="#modal_form_diario_alta"><i class='fas fa-file'></i>&nbsp;Nuevo</button>
+                    <a href="javascript:history.back(0)" class="btn white-text b-azul"><i class='fas fa-long-arrow-alt-left'></i>&nbsp;Atrás</a>
                     <?php
-                    echo '<a href="' . $redirect_uri . '?logout=1" class="btn btn-info" >'
+                    echo '<a href="' . $redirect_uri . '?logout=1" class="btn white-text b-azul" >'
                     . "<i class='fas fa-sign-out-alt'></i>&nbsp;Salir</a>";
                     ?>
                 </div>
@@ -130,7 +130,6 @@ if ($consulta) { //if user already exist change greeting text to "Welcome Back"
             <?php include './View_consulta_diario.php'; ?> 
             <!-- Modal Nuevo registro -->            
             <?php
-            include './View_alta_diario.php';
         }
     }
 }

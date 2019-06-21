@@ -8,7 +8,7 @@ if (isset($authUrl)) {
     ?>
     <div class="caja-login" align="center">
         <h2 class="alert alert-light text-center c-azul" role="alert">Mi Maguen</h2>
-        <?php echo '<a  href="' . $authUrl . '"><img style="width:200px" src="images/google.png" id="total"/></a>' ?>
+        <?php echo '<a  href="' . $authUrl . '"><img style="width:200px" src="images/google.png" id="total"/></a>' ;?>
     </div>
     <?php
 } else {

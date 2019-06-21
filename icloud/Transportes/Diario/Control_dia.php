@@ -118,6 +118,37 @@ class Control_dia {
         mysqli_close($connection);
     }
 
+    public function recordar_direccion($campos) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "INSERT INTO direccion_familias (`calle`, `colonia`, `descripcion`, `id_usuario`) "
+                    . "VALUES ('$campos[0]', '$campos[1]', '$campos[2]', '$campos[3]');";
+            $insertar = mysqli_query($connection, $sql);
+            if (!$insertar) {
+                die("error:" . mysqli_error($connection));
+                return false;
+            }
+
+            if ($insertar) {
+                $sql = "COMMIT";
+                mysqli_query($connection, $sql);
+                return true;
+            } else {
+                $sql = "ROLLBACK";
+                mysqli_query($connection, $sql);
+            }
+        }
+        mysqli_close($connection);
+    }
+
+    public function consulta_direccion($id_usuario) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT * FROM direccion_familias WHERE id_usuario ='$id_usuario' ORDER BY descripcion";
+            return mysqli_query($connection, $sql);
+        }
+    }
+
     public function mostrar_permiso_diario($id) {
         $connection = $this->con->conectar1();
         if ($connection) {
