@@ -27,14 +27,12 @@ if (isset($authUrl)) {
             <?php
             echo '<h2 class="alert alert-light  b-azul c-blanco text-center" role="alert">' . $titulo . '</h2>';
             ?>
-            <center>                
-                <div class="btn-group" role="group">
-                    <a href="index.php" class="btn white-text b-azul"><i class="fas fa-home"></i>&nbsp;Menú inicial</a>
-                    <?php echo '<a href="' . $redirect_uri . '?logout=1" class="btn btn-danger" >'
-                    . "<i class='fas fa-sign-out-alt'></i>&nbsp;Salir</a>";
-                    ?>
-                </div>
-            </center>
+            <div class="btn-group mr-3 right" role="group" aria-label="Basic example">
+                <a href="index.php" class="btn btn-default" ><i class="fas fa-home"></i>&nbsp;Menú inicial</a>
+                <?php echo '<a href="' . $redirect_uri . '?logout=1" class="btn btn-danger" >'
+                . "<i class='fas fa-sign-out-alt'></i>&nbsp;Salir</a>";
+                ?>
+            </div>
             <div style="clear:both"></div>
             <br>
             <?php
@@ -71,11 +69,13 @@ if (isset($authUrl)) {
                         }
                         ?>
                         <div class='col-sm-12 col-md-3 mb-3'>
-                            <div class="view p-3 w-100">
+                            <div class="view p-3">
                                 <img src="<?php echo "pics/$estatuis1/$imagen"; ?>" class="img-fluid p-3">
                                 <a href='<?php echo "$link?idmodulo=$idmodulo&idseccion=$idseccion"; ?>'>
                                     <div class="mask rgba-white-slight"></div>
                                 </a>
+                                 <button type="button" class="btn btn-primary w-100" data-toggle="popover" data-placement="top" title="Información"
+                                            data-content="Pedidos de paquete de uniformes incluido en la canasta básica y de uniformes adicionales." >Info</button>
                             </div>
                         </div>                        
                         <?php

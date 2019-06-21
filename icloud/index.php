@@ -7,8 +7,12 @@ if (isset($authUrl)) {
     //show login url
     ?>
     <div class="caja-login" align="center">
-        <h2 class="alert alert-light text-center c-azul" role="alert">Mi Maguen</h2>
-        <?php echo '<a  href="' . $authUrl . '"><img style="width:200px" src="images/google.png" id="total"/></a>' ;?>
+        <h2 class="alert alert-light text-center c-azul" role="alert">
+            Mi Maguen <br>
+             <?php echo '<a  href="' . $authUrl . '"><img src="images/google.png" alt="login" height="187px" width="200px"></a>' ?>
+        </h2>
+       
+        <br>
     </div>
     <?php
 } else {
@@ -32,7 +36,7 @@ if (isset($authUrl)) {
                     <div class="col-sm-12 col-md-9 b-blanco" style="margin:auto;">
                         <?php
                         echo '<h2 class="alert alert-light text-center b-azul c-blanco" role="alert">Mi Maguen ' . $anio_actual . '</h2>';
-                        echo '<a href="' . $redirect_uri . '?logout=1" class="btn btn-pill b-azul white-text mr-3 right">'
+                        echo '<a href="' . $redirect_uri . '?logout=1" class="btn btn-pill btn-primary mr-3 right">'
                         . "<i class='fas fa-sign-out-alt'></i>&nbsp;Salir</a><div style='clear:both'></div>";
                         ?>
                         <br>
@@ -44,57 +48,39 @@ if (isset($authUrl)) {
                                     <a href='menu.php?idseccion=1'>
                                         <div class="mask rgba-white-slight"></div>
                                     </a>
-                                    <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
+                                    <button type="button" class="btn btn-primary w-100" data-toggle="popover" data-placement="top" title="Información"
                                             data-content="Solicitudes de cambio Permanente, Temporal, Del día." >Info</button>
                                 </div>
                             </div>
-                            <div class='col-sm-12 col-md-3 mb-3'>
-                                <div class="view p-3">
-                                    <img src="pics/activos/colegi.png" class="img-fluid p-3 m-auto">
-                                    <a href='http://colegium.chmd.edu.mx'>
-                                        <div class="mask rgba-white-slight"></div>
-                                    </a>
-                                    <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
-                                            data-content="Consulta de evaluación." >Info</button>
-                                </div>
-                            </div>
+                           
                             <div class='col-sm-12 col-md-3 mb-3'>
                                 <div class="view p-3">
                                     <img src="pics/activos/schoolcloud.png" class="img-fluid p-3 m-auto">
                                     <a href='https://users.schoolcloud.net/campus/chmd'>
                                         <div class="mask rgba-white-slight"></div>
                                     </a>
-                                    <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
+                                    <button type="button" class="btn btn-primary w-100" data-toggle="popover" data-placement="top" title="Información"
                                             data-content="Consulta de evaluación." >Info</button>
                                 </div>
                             </div>
-                            <div class='col-sm-12 col-md-3 mb-3'>
-                                <div class="view p-3">
-                                    <img src="pics/activos/facturacion.png" class="img-fluid p-3 m-auto">
-                                    <a href='RFC/RFC.php'>
-                                        <div class="mask rgba-white-slight"></div>
-                                    </a>
-                                    <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
-                                            data-content="Historial de facturas y modificación de datos de facturación." >Info</button>
-                                </div>
-                            </div>
+                           
                             <div class='col-sm-12 col-md-3 mb-3'>
                                 <div class="view p-3">
                                     <img src="pics/activos/uniformes.png" class="img-fluid p-3 m-auto">
                                     <a href='Uniformes/menu.php'>
                                         <div class="mask rgba-white-slight"></div>
                                     </a>
-                                    <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
+                                    <button type="button" class="btn btn-primary w-100" data-toggle="popover" data-placement="top" title="Información"
                                             data-content="Pedidos de paquete de uniformes incluido en la canasta básica y de uniformes adicionales." >Info</button>
                                 </div>
                             </div> 
                             <div class='col-sm-12 col-md-3 mb-3'>
                                 <div class="view p-3">
-                                    <img src="https://chmd.edu.mx/wp-content/uploads/2018/07/iconGaleria.png" class="img-fluid p-3">
-                                    <a href='https://chmd.edu.mx/galeria/' class="mb-3 m-auto">
+                                    <img src="pics/activos/galeria.png" class="img-fluid p-3 m-auto">
+                                    <a href='https://chmd.edu.mx/galeria/'>
                                         <div class="mask rgba-white-slight"></div>
                                     </a>
-                                    <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
+                                    <button type="button" class="btn btn-primary w-100 mt-3" data-toggle="popover" data-placement="top" title="Información"
                                             data-content="Podrás ver las imágenes de eventos del colegio." >Info</button>
                                 </div>  
                             </div>
@@ -104,9 +90,20 @@ if (isset($authUrl)) {
                                     <a href='https://chmd.edu.mx/galeria/'>
                                         <div class="mask rgba-white-slight"></div>
                                     </a>
-                                    <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
+                                    <button type="button" class="btn btn-primary w-100" data-toggle="popover" data-placement="top" title="Información"
                                             data-content="Generar permisos extraordinarios, Cumpleaños, bar mitzvah." >Info</button>
                                 </div>
+                            </div>
+                            
+                              <div class='col-sm-12 col-md-3 mb-3'>
+                                <div class="view p-3">
+                                    <img src="pics/activos/choferes.png" class="img-fluid p-3 m-auto">
+                                    <a href='Eventos/menu.php '>
+                                        <div class="mask rgba-white-slight"></div>
+                                    </a>
+                                    <button type="button" class="btn btn-primary w-100" data-toggle="popover" data-placement="top" title="Información"
+                                            data-content="Podrás realizar un evento y generación de minuta del evento." >Info</button>
+                                </div>                                    
                             </div>
                         </div>
                     </div>
@@ -120,7 +117,7 @@ if (isset($authUrl)) {
                     <div class="col-sm-12 col-md-9 b-blanco" style="margin:auto;">
                         <?php
                         echo '<h2 class="alert alert-light text-center b-azul c-blanco" role="alert">Mi Maguen ' . $anio_actual . '</h2>';
-                        echo '<a href="' . $redirect_uri . '?logout=1" class="btn b-azul white-text btn-pill mr-3 right">'
+                        echo '<a href="' . $redirect_uri . '?logout=1" class="btn btn-primary btn-pill mr-3 right">'
                         . "<i class='fas fa-sign-out-alt'></i>&nbsp;Salir</a><div style='clear:both'></div>";
                         ?>
                         <br>
@@ -131,87 +128,84 @@ if (isset($authUrl)) {
                                     <a href='menu.php?idseccion=1'>
                                         <div class="mask rgba-white-slight"></div>
                                     </a>
-                                    <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
+                                    <button type="button" class="btn btn-primary w-100" data-toggle="popover" data-placement="top" title="Información"
                                             data-content="Solicitudes de cambio Permanente, Temporal, Del día." >Info</button>
                                 </div>
                             </div>
-                            <div class='col-sm-12 col-md-3 mb-3'>
-                                <div class="view p-3">
-                                    <img src="pics/activos/colegi.png" class="img-fluid p-3 m-auto">
-                                    <a href='http://colegium.chmd.edu.mx'>
-                                        <div class="mask rgba-white-slight"></div>
-                                    </a>
-                                    <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
-                                            data-content="Consulta de evaluación." >Info</button>
-                                </div>
-                            </div>
+                          
                             <div class='col-sm-12 col-md-3 mb-3'>
                                 <div class="view p-3">
                                     <img src="pics/activos/schoolcloud.png" class="img-fluid p-3 m-auto">
                                     <a href='https://users.schoolcloud.net/campus/chmd'>
                                         <div class="mask rgba-white-slight"></div>
                                     </a>
-                                    <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
+                                    <button type="button" class="btn btn-primary w-100" data-toggle="popover" data-placement="top" title="Información"
                                             data-content="Consulta de evaluación." >Info</button>
                                 </div>
                             </div>
-                            <div class='col-sm-12 col-md-3 mb-3'>
-                                <div class="view p-3">
-                                    <img src="pics/activos/facturacion.png" class="img-fluid p-3 m-auto">
-                                    <a href='RFC/RFC.php'>
-                                        <div class="mask rgba-white-slight"></div>
-                                    </a>
-                                    <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
-                                            data-content="Historial de facturas y modificación de datos de facturación." >Info</button>
-                                </div>
-                            </div>
+                         
                             <div class='col-sm-12 col-md-3 mb-3'>
                                 <div class="view p-3">
                                     <img src="pics/activos/uniformes.png" class="img-fluid p-3 m-auto">
                                     <a href='Uniformes/menu.php'>
                                         <div class="mask rgba-white-slight"></div>
                                     </a>
-                                    <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
+                                    <button type="button" class="btn btn-primary w-100" data-toggle="popover" data-placement="top" title="Información"
                                             data-content="Pedidos de paquete de uniformes incluido en la canasta básica y de uniformes adicionales." >Info</button>
                                 </div>
                             </div> 
                             <div class='col-sm-12 col-md-3 mb-3'>
                                 <div class="view p-3">
-                                    <img src="https://chmd.edu.mx/wp-content/uploads/2018/07/iconGaleria.png" class="img-fluid p-3 m-auto">
+                                    <img src="pics/activos/galeria.png" class="img-fluid p-3 m-auto">
                                     <a href='https://chmd.edu.mx/galeria/' class="mb-3">
                                         <div class="mask rgba-white-slight"></div>
                                     </a>
-                                    <button type="button" class="btn b-azul white-text mt-3" data-toggle="popover" data-placement="top" title="Información"
+                                    <button type="button" class="btn btn-primary w-100 mt-3" data-toggle="popover" data-placement="top" title="Información"
                                             data-content="Podrás ver las imágenes de eventos del colegio." >Info</button>
                                 </div>                                
                             </div>
+                           
                             <div class='col-sm-12 col-md-3 mb-3'>
                                 <div class="view p-3">
-                                    <img src="pics/activos/eventos.png" class="img-fluid p-3 m-auto">
-                                    <a href='Eventos/menu.php '>
-                                        <div class="mask rgba-white-slight"></div>
-                                    </a>
-                                    <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
-                                            data-content="Podrás realizar un evento y generación de minuta del evento." >Info</button>
-                                </div>                                    
-                            </div>
-                            <div class='col-sm-12 col-md-3 mb-3'>
-                                <div class="view p-3">
-                                    <img src="pics/activos/permisos.png" class="img-fluid p-3">
+                                    <img src="pics/activos/permisos.png" class="img-fluid p-3 m-auto">
                                     <a href='https://chmd.edu.mx/galeria/'>
                                         <div class="mask rgba-white-slight"></div>
                                     </a>
-                                    <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
+                                    <button type="button" class="btn btn-primary w-100" data-toggle="popover" data-placement="top" title="Información"
                                             data-content="Generar permisos extraordinarios, Cumpleaños, bar mitzvah." >Info</button>
                                 </div>
                             </div>
+                            
+                             <div class='col-sm-12 col-md-3 mb-3'>
+                                <div class="view p-3">
+                                    <img src="pics/activos/choferes.png" class="img-fluid p-3 m-auto">
+                                    <a href='Eventos/menu.php '>
+                                        <div class="mask rgba-white-slight"></div>
+                                    </a>
+                                    <button type="button" class="btn btn-primary w-100" data-toggle="popover" data-placement="top" title="Información"
+                                            data-content="Podrás realizar un evento y generación de minuta del evento." >Info</button>
+                                </div>                                    
+                            </div>
+                            
+                            
+                             <div class='col-sm-12 col-md-3 mb-3'>
+                                <div class="view p-3">
+                                    <img src="pics/activos/minuta.png" class="img-fluid p-3 m-auto">
+                                    <a href='Eventos/menu.php '>
+                                        <div class="mask rgba-white-slight"></div>
+                                    </a>
+                                    <button type="button" class="btn btn-primary w-100" data-toggle="popover" data-placement="top" title="Información"
+                                            data-content="Podrás realizar un evento y generación de minuta del evento." >Info</button>
+                                </div>                                    
+                            </div>
+                            
                         </div>
 
                     </div>
                 </div>
                 <?php
             } else {
-                echo '<a href="' . $redirect_uri . '?logout=1" class="btn btn-pill b-azul white-text mr-3 right">'
+                echo '<a href="' . $redirect_uri . '?logout=1" class="btn btn-pill b-azul-claro mr-3 right">'
                 . "<i class='fas fa-sign-out-alt'></i>&nbsp;Salir</a><div style='clear:both'></div>";
                 ?>
                 <div class="row ">                  
