@@ -28,7 +28,7 @@ if (isset($authUrl)) {
             echo '<h2 class="alert alert-light  b-azul c-blanco text-center" role="alert">' . $titulo . '</h2>';
             ?>
             <div class="btn-group mr-3 right" role="group" aria-label="Basic example">
-                <a href="index.php" class="btn btn-default" ><i class="fas fa-home"></i>&nbsp;Menú inicial</a>
+                <a href="index.php" class="btn b-azul white-text" ><i class="fas fa-home"></i>&nbsp;Menú inicial</a>
                 <?php echo '<a href="' . $redirect_uri . '?logout=1" class="btn btn-danger" >'
                 . "<i class='fas fa-sign-out-alt'></i>&nbsp;Salir</a>";
                 ?>
@@ -68,13 +68,13 @@ if (isset($authUrl)) {
                             $estatuis1 = "inactivos";
                         }
                         ?>
-                        <div class='col-sm-12 col-md-3 mb-3'>
+                        <div class='col-sm-12 col-md-3 mb-3 m-auto'>
                             <div class="view p-3">
                                 <img src="<?php echo "pics/$estatuis1/$imagen"; ?>" class="img-fluid p-3">
                                 <a href='<?php echo "$link?idmodulo=$idmodulo&idseccion=$idseccion"; ?>'>
                                     <div class="mask rgba-white-slight"></div>
                                 </a>
-                                 <button type="button" class="btn btn-primary w-100" data-toggle="popover" data-placement="top" title="Información"
+                                 <button type="button" class="btn b-azul white-text w-100" data-toggle="popover" data-placement="top" title="Información"
                                             data-content="Pedidos de paquete de uniformes incluido en la canasta básica y de uniformes adicionales." >Info</button>
                             </div>
                         </div>                        
