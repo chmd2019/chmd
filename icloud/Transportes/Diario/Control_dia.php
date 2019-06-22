@@ -109,6 +109,7 @@ class Control_dia {
             if ($Insertar) {
                 $sql = "COMMIT";
                 mysqli_query($connection, $sql);
+                return true;
             } else {
                 $sql = "ROLLBACK";
                 mysqli_query($connection, $sql);

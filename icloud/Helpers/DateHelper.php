@@ -18,6 +18,10 @@ class DateHelper {
      * para luego comprar con la hora actual, retorna falso si aún no ha 
      * alcanzado el tiempo, y verdadero si ya lo ha alcanzado
      */
+    
+    public function prueba(){
+        return "OK";
+    }
 
     public function get_time_day() {
         $hora_limite = date("11:30");
@@ -76,8 +80,7 @@ class DateHelper {
             return true;
         }
         return false;
-    } 
-
+    }     
 }
 /*
     //zona horaria para America/Mexico_city 
