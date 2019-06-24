@@ -1,8 +1,8 @@
 <?php
 
 //require_once("Class_login.php");
-include_once("../Model/DBManager.php");
-include_once '../Helpers/DateHelper.php';
+include_once("../../../Model/DBManager.php");
+include_once '../../../Helpers/DateHelper.php';
 
 class Control_dia {
 
@@ -57,7 +57,6 @@ class Control_dia {
         }
     }
 
-    ///formato DIario
     public function Diario_Alta($campos) {
         $hoy = date("Y-m-d");
         $connection = $this->con->conectar1();
@@ -109,6 +108,7 @@ class Control_dia {
             if ($Insertar) {
                 $sql = "COMMIT";
                 mysqli_query($connection, $sql);
+                return true;
             } else {
                 $sql = "ROLLBACK";
                 mysqli_query($connection, $sql);
@@ -116,6 +116,66 @@ class Control_dia {
         }
         // Close connection
         mysqli_close($connection);
+    }
+
+    public function recordar_direccion($campos) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "INSERT INTO direccion_familias (`calle`, `colonia`, `descripcion`, `id_usuario`) "
+                    . "VALUES ('$campos[0]', '$campos[1]', '$campos[2]', '$campos[3]');";
+            $insertar = mysqli_query($connection, $sql);
+            if (!$insertar) {
+                die("error:" . mysqli_error($connection));
+                return false;
+            }
+
+            if ($insertar) {
+                $sql = "COMMIT";
+                mysqli_query($connection, $sql);
+                return true;
+            } else {
+                $sql = "ROLLBACK";
+                mysqli_query($connection, $sql);
+            }
+        }
+        mysqli_close($connection);
+    }
+
+    public function consulta_direccion($id_usuario) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT * FROM direccion_familias WHERE id_usuario ='$id_usuario' ORDER BY descripcion";
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function mostrar_permiso_diario($id) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "select vpd.id,vpd.fecha2,vs.correo,usu.calle,usu.colonia,usu.cp,vpd.calle_numero,vpd.colonia,
+                                vpd.cp,vpd.ruta,vpd.comentarios,vpd.alumno1,vpd.alumno2,vpd.alumno3,vpd.alumno4,vpd.alumno5,
+                                vpd.mensaje,vpd.fecha1 from Ventana_Permiso_diario vpd LEFT JOIN Ventana_user vs on vpd.idusuario=vs.id
+                                LEFT JOIN usuarios usu on vpd.nfamilia=usu.`password` where vpd.id=$id";
+            mysqli_set_charset($connection, 'utf8');
+            return mysqli_query($connection, $sql);
+        }
+    }
+    public function consulta_alumno($id) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT nombre from alumnoschmd where id='$id'";
+            mysqli_set_charset($connection, 'utf8');            
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function mostrar_alumnos_permiso($alumno1, $alumno2, $alumno3, $alumno4, $alumno5) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "select id,nombre,grado,grupo from alumnoschmd where id in($alumno1,$alumno2,$alumno3,$alumno4,$alumno5)";
+            mysqli_set_charset($connection, 'utf8');
+            return mysqli_query($connection, $sql);
+        }
     }
 
     public function comprueba_cancelacion_transporte($id) {
@@ -128,16 +188,20 @@ class Control_dia {
             }
         }
     }
-    
+
     public function cancela_permiso_diario($id) {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "UPDATE Ventana_Permiso_diario SET estatus = 4 WHERE id =$id";
-            mysqli_set_charset($connection,'utf8');
+            mysqli_set_charset($connection, 'utf8');
             mysqli_query($connection, $sql);
             return true;
         }
         return false;
+    }
+    
+    public  function prueba(){
+        return "OK";
     }
 
 }

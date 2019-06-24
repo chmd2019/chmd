@@ -8,9 +8,10 @@ $arrayDias = array('Domingo', 'Lunes', 'Martes',
 if ($consulta) { //if user already exist change greeting text to "Welcome Back"
     if ($cliente = mysqli_fetch_array($consulta)) {
         ?>
+
         <div class="d-flex row">
             <span class="col-sm-12 col-md-6">
-                <h4 class="float-left"><?php echo $fecha_actual_impresa_script; ?></h4>
+                <h4 class="float-left"><?php echo $objDateHelper->fecha_formato_datalle(date("m/d/Y")); ?></h4>
             </span>
             <div class="col-sm-12 col-md-6">
                 <div class="btn-group" role="group">
@@ -33,7 +34,7 @@ if ($consulta) { //if user already exist change greeting text to "Welcome Back"
         $estatus = $cliente[3];
         $familia = $cliente[4];
         /////////////////////////////////
-        require('./Control_dia.php');
+        require('./posts_gets/Control_dia.php');
         $objDia = new Control_dia();
         $consulta2 = $objDia->mostrar_diario($familia);
         $domicilio = $objDia->mostrar_domicilio($familia);
@@ -53,9 +54,9 @@ if ($consulta) { //if user already exist change greeting text to "Welcome Back"
             ?>
 
             <!--Pinta solo el encabezado de la tabla-->
-            <table class="table table-borderless table-light">
+            <table class="table table-hover">
                 <thead>
-                    <tr>
+                    <tr class="w-100  b-azul white-text">
                         <th scope="col">Fecha programada</th>
                         <th scope="col">Estatus</th>
                         <th scope="col">Acciones</th>
@@ -76,21 +77,15 @@ if ($consulta) { //if user already exist change greeting text to "Welcome Back"
                         $objControlDia = new Control_dia();
                         $consulta_permiso_diario = $objControlDia->comprueba_cancelacion_transporte($Idpermiso);
                         $permiso_diario = mysqli_fetch_array($consulta_permiso_diario);
-
-                        if (!$objDateHelper->obtener_hora_limite() && !$objDateHelper->comprobar_solicitud_no_vencida($fecha_destino)) {
-                            $mostrar_boton_cancelar_permiso_ver = '<button type="button" class="btn btn-danger"><i class="fas fa-trash"></i></button>';
+                        $ver_btn_cancelar = "";
+                        if ($objDateHelper->obtener_hora_limite() && $objDateHelper->comprobar_fecha_igual($fecha_destino) || $status1 != 1) {
+                            $ver_btn_cancelar = "d-none";
                         }
                         if ($fecha_destino == "0") {
                             $fecha_destino = $fecha_solicitud;
                         } else {
                             $fecha_destino = str_replace("/", "-", $fecha_destino);
                             $fecha_destino = date("m-d-Y", strtotime($fecha_destino));
-                        }
-                        //formato de fechas
-                        if (is_null($fecha_destino)) {
-                            $fechaFormateada = "Error al ingresar la fecha";
-                        } else {
-                            $fechaFormateada = $objDateHelper->fecha_formato_datalle($fecha_destino);
                         }
                         if ($status1 == 1) {
                             $status_detalle = "Pendiente";
@@ -107,15 +102,14 @@ if ($consulta) { //if user already exist change greeting text to "Welcome Back"
                         if ($solicitud_vencida = $objDateHelper->comprobar_solicitud_vencida($fecha_destino)) {
                             ?> 
                             <!--Pinta en filas cada registro encontrado por el while y verifica si esta vencida con el if-->
-
-                            <tr>
-                                <th scope="row"><?php echo $objDateHelper->fecha_formato_datalle($fecha_destino); ?></th>
+                            <tr class="w-100" style="cursor:pointer">
+                                <th scope="row"><?php echo $objDateHelper->fecha_formato_mexico($fecha_destino); ?></th>
                                 <td><?php echo "$status_detalle"; ?></td>
                                 <td>            
-                                    <div class="col-sm-12 col-md-6">
-                                        <div class="btn-group float-right" role="group">
-                                            <button type="button" class="btn btn-success" onclick="consultar_registro('<?php echo "$Idpermiso" ?>', '<?php echo "$familia" ?>')"><i class='fas fa-binoculars'></i></button>
-                                            <?php echo $mostrar_boton_cancelar_permiso_ver; ?>
+                                    <div class="col-sm-12 col-md-6 m-auto">
+                                        <div class="btn-group" role="group">
+                                            <?php include('./modales/modal_consulta_diario.php'); ?>   
+                                            <?php include('./modales/modal_cancelar_permiso.php'); ?>   
                                         </div>
                                     </div>
                                 </td>
@@ -125,10 +119,7 @@ if ($consulta) { //if user already exist change greeting text to "Welcome Back"
                     }
                     ?>
                 </tbody>
-            </table>
-            <!-- Modal consultar permiso -->
-            <?php include './View_consulta_diario.php'; ?> 
-            <!-- Modal Nuevo registro -->            
+            </table>        
             <?php
         }
     }

@@ -25,7 +25,7 @@ $fecha_solicitud_nuevo = $_POST['fecha_solicitud_nuevo'];
 $fecha_permiso_nuevo = $_POST['fecha_permiso_nuevo'];
 
 $hora_limite = $date_helper->obtener_hora_limite();
-if ($hora_limite) {
+if ($hora_limite && $date_helper->comprobar_igual_actual($fecha_permiso_nuevo)) {
     echo 0;
     return;
 }

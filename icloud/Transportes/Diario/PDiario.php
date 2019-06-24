@@ -28,7 +28,7 @@ if (isset($authUrl)) {
     include '../components/navbar.php';
     ?>
     <div class="row"><br><br>
-        <div class="col-sm-12 col-md-9 b-blanco" style="margin:auto;">
+        <div class="col-sm-12 col-md-9 b-blanco border border-primary" style="margin:auto;">
             <br>
             <br>
             <h2 class="alert alert-light text-center c-azul" role="alert">Cambio del dia</h2>
@@ -45,8 +45,8 @@ if (isset($authUrl)) {
             <br>
             <?php
         }
-        ?>
-        <?php include('./form_diario_alta.php'); ?>         
+        ?>        
+        <?php include('./modales/modal_form_diario_alta.php'); ?>        
     </div>
 </div>
 <?php include '../components/layout_bottom.php'; ?>

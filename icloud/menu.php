@@ -70,7 +70,7 @@ if (isset($authUrl)) {
                         ?>
                         <div class='col-sm-12 col-md-3 mb-3 m-auto'>
                             <div class="view p-3">
-                                <img src="<?php echo "pics/$estatuis1/$imagen"; ?>" class="img-fluid p-3">
+                                <img src="<?php echo "pics/$estatuis1/$imagen"; ?>" class="img-fluid p-3 m-auto">
                                 <a href='<?php echo "$link?idmodulo=$idmodulo&idseccion=$idseccion"; ?>'>
                                     <div class="mask rgba-white-slight"></div>
                                 </a>

@@ -232,23 +232,6 @@
     $(document).ready(function () {
         consultar_direcciones("<?php echo "$id_usuario"; ?>");
     });
-    (function () {
-        'use strict';
-        window.addEventListener('load', function () {
-// Fetch all the forms we want to apply custom Bootstrap validation styles to
-            var forms = document.getElementsByClassName('needs-validation');
-// Loop over them and prevent submission
-            var validation = Array.prototype.filter.call(forms, function (form) {
-                form.addEventListener('submit', function (event) {
-                    if (form.checkValidity() === false) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                    }
-                    form.classList.add('was-validated');
-                }, false);
-            });
-        }, false);
-    })();
     function mostrar_ocultar_calendario_permiso() {
 
         var display_fecha_permiso = $("#display-fecha-permiso");
@@ -286,7 +269,7 @@
         if (dato !== "0" && dato !== "1") {
             var data = [];
             $.ajax({
-                url: "get_consultar_direcciones.php",
+                url: "https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Diario/posts_gets/get_consultar_direcciones.php",
                 type: "GET",
                 data: {"id_usuario":<?php echo "$id"; ?>},
                 success: function (res) {
@@ -309,14 +292,6 @@
             $('#descripcion_recordar_direccion').val("");
         }
 
-        /*
-         $("#calle_nuevo").val('eeeeee');
-         $("#colonia_nuevo").val('rrrrr');
-         $("#cp_nuevo").val('uuuuuuuu');
-         $('#recordar_direccion').prop("checked", false);
-         $('#container_descripcion_recordar_direccion').removeClass("show");
-         $('#container_descripcion_recordar_direccion').addClass("d-none");
-         $('#descripcion_recordar_direccion').val("");*/
     }
     function recordar_direccion() {
         if ($('#recordar_direccion').is(":checked")) {
@@ -362,7 +337,7 @@
                 "id_usuario":<?php echo "$id"; ?>
             }
             $.ajax({
-                url: "post_nueva_direccion.php",
+                url: "https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Diario/posts_gets/post_nueva_direccion.php",
                 type: "POST",
                 data: data,
                 success: function () {
@@ -389,7 +364,7 @@
     function consultar_direcciones() {
         var data = [];
         $.ajax({
-            url: "get_consultar_direcciones.php",
+            url: "https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Diario/posts_gets/get_consultar_direcciones.php",
             type: "GET",
             data: {"id_usuario":<?php echo "$id"; ?>},
             success: function (res) {
@@ -499,12 +474,12 @@
                 model.alumno_5 = alumno_5.val();
             }
             $.ajax({
-                url: "post_nuevo_permiso_diario.php",
+                url: "https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Diario/posts_gets/post_nuevo_permiso_diario.php",
                 type: "POST",
                 data: model,
                 success: function (res) {
                     if (res == 0) {
-                        swal("Información", "Lamentablemente ha superado la hora establecida para este procedimiento", "error");
+                        swal("Información", "No puede solicitar un permiso para el dia actual, después de 11:30 AM", "error");
                         setInterval(() => {
                             location.reload();
                         }, 4000);
