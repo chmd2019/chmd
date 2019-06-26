@@ -40,7 +40,7 @@
         </li>
     </ul>
     <!--Navbar-->
-    <div class="navbar navbar-expand-lg b-azul w-100 borde_superior_blanco">
+    <div class="navbar navbar-expand-lg b-azul w-100">
         <!-- Collapsible content -->
         <div class="left-menu">
             <!-- Links -->

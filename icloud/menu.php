@@ -25,11 +25,12 @@ if (isset($authUrl)) {
     <div class="row"><br><br>
         <div class="col-sm-12 col-md-9 b-blanco" style="margin:auto;">
             <?php
-            echo '<h2 class="alert alert-light  b-azul c-blanco text-center" role="alert">' . $titulo . '</h2>';
+            echo '<h2 class="alert alert-light  b-azul c-blanco text-center border-azul border-radius-none" role="alert">' . $titulo . '</h2>';
             ?>
-            <div class="btn-group mr-3 right" role="group" aria-label="Basic example">
+            <div class="btn-group right" role="group">
                 <a href="index.php" class="btn b-azul white-text" ><i class="fas fa-home"></i>&nbsp;Menú inicial</a>
-                <?php echo '<a href="' . $redirect_uri . '?logout=1" class="btn btn-danger" >'
+                <?php
+                echo '<a href="' . $redirect_uri . '?logout=1" class="btn btn-danger" >'
                 . "<i class='fas fa-sign-out-alt'></i>&nbsp;Salir</a>";
                 ?>
             </div>
@@ -74,8 +75,8 @@ if (isset($authUrl)) {
                                 <a href='<?php echo "$link?idmodulo=$idmodulo&idseccion=$idseccion"; ?>'>
                                     <div class="mask rgba-white-slight"></div>
                                 </a>
-                                 <button type="button" class="btn b-azul white-text w-100" data-toggle="popover" data-placement="top" title="Información"
-                                            data-content="Pedidos de paquete de uniformes incluido en la canasta básica y de uniformes adicionales." >Info</button>
+                                <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
+                                        data-content="Pedidos de paquete de uniformes incluido en la canasta básica y de uniformes adicionales." >Info</button>
                             </div>
                         </div>                        
                         <?php
@@ -89,9 +90,10 @@ if (isset($authUrl)) {
             }
         }
         ?>
+        <br>
+        <br>
     </div>
-</div> <br><br>
-</div>
+</div> 
 </div>
 <?php include './components/layout_bottom.php'; ?>
 

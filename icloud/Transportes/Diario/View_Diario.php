@@ -8,23 +8,13 @@ $arrayDias = array('Domingo', 'Lunes', 'Martes',
 if ($consulta) { //if user already exist change greeting text to "Welcome Back"
     if ($cliente = mysqli_fetch_array($consulta)) {
         ?>
-
-        <div class="d-flex row">
-            <span class="col-sm-12 col-md-6">
-                <h4 class="float-left"><?php echo $objDateHelper->fecha_formato_datalle(date("m/d/Y")); ?></h4>
+        <br>
+        <div>
+            <span>
+                <h6 class=""><?php echo $objDateHelper->fecha_formato_datalle(date("m/d/Y")); ?></h6>
             </span>
-            <div class="col-sm-12 col-md-6">
-                <div class="btn-group" role="group">
-                    <button type="button" class="btn white-text b-azul"  data-toggle="modal" 
-                            data-target="#modal_form_diario_alta"><i class='fas fa-file'></i>&nbsp;Nuevo</button>
-                    <a href="javascript:history.back(0)" class="btn white-text b-azul"><i class='fas fa-long-arrow-alt-left'></i>&nbsp;Atrás</a>
-                    <?php
-                    echo '<a href="' . $redirect_uri . '?logout=1" class="btn white-text b-azul" >'
-                    . "<i class='fas fa-sign-out-alt'></i>&nbsp;Salir</a>";
-                    ?>
-                </div>
-            </div>
         </div>
+        <br>
         <br>
 
         <?php
@@ -54,9 +44,9 @@ if ($consulta) { //if user already exist change greeting text to "Welcome Back"
             ?>
 
             <!--Pinta solo el encabezado de la tabla-->
-            <table class="table table-hover">
+            <table class="highlight">
                 <thead>
-                    <tr class="w-100  b-azul white-text">
+                    <tr class="b-azul white-text">
                         <th scope="col">Fecha programada</th>
                         <th scope="col">Estatus</th>
                         <th scope="col">Acciones</th>
@@ -102,15 +92,22 @@ if ($consulta) { //if user already exist change greeting text to "Welcome Back"
                         if ($solicitud_vencida = $objDateHelper->comprobar_solicitud_vencida($fecha_destino)) {
                             ?> 
                             <!--Pinta en filas cada registro encontrado por el while y verifica si esta vencida con el if-->
-                            <tr class="w-100" style="cursor:pointer">
+                            <tr style="cursor:pointer;">
                                 <th scope="row"><?php echo $objDateHelper->fecha_formato_mexico($fecha_destino); ?></th>
                                 <td><?php echo "$status_detalle"; ?></td>
                                 <td>            
-                                    <div class="col-sm-12 col-md-6 m-auto">
-                                        <div class="btn-group" role="group">
-                                            <?php include('./modales/modal_consulta_diario.php'); ?>   
-                                            <?php include('./modales/modal_cancelar_permiso.php'); ?>   
+                                    <div class="row">
+                                        <div class="col s12 l3">  
+                                            <?php //include './modales/modal_consulta_diario.php'; ?>
+                                            <a class="waves-effect waves-light btn green accent-3" 
+                                               href="https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Diario/vistas/vista_consulta_permiso_diario.php?id=<?php echo $Idpermiso;?>&&familia=<?php echo $familia;?>">
+                                                <i class="material-icons">pageview</i>
+                                            </a>
                                         </div>
+                                        &nbsp;
+                                        <div class="col s12 l3">  
+                                            <?php include './modales/modal_cancelar_permiso.php'; ?>
+                                        </div>                                    
                                     </div>
                                 </td>
                             </tr> 
@@ -125,3 +122,8 @@ if ($consulta) { //if user already exist change greeting text to "Welcome Back"
     }
 }
 ?>
+<script>
+    $(document).ready(function () {
+        $('.modal').modal();
+    });
+</script>

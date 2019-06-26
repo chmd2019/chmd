@@ -35,7 +35,7 @@ if (isset($authUrl)) {
                 <div class="row"><br><br>
                     <div class="col-sm-12 col-md-9 b-blanco" style="margin:auto;">
                         <?php
-                        echo '<h2 class="alert alert-light text-center b-azul c-blanco" role="alert">Mi Maguen ' . $anio_actual . '</h2>';
+                        echo '<h2 class="alert alert-light text-center b-azul c-blanco border-azul border-radius-none" role="alert">Mi Maguen ' . $anio_actual . '</h2>';
                         echo '<a href="' . $redirect_uri . '?logout=1" class="btn btn-pill b-azul white-text mr-3 right">'
                         . "<i class='fas fa-sign-out-alt'></i>&nbsp;Salir</a><div style='clear:both'></div>";
                         ?>
@@ -48,7 +48,7 @@ if (isset($authUrl)) {
                                     <a href='menu.php?idseccion=1'>
                                         <div class="mask rgba-white-slight"></div>
                                     </a>
-                                    <button type="button" class="btn b-azul white-text w-100" data-toggle="popover" data-placement="top" title="Información"
+                                    <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
                                             data-content="Solicitudes de cambio Permanente, Temporal, Del día." >Info</button>
                                 </div>
                             </div>
@@ -59,7 +59,7 @@ if (isset($authUrl)) {
                                     <a href='https://users.schoolcloud.net/campus/chmd'>
                                         <div class="mask rgba-white-slight"></div>
                                     </a>
-                                    <button type="button" class="btn b-azul white-text w-100" data-toggle="popover" data-placement="top" title="Información"
+                                    <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
                                             data-content="Consulta de evaluación." >Info</button>
                                 </div>
                             </div>
@@ -70,7 +70,7 @@ if (isset($authUrl)) {
                                     <a href='Uniformes/menu.php'>
                                         <div class="mask rgba-white-slight"></div>
                                     </a>
-                                    <button type="button" class="btn b-azul white-text w-100" data-toggle="popover" data-placement="top" title="Información"
+                                    <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
                                             data-content="Pedidos de paquete de uniformes incluido en la canasta básica y de uniformes adicionales." >Info</button>
                                 </div>
                             </div> 
@@ -80,7 +80,7 @@ if (isset($authUrl)) {
                                     <a href='https://chmd.edu.mx/galeria/'>
                                         <div class="mask rgba-white-slight"></div>
                                     </a>
-                                    <button type="button" class="btn b-azul white-text w-100" data-toggle="popover" data-placement="top" title="Información"
+                                    <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
                                             data-content="Podrás ver las imágenes de eventos del colegio." >Info</button>
                                 </div>  
                             </div>
@@ -90,7 +90,7 @@ if (isset($authUrl)) {
                                     <a href='https://chmd.edu.mx/galeria/'>
                                         <div class="mask rgba-white-slight"></div>
                                     </a>
-                                    <button type="button" class="btn b-azul white-text w-100" data-toggle="popover" data-placement="top" title="Información"
+                                    <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
                                             data-content="Generar permisos extraordinarios, Cumpleaños, bar mitzvah." >Info</button>
                                 </div>
                             </div>
@@ -101,7 +101,7 @@ if (isset($authUrl)) {
                                     <a href='Eventos/menu.php '>
                                         <div class="mask rgba-white-slight"></div>
                                     </a>
-                                    <button type="button" class="btn b-azul white-text w-100" data-toggle="popover" data-placement="top" title="Información"
+                                    <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
                                             data-content="Podrás realizar un evento y generación de minuta del evento." >Info</button>
                                 </div>                                    
                             </div>
@@ -116,7 +116,7 @@ if (isset($authUrl)) {
                 <div class="row"><br><br>
                     <div class="col-sm-12 col-md-9 b-blanco" style="margin:auto;">
                         <?php
-                        echo '<h2 class="alert alert-light text-center b-azul c-blanco" role="alert">Mi Maguen ' . $anio_actual . '</h2>';
+                        echo '<h2 class="alert alert-light text-center b-azul c-blanco border-azul border-radius-none" role="alert">Mi Maguen ' . $anio_actual . '</h2>';
                         echo '<a href="' . $redirect_uri . '?logout=1" class="btn b-azul white-text btn-pill mr-3 right">'
                         . "<i class='fas fa-sign-out-alt'></i>&nbsp;Salir</a><div style='clear:both'></div>";
                         ?>
@@ -128,7 +128,11 @@ if (isset($authUrl)) {
                                     <a href='menu.php?idseccion=1'>
                                         <div class="mask rgba-white-slight"></div>
                                     </a>
-                                    <button type="button" class="btn b-azul white-text w-100" data-toggle="popover" data-placement="top" title="Información"
+                                    <button type="button" 
+                                            class="btn b-azul white-text" 
+                                            data-toggle="popover" 
+                                            data-placement="top" 
+                                            title="Información"
                                             data-content="Solicitudes de cambio Permanente, Temporal, Del día." >Info</button>
                                 </div>
                             </div>
@@ -139,7 +143,7 @@ if (isset($authUrl)) {
                                     <a href='https://users.schoolcloud.net/campus/chmd'>
                                         <div class="mask rgba-white-slight"></div>
                                     </a>
-                                    <button type="button" class="btn b-azul white-text w-100" data-toggle="popover" data-placement="top" title="Información"
+                                    <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
                                             data-content="Consulta de evaluación." >Info</button>
                                 </div>
                             </div>
@@ -150,7 +154,7 @@ if (isset($authUrl)) {
                                     <a href='Uniformes/menu.php'>
                                         <div class="mask rgba-white-slight"></div>
                                     </a>
-                                    <button type="button" class="btn b-azul white-text w-100" data-toggle="popover" data-placement="top" title="Información"
+                                    <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
                                             data-content="Pedidos de paquete de uniformes incluido en la canasta básica y de uniformes adicionales." >Info</button>
                                 </div>
                             </div> 
@@ -160,7 +164,7 @@ if (isset($authUrl)) {
                                     <a href='https://chmd.edu.mx/galeria/' class="mb-3">
                                         <div class="mask rgba-white-slight"></div>
                                     </a>
-                                    <button type="button" class="btn b-azul white-text w-100 mt-3" data-toggle="popover" data-placement="top" title="Información"
+                                    <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
                                             data-content="Podrás ver las imágenes de eventos del colegio." >Info</button>
                                 </div>                                
                             </div>
@@ -171,7 +175,7 @@ if (isset($authUrl)) {
                                     <a href='https://chmd.edu.mx/galeria/'>
                                         <div class="mask rgba-white-slight"></div>
                                     </a>
-                                    <button type="button" class="btn b-azul white-text w-100" data-toggle="popover" data-placement="top" title="Información"
+                                    <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
                                             data-content="Generar permisos extraordinarios, Cumpleaños, bar mitzvah." >Info</button>
                                 </div>
                             </div>
@@ -182,7 +186,7 @@ if (isset($authUrl)) {
                                     <a href='Eventos/menu.php '>
                                         <div class="mask rgba-white-slight"></div>
                                     </a>
-                                    <button type="button" class="btn b-azul white-text w-100" data-toggle="popover" data-placement="top" title="Información"
+                                    <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
                                             data-content="Podrás realizar un evento y generación de minuta del evento." >Info</button>
                                 </div>                                    
                             </div>
@@ -194,7 +198,7 @@ if (isset($authUrl)) {
                                     <a href='Eventos/menu.php '>
                                         <div class="mask rgba-white-slight"></div>
                                     </a>
-                                    <button type="button" class="btn b-azul white-text w-100" data-toggle="popover" data-placement="top" title="Información"
+                                    <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
                                             data-content="Podrás realizar un evento y generación de minuta del evento." >Info</button>
                                 </div>                                    
                             </div>
@@ -216,70 +220,70 @@ if (isset($authUrl)) {
                                 <div class='card border border-0' style='width: 98%;margin:auto;'>
                                     <img class='card-img-top' src='pics/hangout.png' style='width:50%;margin: auto'>
                                     <br>
-                                    <a href='https://hangouts.google.com/' class='btn b-azul white-text w-50 m-auto'>Entrar</a>
+                                    <a href='https://hangouts.google.com/' class='btn b-azul white-text m-auto'>Entrar</a>
                                 </div>
                             </div>
                             <div class='col-sm-12 col-md-3 mb-3'>
                                 <div class='card border border-0' style='width: 98%;margin:auto;'>
                                     <img class='card-img-top' src='pics/calendar.png' style='width:50%;margin: auto' >
                                     <br>
-                                    <a href='https://www.google.com/calendar?tab=mc' class='btn b-azul white-text w-50 m-auto'>Entrar</a>   
+                                    <a href='https://www.google.com/calendar?tab=mc' class='btn b-azul white-text m-auto'>Entrar</a>   
                                 </div>
                             </div>
                             <div class='col-sm-12 col-md-3 mb-3'>
                                 <div class='card border border-0' style='width: 98%;margin:auto;'>
                                     <img class='card-img-top' src='pics/classroom.png' style='width:50%;margin: auto' >
                                     <br>
-                                    <a href='http://classroom.google.com/' class='btn b-azul white-text w-50 m-auto'>Entrar</a>
+                                    <a href='http://classroom.google.com/' class='btn b-azul white-text m-auto'>Entrar</a>
                                 </div>
                             </div>
                             <div class='col-sm-12 col-md-3 mb-3'>
                                 <div class='card border border-0' style='width: 98%;margin:auto;'>
                                     <img class='card-img-top' src='pics/drive.png' style='width:50%;margin: auto' >
                                     <br>
-                                    <a href='https://drive.google.com/?tab=mo&authuser=0' class='btn b-azul white-text w-50 m-auto'>Entrar</a>
+                                    <a href='https://drive.google.com/?tab=mo&authuser=0' class='btn b-azul white-text m-auto'>Entrar</a>
                                 </div>
                             </div>
                             <div class='col-sm-12 col-md-3 mb-3'>
                                 <div class='card border border-0' style='width: 98%;margin:auto;'>
                                     <img class='card-img-top' src='pics/ebsco.png' style='width:50%;margin: auto'  >
                                     <br>
-                                    <a href='http://search.ebscohost.com/login.aspx?authtype=uid&user=maguen&password=ebsco&group=main' class='btn b-azul white-text w-50 m-auto'>Entrar</a>
+                                    <a href='http://search.ebscohost.com/login.aspx?authtype=uid&user=maguen&password=ebsco&group=main' class='btn b-azul white-text m-auto'>Entrar</a>
                                 </div>
                             </div> 
                             <div class='col-sm-12 col-md-3 mb-3'>
                                 <div class='card border border-0' style='width: 98%;margin:auto;'>
                                     <img class='card-img-top' src='pics/gmail.png' style='width:50%;margin: auto'>
                                     <br>
-                                    <a href='https://mail.google.com/mail/?tab=mm' class='btn b-azul white-text w-50 m-auto'>Entrar</a>    
+                                    <a href='https://mail.google.com/mail/?tab=mm' class='btn b-azul white-text m-auto'>Entrar</a>    
                                 </div>
                             </div>
                             <div class='col-sm-12 col-md-3 mb-3'>
                                 <div class='card border border-0' style='width: 98%;margin:auto;'>
                                     <img class='card-img-top' src='pics/moodle.png' style='width:50%;margin: auto' >
                                     <br>
-                                    <a href='http://chmd.chmd.edu.mx:61085/login/index.php' class='btn b-azul white-text w-50 m-auto'>Entrar</a>
+                                    <a href='http://chmd.chmd.edu.mx:61085/login/index.php' class='btn b-azul white-text m-auto'>Entrar</a>
                                 </div>
                             </div>
                             <div class='col-sm-12 col-md-3 mb-3'>
                                 <div class='card border border-0' style='width: 98%;margin:auto;'>
                                     <img class='card-img-top' src='pics/sites.png' style='width:50%;margin: auto' >
                                     <br>
-                                    <a href='https://sites.google.com/?tab=m3' class='btn b-azul white-text w-50 m-auto'>Entrar</a> 
+                                    <a href='https://sites.google.com/?tab=m3' class='btn b-azul white-text m-auto'>Entrar</a> 
                                 </div>
                             </div>
                             <div class='col-sm-12 col-md-3 mb-3'>
                                 <div class='card border border-0' style='width: 98%;margin:auto;'>
                                     <img class='card-img-top' src='pics/colegium.png' style='width:50%;margin: auto' >
                                     <br>
-                                    <a href='http://sn3.colegium.com/es_CL/login/alternativo?id=1583E1CHMD-mx.sha1(YobA6ixTNSO2klMq+1).1' class='btn b-azul white-text w-50 m-auto'>Entrar</a>
+                                    <a href='http://sn3.colegium.com/es_CL/login/alternativo?id=1583E1CHMD-mx.sha1(YobA6ixTNSO2klMq+1).1' class='btn b-azul white-text m-auto'>Entrar</a>
                                 </div>
                             </div>
                             <div class='col-sm-12 col-md-3 mb-3'>
                                 <div class='card border border-0' style='width: 98%;margin:auto;'>
                                     <img class='card-img-top' src='pics/brainpop.png' style='width:50%;margin: auto' >
                                     <br>                                    
-                                    <a href='http://esp.brainpop.com/user/loginDo.weml?user=maguen1&password=biblioteca' class='btn b-azul white-text w-50 m-auto'>Entrar</a> 
+                                    <a href='http://esp.brainpop.com/user/loginDo.weml?user=maguen1&password=biblioteca' class='btn b-azul white-text m-auto'>Entrar</a> 
                                 </div>
                             </div>
                         </div>
