@@ -4,7 +4,7 @@ include 'conexion.php';
 $time = time();
  $arrayMeses = array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
- 
+
    $arrayDias = array( 'Domingo', 'Lunes', 'Martes',
        'Miercoles', 'Jueves', 'Viernes', 'Sabado');
 $conexion = mysql_connect ( $host, $usuario, $password ) or die ( "Fallo en el establecimiento de la conexión" );
@@ -19,7 +19,7 @@ $existe = '';
 
 if(isset($_POST['submit']))
  {
-    
+
 $idusuario= htmlspecialchars(trim($_POST['idusuario']));
 $alumno1 = htmlspecialchars(trim($_POST['alumno1']));
 $alumno2 = htmlspecialchars(trim($_POST['alumno2']));
@@ -60,14 +60,14 @@ comentarios,
 talumnos,
 nfamilia,
 fecha2)
- VALUES ( 
+ VALUES (
  '".$idusuario."',
  '".$alumno1."',
  '".$alumno2."',
  '".$alumno3."',
  '".$alumno4."',
  '".$alumno5."',
- '".$calle."', 
+ '".$calle."',
  '".$colonia."',
  '".$cp."',
  '".$lunes."',
@@ -109,7 +109,7 @@ else
 </head>
 
 <body>
-	
+
 
 	<div class="container">
 
@@ -128,38 +128,34 @@ else
 			<h3 class="text-muted">Colegio Hebreo Maguén David</h3>
 
 			<hr>
-			<ul class="nav nav-justified">
-                            <li class="active"><a href="PPermanente.php">Solicitudes de Permenente</a></li>
-                                <li><a href="PViaje.php">Solicitudes de Viaje</a></li>
-                                <li><a href="PDiario.php">Solicitud de Diario</a></li>
-			</ul>
+		<?php include ('perfiles_dinamicos.php'); ?> 
 		</div>
 		<br>
 		<center><?php echo isset($_POST['guardar'])?$verificar:''; ?></center>
 		<!-- Button trigger modal -->
                 <center>
                     <h2>Nueva solicitid permanentes:</h2>
-	 
+
                 </center>
-		
-        
-                
-                <?php 
-                
-      
+
+
+
+                <?php
+
+
 if (!$_GET)
-    { 
+    {
     ?>
                 <form  method='get' action="Alta_permanente.php" >
                     <input type="text" name="nfamilia" id="nfamilia"  placeholder="Agrgar numero" size="5"  minlength="4" required>
                     <input type="submit" value="Aceptar">
-                    
-                </form>         
-   <?php	
-     } 
- else { 
-   	$familia=$_GET["nfamilia"]; 
-        
+
+                </form>
+   <?php
+     }
+ else {
+   	$familia=$_GET["nfamilia"];
+
 $datos = mysql_query ( "select papa,calle,colonia,cp from usuarios where password='$familia'" );
 if($rows=mysql_fetch_array($datos))
 {
@@ -169,105 +165,105 @@ if($rows=mysql_fetch_array($datos))
                       $cp=$rows[3];
                       $idusuario=40;
 }
-?> 
+?>
                 <center>
                     <form id="permanente"  name="permanente" class="form-signin save-nivel" method='post'   onsubmit='Alta_permanente(); return false'>
 					<div class="alert-save"></div>
 					<div class="modal-body">
                                             <table border="0" WIDTH="800" >
-                                                
+
                                                 <tr>
-                                                    
-                                                    
+
+
                                                     <td colspan="2" WIDTH="60%">Fecha de solicitud:
-                                                   <input name="fecha" id="fecha" type="text" class="form-control" placeholder="Fecha"  value="<?php echo $arrayDias[date('w')].", ".date('d')." de ".$arrayMeses[date('m')-1]." de ".date('Y').",".date("H:i:s");?>" readonly="readonly">  
-                                                   
-                                                  
+                                                   <input name="fecha" id="fecha" type="text" class="form-control" placeholder="Fecha"  value="<?php echo $arrayDias[date('w')].", ".date('d')." de ".$arrayMeses[date('m')-1]." de ".date('Y').",".date("H:i:s");?>" readonly="readonly">
+
+
                                                     </td>
-                                                    
+
                                                     <td  WIDTH="50%">Solicitante:
                                                            <input
 							name="papa" id="papa" type="text"
-                                                        class="form-control" placeholder="Correo"  value="<?php echo $papa ?>" readonly> 
-                                                    </td> 
-                                                    
+                                                        class="form-control" placeholder="Correo"  value="<?php echo $papa ?>" readonly>
+                                                    </td>
+
                                                 </tr>
-                                          
-                                       
-                                            
+
+
+
                                             <tr>
                                                     <td WIDTH="100%" colspan="3">
                                                         <h4>Alumnos Solicitantes:</h4><br>
                                                     </td>
                                               </tr>
-                                            
+
                                             </table>
                                             <table  style="border-style: dotted"  WIDTH="800" >
                                                 <tr>
-                                                   
+
                                                    <td style="text-align:center;border-style: groove">Alumno</td>
                                                    <td style="text-align:center;border-style: groove">Grado</td>
                                                    <td style="text-align:center;border-style: groove">Grupo</td>
                                                    <td style="text-align:center;border-style: groove; ">Selección</td>
                                                 </tr>
-                                                <?php 
-  $existe = mysql_query ( "SELECT * FROM alumnoschmd where idfamilia=$familia" );  
+                                                <?php
+  $existe = mysql_query ( "SELECT * FROM alumnoschmd where idfamilia=$familia" );
              while($cliente=mysql_fetch_array($existe))
                 {
                    $counter = $counter + 1;
                    ?>
-	
+
 		  <tr id="fila-<?php echo $cliente['id'] ?>">
-                          
+
 			  <td style="border-style: outset"><?php echo $cliente['nombre']?></td>
 			  <td style="border-style: outset"><?php echo $cliente['grupo']?></td>
 			  <td style="border-style: outset"><?php echo $cliente['grado'] ?></td>
-                          <td style="border-style: outset"><input type="checkbox"  id="alumno<?php echo $counter?>" name="alumno[]" class="form-control" value="<?php echo $cliente[id]; ?>"></td> 
-                          
-			 
+                          <td style="border-style: outset"><input type="checkbox"  id="alumno<?php echo $counter?>" name="alumno[]" class="form-control" value="<?php echo $cliente[id]; ?>"></td>
+
+
 		  </tr>
 	<?php
-                  
+
                }
                 $talumnos=$counter;
-                                                
+
                                                 ?>
-                                           
-                          
+
+
                                             </table>
-                                            
+
                                             <table border="0" WIDTH="800">
                                                 <tr>
                                                     <td WIDTH="100%" colspan="3"><br>
                                                         <h4><b>Dirección de Actual:</b></h4><br>
                                                     </td>
                                                 </tr>
-                                                
-                                           
+
+
                                                  <tr>
                                                     <td >
                                                         Calle y Número: :
                                                          <input
 							name="calle1" id="calle1" type="text"
-                                                        class="form-control" placeholder="Calle_numero"  style="width : 500px; heigth : 4px" value="<?php echo $calle ?>" readonly="" >  
+                                                        class="form-control" placeholder="Calle_numero"  style="width : 500px; heigth : 4px" value="<?php echo $calle ?>" readonly="" >
                                                     </td>
                                                     <td>
                                                         Colonia:
                                                          <input
 							name="cp1" id="colonia1" type="text"
-                                                        class="form-control" placeholder="Colonia1" value="<?php echo $colonia ?>" readonly="" > 
+                                                        class="form-control" placeholder="Colonia1" value="<?php echo $colonia ?>" readonly="" >
                                                     </td>
-                                                    
+
                                                      <td>
                                                         CP:
                                                          <input
 							name="cp1" id="cp1" type="text"
-                                                        class="form-control" placeholder="cp" value="<?php echo $cp ?>" readonly="" > 
+                                                        class="form-control" placeholder="cp" value="<?php echo $cp ?>" readonly="" >
                                                     </td>
-                                                   
+
                                                 </tr>
-                                                
-                                           
+
+
                                                 <tr>
                                                     <td WIDTH="100%" colspan="3"><br>
                                                         <h4><b>Dirección de cambio:</b></h4>
@@ -278,84 +274,84 @@ if($rows=mysql_fetch_array($datos))
                                                         Calle:
                                                          <input
 							name="calle" id="calle" type="text"
-							class="form-control" placeholder="Calle_numero"  style="width : 500px; heigth : 4px" >  
+							class="form-control" placeholder="Calle_numero"  style="width : 500px; heigth : 4px" >
                                                     </td>
                                                     <td colspan="2">
                                                         CP:
                                                         <input
 							name="cp" id="cp" type="text"
-							class="form-control" placeholder="Agrega cp" style="width : 300px; heigth : 4px" > 
+							class="form-control" placeholder="Agrega cp" style="width : 300px; heigth : 4px" >
                                                     </td>
-                                                   
+
                                                 </tr>
-                                                
-                                           
+
+
                                                 <tr>
                                                     <td colspan="2"><br>Colonia:
                                                      <input
 							name="colonia" id="colonia" type="text"
-							class="form-control" placeholder="Colonia" > 
-                                                    </td> 
-                                                    
-                                                   
-                                                    
-                                                    
+							class="form-control" placeholder="Colonia" >
+                                                    </td>
+
+
+
+
                                                     <td><br>Ruta:
-                                                        <select type="select" name="ruta"  id="ruta" class="form-control"> 
-                                                         <option value="0">selecciona opción </option> 
-                                                         <option value="General 2:50 PM">General 2:50 PM</option> 
-                                                         <option value="Taller 4:30 PM">Taller 4:30 PM</option> 
+                                                        <select type="select" name="ruta"  id="ruta" class="form-control">
+                                                         <option value="0">selecciona opción </option>
+                                                         <option value="General 2:50 PM">General 2:50 PM</option>
+                                                         <option value="Taller 4:30 PM">Taller 4:30 PM</option>
                                                     </td>
                                                 </tr>
-                                                
+
                                             </table>
-                                               
-                                              
-                                            <h4><b>Dias  de cambio:</b></h4> 
+
+
+                                            <h4><b>Dias  de cambio:</b></h4>
                                                 <table>
                                                     <tr>
-                                                        
+
  <td> <b>Lunes</b>&nbsp;&nbsp;<input type="checkbox" name="dia[]" id="lunes" class="form-control" value="lunes"></td>
 <td> <b>Martes</b>&nbsp;&nbsp;<input type="checkbox" name="dia[]" id="martes" class="form-control" value="martes"> </td>
 <td> <b>Miercoles</b>&nbsp;&nbsp;<input type="checkbox" name="dia[]" id="miercoles" class="form-control" value="miercoles"> </td>
 <td> <b>Jueves</b>&nbsp;&nbsp;<input type="checkbox" name="dia[]" id="jueves" class="form-control" value="jueves"></td>
 <td> <b>Viernes</b>&nbsp;&nbsp;<input type="checkbox" name="dia[]" id="viernes" class="form-control" value="viernes"> </td>
 
-                                                       
-                                                    
+
+
                                                      </tr>
                                                 </table>
-                                               
-                                           
+
+
                                             </table>
                                             <br><b>Comentarios de solicitud:</b>
                                             <textarea class="form-control"  id="Comentarios" name="comentarios"  ></textarea>
-                                             
+
                                             <input type="hidden" name="idusuario" id="idusuario"  value="<?php echo $idusuario ?>" />
                                             <input type="hidden" name="nfamilia" id="nfamilia"  value="<?php echo $familia ?>" />
                                             <input type="hidden" name="talumnos" id="talumnos"  value="<?php echo $talumnos ?>" />
-                                            
+
 					</div>
 					<div class="modal-footer">
 						<button type="button" onclick="Cancelar();return false;" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
 						<button type="submit" class="btn btn-primary" name="guardar">Guardar</button>
 					</div>
-				</form>     
+				</form>
         </center>
-   	
- <?php 	 
-} 
+
+ <?php
+}
 ?>
-                
-                
-                
+
+
+
 		<!-- Site footer -->
 		<div class="footer">
 			<p>&copy; Aplicaciones CHMD 2017</p>
 		</div>
 
 	</div>
-   
+
 
 	<!-- /container -->
 
@@ -372,4 +368,3 @@ if($rows=mysql_fetch_array($datos))
 <?php
 }
 ?>
-
