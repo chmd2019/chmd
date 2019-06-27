@@ -90,6 +90,9 @@ body{
     height: 400px;
     margin: 60px auto;
 }
+.logo-login{
+    width: 30%;
+}
 footer{
     position: relative;
     bottom: 0;
@@ -121,6 +124,9 @@ footer{
         margin-left: 0px;
     }
     .logo{
+        width:70%;
+    }
+    .logo-login{
         width:70%;
     }
 }

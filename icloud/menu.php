@@ -6,10 +6,10 @@ include './components/navbar.php';
 if (isset($authUrl)) {
     //show login url
     ?>
+<div class="main">
     <div class="caja-login" align="center">
         <h2 class="alert alert-light text-center c-azul" role="alert">Mi Maguen</h2>
-        <br><br>
-        <?php echo '<a href="' . $authUrl . '"><img src="images/google.png" id="total"/></a>' ?>
+        <?php echo '<a href="' . $authUrl . '"><img class="logo-login" src="images/google.png" id="total"/></a>' ?>
     </div>
     <?php
 } else {
@@ -70,7 +70,7 @@ if (isset($authUrl)) {
                         }
                         ?>
                         <div class='col-sm-12 col-md-3 mb-3 m-auto'>
-                            <div class="view p-3">
+                            <div class="view p-3 text-center">
                                 <img src="<?php echo "pics/$estatuis1/$imagen"; ?>" class="img-fluid p-3 m-auto">
                                 <a href='<?php echo "$link?idmodulo=$idmodulo&idseccion=$idseccion"; ?>'>
                                     <div class="mask rgba-white-slight"></div>

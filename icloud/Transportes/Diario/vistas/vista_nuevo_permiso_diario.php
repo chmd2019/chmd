@@ -279,12 +279,12 @@ $cp = $domicilio[3];
                           placeholder="Comentarios"></textarea>
             </div> 
             <div class="col s12 l6" style="float: none;margin: 0 auto;">
-                
-            <button class="btn waves-effect waves-light b-azul white-text w-100" 
-                    type="button" 
-                    onclick="enviar_formulario()">Enviar
-                <i class="material-icons right">send</i>
-            </button>
+
+                <button class="btn waves-effect waves-light b-azul white-text w-100" 
+                        type="button" 
+                        onclick="enviar_formulario()">Enviar
+                    <i class="material-icons right">send</i>
+                </button>
             </div>
             <br>
         </div>
@@ -474,7 +474,7 @@ $cp = $domicilio[3];
     function consultar_direcciones() {
         var data = [];
         $.ajax({
-            url: "https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Diario/posts_gets/get_consultar_direcciones.php",
+            url: "../posts_gets/get_consultar_direcciones.php",
             type: "GET",
             data: {"id_usuario": <?php echo $id; ?>},
             success: function (res) {
@@ -508,7 +508,7 @@ $cp = $domicilio[3];
             var mes = new Date().getMonth() + 1 < 10 ? `0${new Date().getMonth() + 1}` : new Date().getMonth() + 1;
             var fecha_actual = `${new Date().getDate()}-${mes}-${new Date().getFullYear()}`;
             var fecha_permiso_nuevo = $("#fecha_permiso_nuevo");
-            if (fecha_actual === fecha_permiso_nuevo.val()) {
+            if (fecha_actual === formatear_fecha_calendario(fecha_permiso_nuevo.val())) {
                 swal("Información", "Debe seleccionar una fecha posterior a la actual, hora límite alcanzada", "error");
                 fecha_permiso_nuevo.val("");
                 fecha_permiso_nuevo.focus();
@@ -554,23 +554,35 @@ $cp = $domicilio[3];
         }
         return true;
     }
-    function formatear_fecha_calendario(fecha){                        
+    function formatear_fecha_calendario(fecha) {
         var fecha = $("#fecha_permiso_nuevo").val();
         var dia = fecha.split(" ")[1];
         var mes = fecha.split(" ")[3];
         var anio = fecha.split(" ")[5];
-        if (mes === "Enero")mes = "01"; 
-        if (mes === "Febrero")mes = "02"; 
-        if (mes === "Marzo")mes = "03"; 
-        if (mes === "Abril")mes = "04"; 
-        if (mes === "Mayo")mes = "05"; 
-        if (mes === "Junio")mes = "06"; 
-        if (mes === "Julio")mes = "07"; 
-        if (mes === "Agosto")mes = "08"; 
-        if (mes === "Septiembre")mes = "09"; 
-        if (mes === "Octubre")mes = "10"; 
-        if (mes === "Noviembre")mes = "11"; 
-        if (mes === "Diciembre")mes = "12"; 
+        if (mes === "Enero")
+            mes = "01";
+        if (mes === "Febrero")
+            mes = "02";
+        if (mes === "Marzo")
+            mes = "03";
+        if (mes === "Abril")
+            mes = "04";
+        if (mes === "Mayo")
+            mes = "05";
+        if (mes === "Junio")
+            mes = "06";
+        if (mes === "Julio")
+            mes = "07";
+        if (mes === "Agosto")
+            mes = "08";
+        if (mes === "Septiembre")
+            mes = "09";
+        if (mes === "Octubre")
+            mes = "10";
+        if (mes === "Noviembre")
+            mes = "11";
+        if (mes === "Diciembre")
+            mes = "12";
         return `${dia}-${mes}-${anio}`;
     }
     function enviar_formulario() {

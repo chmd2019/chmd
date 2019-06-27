@@ -150,5 +150,3 @@
         </ul>
     </div>
 </nav>
-
-<div class="main">
