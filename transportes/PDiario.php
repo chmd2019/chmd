@@ -37,7 +37,6 @@ if (isset ( $_POST ['nombre_nivel'] ))
   $funcion = $_POST ['funcion'];
   $mensaje= $_POST ['mensaje'];
   $status= $_POST ['status'];
-
   if ($nombre) {
     header ( 'Content-type: application/json; charset=utf-8' );
 
@@ -81,17 +80,10 @@ if (isset ( $_POST ['nombre_nivel'] ))
   <title>CHMD :: Diario</title>
   <link href="dist/css/bootstrap.css" rel="stylesheet">
   <link href="css/menu.css" rel="stylesheet">
-
-
 </head>
-
 <body>
-
-
 <div class="container" id='principal'>
-
   <div class="masthead">
-
     <a href="cerrar_sesion.php" style="float: right; cursor: pointer;"
     role="button" class="btn btn-default btn-sm"> <span
     class="glyphicon glyphicon-user"></span> Cerrar Sesión
@@ -101,9 +93,7 @@ if (isset ( $_POST ['nombre_nivel'] ))
     <span class="glyphicon glyphicon-th"></span> Menu
   </button>
 </a>
-
 <h3 class="text-muted">Colegio Hebreo Maguén David</h3>
-
 <hr>
 <?php $perfil_actual='diario'; include ('perfiles_dinamicos.php'); ?>
 </div>
@@ -176,6 +166,12 @@ placeholder="Buscar Solicitud..."><br> <br>
         $ppermiso= $fecha1;
       }
 
+      //alumnos
+      $array_alumnos= array();
+      $alumnos= mysqli_query($conexion,"SELECT * FROM Ventana_permisos_alumnos where id_permiso='$id'");
+      while($alumno = mysqli_fetch_assoc ( $alumnos ) ){
+        array_push($array_alumnos, $alumno['id_alumno']);
+      }
 
 
 
@@ -184,9 +180,7 @@ placeholder="Buscar Solicitud..."><br> <br>
         <td><?php echo $id ?></td>
         <td><?php echo $fecha?></td>
         <td><?php echo $staus1?></td>
-
         <td><?php echo $ppermiso?></td>
-
         <td><?php echo $familia?></td>
         <td class="text-right">
           <!--
@@ -208,21 +202,6 @@ placeholder="Buscar Solicitud..."><br> <br>
         data-comentarios="<?php echo $comentarios?>"
         data-calle_numero1="<?php echo $calle_numero1?>"
         data-colonia1="<?php echo $colonia1?>"
-        data-alumno1="<?php echo $alumno1?>"
-        data-grado1="<?php echo $grado1?>"
-        data-grupo1="<?php echo $grupo1?>"
-        data-alumno2="<?php echo $alumno2?>"
-        data-grado2="<?php echo $grado2?>"
-        data-grupo2 ="<?php echo $grupo2?>"
-        data-alumno3="<?php echo $alumno3?>"
-        data-grado3="<?php echo $grado3?>"
-        data-grupo3="<?php echo $grupo3?>"
-        data-alumno4="<?php echo $alumno4?>"
-        data-grado4="<?php echo $grado4?>"
-        data-grupo4="<?php echo $grupo4?>"
-        data-alumno5="<?php echo $alumno5?>"
-        data-grado5="<?php echo $grado5?>"
-        data-grupo5="<?php echo $grupo5?>"
         data-mensaje="<?php echo $mensaje?>"
         data-fecha1="<?php echo $ppermiso?>"
         data-frespuesta="<?php echo $frespuesta?>">
@@ -316,116 +295,36 @@ aria-labelledby="myModalLabel" aria-hidden="true">
             <td>Grado</td>
             <td>Grupo</td>
           </tr>
-          <tr>
 
-            <td>
+<?php
+foreach ($array_alumnos as $alu) {
+  // code...
+    $alumnos = mysqli_query($conexion, "SELECT nombre, grupo, grado FROM alumnoschmd WHERE id=$alu");
+    while ($alumno = mysqli_fetch_assoc( $alumnos ) ){
+      ?>
+      <tr>
+      <td>
+        <input
+        name="alumno<?=$id_alumno?>" id="alumno<?=$id_alumno?>" type="text"
+        class="form-control" value="<?=$alumno ['nombre'] ?>"  readonly>
+      </td>
+      <td>
+        <input
+        name="grado<?=$id_alumno?>" id="grado<?=$id_alumno?>" type="text"
+        class="form-control" value="<?=$alumno ['grupo']?>" readonly>
+      </td>
+      <td>
+        <input
+        name="grupo<?=$id_alumno?>" id="grupo<?=$id_alumno?>" type="text"
+        class="form-control" value="<?=$alumno ['grado']?>" readonly>
+      </td>
+      </tr>
+      <?php
+    }
+  echo $alu;
+}
+ ?>
 
-              <input
-              name="alumno1" id="alumno1" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-            </td>
-
-            <td>
-              <input
-              name="grado1" id="grado1" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-            </td>
-            <td>
-              <input
-              name="grupo1" id="grupo1" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-
-            </td>
-          </tr>
-          <!------------------------------------------------------->
-          <tr>
-
-            <td>
-
-              <input
-              name="alumno2" id="alumno2" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-            </td>
-
-            <td>
-              <input
-              name="grado2" id="grado2" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-            </td>
-            <td>
-              <input
-              name="grupo2" id="grupo2" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-
-            </td>
-          </tr>
-          <!-------------------------------------------------------------------->
-          <tr>
-
-            <td>
-
-              <input
-              name="alumno3" id="alumno3" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-            </td>
-
-            <td>
-              <input
-              name="grado3" id="grado3" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-            </td>
-            <td>
-              <input
-              name="grupo3" id="grupo3" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-
-            </td>
-          </tr>
-          <!------------------------------------------------------------------>
-          <tr>
-
-            <td>
-
-              <input
-              name="alumno4" id="alumno4" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-            </td>
-
-            <td>
-              <input
-              name="grado4" id="grado4" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-            </td>
-            <td>
-              <input
-              name="grupo4" id="grupo4" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-
-            </td>
-          </tr>
-          <!------------------------------------------------------------------------->
-          <!------------------------------------------------------------------>
-          <tr>
-
-            <td>
-
-              <input
-              name="alumno5" id="alumno5" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-            </td>
-
-            <td>
-              <input
-              name="grado5" id="grado5" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-            </td>
-            <td>
-              <input
-              name="grupo5" id="grupo5" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-
-            </td>
-          </tr>
           <!------------------------------------------------------------------------->
         </table>
 

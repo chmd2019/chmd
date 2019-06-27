@@ -84,346 +84,10 @@ $datos = mysqli_query ( $conexion,"SELECT vp.id_permiso,vp.fecha_creacion,
       <link href="dist/css/bootstrap.css" rel="stylesheet">
       <link href="css/menu.css" rel="stylesheet">
 
-
     </head>
-
     <body>
-      <!-- Modal -->
-      <div class="modal fade" id="agregarNivel" tabindex="-1" role="dialog"
-      aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-dialog" style="width: 800px">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal"
-            aria-hidden="true">&times;</button>
-            <h4 class="modal-title" id="modalNivelTitulo">Agrega Solicitud</h4>
-          </div>
-          <form class="form-signin save-nivel" method='post'>
-            <div class="alert-save"></div>
-            <div class="modal-body">
-              <table border="0" WIDTH="700">
-
-                <tr>
-                  <td WIDTH="10%" >Folio:
-                    <input
-                    name="folio" id="folio" type="text" style="width : 100px; heigth : 4px"
-                    class="form-control" placeholder="folio"  readonly>
-
-                  </td>
-
-                  <td WIDTH="30%">Fecha de solicitud:
-                    <input
-                    name="nombre_nivel" id="nombre_nivel" type="text" style="width : 200px; heigth : 4px"
-                    class="form-control" placeholder="Fecha" readonly>
-                  </td>
-
-                  <td  WIDTH="60%">Solicitante:
-                    <input
-                    name="nombre_nivel1" id="nombre_nivel1" type="text"
-                    class="form-control" placeholder="Correo"  style="width : 400px; heigth : 4px" readonly>
-                  </td>
-
-                </tr>
-              </table>
-
-              <table>
-
-                <tr>
-                  <td WIDTH="100%" colspan="3">
-                    <h4>Solicitantes:</h4>
-                  </td>
-                </tr>
-
-              </table>
-              <table border="0" WIDTH="700">
-                <tr>
-                  <td>Alumno</td>
-                  <td>Grado</td>
-                  <td>Grupo</td>
-                </tr>
-                <tr>
-
-                  <td>
-
-                    <input
-                    name="alumno1" id="alumno1" type="text"
-                    class="form-control" placeholder="sin datos" readonly>
-                  </td>
-
-                  <td>
-                    <input
-                    name="grado1" id="grado1" type="text"
-                    class="form-control" placeholder="sin datos" readonly>
-                  </td>
-                  <td>
-                    <input
-                    name="grupo1" id="grupo1" type="text"
-                    class="form-control" placeholder="sin datos" readonly>
-
-                  </td>
-                </tr>
-                <!------------------------------------------------------->
-                <tr>
-
-                  <td>
-
-                    <input
-                    name="alumno2" id="alumno2" type="text"
-                    class="form-control" placeholder="sin datos" readonly>
-                  </td>
-
-                  <td>
-                    <input
-                    name="grado2" id="grado2" type="text"
-                    class="form-control" placeholder="sin datos" readonly>
-                  </td>
-                  <td>
-                    <input
-                    name="grupo2" id="grupo2" type="text"
-                    class="form-control" placeholder="sin datos" readonly>
-
-                  </td>
-                </tr>
-                <!-------------------------------------------------------------------->
-                <tr>
-
-                  <td>
-
-                    <input
-                    name="alumno3" id="alumno3" type="text"
-                    class="form-control" placeholder="sin datos" readonly>
-                  </td>
-
-                  <td>
-                    <input
-                    name="grado3" id="grado3" type="text"
-                    class="form-control" placeholder="sin datos" readonly>
-                  </td>
-                  <td>
-                    <input
-                    name="grupo3" id="grupo3" type="text"
-                    class="form-control" placeholder="sin datos" readonly>
-
-                  </td>
-                </tr>
-                <!------------------------------------------------------------------>
-                <tr>
-
-                  <td>
-
-                    <input
-                    name="alumno4" id="alumno4" type="text"
-                    class="form-control" placeholder="sin datos" readonly>
-                  </td>
-
-                  <td>
-                    <input
-                    name="grado4" id="grado4" type="text"
-                    class="form-control" placeholder="sin datos" readonly>
-                  </td>
-                  <td>
-                    <input
-                    name="grupo4" id="grupo4" type="text"
-                    class="form-control" placeholder="sin datos" readonly>
-
-                  </td>
-                </tr>
-                <tr>
-
-                  <td>
-
-                    <input
-                    name="alumno5" id="alumno5" type="text"
-                    class="form-control" placeholder="sin datos" readonly>
-                  </td>
-
-                  <td>
-                    <input
-                    name="grado5" id="grado5" type="text"
-                    class="form-control" placeholder="sin datos" readonly>
-                  </td>
-                  <td>
-                    <input
-                    name="grupo5" id="grupo5" type="text"
-                    class="form-control" placeholder="sin datos" readonly>
-
-                  </td>
-                </tr>
-                <!------------------------------------------------------------------------->
-              </table>
-
-              <table border="0" WIDTH="700">
-                <tr>
-                  <td WIDTH="100%" colspan="3">
-                    <h4>Domicilio de Actual:</h4>
-                  </td>
-                </tr>
-
-              </table>
-              <table border="0" WIDTH="700">
-                <tr>
-                  <td colspan="2">
-                    Calle:
-                    <input
-                    name="calle_numero1" id="calle_numero1" type="text"
-                    class="form-control" placeholder="Calle_numero1"  style="width : 500px; heigth : 4px" readonly>
-                  </td>
-                  <td>
-                    Colonia:
-                    <input
-                    name="colonia1" id="colonia1" type="text"
-                    class="form-control" placeholder="Colonia1" readonly>
-                  </td>
-
-                </tr>
-
-
-
-              </table>
-
-              <table border="0" WIDTH="700">
-                <tr>
-                  <td WIDTH="100%" colspan="3">
-                    <h4>Domicilio de cambio:</h4>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Fecha Inicial:
-                    <input
-                    name="fecha_inicial" id="fecha_inicial" type="text"
-                    class="form-control" placeholder="Agrega Ruta" readonly>
-                  </td>
-                  <td> </td>
-                  <td>Fecha Final:
-                    <input
-                    name="fecha_final" id="fecha_final" type="text"
-                    class="form-control" placeholder="Agrega Ruta" readonly>
-                  </td>
-                </tr>
-
-
-                <tr>
-                  <td colspan="3">
-                    Calle:
-                    <input
-                    name="calle_numero" id="calle_numero" type="text"
-                    class="form-control" placeholder="Calle_numero"   readonly>
-                  </td>
-
-                </tr>
-                <tr>
-
-                  <td colspan="2">Colonia:
-                    <input
-                    name="colonia" id="colonia" type="text"
-                    class="form-control" placeholder="Colonia" readonly>
-                  </td>
-                  <td>
-                    Telefono mama:
-                    <input
-                    name="cp" id="cp" type="text"
-                    class="form-control" placeholder="Agrega cp" readonly>
-                  </td>
-
-                </tr>
-                <tr>
-                  <td colspan="3">Ruta
-                    <input
-                    name="turno" id="turno" type="text"
-                    class="form-control" placeholder="ruta" readonly>
-
-                  </td>
-                </tr>
-
-                <tr>
-                  <td WIDTH="100%" colspan="3">
-                    <h4>Datos responsable:</h4>
-                  </td>
-                </tr>
-
-
-
-
-
-                <tr>
-
-                  <td>Nombre:
-                    <input
-                    name="responsable" id="responsable" type="text"
-                    class="form-control" placeholder="Agrega responsable" readonly>
-                  </td>
-                  <td>
-
-                  </td>
-                  <td>Parentesco:
-                    <input
-                    name="parentesco" id="parentesco" type="text"
-                    class="form-control" placeholder="Agrega parentesco" readonly>
-                  </td>
-
-
-
-                </tr>
-
-
-
-
-                <tr>
-                  <td >Celular:
-                    <input
-                    name="celular" id="celular" type="text"
-                    class="form-control" placeholder="Agrega celular" readonly>
-                  </td>
-
-                  <td></td>
-
-                  <td>Telefono:
-                    <input
-                    name="telefono" id="telefono" type="text"
-                    class="form-control" placeholder="Agrega telefono" readonly>
-                  </td>
-
-
-
-                </tr>
-
-              </table>
-              <!--
-
-
-
-            -->
-          </table>
-          Comentarios de solicitud:
-          <textarea class="form-control"  id="comentarios" name="comentarios"  readonly></textarea>
-          Comentarios de respuesta.
-          <textarea class="form-control"  id="mensaje" name="mensaje"  ></textarea>
-          <input name="funcion" id="funcion" type="text"
-          class="form-control" value="0" required style="display: none;"><br>
-          Accion:
-          <select name="status" id="status">
-            <option value="0">Selecciona</option>
-            <option value="2"style="color:white;background-color:#0b1d3f;">Autotizado</option>
-            <option value="3" style="color:red;background-color:yellow;">Rechazado</option>
-          </select>
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-          <button type="submit" class="btn btn-primary" name="guardar">Guardar</button>
-        </div>
-      </form>
-    </div>
-    <!-- /.modal-content -->
-  </div>
-  <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-
 <div class="container">
-
   <div class="masthead">
-
     <a href="cerrar_sesion.php" style="float: right; cursor: pointer;"
     role="button" class="btn btn-default btn-sm"> <span
     class="glyphicon glyphicon-user"></span> Cerrar Sesión
@@ -433,7 +97,6 @@ $datos = mysqli_query ( $conexion,"SELECT vp.id_permiso,vp.fecha_creacion,
     <span class="glyphicon glyphicon-th"></span> Menu
   </button>
 </a>
-
 <h3 class="text-muted">Colegio Hebreo Maguén David</h3>
 <hr>
 <?php
@@ -494,7 +157,7 @@ placeholder="Buscar Solicitud..."><br> <br>
       while($alumno = mysqli_fetch_assoc ( $alumnos ) ){
         array_push($array_alumnos, $alumno['id_alumno']);
       }
-
+      
       ?>
       <tr data-row="<?php echo $dato['id_permiso']?>">
         <td><?php echo $id ?></td>
@@ -583,3 +246,257 @@ placeholder="Buscar Solicitud..."><br> <br>
   <script type="text/javascript" src="js/PViaje.js"></script>
 </body>
 </html>
+
+<!-- Modal -->
+<div class="modal fade" id="agregarNivel" tabindex="-1" role="dialog"
+aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-dialog" style="width: 800px">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal"
+      aria-hidden="true">&times;</button>
+      <h4 class="modal-title" id="modalNivelTitulo">Agrega Solicitud</h4>
+    </div>
+    <form class="form-signin save-nivel" method='post'>
+      <div class="alert-save"></div>
+      <div class="modal-body">
+        <table border="0" WIDTH="700">
+
+          <tr>
+            <td WIDTH="10%" >Folio:
+              <input
+              name="folio" id="folio" type="text" style="width : 100px; heigth : 4px"
+              class="form-control" placeholder="folio"  readonly>
+
+            </td>
+
+            <td WIDTH="30%">Fecha de solicitud:
+              <input
+              name="nombre_nivel" id="nombre_nivel" type="text" style="width : 200px; heigth : 4px"
+              class="form-control" placeholder="Fecha" readonly>
+            </td>
+
+            <td  WIDTH="60%">Solicitante:
+              <input
+              name="nombre_nivel1" id="nombre_nivel1" type="text"
+              class="form-control" placeholder="Correo"  style="width : 400px; heigth : 4px" readonly>
+            </td>
+
+          </tr>
+        </table>
+
+        <table>
+
+          <tr>
+            <td WIDTH="100%" colspan="3">
+              <h4>Solicitantes:</h4>
+            </td>
+          </tr>
+
+        </table>
+        <table border="0" WIDTH="700">
+          <tr>
+            <td>Alumno</td>
+            <td>Grado</td>
+            <td>Grupo</td>
+          </tr>
+          <tr>
+            <?php
+            foreach ($array_alumnos as $alu) {
+              // code...
+                $alumnos = mysqli_query($conexion, "SELECT nombre, grupo, grado FROM alumnoschmd WHERE id=$alu");
+                while ($alumno = mysqli_fetch_assoc( $alumnos ) ){
+                  ?>
+                  <tr>
+                  <td>
+                    <input
+                    name="alumno<?=$id_alumno?>" id="alumno<?=$id_alumno?>" type="text"
+                    class="form-control" value="<?=$alumno ['nombre'] ?>"  readonly>
+                  </td>
+                  <td>
+                    <input
+                    name="grado<?=$id_alumno?>" id="grado<?=$id_alumno?>" type="text"
+                    class="form-control" value="<?=$alumno ['grupo']?>" readonly>
+                  </td>
+                  <td>
+                    <input
+                    name="grupo<?=$id_alumno?>" id="grupo<?=$id_alumno?>" type="text"
+                    class="form-control" value="<?=$alumno ['grado']?>" readonly>
+                  </td>
+                  </tr>
+                  <?php
+                }
+              echo $alu;
+            }
+?>
+          </tr>
+          <!------------------------------------------------------------------------->
+        </table>
+
+        <table border="0" WIDTH="700">
+          <tr>
+            <td WIDTH="100%" colspan="3">
+              <h4>Domicilio de Actual:</h4>
+            </td>
+          </tr>
+
+        </table>
+        <table border="0" WIDTH="700">
+          <tr>
+            <td colspan="2">
+              Calle:
+              <input
+              name="calle_numero1" id="calle_numero1" type="text"
+              class="form-control" placeholder="Calle_numero1"  style="width : 500px; heigth : 4px" readonly>
+            </td>
+            <td>
+              Colonia:
+              <input
+              name="colonia1" id="colonia1" type="text"
+              class="form-control" placeholder="Colonia1" readonly>
+            </td>
+
+          </tr>
+
+
+
+        </table>
+
+        <table border="0" WIDTH="700">
+          <tr>
+            <td WIDTH="100%" colspan="3">
+              <h4>Domicilio de cambio:</h4>
+            </td>
+          </tr>
+          <tr>
+            <td>Fecha Inicial:
+              <input
+              name="fecha_inicial" id="fecha_inicial" type="text"
+              class="form-control" placeholder="Agrega Ruta" readonly>
+            </td>
+            <td> </td>
+            <td>Fecha Final:
+              <input
+              name="fecha_final" id="fecha_final" type="text"
+              class="form-control" placeholder="Agrega Ruta" readonly>
+            </td>
+          </tr>
+
+
+          <tr>
+            <td colspan="3">
+              Calle:
+              <input
+              name="calle_numero" id="calle_numero" type="text"
+              class="form-control" placeholder="Calle_numero"   readonly>
+            </td>
+
+          </tr>
+          <tr>
+
+            <td colspan="2">Colonia:
+              <input
+              name="colonia" id="colonia" type="text"
+              class="form-control" placeholder="Colonia" readonly>
+            </td>
+            <td>
+              Telefono mama:
+              <input
+              name="cp" id="cp" type="text"
+              class="form-control" placeholder="Agrega cp" readonly>
+            </td>
+
+          </tr>
+          <tr>
+            <td colspan="3">Ruta
+              <input
+              name="turno" id="turno" type="text"
+              class="form-control" placeholder="ruta" readonly>
+
+            </td>
+          </tr>
+
+          <tr>
+            <td WIDTH="100%" colspan="3">
+              <h4>Datos responsable:</h4>
+            </td>
+          </tr>
+
+
+
+
+
+          <tr>
+
+            <td>Nombre:
+              <input
+              name="responsable" id="responsable" type="text"
+              class="form-control" placeholder="Agrega responsable" readonly>
+            </td>
+            <td>
+
+            </td>
+            <td>Parentesco:
+              <input
+              name="parentesco" id="parentesco" type="text"
+              class="form-control" placeholder="Agrega parentesco" readonly>
+            </td>
+
+
+
+          </tr>
+
+
+
+
+          <tr>
+            <td >Celular:
+              <input
+              name="celular" id="celular" type="text"
+              class="form-control" placeholder="Agrega celular" readonly>
+            </td>
+
+            <td></td>
+
+            <td>Telefono:
+              <input
+              name="telefono" id="telefono" type="text"
+              class="form-control" placeholder="Agrega telefono" readonly>
+            </td>
+
+
+
+          </tr>
+
+        </table>
+        <!--
+
+
+
+      -->
+    </table>
+    Comentarios de solicitud:
+    <textarea class="form-control"  id="comentarios" name="comentarios"  readonly></textarea>
+    Comentarios de respuesta.
+    <textarea class="form-control"  id="mensaje" name="mensaje"  ></textarea>
+    <input name="funcion" id="funcion" type="text"
+    class="form-control" value="0" required style="display: none;"><br>
+    Accion:
+    <select name="status" id="status">
+      <option value="0">Selecciona</option>
+      <option value="2"style="color:white;background-color:#0b1d3f;">Autotizado</option>
+      <option value="3" style="color:red;background-color:yellow;">Rechazado</option>
+    </select>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+    <button type="submit" class="btn btn-primary" name="guardar">Guardar</button>
+  </div>
+</form>
+</div>
+<!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
