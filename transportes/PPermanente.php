@@ -34,7 +34,7 @@ $datos = mysqli_query ( $conexion,"SELECT vp.id_permiso,vp.fecha_creacion,
   Ventana_Permisos vp
   LEFT JOIN Ventana_user vs on vp.idusuario=vs.id
   LEFT JOIN usuarios usu on vp.nfamilia=usu.`password`
-  where not vp.estatus=3 and vp.archivado=0 and vp.tipo_permiso='permanente'   order by vp.id_permiso" );
+  where not vp.estatus=3 and vp.archivado=0 and vp.tipo_permiso='3'   order by vp.estatus DESC ,vp.id_permiso" );
   if (isset ( $_POST ['nombre_nivel'] )) {
 
     $nombre = $_POST ['nombre_nivel'];
@@ -48,13 +48,13 @@ $datos = mysqli_query ( $conexion,"SELECT vp.id_permiso,vp.fecha_creacion,
       //$existe = mysql_query ( "SELECT * FROM nivel WHERE nombre='$nombre'" );
       //$existe = mysql_fetch_array ( $existe );
       if ($status==3) {
-        $query = "UPDATE Ventana_Permiso_permanente SET mensaje = '$mensaje',estatus=3 WHERE id=$funcion";
+        $query = "UPDATE Ventana_Permisos SET mensaje = '$mensaje',estatus=3 WHERE id=$funcion";
         mysqli_query ( $query );
         $json = array (
         'estatus' => '0'
         );
       } else if ($status==2)  {
-        $query = "UPDATE Ventana_Permiso_permanente SET mensaje = '$mensaje',estatus=2 WHERE id=$funcion";
+        $query = "UPDATE Ventana_Permisos SET mensaje = '$mensaje',estatus=2 WHERE id=$funcion";
         mysqli_query ( $query );
         $json = array (
         'estatus' => '0'
@@ -119,7 +119,7 @@ $datos = mysqli_query ( $conexion,"SELECT vp.id_permiso,vp.fecha_creacion,
   <h2>Solicitudes Permanentes:</h2>
   <input type="text" class="form-control filter"
   placeholder="Buscar Solicitud..."><br> <br>
-  <table class="table table-striped" id="niveles_table">
+  <table class="table" id="niveles_table">
     <thead><td><b>Folio</b></td>
       <td><b>Fecha<b></td>
 
@@ -140,36 +140,16 @@ $datos = mysqli_query ( $conexion,"SELECT vp.id_permiso,vp.fecha_creacion,
           $ruta=$dato['ruta'];
           $comentarios=$dato['comentarios'];
 
-
-
-          /*********************************/
-
-
+          //recomendacion cambiar por un switch
           if($estatus==1){$staus1="Pendiente";}
           if($estatus==2){$staus1="Autorizado";}
           if($estatus==3){$staus1="Cancelado";}
-
+          if($estatus==4){$staus1="Cancelado por el usuario";}
           /***************************************/
+
           $nfamila= $dato['nfamilia'];
           $calle_numero1=$dato['calle'];
           $colonia1=$dato['colonia1'];
-
-          /*        $alumno1=$dato['alumno1'];
-          $grado1=$dato['grado1'];
-          $grupo1=$dato['grupo1'];
-          $alumno2=$dato['alumno2'];
-          $grado2=$dato['grado2'];
-          $grupo2=$dato['grupo2'];
-          $alumno3=$dato['alumno3'];
-          $grado3=$dato['grado3'];
-          $grupo3=$dato['grupo3'];
-          $alumno4=$dato['alumno4'];
-          $grado4=$dato['grado4'];
-          $grupo4=$dato['grupo4'];
-          $alumno5=$dato['alumno5'];
-          $grado5=$dato['grado5'];
-          $grupo5=$dato['grupo5'];
-          */
 
           $mensaje=$dato['mensaje'];
           $familia=$dato['familia'];
@@ -180,17 +160,14 @@ $datos = mysqli_query ( $conexion,"SELECT vp.id_permiso,vp.fecha_creacion,
           $viernes=$dato['viernes'];
 
           /************************************/
-          //alumnos
-          $array_alumnos= array();
-          $alumnos= mysqli_query($conexion,"SELECT * FROM Ventana_permisos_alumnos where id_permiso='$id'");
-          while($alumno = mysqli_fetch_assoc ( $alumnos ) ){
-            array_push($array_alumnos, $alumno['id_alumno']);
+          $color = '#fff';
+          $borde= '#ddd';
+          if ($estatus==4){
+            $color = '#ffd5d5';
+            $borde= '#ffb1b1';
           }
-
-
-
           ?>
-          <tr data-row="<?php echo $dato['id_permiso']?>">
+          <tr  style="background:<?=$color?>; border-bottom:  1px solid <?=$borde?>"  data-row="<?php echo $dato['id_permiso']?>">
             <td><?php echo $id ?></td>
             <td><?php echo $fecha?></td>
             <td><?php echo $staus1?></td>
@@ -215,7 +192,7 @@ $datos = mysqli_query ( $conexion,"SELECT vp.id_permiso,vp.fecha_creacion,
             data-comentarios="<?php echo $comentarios?>"
             data-calle_numero1="<?php echo $calle_numero1?>"
             data-colonia1="<?php echo $colonia1?>"
-        
+
             data-mensaje="<?php echo $mensaje?>"
             data-lunes="<?php echo $lunes?>"
             data-martes="<?php echo $martes?>"
@@ -257,6 +234,7 @@ $datos = mysqli_query ( $conexion,"SELECT vp.id_permiso,vp.fecha_creacion,
   src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
   <script type="text/javascript" src="dist/js/bootstrap.js"></script>
   <script type="text/javascript" src="js/PPermanente.js"></script>
+    <script type="text/javascript" src="js/1min_inactivo.js" ></script>
 </body>
 </html>
 
@@ -313,36 +291,10 @@ aria-labelledby="myModalLabel" aria-hidden="true">
             <td>Grado</td>
             <td>Grupo</td>
           </tr>
-          <?php
-          foreach ($array_alumnos as $alu) {
-            // code...
-              $alumnos = mysqli_query($conexion, "SELECT nombre, grupo, grado FROM alumnoschmd WHERE id=$alu");
-              while ($alumno = mysqli_fetch_assoc( $alumnos ) ){
-                ?>
-                <tr>
-                <td>
-                  <input
-                  name="alumno<?=$id_alumno?>" id="alumno<?=$id_alumno?>" type="text"
-                  class="form-control" value="<?=$alumno ['nombre'] ?>"  readonly>
-                </td>
-                <td>
-                  <input
-                  name="grado<?=$id_alumno?>" id="grado<?=$id_alumno?>" type="text"
-                  class="form-control" value="<?=$alumno ['grupo']?>" readonly>
-                </td>
-                <td>
-                  <input
-                  name="grupo<?=$id_alumno?>" id="grupo<?=$id_alumno?>" type="text"
-                  class="form-control" value="<?=$alumno ['grado']?>" readonly>
-                </td>
-                </tr>
-                <?php
-              }
-            echo $alu;
-          }
-           ?>
-
         </table>
+      <table id="tabla_alumnos" border="0" WIDTH="700">
+        <!----------------------------- Tabla de  Alumnos -------------------------------------------->
+      </table>
 
         <table border="0" WIDTH="700">
           <tr>
@@ -402,19 +354,13 @@ aria-labelledby="myModalLabel" aria-hidden="true">
               name="colonia" id="colonia" type="text"
               class="form-control" placeholder="Colonia" readonly>
             </td>
-
-
-
-
             <td>Ruta:
               <input
               name="ruta" id="ruta" type="text"
               class="form-control" placeholder="Agrega Ruta" readonly>
             </td>
           </tr>
-
         </table>
-
 
         <h4>Domicilio de cambio:</h4>
         <table>

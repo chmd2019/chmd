@@ -1,5 +1,3 @@
-
-
 <?php
 include 'sesion_admin.php';
 include 'conexion.php';
@@ -22,13 +20,17 @@ $datos = mysqli_query ( $conexion,"SELECT vp.id_permiso,vp.fecha_creacion,
   vp.telefono,
   vp.fecha_inicial,
   vp.fecha_final,
+  vp.ruta,
   vp.turno,
-  usu.telefonomama
+  usu.telefonomama,
+  vp.fecha_creacion,
+  vp.fecha_respuesta
+
   from
   Ventana_Permisos vp
   LEFT JOIN Ventana_user vs on vp.idusuario=vs.id
   LEFT JOIN usuarios usu on vp.nfamilia=usu.`password`
-  where not vp.estatus=3 and vp.archivado=0 and vp.tipo_permiso='Viaje'   order by vp.id_permiso" );
+  where not vp.estatus=3 and vp.archivado=0 and vp.tipo_permiso='2'    order by vp.estatus DESC ,vp.id_permiso" );
 
   if (isset ( $_POST ['nombre_nivel'] )) {
 
@@ -44,7 +46,7 @@ $datos = mysqli_query ( $conexion,"SELECT vp.id_permiso,vp.fecha_creacion,
       //$existe = mysql_fetch_array ( $existe );
       if ($status==3)
       {
-        $query = "UPDATE Ventana_Permiso_viaje SET mensaje = '$mensaje',estatus=3 WHERE id=$funcion";
+        $query = "UPDATE Ventana_Permisos SET mensaje = '$mensaje',estatus=3 WHERE id=$funcion";
         mysqli_query ($conexion, $query );
         $json = array (
           'estatus' => '0'
@@ -52,7 +54,7 @@ $datos = mysqli_query ( $conexion,"SELECT vp.id_permiso,vp.fecha_creacion,
         }
         else if ($status==2)
         {
-          $query = "UPDATE Ventana_Permiso_viaje SET mensaje = '$mensaje',estatus=2 WHERE id=$funcion";
+          $query = "UPDATE Ventana_Permisos SET mensaje = '$mensaje',estatus=2 WHERE id=$funcion";
           mysqli_query ($conexion, $query );
           $json = array (
           'estatus' => '0'
@@ -111,7 +113,7 @@ $perfil_actual='viaje';
 <h2>Solicitudes Temporales:</h2>
 <input type="text" class="form-control filter"
 placeholder="Buscar Solicitud..."><br> <br>
-<table class="table table-striped" id="niveles_table">
+<table class="table" id="niveles_table">
   <thead><td><b>Folio</b></td>
     <td><b>Fecha</b></td>
 
@@ -143,6 +145,7 @@ placeholder="Buscar Solicitud..."><br> <br>
       if($estatus==1){$staus1="Pendiente";}
       if($estatus==2){$staus1="Autorizado";}
       if($estatus==3){$staus1="Cancelado";}
+      if($estatus==4){$staus1="Cancelado por el usuario";}
 
       $nfamila= $dato['nfamilia'];
       $calle_numero1=$dato['calle'];
@@ -150,16 +153,39 @@ placeholder="Buscar Solicitud..."><br> <br>
       $mensaje=$dato['mensaje'];
       $familia=$dato['familia'];
       $turno=$dato['turno'];
+      $fecha_respuesta = $dato['fecha_respuesta'];
+
+      $fecha_actual = strtotime(date("d-m-Y H:i:00",time()));
+      $fecha_entrada = strtotime($fecha_inicial);
+
+      if($fecha_actual > $fecha_entrada){
+            $otro_dia=false;
+      }else{
+            $otro_dia=true;
+      }
 
       //alumnos
-      $array_alumnos= array();
+  /*    $array_alumnos= array();
       $alumnos= mysqli_query($conexion,"SELECT * FROM Ventana_permisos_alumnos where id_permiso='$id'");
       while($alumno = mysqli_fetch_assoc ( $alumnos ) ){
         array_push($array_alumnos, $alumno['id_alumno']);
       }
-      
+*/
+
+       if ($otro_dia==true){
+        $color = '#ddd';
+        $borde= '#ddd';
+      }else{
+        $color = '#fff';
+        $borde= '#ddd';
+      }
+      if ($estatus==4){
+        $color = '#ffd5d5';
+        $borde= '#ffb1b1';
+      }
       ?>
-      <tr data-row="<?php echo $dato['id_permiso']?>">
+
+      <tr  style="background:<?=$color?>; border-bottom:  1px solid <?=$borde?>"  data-row="<?php echo $dato['id_permiso']?>">
         <td><?php echo $id ?></td>
         <td><?php echo $fecha?></td>
         <td><?php echo $staus1?></td>
@@ -187,23 +213,7 @@ placeholder="Buscar Solicitud..."><br> <br>
         data-comentarios="<?php echo $comentarios?>"
         data-calle_numero1="<?php echo $calle_numero1?>"
         data-colonia1="<?php echo $colonia1?>"
-        data-alumno1="<?php echo $alumno1?>"
-        data-grado1="<?php echo $grado1?>"
-        data-grupo1="<?php echo $grupo1?>"
-        data-alumno2="<?php echo $alumno2?>"
-        data-grado2="<?php echo $grado2?>"
-        data-grupo2 ="<?php echo $grupo2?>"
-        data-alumno3="<?php echo $alumno3?>"
-        data-grado3="<?php echo $grado3?>"
-        data-grupo3="<?php echo $grupo3?>"
-        data-alumno4="<?php echo $alumno4?>"
-        data-grado4="<?php echo $grado4?>"
-        data-grupo4="<?php echo $grupo4?>"
-        data-alumno5="<?php echo $alumno5?>"
-        data-grado5="<?php echo $grado5?>"
-        data-grupo5="<?php echo $grupo5?>"
         data-mensaje="<?php echo $mensaje?>"
-
         data-responsable="<?php echo $responsable?>"
         data-parentesco="<?php echo $parentesco?>"
         data-celular="<?php echo $celular?>"
@@ -244,6 +254,7 @@ placeholder="Buscar Solicitud..."><br> <br>
   src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
   <script type="text/javascript" src="dist/js/bootstrap.js"></script>
   <script type="text/javascript" src="js/PViaje.js"></script>
+  <script type="text/javascript" src="js/1min_inactivo.js" ></script>
 </body>
 </html>
 
@@ -261,38 +272,31 @@ aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="alert-save"></div>
       <div class="modal-body">
         <table border="0" WIDTH="700">
-
           <tr>
             <td WIDTH="10%" >Folio:
               <input
               name="folio" id="folio" type="text" style="width : 100px; heigth : 4px"
               class="form-control" placeholder="folio"  readonly>
-
             </td>
-
             <td WIDTH="30%">Fecha de solicitud:
               <input
               name="nombre_nivel" id="nombre_nivel" type="text" style="width : 200px; heigth : 4px"
               class="form-control" placeholder="Fecha" readonly>
             </td>
-
             <td  WIDTH="60%">Solicitante:
               <input
               name="nombre_nivel1" id="nombre_nivel1" type="text"
               class="form-control" placeholder="Correo"  style="width : 400px; heigth : 4px" readonly>
             </td>
-
           </tr>
         </table>
 
         <table>
-
           <tr>
             <td WIDTH="100%" colspan="3">
               <h4>Solicitantes:</h4>
             </td>
           </tr>
-
         </table>
         <table border="0" WIDTH="700">
           <tr>
@@ -300,37 +304,10 @@ aria-labelledby="myModalLabel" aria-hidden="true">
             <td>Grado</td>
             <td>Grupo</td>
           </tr>
-          <tr>
-            <?php
-            foreach ($array_alumnos as $alu) {
-              // code...
-                $alumnos = mysqli_query($conexion, "SELECT nombre, grupo, grado FROM alumnoschmd WHERE id=$alu");
-                while ($alumno = mysqli_fetch_assoc( $alumnos ) ){
-                  ?>
-                  <tr>
-                  <td>
-                    <input
-                    name="alumno<?=$id_alumno?>" id="alumno<?=$id_alumno?>" type="text"
-                    class="form-control" value="<?=$alumno ['nombre'] ?>"  readonly>
-                  </td>
-                  <td>
-                    <input
-                    name="grado<?=$id_alumno?>" id="grado<?=$id_alumno?>" type="text"
-                    class="form-control" value="<?=$alumno ['grupo']?>" readonly>
-                  </td>
-                  <td>
-                    <input
-                    name="grupo<?=$id_alumno?>" id="grupo<?=$id_alumno?>" type="text"
-                    class="form-control" value="<?=$alumno ['grado']?>" readonly>
-                  </td>
-                  </tr>
-                  <?php
-                }
-              echo $alu;
-            }
-?>
-          </tr>
-          <!------------------------------------------------------------------------->
+          </table>
+
+        <table id="tabla_alumnos" border="0" WIDTH="700">
+          <!----------------------------- Tabla de  Alumnos -------------------------------------------->
         </table>
 
         <table border="0" WIDTH="700">
@@ -339,8 +316,8 @@ aria-labelledby="myModalLabel" aria-hidden="true">
               <h4>Domicilio de Actual:</h4>
             </td>
           </tr>
-
         </table>
+
         <table border="0" WIDTH="700">
           <tr>
             <td colspan="2">
@@ -355,11 +332,7 @@ aria-labelledby="myModalLabel" aria-hidden="true">
               name="colonia1" id="colonia1" type="text"
               class="form-control" placeholder="Colonia1" readonly>
             </td>
-
           </tr>
-
-
-
         </table>
 
         <table border="0" WIDTH="700">
@@ -372,13 +345,13 @@ aria-labelledby="myModalLabel" aria-hidden="true">
             <td>Fecha Inicial:
               <input
               name="fecha_inicial" id="fecha_inicial" type="text"
-              class="form-control" placeholder="Agrega Ruta" readonly>
+              class="form-control" placeholder="Fecha inicial" readonly>
             </td>
             <td> </td>
             <td>Fecha Final:
               <input
               name="fecha_final" id="fecha_final" type="text"
-              class="form-control" placeholder="Agrega Ruta" readonly>
+              class="form-control" placeholder="Añadir Fecha Final" readonly>
             </td>
           </tr>
 
@@ -421,11 +394,6 @@ aria-labelledby="myModalLabel" aria-hidden="true">
               <h4>Datos responsable:</h4>
             </td>
           </tr>
-
-
-
-
-
           <tr>
 
             <td>Nombre:

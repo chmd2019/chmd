@@ -18,18 +18,17 @@ vp.responsable,
 vp.parentesco,
 vp.celular,
 vp.telefono,
-vp.fecha_inicial,
-vp.fecha_final,
 vp.turno,
 vp.ruta,
 vp.fecha_creacion,
 vp.fecha_cambio,
+vp.fecha_respuesta,
 usu.telefonomama
 from
 Ventana_Permisos vp
 LEFT JOIN Ventana_user vs on vp.idusuario=vs.id
 LEFT JOIN usuarios usu on vp.nfamilia=usu.`password`
-where not vp.estatus=3 and vp.archivado=0 and vp.tipo_permiso='diario'   order by vp.id_permiso" );
+where not vp.estatus=3 and vp.archivado=0 and vp.tipo_permiso='1'   order by vp.estatus DESC ,vp.id_permiso" );
 
 if (isset ( $_POST ['nombre_nivel'] ))
 {
@@ -44,7 +43,7 @@ if (isset ( $_POST ['nombre_nivel'] ))
     //$existe = mysql_fetch_array ( $existe );
     if ($status==3)
     {
-      $query = "UPDATE Ventana_Permiso_diario SET mensaje = '$mensaje',estatus=3,archivado=1 WHERE id=$funcion";
+      $query = "UPDATE Ventana_Permisos SET mensaje = '$mensaje', estatus=3, archivado=1 WHERE id_permiso=$funcion";
       mysqli_query ( $query );
       $json = array (
       'estatus' => '0'
@@ -52,7 +51,7 @@ if (isset ( $_POST ['nombre_nivel'] ))
     }
     else if ($status==2)
     {
-      $query = "UPDATE Ventana_Permiso_diario SET mensaje = '$mensaje',estatus=2,archivado=1 WHERE id=$funcion";
+      $query = "UPDATE Ventana_Permisos SET mensaje = '$mensaje',estatus=2, archivado=1 WHERE id_permiso=$funcion";
       mysqli_query ( $query );
       $json = array (
       'estatus' => '0'
@@ -82,10 +81,13 @@ if (isset ( $_POST ['nombre_nivel'] ))
   <link href="css/menu.css" rel="stylesheet">
 </head>
 <body>
+  <div class="reload">
+
+  </div>
 <div class="container" id='principal'>
   <div class="masthead">
     <a href="cerrar_sesion.php" style="float: right; cursor: pointer;"
-    role="button" class="btn btn-default btn-sm"> <span
+    role="button" class="btn btnfamilia-default btn-sm"> <span
     class="glyphicon glyphicon-user"></span> Cerrar Sesión
   </a> &nbsp <a href="menu.php">
     <button style="float: right; cursor: pointer;" type="button"
@@ -106,9 +108,9 @@ if (isset ( $_POST ['nombre_nivel'] ))
 <h2>Solicitudes de diario:</h2>
 <input type="text" class="form-control filter"
 placeholder="Buscar Solicitud..."><br> <br>
-<table class="table table-striped" id="niveles_table">
+<table class="table" id="niveles_table">
   <thead><td><b>Folio</b></td>
-    <td>Fecha de Solicitud</td>
+    <td><b>Fecha de Solicitud</b></td>
 
     <td><b>Estatus</b></td>
     <td><b>Fecha de permiso</b></td>
@@ -124,13 +126,16 @@ placeholder="Buscar Solicitud..."><br> <br>
       $estatus= $dato['estatus'];
       $calle_numero=$dato['calle_numero'];
       $colonia=$dato['colonia'];
-      $cp=$dato['telefonomama'];
+      $cp=$dato['cp'];
       $ruta=$dato['ruta'];
       $comentarios=$dato['comentarios'];
 
       if($estatus==1){$staus1="Pendiente";}
       if($estatus==2){$staus1="Autorizado";}
-      if($estatus==3){$staus1="Cancelado";}
+      if($estatus==3){$staus1="Declinado";}
+      if($estatus==4){$staus1="Cancelado por el usuario";}
+
+
 
       $nfamila= $dato['nfamilia'];
       $calle_numero1=$dato['calle'];
@@ -154,34 +159,51 @@ placeholder="Buscar Solicitud..."><br> <br>
       */
       $mensaje=$dato['mensaje'];
       $familia=$dato['familia'];
-      $fecha1=$dato['fecha_inicial'];
-      $frespuesta=$dato['fecha_cambio'];
-      //$telefonomama=$dato['telefonomama'];
-      if($fecha1==0)
+      $fecha_cambio=$dato['fecha_cambio'];
+      $fecha_respuesta = $dato['fecha_respuesta'];
+
+      $fecha_actual = strtotime(date("d-m-Y H:i:00",time()));
+      $fecha_entrada = strtotime($fecha_cambio);
+
+      if($fecha_actual > $fecha_entrada){
+            $otro_dia=false;
+      }else{
+            $otro_dia=true;
+      }
+
+
+      $telefonomama=$dato['telefonomama'];
+/*
+      if($fecha_inicial==0)
       {
-        $ppermiso=$fecha;
+        $fpermiso=$fecha;
       }
       else
       {
-        $ppermiso= $fecha1;
+        $fpermiso= $fecha_inicial;
       }
+*/
 
-      //alumnos
-      $array_alumnos= array();
-      $alumnos= mysqli_query($conexion,"SELECT * FROM Ventana_permisos_alumnos where id_permiso='$id'");
-      while($alumno = mysqli_fetch_assoc ( $alumnos ) ){
-        array_push($array_alumnos, $alumno['id_alumno']);
+       if ($otro_dia==true){
+        $color = '#ddd';
+        $borde= '#ddd';
+      }else{
+        $color = '#fff';
+        $borde= '#ddd';
       }
-
-
-
+      if ($estatus==4){
+        $color = '#ffd5d5';
+        $borde= '#ffb1b1';
+      }
       ?>
-      <tr data-row="<?php echo $dato['id_permiso']?>">
+
+      <tr  style="background:<?=$color?>; border-bottom:  1px solid <?=$borde?>"  data-row="<?php echo $dato['id_permiso']?>">
         <td><?php echo $id ?></td>
         <td><?php echo $fecha?></td>
         <td><?php echo $staus1?></td>
-        <td><?php echo $ppermiso?></td>
+        <td><?php echo $fecha_cambio?></td>
         <td><?php echo $familia?></td>
+
         <td class="text-right">
           <!--
             <button class="btn-autorizar btn btn-success" type="button"
@@ -203,8 +225,8 @@ placeholder="Buscar Solicitud..."><br> <br>
         data-calle_numero1="<?php echo $calle_numero1?>"
         data-colonia1="<?php echo $colonia1?>"
         data-mensaje="<?php echo $mensaje?>"
-        data-fecha1="<?php echo $ppermiso?>"
-        data-frespuesta="<?php echo $frespuesta?>">
+        data-fechacambio="<?php echo $fecha_cambio?>"
+        data-frespuesta="<?php echo $fecha_respuesta?>">
         <span class="glyphicon glyphicon-pencil">Ver</span>
       </button>
 
@@ -239,9 +261,9 @@ placeholder="Buscar Solicitud..."><br> <br>
   src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
   <script type="text/javascript" src="dist/js/bootstrap.js"></script>
   <script type="text/javascript" src="js/PDiario.js"></script>
+  <script type="text/javascript" src="js/1min_inactivo.js" ></script>
 </body>
 </html>
-
 <!-- Modal -->
 <div class="modal fade" id="agregarNivel" tabindex="-1" role="dialog"
 aria-labelledby="myModalLabel" aria-hidden="true">
@@ -289,43 +311,15 @@ aria-labelledby="myModalLabel" aria-hidden="true">
           </tr>
 
         </table>
-        <table border="0" WIDTH="700">
+        <table  border="0" WIDTH="700">
           <tr>
             <td>Alumno</td>
             <td>Grado</td>
             <td>Grupo</td>
           </tr>
-
-<?php
-foreach ($array_alumnos as $alu) {
-  // code...
-    $alumnos = mysqli_query($conexion, "SELECT nombre, grupo, grado FROM alumnoschmd WHERE id=$alu");
-    while ($alumno = mysqli_fetch_assoc( $alumnos ) ){
-      ?>
-      <tr>
-      <td>
-        <input
-        name="alumno<?=$id_alumno?>" id="alumno<?=$id_alumno?>" type="text"
-        class="form-control" value="<?=$alumno ['nombre'] ?>"  readonly>
-      </td>
-      <td>
-        <input
-        name="grado<?=$id_alumno?>" id="grado<?=$id_alumno?>" type="text"
-        class="form-control" value="<?=$alumno ['grupo']?>" readonly>
-      </td>
-      <td>
-        <input
-        name="grupo<?=$id_alumno?>" id="grupo<?=$id_alumno?>" type="text"
-        class="form-control" value="<?=$alumno ['grado']?>" readonly>
-      </td>
-      </tr>
-      <?php
-    }
-  echo $alu;
-}
- ?>
-
-          <!------------------------------------------------------------------------->
+        </table>
+        <table id="tabla_alumnos" border="0" WIDTH="700">
+          <!-------------------------- Tabla de  Alumnos ----------------------------------------------->
         </table>
 
         <table border="0" WIDTH="700">
@@ -339,7 +333,7 @@ foreach ($array_alumnos as $alu) {
             <td colspan="3">
               fecha de permiso:
               <input
-              name="fecha1" id="fecha1" type="text"
+              name="fechacambio" id="fechacambio" type="text"
               class="form-control" placeholder="Calle_numero1"  style="width : 500px; heigth : 4px" readonly>
             </td>
           </tr>
@@ -378,7 +372,7 @@ foreach ($array_alumnos as $alu) {
               class="form-control" placeholder="Calle_numero"  style="width : 500px; heigth : 4px" readonly>
             </td>
             <td>
-              telefono mama:
+              CP
               <input
               name="cp" id="cp" type="text"
               class="form-control" placeholder="Agrega cp" readonly>
@@ -426,11 +420,10 @@ foreach ($array_alumnos as $alu) {
 
         Accion:
         <select name="status" id="status">
-          <option value="0">Selecciona</option>
-          <option value="2"style="color:white;background-color:#0b1d3f;">Autotizado</option>
+          <option value="0" >Selecciona</option>
+          <option value="2"style="color:white;background-color:#0b1d3f;" >Autorizado</option>
           <option value="3" style="color:red;background-color:yellow;">Rechazado</option>
         </select>
-
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>

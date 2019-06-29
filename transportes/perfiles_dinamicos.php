@@ -4,7 +4,7 @@
   while($perfil = mysqli_fetch_assoc($perfiles)){
     if ($perfil['modulo']==$perfil_actual){
       ?>
-      <li class="active"><a  href="#">Solicitudes de <?=$perfil['modulo'];?></a></li>
+      <li class="active"><a  href="<?=$perfil['link']?>">Solicitudes de <?=$perfil['modulo'];?></a></li>
       <?php
     }else{
       ?>
