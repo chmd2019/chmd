@@ -57,7 +57,7 @@ if (isset ( $_SESSION ['usuario'] ) && isset ( $_SESSION ['contrasena']) && isse
 	   mysqli_select_db ($conexion, $db );
            $tildes = $conexion->query("SET NAMES 'utf8'"); //Para que se muestren las tildes
 
-           $resultado = mysqli_query ($conexion, "SELECT * FROM usuarios1 WHERE usuario = '" . $usuario_get . "' LIMIT 1" );
+           $resultado = mysqli_query ($conexion, "SELECT * FROM Administrador_usuarios WHERE usuario = '" . $usuario_get . "' LIMIT 1" );
 
            if ($resultado)
         {
