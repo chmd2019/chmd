@@ -116,6 +116,28 @@ footer{
 .border-radius-none{
     border-radius: 0px;
 }
+.picker__date-display{
+    background-color: #12487E !important;
+}
+.picker__day--selected{
+    background-color: #12487E !important;
+}
+.picker__close{
+    color: #12487E !important;
+}
+.picker--focused .picker__day--selected{
+    color: #FFFFFF !important;
+}
+.picker__day.picker__day--today{
+    color: red !important;
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+input[type=number] { -moz-appearance:textfield; }
 @media screen and (min-width: 280px) and (max-width:960px){
     .caja-login{
         width:90%;

@@ -6,6 +6,7 @@ require_once('../../../libraries/Google/autoload.php');
 require_once '../../../Model/Login.php';
 require_once '../../../Model/DBManager.php';
 require_once '../../../Model/Config.php';
+require_once '../../../Helpers/DateHelper.php';
 
 if (isset($_GET['logout'])) {
     unset($_SESSION['access_token']);
@@ -37,18 +38,23 @@ if (isset($authUrl)) {
     $correo = $user->email;
     $objCliente = new Login();
     $consulta = $objCliente->Acceso($correo);
+    $date_helper = new DateHelper();
+    $date_helper->set_timezone();
+    $hora_limite = $date_helper->obtener_hora_limite();
+    if ($hora_limite) {
+        $fecha_disabled = date("m-d-Y");
+        $msj_hora_limite = "- Seleccione desde la siguiente fecha disponible";
+    }
     if ($consulta = mysqli_fetch_array($consulta)) {
         $id = $consulta[0];
         $correo = $consulta[1];
         $perfil = $consulta[2];
         $status = $consulta[3];
-        $familia = $consulta[4];
-
+        $familia = str_pad($consulta[4], 4, 0, STR_PAD_LEFT);
         require_once '../posts_gets/Control_temporal.php';
         $control_temporal = new Control_temporal();
         $domicilio = $control_temporal->mostrar_domicilio($familia);
         $domicilio = mysqli_fetch_array($domicilio);
-
         $papa = $domicilio[0];
         $calle = $domicilio[1];
         $colonia = $domicilio[2];
@@ -174,20 +180,15 @@ if (isset($authUrl)) {
                                   id="colonia_nuevo_permiso_temporal" 
                                   placeholder="INGRESE COLONIA"></textarea> 
                     </div>
-                    <input name="cp" type="hidden" id="cp" value="00000"  />  
-                    <div class="input-field col s12">     
-                        <p>
-                            <label>
-                                <input type="checkbox" 
-                                       class="filled-in c-azul" 
-                                       id="recordar_direccion" 
-                                       onchange="recordar_direccion()"
-                                       />
-                                <span>Rercordar dirección</span>
-                            </label>
-                        </p>    
-
-                    </div>
+                    <input name="cp" type="hidden" id="cp" value="00000"  /> 
+                    <div class="switch col s12">
+                        <label>
+                            <input type="checkbox" 
+                                   id="recordar_direccion"
+                                   onchange="recordar_direccion()"/>
+                            <span>Rercordar dirección </span>
+                        </label>
+                    </div> 
                     <br>
                     <div id="container_descripcion_recordar_direccion" hidden>
                         <div class="input-field col s12" id="container_descripcion_recordar_direccion">
@@ -195,7 +196,7 @@ if (isset($authUrl)) {
                             <input id="descripcion_recordar_direccion" 
                                    placeholder="Descripción de la dirección"
                                    autocomplete="off" />
-                            <button type="button" class="btn white-text b-azul w-100" onclick="">Guardar</button>
+                            <button type="button" class="btn waves-effect waves-light white-text b-azul w-100" onclick="enviar_direccion()">Guardar</button>
                         </div>
                     </div>  
                     <br>
@@ -208,125 +209,99 @@ if (isset($authUrl)) {
                     <div class="input-field col s12 l6">
                         <i class="material-icons c-azul">people</i>
                         <input placeholder="Parentesco" id="parentesco_nuevo_permiso_temporal" type="text">
-                        <label for="first_name">Parentesco</label>
                     </div>
                     <div class="input-field col s12 l6">
                         <i class="material-icons c-azul">smartphone</i>
-                        <input placeholder="Celular" id="celular_nuevo_permiso_temporal" type="text">
-                        <label for="first_name">Celular</label>
+                        <input placeholder="Celular" id="celular_nuevo_permiso_temporal" type="number"
+                               onkeypress="return validar_solo_numeros(event)">
                     </div>
                     <div class="input-field col s12 l6">
                         <i class="material-icons c-azul">phone_in_talk</i>
-                        <input placeholder="Teléfono" id="telefono_nuevo_permiso_temporal" type="text">
-                        <label for="first_name">Teléfono</label>
+                        <input placeholder="Teléfono" id="telefono_nuevo_permiso_temporal" type="number"
+                               onkeypress="return validar_solo_numeros(event)">
                     </div>                
                     <br>
                     <h5 class="col s12 center-align c-azul">Fecha de cambio</h5>
                     <br>
+                    <div>
+                        <link rel='stylesheet' href='../../common/css/calendario.css'> 
+                        <div id="wrapper1" class="col s12 l6 input-field">
+                            <i class="material-icons prefix c-azul">calendar_today</i> 
+                            <input type="date" id="fecha_inicial_nuevo_permiso_temporal" class="datepicker-start datepicker c-azul" />
+                            <label for="fecha_inicial_nuevo_permiso_temporal">Fecha inicial</label>
+                        </div>
+                        <div id="wrapper2" class="col s12 l6 input-field">
+                            <i class="material-icons prefix c-azul">calendar_today</i> 
+                            <input type="date" id="fecha_final_nuevo_permiso_temporal" class="datepicker-end datepicker  c-azul" />
+                            <label for="fecha_final_nuevo_permiso_temporal">Fecha final</label>
+                        </div>          
+                        <script src='../../common/js/calendario.js'></script>
+                        <script src="../../common/js/common.js"></script>
+                        <script>
+                            //obtiene el calendario escolar en db
+                            var calendario_escolar = obtener_calendario_escolar();
+                            //asigna en el objeto del calendario dias sabados y domigos para deshabilitar
+                            calendario_escolar.push(6);
+                            calendario_escolar.push(7);
+                            //comprueba la hora 11.30 am para deshabilitar fecha actual
+                            var fecha_disabled = "<?php echo $fecha_disabled; ?>";
+                            if (fecha_disabled.length > 0) {
+                                if (navigator.appVersion.indexOf("Mac") != -1) {
+                                    fecha_disabled = `${fecha_disabled.split("-")[0]}/${fecha_disabled.split("-")[1]}/${fecha_disabled.split("-")[2]}`;
+                                } else {
+                                    fecha_disabled = new Date(fecha_disabled);
+                                }
+                            }
+                            calendario_escolar.push(new Date(fecha_disabled));
+                            //fix de error al mostrar calendario (se oculta inmediatamente se abre)
+                            $(".datepicker").on('mousedown', function (event) {
+                                event.preventDefault();
+                            });
+                            $("input[class*='datepicker-']").pickadate({
+                                format: 'dddd, dd De mmmm De yyyy',
+                                today: false,
+                                clear: false,
+                                close: 'Aceptar',
+                                closeOnSelect: false,
+                                monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                                monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                                weekdaysFull: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
+                                weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                                weekdaysLetter: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+                                disable: calendario_escolar,
+                                firstDay: 1,
+                                disableWeekends: true,
+                                min: new Date(),
+                                //establece rango de fecha final segun fecha inicial
+                                onSet: function (obj) {
+                                    let thisPicker = $(this)[0].$node;
+                                    let classes = thisPicker.attr("class");
+                                    if (classes === undefined || classes.length === 0 || classes.indexOf("datepicker-start") < 0) {
+                                        return;
+                                    }
+                                    let parent1 = thisPicker.closest("div.input-field");
+                                    let parent2 = parent1.next("div.input-field");
+                                    let picker2 = parent2.find(".datepicker-end");
+                                    if (obj.select) {
+                                        let dt = new Date(obj.select);
+                                        picker2.pickadate('picker').set('min', dt);
+                                    }
 
-                    <div class="col s12 l6">
-                        <div class="input-field">
-                            <i class="material-icons prefix c-azul">calendar_today</i>                    
-                            <label for="fecha_inicio_nuevo_permiso_temporal" style="font-size:.8rem">Fecha inicial </label>
-                            <input type="text" 
-                                   style="font-size:1rem"
-                                   id="fecha_inicio_nuevo_permiso_temporal" 
-                                   class="datepicker"
-                                   autocomplete="off">
-                        </div>
-                        <script>
-                            var months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-                            var monthsShort = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-                            var weekdays = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-                            var weekdaysShort = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'];
-                            var weekdaysAbbrev = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
-                            var day = new Date("");
-                            real_day = day.getDate();
-                            var disbaleDays = function (day) {
-                                var dates = [
-                                    new Date(day.getFullYear(), day.getMonth(), real_day).toDateString()
-                                ];
-                                if (dates.indexOf(day.toDateString()) >= 0) {
-                                    return true; // Disables date.
-                                }
-                                return false; // Date is availble.
-                            }
-                            $('.datepicker').datepicker({
-                                firstDay: true,
-                                disableWeekends: true,
-                                minDate: new Date(),
-                                format: 'dddd, dd De mmmm De yyyy',
-                                disableDayFn: disbaleDays,
-                                i18n: {
-                                    cancel: 'Cancelar',
-                                    clear: 'Limpar',
-                                    done: 'Aceptar',
-                                    months,
-                                    monthsShort,
-                                    weekdays,
-                                    weekdaysShort,
-                                    weekdaysAbbrev,
+                                    if (obj.hasOwnProperty('clear')) {
+                                        picker2.pickadate('picker').set('min', false);
+                                    }
                                 }
                             });
-                        </script>
-                        <br>
-                        <br>
-                    </div>
-                    <div class="col s12 l6">
-                        <div class="input-field">
-                            <i class="material-icons prefix c-azul">calendar_today</i>                    
-                            <label for="fecha_final_nuevo_permiso_temporal" style="font-size:.8rem">Fecha final </label>
-                            <input type="text" 
-                                   style="font-size:1rem"
-                                   id="fecha_final_nuevo_permiso_temporal" 
-                                   class="datepicker"
-                                   autocomplete="off">
-                        </div>
-                        <script>
-                            var months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-                            var monthsShort = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-                            var weekdays = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-                            var weekdaysShort = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'];
-                            var weekdaysAbbrev = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
-                            var day = new Date("");
-                            real_day = day.getDate();
-                            var disbaleDays = function (day) {
-                                var dates = [
-                                    new Date(day.getFullYear(), day.getMonth(), real_day).toDateString()
-                                ];
-                                if (dates.indexOf(day.toDateString()) >= 0) {
-                                    return true; // Disables date.
-                                }
-                                return false; // Date is availble.
-                            }
-                            $('.datepicker').datepicker({
-                                firstDay: true,
-                                disableWeekends: true,
-                                minDate: new Date(),
-                                format: 'dddd, dd De mmmm De yyyy',
-                                disableDayFn: disbaleDays,
-                                i18n: {
-                                    cancel: 'Cancelar',
-                                    clear: 'Limpar',
-                                    done: 'Aceptar',
-                                    months,
-                                    monthsShort,
-                                    weekdays,
-                                    weekdaysShort,
-                                    weekdaysAbbrev,
-                                }
-                            });
-                        </script>
-                        <br>
-                        <br>
-                    </div>
+                        </script>  
+                    </div>      
                     <br>
                     <div class="input-field col s12">
                         <i class="material-icons c-azul">departure_board</i>
-                        <select class="input-field" id="ruta_diario" >
+                        <select class="input-field" id="ruta_nuevo_permiso_temporal" >
                             <option value="">Seleccione ruta</option>
-                            <option value="General 2:50 PM">General 2:50 PM</option>
-                            <option value="Taller 4:30 PM">Taller 4:30 PM</option>
+                            <option value="Mañana">Mañana</option> 
+                            <option value="Tarde">Tarde</option> 
+                            <option value="Mañana-Tarde">Mañana-Tarde</option> 
                         </select>
                     </div> 
                     <br>
@@ -339,7 +314,7 @@ if (isset($authUrl)) {
                     <div class="col s12 l6" style="float: none;margin: 0 auto;">
                         <button class="btn waves-effect waves-light b-azul white-text w-100" 
                                 type="button" 
-                                onclick="enviar_formulario()">Enviar
+                                onclick="enviar_formulario('<?php echo $id;?>', '<?php echo $familia;?>',2)">Enviar
                             <i class="material-icons right">send</i>
                         </button>
                     </div>
@@ -363,33 +338,13 @@ if (isset($authUrl)) {
         //inicia select
         $('select').formSelect();
         //consulta de direcciones
-        consultar_direcciones();
+        consultar_direcciones("<?php echo $id; ?>");
     });
-    function consultar_direcciones() {
-        var data = [];
-        $.ajax({
-            url: "../posts_gets/get_consultar_direcciones.php",
-            type: "GET",
-            data: {"id_usuario": "<?php echo $id; ?>"},
-            success: function (res) {
-                res = JSON.parse(res);
-                var options = `<option selected value="0">Seleccione dirección</option><option value="1">Deportivo CDI</option>`;
-                for (var key in res) {
-                    data.push(res[key]);
-                }
-                for (var key in data) {
-                    options += `<option value="${data[key].id_direccion}">${data[key].descripcion}</options>`;
-                }
-                $("#reside").html(options);
-                $('select').formSelect();
-            }
-        });
-        return data;
-    }
+
     function recordar_direccion() {
         if ($('#recordar_direccion').is(":checked")) {
             $('#container_descripcion_recordar_direccion').show();
-            consultar_direcciones();
+            consultar_direcciones("<?php echo $id; ?>");
             return;
         }
         $('#container_descripcion_recordar_direccion').hide();
@@ -418,7 +373,7 @@ if (isset($authUrl)) {
         if (dato !== "0" && dato !== "1") {
             var data = [];
             $.ajax({
-                url: "https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Diario/posts_gets/get_consultar_direcciones.php",
+                url: "/pruebascd/icloud/Transportes/common/get_consultar_direcciones.php",
                 type: "GET",
                 data: {"id_usuario": id},
                 success: function (res) {
@@ -440,7 +395,70 @@ if (isset($authUrl)) {
             $('#descripcion_recordar_direccion').val("");
         }
 
-    }   
+    }
+    function validar_recordar_direccion() {
+        //valida calle
+        var calle = $("#calle_nuevo_permiso_temporal");
+        var regex_calle = "[A-Za-z ]+[0-9 ][A-Za-z0-9 ]{1,40}";
+        if (!validar_regex(regex_calle, calle.val())) {
+            swal("Error en calle", "Agrega calle y número:TECAMACHALCO 370, sin acentos ni signos especiales", "error");
+            return false;
+        }
+        //valida colonia*
+        var colonia = $("#colonia_nuevo_permiso_temporal");
+        var regex_colonia = "[A-Za-z ]{5,30}";
+        if (!validar_regex(regex_colonia, colonia.val())) {
+            swal("Error en colonia", "Agrega colonia sin acentos ni signos especiales, mínimo 5 y máximo 30 caracteres", "error");
+            return false;
+        }
+        //valida DESCRIPCION*
+        var descripcion = $("#descripcion_recordar_direccion");
+        if (descripcion.val().length === 0) {
+            swal("Error en descripción", "Agrega descripción", "error");
+            return false;
+        }
+        return true;
+    }
+    function enviar_direccion() {
+        var calle = $('#calle_nuevo_permiso_temporal').val();
+        var colonia = $('#colonia_nuevo_permiso_temporal').val();
+        var descripcion = $('#descripcion_recordar_direccion').val();
+        var validacion = validar_recordar_direccion();
+        if (!validacion)
+            return;
+        if (calle.length > 0 && colonia.length > 0 && descripcion.length > 0) {
+            var data = {
+                "calle": calle,
+                "colonia": colonia,
+                "descripcion": descripcion,
+                "id_usuario":<?php echo $id; ?>
+            }
+            $.ajax({
+                url: "/pruebascd/icloud/Transportes/common/post_nueva_direccion.php",
+                type: "POST",
+                data: data,
+                success: function () {
+                    swal("Información", `Registro exitoso!, puedes seleccionar tu nueva dirección en la lista desplegable con la descripción ${data.descripcion}`, "success");
+                    $('#calle_nuevo_permiso_temporal').val("");
+                    $('#colonia_nuevo_permiso_temporal').val("");
+                    $('#descripcion_recordar_direccion').val("");
+                    consultar_direcciones(data.id_usuario);
+                    cambiar_direccion(data.id_usuario);
+                }
+            });
+            return;
+        }
+        swal("Información", "Debe llenar todos los campos!", "error");
+        if (calle.length == 0) {
+            $('#calle_nuevo').focus();
+        }
+        if (colonia.length == 0) {
+            $('#colonia_nuevo').focus();
+        }
+        if (descripcion.length == 0) {
+            $('#descripcion_recordar_direccion').focus();
+        }
+    }
     function validar_regex(reg, val) {
         var regex = new RegExp(reg);
         if (regex.test(val)) {
@@ -449,25 +467,6 @@ if (isset($authUrl)) {
         return false;
     }
     function validar_formulario() {
-        //validar fecha 
-        /*var fecha_disabled = ' ?php echo "$fecha_disabled"; ?>';
-        if (fecha_disabled.length > 0 ||
-                fecha_disabled !== null ||
-                fecha_disabled !== "") {
-            var mes = new Date().getMonth() + 1 < 10 ? `0${new Date().getMonth() + 1}` : new Date().getMonth() + 1;
-            var fecha_actual = `${new Date().getDate()}-${mes}-${new Date().getFullYear()}`;
-            var fecha_permiso_nuevo = $("#fecha_permiso_nuevo");
-            if (fecha_actual === formatear_fecha_calendario(fecha_permiso_nuevo.val())) {
-                swal("Información", "Debe seleccionar una fecha posterior a la actual, hora límite alcanzada", "error");
-                fecha_permiso_nuevo.val("");
-                fecha_permiso_nuevo.focus();
-                return false;
-            }
-            if (fecha_permiso_nuevo.val() === "" || fecha_permiso_nuevo.val() === null) {
-                swal("Información", "Debe seleccionar una fecha válida", "error");
-                return false;
-            }
-        }
         //valida checks de alumnos
         var selected = '';
         $('.checks-alumnos input[type=checkbox]').each(function () {
@@ -481,12 +480,10 @@ if (isset($authUrl)) {
         }
         //valida calle y colonia
         //valida calle
-        */
         var calle = $("#calle_nuevo_permiso_temporal");
         var regex_calle = "[A-Za-z ]+[0-9 ][A-Za-z0-9 ]{1,40}";
         if (!validar_regex(regex_calle, calle.val())) {
             swal("Error en calle", "Agrega calle y número:TECAMACHALCO 370, sin acentos ni signos especiales", "error");
-            calle.focus();
             return false;
         }
         //valida colonia*
@@ -494,98 +491,111 @@ if (isset($authUrl)) {
         var regex_colonia = "[A-Za-z ]{5,30}";
         if (!validar_regex(regex_colonia, colonia.val())) {
             swal("Error en colonia", "Agrega colonia sin acentos ni signos especiales, mínimo 5 y máximo 30 caracteres", "error");
-            validar_regex.focus();
             return false;
         }
         //valida nombre*
         var nombre_nuevo_permiso_temporal = $("#nombre_nuevo_permiso_temporal");
-        var regex_nombre_nuevo_permiso_temporal = "[A-Za-z ]{5,256}";
+        var regex_nombre_nuevo_permiso_temporal = "[A-Za-z ]{1,256}";
         if (!validar_regex(regex_nombre_nuevo_permiso_temporal, nombre_nuevo_permiso_temporal.val())) {
             swal("Error en nombre", "Agregue nombre sin acentos ni signos especiales", "error");
-            nombre_nuevo_permiso_temporal.focus();
             return false;
         }
         //valida parentesco*
         var parentesco_nuevo_permiso_temporal = $("#parentesco_nuevo_permiso_temporal");
-        var regex_parentesco_nuevo_permiso_temporal = "[A-Za-z ]{5,256}";
+        var regex_parentesco_nuevo_permiso_temporal = "[A-Za-z ]{1,256}";
         if (!validar_regex(regex_parentesco_nuevo_permiso_temporal, parentesco_nuevo_permiso_temporal.val())) {
             swal("Error en parentesco", "Agregue parentesco sin acentos ni signos especiales", "error");
-            parentesco_nuevo_permiso_temporal.focus();
             return false;
         }
         //valida celular*
-        var celular_nuevo_permiso_temporal = $("#celular_nuevo_permiso_temporal");        
-        if ($('#celular_nuevo_permiso_temporal').val().length == 8 || 
-                $('#celular_nuevo_permiso_temporal').val().length == 10)
+        var celular_nuevo_permiso_temporal = $("#celular_nuevo_permiso_temporal");
+        if (celular_nuevo_permiso_temporal.val().length == 8 ||
+                celular_nuevo_permiso_temporal.val().length == 10)
         {
-            return;
+
         } else {
-            celular_nuevo_permiso_temporal.focus();
             swal("Error en celular", "Agregue celular con 8 o 10 dígitos", "error");
             return false;
         }
-        //valida seleccion de ruta   telefono_nuevo_permiso_temporal
-        if ($("#ruta_diario").val() === "") {
+        //valida telefono
+        var telefono_nuevo_permiso_temporal = $("#telefono_nuevo_permiso_temporal");
+        if (telefono_nuevo_permiso_temporal.val().length !== 8) {
+            swal("Error en teléfono", "Agregue teléfono con 8 dígitos", "error");
+            return false;
+        }
+        //valida fechas
+        if ($("#fecha_inicial_nuevo_permiso_temporal").val().length === 0) {
+            swal("Información", "Debes seleccionar una fecha inicial válida", "error");
+            return false;
+        }
+        if ($("#fecha_final_nuevo_permiso_temporal").val().length === 0) {
+            swal("Información", "Debes seleccionar una fecha final válida", "error");
+            return false;
+        }
+        //validar fecha final mayor que fecha inicial
+        var fecha_inicial = $("#fecha_inicial_nuevo_permiso_temporal").val();
+        fecha_inicial = formatear_fecha_calendario(fecha_inicial);
+        var fecha_final = $("#fecha_final_nuevo_permiso_temporal").val();
+        fecha_final = formatear_fecha_calendario(fecha_final);
+        fecha_inicial = new Date(fecha_inicial);
+        fecha_final = new Date(fecha_final);
+        if (fecha_final <= fecha_inicial) {
+            swal("Error en fecha final", "La fecha final debe ser posterior a la fecha inicial", "error");
+            return false;
+        }
+        //valida seleccion de ruta 
+        if ($("#ruta_nuevo_permiso_temporal").val() === "") {
             swal("Información", "Debes seleccionar una ruta", "error");
             return false;
         }
         return true;
-    }    
-    function enviar_formulario() {
+    }
+    function validar_solo_numeros(num) {
+        var charCode = (num.which) ? num.which : num.keyCode;
+        if (charCode != 46 && charCode > 31
+                && (charCode < 48 || charCode > 57))
+            return false;
+
+        return true;
+    }
+    function enviar_formulario(id, familia,tipo_permiso) {
         if (validar_formulario()) {
             //fecha solicitud, solicitante, fecha del permiso, nombre del alumno, alumnos, calle, colonia
-            var fecha_solicitud_nuevo = $("#fecha_solicitud_nuevo");
-            var correo_nuevo = $("#correo_nuevo");
-            var fecha_permiso_nuevo = $("#fecha_permiso_nuevo");
-            var alumno_1 = $("#id_alumno_1");
-            var alumno_2 = $("#id_alumno_2");
-            var alumno_3 = $("#id_alumno_3");
-            var alumno_4 = $("#id_alumno_4");
-            var alumno_5 = $("#id_alumno_5");
-            var calle_nuevo = $("#calle_nuevo");
-            var colonia_nuevo = $("#colonia_nuevo");
-            var comentarios_nuevo = $("#comentarios_nuevo");
-            var cp = $("#cp");
-            var ruta_diario = $("#ruta_diario");
+            var calle_nuevo_permiso_temporal = $("#calle_nuevo_permiso_temporal").val();
+            var colonia_nuevo_permiso_temporal = $("#colonia_nuevo_permiso_temporal").val();
+            var cp = $("#cp").val();
+            var responsable = $("#nombre_nuevo_permiso_temporal").val();
+            var parentesco =  $("#parentesco_nuevo_permiso_temporal").val();         
+            var celular =  $("#celular_nuevo_permiso_temporal").val();
+            var telefono =  $("#telefono_nuevo_permiso_temporal").val();
+            var fecha_inicial =  $("#fecha_inicial_nuevo_permiso_temporal").val();
+            var fecha_final =  $("#fecha_final_nuevo_permiso_temporal").val();
+            var turno = $("#ruta_nuevo_permiso_temporal").val();
+            var comentarios = $("#comentarios_nuevo_permiso_temporal").val();
+            
             var model = {
-                idusuario:<?php echo $id; ?>,
-                fecha_solicitud_nuevo: fecha_solicitud_nuevo.val(),
-                correo_nuevo: correo_nuevo.val(),
-                fecha_permiso_nuevo: formatear_fecha_calendario(comentarios_nuevo.val()),
-                alumno_1: "",
-                alumno_2: "",
-                alumno_3: "",
-                alumno_4: "",
-                alumno_5: "",
-                calle_nuevo: calle_nuevo.val(),
-                colonia_nuevo: colonia_nuevo.val(),
-                cp: cp.val(),
-                comentarios_nuevo: comentarios_nuevo.val(),
-                ruta_diario: ruta_diario.val(),
-                talumnos: <?php echo $talumnos; ?>,
-                familia: <?php echo $familia; ?>
+                idusuario: id,
+                calle_numero: calle_nuevo_permiso_temporal,
+                colonia: colonia_nuevo_permiso_temporal,
+                cp: cp,
+                responsable:responsable,
+                nfamilia: familia,
+                parentesco: parentesco,
+                celular: celular,
+                telefono:telefono,
+                fecha_inicial:fecha_inicial,
+                fecha_final:fecha_final,
+                turno:turno,
+                comentarios:comentarios,
+                tipo_permiso:tipo_permiso
             };
-            if ($("#alumno_1").prop("checked")) {
-                model.alumno_1 = alumno_1.val();
-            }
-            if ($("#alumno_2").prop("checked")) {
-                model.alumno_2 = alumno_2.val();
-            }
-            if ($("#alumno_3").prop("checked")) {
-                model.alumno_3 = alumno_3.val();
-            }
-            if ($("#alumno_4").prop("checked")) {
-                model.alumno_4 = alumno_4.val();
-            }
-            if ($("#alumno_5").prop("checked")) {
-                model.alumno_5 = alumno_5.val();
-            }
             $.ajax({
-                url: "https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Diario/posts_gets/post_nuevo_permiso_diario.php",
+                url: "/pruebascd/icloud/Transportes/common/post_nuevo_permiso.php",
                 type: "POST",
                 data: model,
                 success: function (res) {
-                    if (res == 0) {
+                    console.log(res);
+                    /*if (res == 0) {
                         swal("Información", "No puede solicitar un permiso para el dia actual, después de 11:30 AM", "error");
                         setInterval(() => {
                             location.reload();
@@ -600,12 +610,11 @@ if (isset($authUrl)) {
                         setInterval(() => {
                             location.reload();
                         }, 10000);
-                    }
+                    }*/
                 }
             });
         }
     }
 </script>
-
 <?php include '../../components/layout_bottom.php'; ?>
 

@@ -32,7 +32,7 @@ if (isset($authUrl)) {
         <i class="large material-icons">edit</i>
     </a>
     <ul>
-        <li><a class="btn-floating green accent-3" href="vistas/vista_temporal_permiso_diario.php"><i class="material-icons">add</i></a></li>
+        <li><a class="btn-floating green accent-3" href="vistas/vista_nuevo_permiso_temporal.php"><i class="material-icons">add</i></a></li>
         <li><a class="btn-floating blue" href="javascript:history.back(0)"><i class="material-icons">keyboard_backspace</i></a></li>
             <?php
             echo '<li><a href="' . $redirect_uri . '?logout=1" class="btn-floating red" >'
