@@ -7,7 +7,6 @@ require_once '../../../Model/Login.php';
 require_once '../../../Model/DBManager.php';
 require_once '../../../Model/Config.php';
 require_once '../../../Helpers/DateHelper.php';
-
 if (isset($_GET['logout'])) {
     unset($_SESSION['access_token']);
 }
@@ -51,8 +50,8 @@ if (isset($authUrl)) {
         $perfil = $consulta[2];
         $status = $consulta[3];
         $familia = str_pad($consulta[4], 4, 0, STR_PAD_LEFT);
-        require_once '../posts_gets/Control_temporal.php';
-        $control_temporal = new Control_temporal();
+        require_once '../../common/ControlTransportes.php';
+        $control_temporal = new ControlTransportes();
         $domicilio = $control_temporal->mostrar_domicilio($familia);
         $domicilio = mysqli_fetch_array($domicilio);
         $papa = $domicilio[0];
@@ -205,6 +204,7 @@ if (isset($authUrl)) {
                                   class="materialize-textarea"                                
                                   placeholder="Nombre"></textarea>    
                     </div>
+                    <div>
                     <div class="input-field col s12 l6">
                         <i class="material-icons c-azul">people</i>
                         <input 
@@ -222,7 +222,8 @@ if (isset($authUrl)) {
                         <i class="material-icons c-azul">phone_in_talk</i>
                         <input placeholder="Teléfono" id="telefono_nuevo_permiso_temporal" type="number"
                                onkeypress="return validar_solo_numeros(event)">
-                    </div>                
+                    </div>  
+                    </div>
                     <br>
                     <h5 class="col s12 center-align c-azul">Fecha de cambio</h5>
                     <br>

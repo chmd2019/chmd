@@ -2,7 +2,6 @@
 include_once '../components/layout_top.php';
 include_once '../components/navbar.php';
 require_once '../components/sesion.php';
-
 if (isset($authUrl)) {
     ?>
     <div class="caja-login" align="center">
@@ -16,7 +15,7 @@ if (isset($authUrl)) {
         <div class="col s12 m12 l9 b-blanco border-azul" style="float: none;margin: 0 auto;"> 
             <div>
                 <br>
-                <h4 class="c-azul" style="text-align: center;">Cambio del dia</h4>
+                <h4 class="c-azul" style="text-align: center;">Cambio de temporal</h4>
                 <div>
                     <?php include './View_temporal.php'; ?> 
                 </div>
@@ -47,6 +46,7 @@ if (isset($authUrl)) {
         $('.fixed-action-btn').floatingActionButton({
             hoverEnabled: false
         });
+        $('.modal').modal();
     });
 </script>
 

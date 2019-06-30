@@ -94,6 +94,14 @@ class DateHelper {
         }
         return false;
     }
+    public function comprobar_solicitud_vencida_d_m_y_guion($fecha) {
+        $fecha_actual = strtotime(date("d-m-Y"));
+        $fecha_destino = strtotime("$fecha");
+        if ($fecha_actual <= $fecha_destino) {
+            return true;
+        }
+        return false;
+    }
 
     public function comprobar_solicitud_no_vencida($fecha) {
         $fecha_actual = strtotime(date("d-m-Y"));
@@ -131,11 +139,36 @@ class DateHelper {
         }
         return false;
     }
-}
 
-/*
-    //zona horaria para America/Mexico_city 
-    require '../Helpers/DateHelper.php';
-    $objDateHelper = new DateHelper();
-    $objDateHelper->set_timezone();
-*/
+    function formatear_fecha_calendario($fecha) {
+        $fecha = explode(" ", $fecha);
+        $dia = $fecha[1];
+        $mes = $fecha[3];
+        $anio = $fecha[5];
+        if ($mes == "Enero")
+            $mes = "01";
+        if ($mes == "Febrero")
+            $mes = "02";
+        if ($mes == "Marzo")
+            $mes = "03";
+        if ($mes == "Abril")
+            $mes = "04";
+        if ($mes == "Mayo")
+            $mes = "05";
+        if ($mes == "Junio")
+            $mes = "06";
+        if ($mes == "Julio")
+            $mes = "07";
+        if ($mes == "Agosto")
+            $mes = "08";
+        if ($mes == "Septiembre")
+            $mes = "09";
+        if ($mes == "Octubre")
+            $mes = "10";
+        if ($mes == "Noviembre")
+            $mes = "11";
+        if ($mes== "Diciembre")
+            $mes = "12";
+        return "$dia-$mes-$anio";
+    }
+}
