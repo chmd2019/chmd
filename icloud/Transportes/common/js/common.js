@@ -71,3 +71,34 @@ function formatear_fecha_calendario(fecha) {
         mes = "12";
     return `${mes}/${dia}/${anio}`;
 }
+
+function formatear_fecha_calendario_formato_m_d_a(fecha) {
+    var dia = fecha.split(" ")[1];
+    var mes = fecha.split(" ")[3];
+    var anio = fecha.split(" ")[5];
+    if (mes === "Enero")
+        mes = "01";
+    if (mes === "Febrero")
+        mes = "02";
+    if (mes === "Marzo")
+        mes = "03";
+    if (mes === "Abril")
+        mes = "04";
+    if (mes === "Mayo")
+        mes = "05";
+    if (mes === "Junio")
+        mes = "06";
+    if (mes === "Julio")
+        mes = "07";
+    if (mes === "Agosto")
+        mes = "08";
+    if (mes === "Septiembre")
+        mes = "09";
+    if (mes === "Octubre")
+        mes = "10";
+    if (mes === "Noviembre")
+        mes = "11";
+    if (mes === "Diciembre")
+        mes = "12";
+    return `${mes}-${dia}-${anio}`;
+}

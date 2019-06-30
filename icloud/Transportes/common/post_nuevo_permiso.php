@@ -5,6 +5,8 @@ require '../../Helpers/DateHelper.php';
 
 $db_manager = new DBManager();
 $date_helper = new DateHelper();
+//seteael uso horario para ciudad de mexico
+$date_helper->set_timezone();
 
 $idusuario = $_POST['idusuario'];
 $calle_numero = $_POST['calle_numero'];
@@ -20,6 +22,15 @@ $turno = $_POST['turno'];
 $comentarios = $_POST['comentarios'];
 $nfamilia = $_POST['nfamilia'];
 $tipo_permiso = $_POST['tipo_permiso'];
+//coleccion de ids de los alumnos 
+$coleccion_ids = $_POST['coleccion_ids'];
+
+//comprobar hora limite
+$hora_limite = $date_helper->obtener_hora_limite();
+if ($hora_limite && $date_helper->comprobar_igual_actual($fecha_inicial)) {
+    echo 0;
+    return;
+}
 
 $connection = $db_manager->conectar1();
 if ($connection) {
@@ -61,11 +72,19 @@ if ($connection) {
     }
 
     if ($insertar) {
+        $ultimo_id_conexion = mysqli_insert_id($connection);
+        $insert_alumnos = null;
+        foreach ($coleccion_ids as $key => $id_alumno) {
+            $sql = "INSERT INTO Ventana_permisos_alumnos(id_permiso,id_alumno)  VALUES ('"
+                    . $ultimo_id_conexion . "','" . $id_alumno . "' )";
+            $insert_alumnos = mysqli_query($connection, $sql);
+        }
         $sql = "COMMIT";
         mysqli_query($connection, $sql);
-        echo "Registro exitoso";
+        echo 1;
     } else {
         $sql = "ROLLBACK";
         mysqli_query($connection, $sql);
     }
+    mysqli_close($connection);
 }

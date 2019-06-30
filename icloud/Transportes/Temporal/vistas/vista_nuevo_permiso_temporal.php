@@ -78,14 +78,14 @@ if (isset($authUrl)) {
                         <label for="fecha_solicitud_permiso_temporal" style="margin-left: 1rem">Fecha de solicitud</label>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">calendar_today</i>
-                            <input value="<?php echo $arrayDias[date('w')] . ", " . date('d') . " de " . $arrayMeses[date('m') - 1] . " de " . date('Y') . ", " . date("h:i a"); ?>" readonly  id="fecha_solicitud_permiso_temporal" style="font-size: 1rem" type="text" >               
+                            <input value="<?php echo $arrayDias[date('w')] . ", " . date('d') . " de " . $arrayMeses[date('m') - 1] . " de " . date('Y') . ", " . date("h:i a"); ?>" readonly  id="fecha_solicitud_permiso_temporal" style="font-size: 1rem" type="text" />               
                         </div>
                     </div>  
                     <div class="col s12 l6">
                         <label for="solicitante_permiso_temporal" style="margin-left: 1rem">Solicitante</label>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">person</i>
-                            <input value="<?php echo $correo; ?>" readonly  id="solicitante_permiso_temporal" style="font-size: 1rem" type="text" >               
+                            <input value="<?php echo $correo; ?>" readonly  id="solicitante_permiso_temporal" style="font-size: 1rem" type="text" />               
                         </div>
                     </div>    
                     <br>
@@ -104,14 +104,13 @@ if (isset($authUrl)) {
                                     <textarea class="materialize-textarea"
                                               readonly  
                                               id="nombre_nuevo_permiso_temporal_<?php echo $counter; ?>"
-                                              style="font-size: 1rem">  
-                                    </textarea>
+                                              style="font-size: 1rem"></textarea>
                                 </div>
                                 <div class="switch col s12">
                                     <label class="checks-alumnos">
                                         <input type="checkbox" 
                                                id="alumno_permiso_temporal_<?php echo $counter; ?>" 
-                                               value="<?php echo $cliente1['nombre']; ?>">
+                                               value="<?php echo $cliente1['id']; ?>"/>
                                         <span class="lever"></span>
                                     </label>
                                 </div>
@@ -157,7 +156,7 @@ if (isset($authUrl)) {
                             <input readonly  
                                    id="cp_guardada_temporal"
                                    style="font-size: .9rem"
-                                   value="">       
+                                   value=""/>       
                         </div>
                     </div>                
                     <br>
@@ -180,7 +179,7 @@ if (isset($authUrl)) {
                                   id="colonia_nuevo_permiso_temporal" 
                                   placeholder="INGRESE COLONIA"></textarea> 
                     </div>
-                    <input name="cp" type="hidden" id="cp" value="00000"  /> 
+                    <input name="cp" type="hidden" id="cp" value="00000" /> 
                     <div class="switch col s12">
                         <label>
                             <input type="checkbox" 
@@ -208,7 +207,11 @@ if (isset($authUrl)) {
                     </div>
                     <div class="input-field col s12 l6">
                         <i class="material-icons c-azul">people</i>
-                        <input placeholder="Parentesco" id="parentesco_nuevo_permiso_temporal" type="text">
+                        <input 
+                            placeholder="Parentesco" 
+                            id="parentesco_nuevo_permiso_temporal" 
+                            type="text" 
+                            autocomplete="off"/>
                     </div>
                     <div class="input-field col s12 l6">
                         <i class="material-icons c-azul">smartphone</i>
@@ -238,60 +241,60 @@ if (isset($authUrl)) {
                         <script src='../../common/js/calendario.js'></script>
                         <script src="../../common/js/common.js"></script>
                         <script>
-                            //obtiene el calendario escolar en db
-                            var calendario_escolar = obtener_calendario_escolar();
-                            //asigna en el objeto del calendario dias sabados y domigos para deshabilitar
-                            calendario_escolar.push(6);
-                            calendario_escolar.push(7);
-                            //comprueba la hora 11.30 am para deshabilitar fecha actual
-                            var fecha_disabled = "<?php echo $fecha_disabled; ?>";
-                            if (fecha_disabled.length > 0) {
-                                if (navigator.appVersion.indexOf("Mac") != -1) {
-                                    fecha_disabled = `${fecha_disabled.split("-")[0]}/${fecha_disabled.split("-")[1]}/${fecha_disabled.split("-")[2]}`;
-                                } else {
-                                    fecha_disabled = new Date(fecha_disabled);
-                                }
-                            }
-                            calendario_escolar.push(new Date(fecha_disabled));
-                            //fix de error al mostrar calendario (se oculta inmediatamente se abre)
-                            $(".datepicker").on('mousedown', function (event) {
-                                event.preventDefault();
-                            });
-                            $("input[class*='datepicker-']").pickadate({
-                                format: 'dddd, dd De mmmm De yyyy',
-                                today: false,
-                                clear: false,
-                                close: 'Aceptar',
-                                closeOnSelect: false,
-                                monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                                monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                                weekdaysFull: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
-                                weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-                                weekdaysLetter: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
-                                disable: calendario_escolar,
-                                firstDay: 1,
-                                disableWeekends: true,
-                                min: new Date(),
-                                //establece rango de fecha final segun fecha inicial
-                                onSet: function (obj) {
-                                    let thisPicker = $(this)[0].$node;
-                                    let classes = thisPicker.attr("class");
-                                    if (classes === undefined || classes.length === 0 || classes.indexOf("datepicker-start") < 0) {
-                                        return;
-                                    }
-                                    let parent1 = thisPicker.closest("div.input-field");
-                                    let parent2 = parent1.next("div.input-field");
-                                    let picker2 = parent2.find(".datepicker-end");
-                                    if (obj.select) {
-                                        let dt = new Date(obj.select);
-                                        picker2.pickadate('picker').set('min', dt);
-                                    }
+                                   //obtiene el calendario escolar en db
+                                   var calendario_escolar = obtener_calendario_escolar();
+                                   //asigna en el objeto del calendario dias sabados y domigos para deshabilitar
+                                   calendario_escolar.push(6);
+                                   calendario_escolar.push(7);
+                                   //comprueba la hora 11.30 am para deshabilitar fecha actual
+                                   var fecha_disabled = "<?php echo $fecha_disabled; ?>";
+                                   if (fecha_disabled.length > 0) {
+                                       if (navigator.appVersion.indexOf("Mac") != -1) {
+                                           fecha_disabled = `${fecha_disabled.split("-")[0]}/${fecha_disabled.split("-")[1]}/${fecha_disabled.split("-")[2]}`;
+                                       } else {
+                                           fecha_disabled = new Date(fecha_disabled);
+                                       }
+                                   }
+                                   calendario_escolar.push(new Date(fecha_disabled));
+                                   //fix de error al mostrar calendario (se oculta inmediatamente se abre)
+                                   $(".datepicker").on('mousedown', function (event) {
+                                       event.preventDefault();
+                                   });
+                                   $("input[class*='datepicker-']").pickadate({
+                                       format: 'dddd, dd De mmmm De yyyy',
+                                       today: false,
+                                       clear: false,
+                                       close: 'Aceptar',
+                                       closeOnSelect: false,
+                                       monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                                       monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                                       weekdaysFull: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
+                                       weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                                       weekdaysLetter: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+                                       disable: calendario_escolar,
+                                       firstDay: 1,
+                                       disableWeekends: true,
+                                       min: new Date(),
+                                       //establece rango de fecha final segun fecha inicial
+                                       onSet: function (obj) {
+                                           let thisPicker = $(this)[0].$node;
+                                           let classes = thisPicker.attr("class");
+                                           if (classes === undefined || classes.length === 0 || classes.indexOf("datepicker-start") < 0) {
+                                               return;
+                                           }
+                                           let parent1 = thisPicker.closest("div.input-field");
+                                           let parent2 = parent1.next("div.input-field");
+                                           let picker2 = parent2.find(".datepicker-end");
+                                           if (obj.select) {
+                                               let dt = new Date(obj.select);
+                                               picker2.pickadate('picker').set('min', dt);
+                                           }
 
-                                    if (obj.hasOwnProperty('clear')) {
-                                        picker2.pickadate('picker').set('min', false);
-                                    }
-                                }
-                            });
+                                           if (obj.hasOwnProperty('clear')) {
+                                               picker2.pickadate('picker').set('min', false);
+                                           }
+                                       }
+                                   });
                         </script>  
                     </div>      
                     <br>
@@ -314,7 +317,7 @@ if (isset($authUrl)) {
                     <div class="col s12 l6" style="float: none;margin: 0 auto;">
                         <button class="btn waves-effect waves-light b-azul white-text w-100" 
                                 type="button" 
-                                onclick="enviar_formulario('<?php echo $id;?>', '<?php echo $familia;?>',2)">Enviar
+                                onclick="enviar_formulario('<?php echo $id; ?>', '<?php echo $familia; ?>', 2)">Enviar
                             <i class="material-icons right">send</i>
                         </button>
                     </div>
@@ -326,6 +329,8 @@ if (isset($authUrl)) {
 }
 ?>
 <script>
+    //arreglo global de ids de los alumnos seleccionados para el permiso
+    var coleccion_ids = [];
     $(document).ready(function () {
         //redimenciona el tamaño y el value de los textareas
         $('#calle_guardada_temporal').val('<?php echo $calle; ?>');
@@ -340,7 +345,6 @@ if (isset($authUrl)) {
         //consulta de direcciones
         consultar_direcciones("<?php echo $id; ?>");
     });
-
     function recordar_direccion() {
         if ($('#recordar_direccion').is(":checked")) {
             $('#container_descripcion_recordar_direccion').show();
@@ -558,61 +562,70 @@ if (isset($authUrl)) {
 
         return true;
     }
-    function enviar_formulario(id, familia,tipo_permiso) {
+    function enviar_formulario(id, familia, tipo_permiso) {
         if (validar_formulario()) {
             //fecha solicitud, solicitante, fecha del permiso, nombre del alumno, alumnos, calle, colonia
             var calle_nuevo_permiso_temporal = $("#calle_nuevo_permiso_temporal").val();
             var colonia_nuevo_permiso_temporal = $("#colonia_nuevo_permiso_temporal").val();
             var cp = $("#cp").val();
             var responsable = $("#nombre_nuevo_permiso_temporal").val();
-            var parentesco =  $("#parentesco_nuevo_permiso_temporal").val();         
-            var celular =  $("#celular_nuevo_permiso_temporal").val();
-            var telefono =  $("#telefono_nuevo_permiso_temporal").val();
-            var fecha_inicial =  $("#fecha_inicial_nuevo_permiso_temporal").val();
-            var fecha_final =  $("#fecha_final_nuevo_permiso_temporal").val();
+            var parentesco = $("#parentesco_nuevo_permiso_temporal").val();
+            var celular = $("#celular_nuevo_permiso_temporal").val();
+            var telefono = $("#telefono_nuevo_permiso_temporal").val();
+            var fecha_inicial = $("#fecha_inicial_nuevo_permiso_temporal").val();
+            var fecha_final = $("#fecha_final_nuevo_permiso_temporal").val();
             var turno = $("#ruta_nuevo_permiso_temporal").val();
             var comentarios = $("#comentarios_nuevo_permiso_temporal").val();
-            
+            //toma los id de alumnos
+            var selected = '';
+            $('.checks-alumnos input[type=checkbox]').each(function () {
+                if (this.checked) {
+                    selected += $(this).val() + ',';
+                }
+            });
+            var ids = selected.split(",");
+            for (var item in ids) {
+                if (ids[item] !== "") {
+                    coleccion_ids.push(ids[item]);
+                }
+            }
+            console.log(coleccion_ids);
             var model = {
                 idusuario: id,
                 calle_numero: calle_nuevo_permiso_temporal,
                 colonia: colonia_nuevo_permiso_temporal,
                 cp: cp,
-                responsable:responsable,
+                responsable: responsable,
                 nfamilia: familia,
                 parentesco: parentesco,
                 celular: celular,
-                telefono:telefono,
-                fecha_inicial:fecha_inicial,
-                fecha_final:fecha_final,
-                turno:turno,
-                comentarios:comentarios,
-                tipo_permiso:tipo_permiso
+                telefono: telefono,
+                fecha_inicial: fecha_inicial,
+                fecha_final: fecha_final,
+                turno: turno,
+                comentarios: comentarios,
+                tipo_permiso: tipo_permiso,
+                coleccion_ids: coleccion_ids
             };
             $.ajax({
                 url: "/pruebascd/icloud/Transportes/common/post_nuevo_permiso.php",
                 type: "POST",
                 data: model,
                 success: function (res) {
-                    console.log(res);
-                    /*if (res == 0) {
-                        swal("Información", "No puede solicitar un permiso para el dia actual, después de 11:30 AM", "error");
-                        setInterval(() => {
-                            location.reload();
-                        }, 4000);
-                    } else if (res == 1) {
+                    if (res == 1) {
                         swal("Información", "Registro exitoso!", "success");
                         setInterval(() => {
-                            history.back();
+                            window.history.back();
                         }, 1500);
                     } else {
                         swal("Información", res, "error");
                         setInterval(() => {
                             location.reload();
                         }, 10000);
-                    }*/
+                    }
                 }
             });
+            coleccion_ids = [];
         }
     }
 </script>
