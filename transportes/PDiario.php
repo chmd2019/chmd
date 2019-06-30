@@ -35,28 +35,28 @@ if (isset ( $_POST ['nombre_nivel'] ))
   $nombre = $_POST ['nombre_nivel'];
   $funcion = $_POST ['funcion'];
   $mensaje= $_POST ['mensaje'];
-  $status= $_POST ['status'];
+  $estatus= $_POST ['estatus'];
   if ($nombre) {
     header ( 'Content-type: application/json; charset=utf-8' );
 
     //$existe = mysql_query ( "SELECT * FROM Ventana_Permiso_diario WHERE id='1'" );
     //$existe = mysql_fetch_array ( $existe );
-    if ($status==3)
+    if ($estatus==3)
     {
       $query = "UPDATE Ventana_Permisos SET mensaje = '$mensaje', estatus=3, archivado=1 WHERE id_permiso=$funcion";
-      mysqli_query ( $query );
+      mysqli_query ( $conexion, $query );
       $json = array (
       'estatus' => '0'
       );
     }
-    else if ($status==2)
+    else if ($estatus==2)
     {
       $query = "UPDATE Ventana_Permisos SET mensaje = '$mensaje',estatus=2, archivado=1 WHERE id_permiso=$funcion";
-      mysqli_query ( $query );
+      mysqli_query ($conexion,  $query );
       $json = array (
       'estatus' => '0'
       );
-    } elseif ($existe)
+    } else if ($existe)
     {
       $json = array (
       'estatus' => '-1'
@@ -225,8 +225,10 @@ placeholder="Buscar Solicitud..."><br> <br>
         data-calle_numero1="<?php echo $calle_numero1?>"
         data-colonia1="<?php echo $colonia1?>"
         data-mensaje="<?php echo $mensaje?>"
+        data-estatus ="<?php echo $estatus?>"
         data-fechacambio="<?php echo $fecha_cambio?>"
         data-frespuesta="<?php echo $fecha_respuesta?>">
+
         <span class="glyphicon glyphicon-pencil">Ver</span>
       </button>
 
@@ -419,10 +421,10 @@ aria-labelledby="myModalLabel" aria-hidden="true">
         class="form-control" placeholder="frespuesta" readonly>
 
         Accion:
-        <select name="status" id="status">
+        <select name="estatus" id="estatus">
           <option value="0" >Selecciona</option>
-          <option value="2"style="color:white;background-color:#0b1d3f;" >Autorizado</option>
-          <option value="3" style="color:red;background-color:yellow;">Rechazado</option>
+          <option value="2" style="color:white;background-color:#0b1d3f;" >Autorizado</option>
+          <option value="3" style="color:red;background-color:yellow;">Declinado</option>
         </select>
       </div>
       <div class="modal-footer">

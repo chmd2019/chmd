@@ -7,8 +7,8 @@ $(function() {
     function(e) {
       var nombre_nivel = $('#nombre_nivel').val();
       var mensaje = $('#mensaje').val();
-      var status = $('#status').val();
-      if(status==0)
+      var estatus = $('#estatus').val();
+      if(estatus==0)
       {
         alert("Seleciona el estatus");
         return false;
@@ -19,8 +19,7 @@ $(function() {
         alert("Agrega Respuesta.");
         return false;
       }
-
-      e.preventDefault();
+      //e.preventDefault();
       $
       .ajax({
         type : 'POST',
@@ -28,12 +27,12 @@ $(function() {
           funcion : funcion,
           nombre_nivel : nombre_nivel,
           mensaje : mensaje,
-          status : status
+          estatus : estatus
         }
       })
       .done(
         function(data) {
-          if (data.estatus == -1) {
+          if (data.estatus == '-1') {
             $('.alert-save')
             .html(
               '<div class="alert alert-warning alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>  El nombre del nivel ya existe, por favor escribe otro</div>')
@@ -70,7 +69,7 @@ $(function() {
           $(this).attr('data-mensaje'),
           $(this).attr('data-fechacambio'),
           $(this).attr('data-frespuesta'),
-          $(this).attr('data-status'));
+          $(this).attr('data-estatus'));
 
           funcion = $(this).attr('data-id');
         });
@@ -93,7 +92,7 @@ $(function() {
           funcion = 0;
         });
 
-        function editarNivel(qwert,nombre,nombre1,calle_numero,colonia,cp,ruta,comentarios,calle_numero1,colonia1,mensaje,fechacambio,frespuesta,status)
+        function editarNivel(qwert,nombre,nombre1,calle_numero,colonia,cp,ruta,comentarios,calle_numero1,colonia1,mensaje,fechacambio,frespuesta,estatus)
         {
           $("#modalNivelTitulo").text("Editar Solicitud de Diario");
           $("#folio").val(qwert);
@@ -109,7 +108,16 @@ $(function() {
           $("#mensaje").val(mensaje);
           $("#fechacambio").val(fechacambio);
           $("#frespuesta").val(frespuesta);
-          $("#status").val(status);
+          if (estatus==1 || estatus==4){
+            $("#estatus").val(0);
+          }else {
+            if( estatus==2 || estatus==3){
+              $("#estatus").val(estatus);
+            }else{
+              $("#estatus").val(0);
+            }
+          }
+
           $("#funcion").val(qwert);
           //remover todos los alumnos de la lista
           $(".lista-alumnos").remove();

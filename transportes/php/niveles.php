@@ -212,7 +212,7 @@ if (isset ( $_GET ['AutorizaV'] ))
 	mysqli_select_db ( $conexion,$db );
 	$tildes = $conexion->query("SET NAMES 'utf8'"); //Para que se muestren las tildes
 
-	$query = "update Ventana_Permiso_viaje set estatus=2,notificacion1=0,notificacion3=0 where id=" . $id;
+	$query = "UPDATE Ventana_Permisos set estatus=2,notificacion1=0,notificacion3=0 where id_permiso=" . $id;
 	$resultado = mysqli_query ($conexion, $query ) or die ( "Error de base de datos: " . mysql_error () );
 
 	$datos = array (
@@ -225,8 +225,4 @@ if (isset ( $_GET ['AutorizaV'] ))
 		echo json_encode ( $datos );
 	}
 }
-
-
-
-
 ?>
