@@ -1,4 +1,3 @@
-
 function Alta_viaje()
 {
   var fecha = document.getElementById('fecha').value;
@@ -21,11 +20,13 @@ function Alta_viaje()
  var suma = 0;
  var los_cboxes = document.getElementsByName('alumno[]');
  var alumnos = '';
+
  for (var i = 0, j = los_cboxes.length; i < j; i++){
    if(los_cboxes[i].checked == true)
    {
-   suma++;}
- }
+   suma++; }
+}
+
  if(suma == 0)
  {
    alert('debe seleccionar alumnos.');
@@ -44,7 +45,7 @@ function Alta_viaje()
      }
      }
  }
-
+//alert(alumnos);
 
   // agregar los alumnos
 
@@ -146,7 +147,7 @@ function Alta_viaje()
       },
         success: function(datos)
       {
-        alert(" Datos Guardados");
+        alert("Guardados");
 
         window.location = "../transportes/PTemporal.php";
 

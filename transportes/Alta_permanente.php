@@ -1,4 +1,5 @@
 
+
 <?php
 include 'sesion_admin.php';
 include 'conexion.php';
@@ -77,11 +78,11 @@ if(isset($_POST['submit']))
     //almacenar Alumno
     foreach($alumnos_array as $id_alumno){
 
-    $sql = "INSERT INTO Ventana_permisos_alumnos(
-    id_permiso, id_alumno
-    ) VALUES ('".$id_permiso."','".$id_alumno."' )";
+      $sql = "INSERT INTO Ventana_permisos_alumnos(
+      id_permiso, id_alumno
+      ) VALUES ('".$id_permiso."','".$id_alumno."' )";
 
-    mysqli_query ($conexion, $sql );
+      mysqli_query ($conexion, $sql );
     }
 
     echo 'Solicitud Guardada';
@@ -146,7 +147,7 @@ if(isset($_POST['submit']))
     {
       ?>
       <form  method='get' action="Alta_permanente.php" >
-        <input type="text" name="nfamilia" id="nfamilia"  placeholder="Agrgar numero" size="5"  minlength="4" required>
+        <input type="text" name="nfamilia" id="nfamilia"  placeholder="Agregar numero" size="5"  minlength="4" required>
         <input type="submit" value="Aceptar">
 
       </form>
@@ -218,7 +219,7 @@ if(isset($_POST['submit']))
                   <td style="border-style: outset"><?php echo $cliente['nombre']?></td>
                   <td style="border-style: outset"><?php echo $cliente['grupo']?></td>
                   <td style="border-style: outset"><?php echo $cliente['grado'] ?></td>
-                  <td style="border-style: outset"><input type="checkbox"  id="alumno<?php echo $counter?>" name="alumno[]" class="form-control" value="<?php echo $cliente[id]; ?>"></td>
+                  <td style="border-style: outset"><input type="checkbox"  id="alumno<?php echo $counter?>" name="alumno[]" class="form-control" value="<?php echo $cliente['id']; ?>"></td>
 
 
                 </tr>

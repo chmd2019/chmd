@@ -68,6 +68,7 @@ if(isset($_POST['submit']))
     '".$fecha."',
     '".$fecha_permiso."')";
     mysqli_query ($conexion, $query );
+
 $ultimo_id = mysqli_insert_id($conexion);
 $id_permiso= $ultimo_id; // Por resolver (1)
 //almacenar Alumno
