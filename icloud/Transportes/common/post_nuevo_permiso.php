@@ -22,6 +22,7 @@ $turno = $_POST['turno'];
 $comentarios = $_POST['comentarios'];
 $nfamilia = $_POST['nfamilia'];
 $tipo_permiso = $_POST['tipo_permiso'];
+$fecha_creacion = $_POST['fecha_creacion'];
 //coleccion de ids de los alumnos 
 $coleccion_ids = $_POST['coleccion_ids'];
 
@@ -48,7 +49,8 @@ if ($connection) {
             turno,
             comentarios,
             nfamilia,
-            tipo_permiso) 
+            tipo_permiso,
+            fecha_creacion) 
                     VALUES (
              '" . $idusuario . "',
              '" . $calle_numero . "',
@@ -63,7 +65,8 @@ if ($connection) {
              '" . $turno . "',
              '" . $comentarios . "',
              '" . $nfamilia . "',
-             '" . $tipo_permiso . "')";
+             '" . $tipo_permiso . "',
+             '" . $fecha_creacion . "')";
     mysqli_set_charset($connection, "utf8");
     $insertar = mysqli_query($connection, $sql);
     if (!$insertar) {

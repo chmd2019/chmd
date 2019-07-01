@@ -1,4 +1,5 @@
 <?php
+$root_icloud = $_SERVER['DOCUMENT_ROOT'] . "/pruebascd/icloud";
 include '../../components/layout_top.php';
 include '../../components/navbar.php';
 session_start();
@@ -66,6 +67,7 @@ if (isset($authUrl)) {
         $arrayDias = array('Domingo', 'Lunes', 'Martes',
             'Miercoles', 'Jueves', 'Viernes', 'Sabado');
         ?>
+
         <div class="row">
             <div class="col s12 l8 b-blanco border-azul" style="float: none;margin: 0 auto;">
                 <br>
@@ -205,24 +207,24 @@ if (isset($authUrl)) {
                                   placeholder="Nombre"></textarea>    
                     </div>
                     <div>
-                    <div class="input-field col s12 l6">
-                        <i class="material-icons c-azul">people</i>
-                        <input 
-                            placeholder="Parentesco" 
-                            id="parentesco_nuevo_permiso_temporal" 
-                            type="text" 
-                            autocomplete="off"/>
-                    </div>
-                    <div class="input-field col s12 l6">
-                        <i class="material-icons c-azul">smartphone</i>
-                        <input placeholder="Celular" id="celular_nuevo_permiso_temporal" type="number"
-                               onkeypress="return validar_solo_numeros(event)">
-                    </div>
-                    <div class="input-field col s12 l6">
-                        <i class="material-icons c-azul">phone_in_talk</i>
-                        <input placeholder="Teléfono" id="telefono_nuevo_permiso_temporal" type="number"
-                               onkeypress="return validar_solo_numeros(event)">
-                    </div>  
+                        <div class="input-field col s12 l6">
+                            <i class="material-icons c-azul">people</i>
+                            <input 
+                                placeholder="Parentesco" 
+                                id="parentesco_nuevo_permiso_temporal" 
+                                type="text" 
+                                autocomplete="off"/>
+                        </div>
+                        <div class="input-field col s12 l6">
+                            <i class="material-icons c-azul">smartphone</i>
+                            <input placeholder="Celular" id="celular_nuevo_permiso_temporal" type="number"
+                                   onkeypress="return validar_solo_numeros(event)">
+                        </div>
+                        <div class="input-field col s12 l6">
+                            <i class="material-icons c-azul">phone_in_talk</i>
+                            <input placeholder="Teléfono" id="telefono_nuevo_permiso_temporal" type="number"
+                                   onkeypress="return validar_solo_numeros(event)">
+                        </div>  
                     </div>
                     <br>
                     <h5 class="col s12 center-align c-azul">Fecha de cambio</h5>
@@ -242,60 +244,60 @@ if (isset($authUrl)) {
                         <script src='../../common/js/calendario.js'></script>
                         <script src="../../common/js/common.js"></script>
                         <script>
-                                   //obtiene el calendario escolar en db
-                                   var calendario_escolar = obtener_calendario_escolar();
-                                   //asigna en el objeto del calendario dias sabados y domigos para deshabilitar
-                                   calendario_escolar.push(6);
-                                   calendario_escolar.push(7);
-                                   //comprueba la hora 11.30 am para deshabilitar fecha actual
-                                   var fecha_disabled = "<?php echo $fecha_disabled; ?>";
-                                   if (fecha_disabled.length > 0) {
-                                       if (navigator.appVersion.indexOf("Mac") != -1) {
-                                           fecha_disabled = `${fecha_disabled.split("-")[0]}/${fecha_disabled.split("-")[1]}/${fecha_disabled.split("-")[2]}`;
-                                       } else {
-                                           fecha_disabled = new Date(fecha_disabled);
+                                       //obtiene el calendario escolar en db
+                                       var calendario_escolar = obtener_calendario_escolar();
+                                       //asigna en el objeto del calendario dias sabados y domigos para deshabilitar
+                                       calendario_escolar.push(6);
+                                       calendario_escolar.push(7);
+                                       //comprueba la hora 11.30 am para deshabilitar fecha actual
+                                       var fecha_disabled = "<?php echo $fecha_disabled; ?>";
+                                       if (fecha_disabled.length > 0) {
+                                           if (navigator.appVersion.indexOf("Mac") != -1) {
+                                               fecha_disabled = `${fecha_disabled.split("-")[0]}/${fecha_disabled.split("-")[1]}/${fecha_disabled.split("-")[2]}`;
+                                           } else {
+                                               fecha_disabled = new Date(fecha_disabled);
+                                           }
                                        }
-                                   }
-                                   calendario_escolar.push(new Date(fecha_disabled));
-                                   //fix de error al mostrar calendario (se oculta inmediatamente se abre)
-                                   $(".datepicker").on('mousedown', function (event) {
-                                       event.preventDefault();
-                                   });
-                                   $("input[class*='datepicker-']").pickadate({
-                                       format: 'dddd, dd De mmmm De yyyy',
-                                       today: false,
-                                       clear: false,
-                                       close: 'Aceptar',
-                                       closeOnSelect: false,
-                                       monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                                       monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                                       weekdaysFull: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
-                                       weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-                                       weekdaysLetter: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
-                                       disable: calendario_escolar,
-                                       firstDay: 1,
-                                       disableWeekends: true,
-                                       min: new Date(),
-                                       //establece rango de fecha final segun fecha inicial
-                                       onSet: function (obj) {
-                                           let thisPicker = $(this)[0].$node;
-                                           let classes = thisPicker.attr("class");
-                                           if (classes === undefined || classes.length === 0 || classes.indexOf("datepicker-start") < 0) {
-                                               return;
-                                           }
-                                           let parent1 = thisPicker.closest("div.input-field");
-                                           let parent2 = parent1.next("div.input-field");
-                                           let picker2 = parent2.find(".datepicker-end");
-                                           if (obj.select) {
-                                               let dt = new Date(obj.select);
-                                               picker2.pickadate('picker').set('min', dt);
-                                           }
+                                       calendario_escolar.push(new Date(fecha_disabled));
+                                       //fix de error al mostrar calendario (se oculta inmediatamente se abre)
+                                       $(".datepicker").on('mousedown', function (event) {
+                                           event.preventDefault();
+                                       });
+                                       $("input[class*='datepicker-']").pickadate({
+                                           format: 'dddd, dd De mmmm De yyyy',
+                                           today: false,
+                                           clear: false,
+                                           close: 'Aceptar',
+                                           closeOnSelect: false,
+                                           monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                                           monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                                           weekdaysFull: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
+                                           weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                                           weekdaysLetter: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+                                           disable: calendario_escolar,
+                                           firstDay: 1,
+                                           disableWeekends: true,
+                                           min: new Date(),
+                                           //establece rango de fecha final segun fecha inicial
+                                           onSet: function (obj) {
+                                               let thisPicker = $(this)[0].$node;
+                                               let classes = thisPicker.attr("class");
+                                               if (classes === undefined || classes.length === 0 || classes.indexOf("datepicker-start") < 0) {
+                                                   return;
+                                               }
+                                               let parent1 = thisPicker.closest("div.input-field");
+                                               let parent2 = parent1.next("div.input-field");
+                                               let picker2 = parent2.find(".datepicker-end");
+                                               if (obj.select) {
+                                                   let dt = new Date(obj.select);
+                                                   picker2.pickadate('picker').set('min', dt);
+                                               }
 
-                                           if (obj.hasOwnProperty('clear')) {
-                                               picker2.pickadate('picker').set('min', false);
+                                               if (obj.hasOwnProperty('clear')) {
+                                                   picker2.pickadate('picker').set('min', false);
+                                               }
                                            }
-                                       }
-                                   });
+                                       });
                         </script>  
                     </div>      
                     <br>
@@ -329,10 +331,48 @@ if (isset($authUrl)) {
     }
 }
 ?>
+
+<div class="fixed-action-btn">
+    <a class="btn-floating btn-large b-azul">
+        <i class="large material-icons">edit</i>
+    </a>
+    <ul>
+        <li>
+            <a class="btn-floating blue" href="javascript:history.back(0)">
+                <i class="material-icons">keyboard_backspace</i>
+            </a>
+        </li>
+        <?php
+        echo '<li><a href="' . $redirect_uri . '?logout=1" class="btn-floating red" >'
+        . "<i class='material-icons'>exit_to_app</i>Salir</a></li>";
+        ?>
+    </ul>
+</div>
+
+<div class="loading" id="loading" >
+    <div class="preloader-wrapper big active">
+        <div class="spinner-layer spinner-blue-only">
+            <div class="circle-clipper left">
+                <div class="circle"></div>
+            </div><div class="gap-patch">
+                <div class="circle"></div>
+            </div><div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     //arreglo global de ids de los alumnos seleccionados para el permiso
     var coleccion_ids = [];
     $(document).ready(function () {
+        $("#loading").hide();
+        $('.fixed-action-btn').floatingActionButton({
+            hoverEnabled: false
+        });
+        $('.modal').modal();
+        var instance = M.Modal.getInstance($("#modal_alerta"));
+        instance.open();
         //redimenciona el tamaño y el value de los textareas
         $('#calle_guardada_temporal').val('<?php echo $calle; ?>');
         M.textareaAutoResize($('#calle_guardada_temporal'));
@@ -381,6 +421,9 @@ if (isset($authUrl)) {
                 url: "/pruebascd/icloud/Transportes/common/get_consultar_direcciones.php",
                 type: "GET",
                 data: {"id_usuario": id},
+                beforeSend: function () {
+                    $("#loading").fadeIn("slow");
+                },
                 success: function (res) {
                     res = JSON.parse(res);
                     for (var key in res) {
@@ -393,6 +436,11 @@ if (isset($authUrl)) {
                         }
                     }
                 }
+            })
+            .always(function () {
+                setInterval(function () {
+                    $("#loading").fadeOut("slow");
+                }, 1000);
             });
             //limpia recordar direccion
             $('#recordar_direccion').prop("checked", false);
@@ -577,6 +625,7 @@ if (isset($authUrl)) {
             var fecha_final = $("#fecha_final_nuevo_permiso_temporal").val();
             var turno = $("#ruta_nuevo_permiso_temporal").val();
             var comentarios = $("#comentarios_nuevo_permiso_temporal").val();
+            var fecha_creacion = $("#fecha_solicitud_permiso_temporal").val();
             //toma los id de alumnos
             var selected = '';
             $('.checks-alumnos input[type=checkbox]').each(function () {
@@ -606,7 +655,8 @@ if (isset($authUrl)) {
                 turno: turno,
                 comentarios: comentarios,
                 tipo_permiso: tipo_permiso,
-                coleccion_ids: coleccion_ids
+                coleccion_ids: coleccion_ids,
+                fecha_creacion: fecha_creacion
             };
             $.ajax({
                 url: "/pruebascd/icloud/Transportes/common/post_nuevo_permiso.php",
@@ -616,7 +666,7 @@ if (isset($authUrl)) {
                     if (res == 1) {
                         swal("Información", "Registro exitoso!", "success");
                         setInterval(() => {
-                            window.history.back();
+                            window.location = "https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Temporal/PTemporal.php";
                         }, 1500);
                     } else {
                         swal("Información", res, "error");
@@ -630,5 +680,6 @@ if (isset($authUrl)) {
         }
     }
 </script>
+<?php include "$root_icloud/Transportes/Temporal/modales/modal_informacion_importante_hora_limite.php"; ?>
 <?php include '../../components/layout_bottom.php'; ?>
 

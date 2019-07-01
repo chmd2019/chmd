@@ -45,12 +45,11 @@ class ControlTransportes {
     public function consultar_permiso($id) {
         $connection = $this->con->conectar1();
         if ($connection) {
-            $sql ="SELECT id_permiso, "
+            $sql = "SELECT id_permiso, "
                     . "idusuario, "
                     . "calle_numero, "
                     . "colonia, "
                     . "cp, "
-                    . "ruta, "
                     . "comentarios, "
                     . "nfamilia, "
                     . "responsable, "
@@ -62,16 +61,28 @@ class ControlTransportes {
                     . "turno, "
                     . "tipo_permiso, "
                     . "estatus, "
-                    . "fecha_respuesta FROM Ventana_Permisos WHERE id_permiso  = '$id'";
-            mysqli_set_charset($connection, 'utf8');
-            return mysqli_query($connection, $sql);
-        }
-    }    public function consultar_alumnos_permiso($id) {
-        $connection = $this->con->conectar1();
-        if ($connection) {
-            $sql ="SELECT * FROM Ventana_permisos_alumnos WHERE id_permiso  = '$id'";
+                    . "fecha_creacion,"
+                    . "mensaje FROM Ventana_Permisos WHERE id_permiso  = '$id'";
             mysqli_set_charset($connection, 'utf8');
             return mysqli_query($connection, $sql);
         }
     }
+
+    public function consultar_alumnos_permiso($id) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT * FROM Ventana_permisos_alumnos WHERE id_permiso  = '$id'";
+            mysqli_set_charset($connection, 'utf8');
+            return mysqli_query($connection, $sql);
+        }
+    }
+    public function consultar_nombre_alumno($id) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT nombre FROM alumnoschmd WHERE id  = '$id'";
+            mysqli_set_charset($connection, 'utf8');
+            return mysqli_query($connection, $sql);
+        }
+    }
+
 }
