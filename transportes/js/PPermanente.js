@@ -109,6 +109,15 @@ $(function() {
         $("#miercoles").val(miercoles);
         $("#jueves").val(jueves);
         $("#viernes").val(viernes);
+        if (status==1 || status==4){
+          $("#status").val(0);
+        }else {
+          if( status==2 || status==3){
+            $("#status").val(status);
+          }else{
+            $("#status").val(0);
+          }
+        }
         //funcion
         $("#funcion").val(qwert);
         //remover todos los alumnos de la lista

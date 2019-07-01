@@ -21,7 +21,6 @@ $datos = mysqli_query ( $conexion,"SELECT vp.id_permiso,vp.fecha_creacion,
   vp.fecha_inicial,
   vp.fecha_final,
   vp.ruta,
-  vp.turno,
   usu.telefonomama,
   vp.fecha_creacion,
   vp.fecha_respuesta
@@ -46,7 +45,7 @@ $datos = mysqli_query ( $conexion,"SELECT vp.id_permiso,vp.fecha_creacion,
       //$existe = mysql_fetch_array ( $existe );
       if ($status==3)
       {
-        $query = "UPDATE Ventana_Permisos SET mensaje = '$mensaje',estatus=3 WHERE id=$funcion";
+        $query = "UPDATE Ventana_Permisos SET mensaje = '$mensaje',estatus=3, archivado=1 WHERE id_permiso=$funcion";
         mysqli_query ($conexion, $query );
         $json = array (
           'estatus' => '0'
@@ -54,7 +53,7 @@ $datos = mysqli_query ( $conexion,"SELECT vp.id_permiso,vp.fecha_creacion,
         }
         else if ($status==2)
         {
-          $query = "UPDATE Ventana_Permisos SET mensaje = '$mensaje',estatus=2 WHERE id=$funcion";
+          $query = "UPDATE Ventana_Permisos SET mensaje = '$mensaje',estatus=2, archivado=1 WHERE id_permiso=$funcion";
           mysqli_query ($conexion, $query );
           $json = array (
           'estatus' => '0'
@@ -152,7 +151,7 @@ placeholder="Buscar Solicitud..."><br> <br>
       $colonia1=$dato['colonia1'];
       $mensaje=$dato['mensaje'];
       $familia=$dato['familia'];
-      $turno=$dato['turno'];
+      $ruta=$dato['ruta'];
       $fecha_respuesta = $dato['fecha_respuesta'];
 
       $fecha_actual = strtotime(date("d-m-Y H:i:00",time()));
@@ -218,7 +217,7 @@ placeholder="Buscar Solicitud..."><br> <br>
         data-parentesco="<?php echo $parentesco?>"
         data-celular="<?php echo $celular?>"
         data-telefono="<?php echo $telefono?>"
-        data-turno="<?php echo $turno?>">
+        data-ruta="<?php echo $ruta?>">
         <span class="glyphicon glyphicon-pencil"> Ver</span>
       </button>
 
@@ -383,9 +382,8 @@ aria-labelledby="myModalLabel" aria-hidden="true">
           <tr>
             <td colspan="3">Ruta
               <input
-              name="turno" id="turno" type="text"
+              name="ruta" id="ruta" type="text"
               class="form-control" placeholder="ruta" readonly>
-
             </td>
           </tr>
 
@@ -452,8 +450,8 @@ aria-labelledby="myModalLabel" aria-hidden="true">
     Accion:
     <select name="status" id="status">
       <option value="0">Selecciona</option>
-      <option value="2"style="color:white;background-color:#0b1d3f;">Autotizado</option>
-      <option value="3" style="color:red;background-color:yellow;">Rechazado</option>
+      <option value="2"style="color:white;background-color:#0b1d3f;">Autorizado</option>
+      <option value="3" style="color:red;background-color:yellow;">Declinado</option>
     </select>
 
   </div>

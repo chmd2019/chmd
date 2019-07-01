@@ -1,5 +1,3 @@
-
-
 <?php
 include 'sesion_admin.php';
 include 'conexion.php';
@@ -48,14 +46,14 @@ $datos = mysqli_query ( $conexion,"SELECT vp.id_permiso,vp.fecha_creacion,
       //$existe = mysql_query ( "SELECT * FROM nivel WHERE nombre='$nombre'" );
       //$existe = mysql_fetch_array ( $existe );
       if ($status==3) {
-        $query = "UPDATE Ventana_Permisos SET mensaje = '$mensaje',estatus=3 WHERE id=$funcion";
-        mysqli_query ( $query );
+        $query = "UPDATE Ventana_Permisos SET mensaje = '$mensaje',estatus=3, archivado=1 WHERE id_permiso=$funcion";
+        mysqli_query ($conexion, $query );
         $json = array (
         'estatus' => '0'
         );
       } else if ($status==2)  {
-        $query = "UPDATE Ventana_Permisos SET mensaje = '$mensaje',estatus=2 WHERE id=$funcion";
-        mysqli_query ( $query );
+        $query = "UPDATE Ventana_Permisos SET mensaje = '$mensaje',estatus=2, archivado=1 WHERE id_permiso=$funcion";
+        mysqli_query ($conexion, $query );
         $json = array (
         'estatus' => '0'
         );
@@ -394,8 +392,8 @@ aria-labelledby="myModalLabel" aria-hidden="true">
                 Accion:
                 <select name="status" id="status">
                   <option value="0">Selecciona</option>
-                  <option value="2"style="color:white;background-color:#0b1d3f;">Autotizado</option>
-                  <option value="3" style="color:red;background-color:yellow;">Rechazado</option>
+                  <option value="2"style="color:white;background-color:#0b1d3f;">Autorizado</option>
+                  <option value="3" style="color:red;background-color:yellow;">Declinado</option>
                 </select>
 
               </div>

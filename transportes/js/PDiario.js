@@ -19,7 +19,7 @@ $(function() {
         alert("Agrega Respuesta.");
         return false;
       }
-      //e.preventDefault();
+      e.preventDefault();
       $
       .ajax({
         type : 'POST',

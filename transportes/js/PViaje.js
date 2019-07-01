@@ -67,8 +67,7 @@ $(function() {
           $(this).attr('data-responsable'),
           $(this).attr('data-parentesco'),
           $(this).attr('data-celular'),
-          $(this).attr('data-telefono'),
-          $(this).attr('data-turno')
+          $(this).attr('data-telefono')
         );
         funcion = $(this).attr('data-id');
       });
@@ -93,7 +92,7 @@ $(function() {
 
       function editarNivel(qwert,nombre,nombre1,calle_numero,colonia,cp,fecha_inicial,fecha_final,
         comentarios,calle_numero1,colonia1,ruta,mensaje,
-        responsable,parentesco,celular,telefono,turno)
+        responsable,parentesco,celular,telefono)
         {
           $("#modalNivelTitulo").text("Ver Solicitud Temporal ");
           $("#folio").val(qwert);
@@ -113,8 +112,17 @@ $(function() {
           $("#parentesco").val(parentesco);
           $("#telefono").val(telefono);
           $("#celular").val(celular);
-          $("#turno").val(turno);
           $("#funcion").val(qwert);
+
+          if (status==1 || status==4){
+            $("#status").val(0);
+          }else {
+            if( status==2 || status==3){
+              $("#status").val(status);
+            }else{
+              $("#status").val(0);
+            }
+          }
           //remover todos los alumnos de la lista
           $(".lista-alumnos").remove();
           //$("#tabla_alumnos").append("<h1 class='lista-alumnos'>Good</h1>");
