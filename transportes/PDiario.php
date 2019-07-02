@@ -111,7 +111,6 @@ placeholder="Buscar Solicitud..."><br> <br>
 <table class="table" id="niveles_table">
   <thead><td><b>Folio</b></td>
     <td><b>Fecha de Solicitud</b></td>
-
     <td><b>Estatus</b></td>
     <td><b>Fecha de permiso</b></td>
     <td><b>Familia</b></td>
