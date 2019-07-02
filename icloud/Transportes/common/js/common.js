@@ -102,3 +102,10 @@ function formatear_fecha_calendario_formato_m_d_a(fecha) {
         mes = "12";
     return `${mes}-${dia}-${anio}`;
 }
+    function validar_regex(reg, val) {
+        var regex = new RegExp(reg);
+        if (regex.test(val)) {
+            return true;
+        }
+        return false;
+    }

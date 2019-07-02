@@ -2,6 +2,7 @@
 $root_icloud = $_SERVER['DOCUMENT_ROOT'] . "/pruebascd/icloud";
 require_once '../../Model/Login.php';
 require_once "$root_icloud/Transportes/common/ControlTransportes.php";
+$idseccion = $_GET['idseccion'];
 $user = $service->userinfo->get(); //get user info 
 $correo = $user->email;
 $objCliente = new Login();
@@ -77,9 +78,7 @@ $familia = str_pad($consulta[4], 4, 0, STR_PAD_LEFT);
                     $fecha_destino = $objDateHelper->formatear_fecha_calendario($fecha_final);
                     //oculta boton de cancelar de acuerdi a condiciones de hora limite, status
                     $ver_btn_cancelar = "";
-                    if ($objDateHelper->obtener_hora_limite() &&
-                            $objDateHelper->comprobar_fecha_igual($fecha_destino) ||
-                            $estatus != 1) {
+                    if ($objDateHelper->obtener_hora_limite() || $estatus != 1) {
                         $ver_btn_cancelar = "d-none";
                     }
                     $solicitud_vencida = $objDateHelper->comprobar_solicitud_vencida_d_m_y_guion($fecha_destino);
@@ -93,10 +92,12 @@ $familia = str_pad($consulta[4], 4, 0, STR_PAD_LEFT);
                                 <div class="row">
                                     <div class="col s12 l3">  
                                         <a class="waves-effect waves-light btn green accent-3" 
-                                           href="https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Temporal/vistas/vista_consulta_permiso_temporal.php?id=<?php echo $id_permiso;?>">
+                                           href="https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Temporal/vistas/vista_consulta_permiso_temporal.php?id=<?php echo $id_permiso;?>&&tipo_permiso=2&&idseccion=<?php echo $idseccion;?>">
                                             <i class="material-icons">pageview</i>
                                         </a>
                                     </div>
+                                    &nbsp;
+                                    &nbsp;
                                     &nbsp;
                                     <div class="col s12 l3">
                                         <?php include './modales/modal_cancelar_permiso.php'; ?>

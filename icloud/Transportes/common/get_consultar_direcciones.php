@@ -18,7 +18,8 @@ if ($connection) {
                 "calle" => $data[1],
                 "colonia" => $data[2],
                 "descripcion" => $data[3],
-                "id_usuario" => $data[4]
+                "id_usuario" => $data[5],
+                "cp" => $data[4]
             ]);
         }
         echo json_encode($response);

@@ -4,7 +4,7 @@
 
 <div id="modal_cancelar_permiso_<?php echo "$id_permiso"; ?>" class="modal">
     <div class="modal-content">
-        <h4>Confirmación </h4>
+        <h4>Confirmación</h4>
         <p>¿Confirma cancelar este permiso?</p>
     </div>
     <div class="modal-footer" style="padding:1rem">

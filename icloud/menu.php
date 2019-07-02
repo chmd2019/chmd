@@ -6,7 +6,7 @@ include './components/navbar.php';
 if (isset($authUrl)) {
     //show login url
     ?>
-<div class="main">
+<div class="main" style="overflow: hidden;">
     <div class="caja-login" align="center">
         <h2 class="alert alert-light text-center c-azul" role="alert">Mi Maguen</h2>
         <?php echo '<a href="' . $authUrl . '"><img class="logo-login" src="images/google.png" id="total"/></a>' ?>
@@ -23,7 +23,7 @@ if (isset($authUrl)) {
     ?>
     <!--MENU-->
     <div class="row"><br><br>
-        <div class="col-sm-12 col-md-9 b-blanco" style="margin:auto;">
+        <div class="col-sm-12 col-md-9 b-blanco" style="margin:auto; width: 100vw">
             <?php
             echo '<h2 class="alert alert-light  b-azul c-blanco text-center border-azul border-radius-none" role="alert">' . $titulo . '</h2>';
             ?>
@@ -34,7 +34,6 @@ if (isset($authUrl)) {
                 . "<i class='fas fa-sign-out-alt'></i>&nbsp;Salir</a>";
                 ?>
             </div>
-            <div style="clear:both"></div>
             <br>
             <?php
             $idseccion = $_GET["idseccion"];

@@ -8,10 +8,10 @@ require_once '../../../Model/Login.php';
 require_once '../../../Model/DBManager.php';
 require_once '../../../Model/Config.php';
 require_once '../../../Helpers/DateHelper.php';
+$idseccion = $_GET['idseccion'];
 if (isset($_GET['logout'])) {
     unset($_SESSION['access_token']);
 }
-
 $service = new Google_Service_Oauth2($client);
 
 if (isset($_GET['code'])) {
@@ -60,6 +60,9 @@ if (isset($authUrl)) {
         $colonia = $domicilio[2];
         $cp = $domicilio[3];
         $time = time();
+        $fecha_minima = date("Y-m-d");
+        $fecha_minima = strtotime("+3 day", strtotime($fecha_minima));
+        $fecha_minima = date("m/d/Y", $fecha_minima);
         //manejo de fechas
         $arrayMeses = array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
             'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
@@ -172,15 +175,21 @@ if (isset($authUrl)) {
                         <i class="material-icons c-azul">person_pin_circle</i>
                         <textarea id="calle_nuevo_permiso_temporal" 
                                   class="materialize-textarea"                                
-                                  placeholder="INGRESE CALLE Y NUMERO"></textarea>    
+                                  placeholder="INGRESE CALLE Y NUMERO"></textarea> 
                     </div>
                     <div class="input-field col s12">
                         <i class="material-icons c-azul">person_pin_circle</i>
                         <textarea class="materialize-textarea"  
                                   id="colonia_nuevo_permiso_temporal" 
                                   placeholder="INGRESE COLONIA"></textarea> 
-                    </div>
-                    <input name="cp" type="hidden" id="cp" value="00000" /> 
+                    </div>                    
+                    <div class="input-field col s12">
+                        <i class="material-icons c-azul">person_pin_circle</i>
+                        <input placeholder="INGRESE CP" 
+                               id="cp" 
+                               type="tel"
+                               onkeypress="return validar_solo_numeros(event)">
+                    </div>  
                     <div class="switch col s12">
                         <label>
                             <input type="checkbox" 
@@ -217,12 +226,16 @@ if (isset($authUrl)) {
                         </div>
                         <div class="input-field col s12 l6">
                             <i class="material-icons c-azul">smartphone</i>
-                            <input placeholder="Celular" id="celular_nuevo_permiso_temporal" type="number"
+                            <input placeholder="Celular" 
+                                   id="celular_nuevo_permiso_temporal" 
+                                   type="tel"
                                    onkeypress="return validar_solo_numeros(event)">
                         </div>
                         <div class="input-field col s12 l6">
                             <i class="material-icons c-azul">phone_in_talk</i>
-                            <input placeholder="Teléfono" id="telefono_nuevo_permiso_temporal" type="number"
+                            <input placeholder="Teléfono" 
+                                   id="telefono_nuevo_permiso_temporal" 
+                                   type="tel"
                                    onkeypress="return validar_solo_numeros(event)">
                         </div>  
                     </div>
@@ -247,18 +260,10 @@ if (isset($authUrl)) {
                                        //obtiene el calendario escolar en db
                                        var calendario_escolar = obtener_calendario_escolar();
                                        //asigna en el objeto del calendario dias sabados y domigos para deshabilitar
+                                       var fecha_posterior = new Date();
+                                       fecha_posterior.setDate(new Date().getDate() + 1);
                                        calendario_escolar.push(6);
                                        calendario_escolar.push(7);
-                                       //comprueba la hora 11.30 am para deshabilitar fecha actual
-                                       var fecha_disabled = "<?php echo $fecha_disabled; ?>";
-                                       if (fecha_disabled.length > 0) {
-                                           if (navigator.appVersion.indexOf("Mac") != -1) {
-                                               fecha_disabled = `${fecha_disabled.split("-")[0]}/${fecha_disabled.split("-")[1]}/${fecha_disabled.split("-")[2]}`;
-                                           } else {
-                                               fecha_disabled = new Date(fecha_disabled);
-                                           }
-                                       }
-                                       calendario_escolar.push(new Date(fecha_disabled));
                                        //fix de error al mostrar calendario (se oculta inmediatamente se abre)
                                        $(".datepicker").on('mousedown', function (event) {
                                            event.preventDefault();
@@ -277,7 +282,7 @@ if (isset($authUrl)) {
                                            disable: calendario_escolar,
                                            firstDay: 1,
                                            disableWeekends: true,
-                                           min: new Date(),
+                                           min: new Date("<?php echo $fecha_minima; ?>"),
                                            //establece rango de fecha final segun fecha inicial
                                            onSet: function (obj) {
                                                let thisPicker = $(this)[0].$node;
@@ -290,7 +295,7 @@ if (isset($authUrl)) {
                                                let picker2 = parent2.find(".datepicker-end");
                                                if (obj.select) {
                                                    let dt = new Date(obj.select);
-                                                   picker2.pickadate('picker').set('min', dt);
+                                                   picker2.pickadate('picker').set('min', new Date(dt.setDate(new Date(dt).getDate() + 1)));
                                                }
 
                                                if (obj.hasOwnProperty('clear')) {
@@ -319,6 +324,7 @@ if (isset($authUrl)) {
                     </div>
                     <div class="col s12 l6" style="float: none;margin: 0 auto;">
                         <button class="btn waves-effect waves-light b-azul white-text w-100" 
+                                id="btn_enviar_formulario"
                                 type="button" 
                                 onclick="enviar_formulario('<?php echo $id; ?>', '<?php echo $familia; ?>', 2)">Enviar
                             <i class="material-icons right">send</i>
@@ -338,7 +344,7 @@ if (isset($authUrl)) {
     </a>
     <ul>
         <li>
-            <a class="btn-floating blue" href="javascript:history.back(0)">
+            <a class="btn-floating blue" href="https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Temporal/PTemporal.php">
                 <i class="material-icons">keyboard_backspace</i>
             </a>
         </li>
@@ -405,11 +411,14 @@ if (isset($authUrl)) {
             $('#recordar_direccion').prop("checked", false);
             $('#container_descripcion_recordar_direccion').hide();
             $('#descripcion_recordar_direccion').val("");
+            $('#cp').val("");
         }
         if (dato == '1') {
             $("#calle_nuevo_permiso_temporal").val("Periferico Boulevard Manuel Avila Camacho 620");
+            M.textareaAutoResize($('#calle_nuevo_permiso_temporal'));
             $("#colonia_nuevo_permiso_temporal").val("Lomas de Sotelo");
-            $("#cp_nuevo_permiso_temporal").val("53538");
+            M.textareaAutoResize($('#colonia_nuevo_permiso_temporal'));
+            $("#cp").val("53538");
             //limpia recordar direccion
             $('#recordar_direccion').prop("checked", false);
             $('#container_descripcion_recordar_direccion').hide();
@@ -432,16 +441,18 @@ if (isset($authUrl)) {
                     for (var key in data) {
                         if (data[key].id_direccion === dato) {
                             $("#calle_nuevo_permiso_temporal").val(data[key].calle);
+                            M.textareaAutoResize($('#calle_nuevo_permiso_temporal'));
                             $("#colonia_nuevo_permiso_temporal").val(data[key].colonia);
+                            M.textareaAutoResize($('#colonia_nuevo_permiso_temporal'));
+                            $("#cp").val(data[key].cp);
                         }
                     }
                 }
-            })
-            .always(function () {
-                setInterval(function () {
-                    $("#loading").fadeOut("slow");
-                }, 1000);
-            });
+            }).always(function () {
+                        setInterval(function () {
+                            $("#loading").fadeOut("slow");
+                        }, 1000);
+                    });                    
             //limpia recordar direccion
             $('#recordar_direccion').prop("checked", false);
             $('#container_descripcion_recordar_direccion').hide();
@@ -476,6 +487,7 @@ if (isset($authUrl)) {
         var calle = $('#calle_nuevo_permiso_temporal').val();
         var colonia = $('#colonia_nuevo_permiso_temporal').val();
         var descripcion = $('#descripcion_recordar_direccion').val();
+        var cp = $('#cp').val();
         var validacion = validar_recordar_direccion();
         if (!validacion)
             return;
@@ -484,12 +496,16 @@ if (isset($authUrl)) {
                 "calle": calle,
                 "colonia": colonia,
                 "descripcion": descripcion,
+                "cp": cp,
                 "id_usuario":<?php echo $id; ?>
             }
             $.ajax({
                 url: "/pruebascd/icloud/Transportes/common/post_nueva_direccion.php",
                 type: "POST",
                 data: data,
+                beforeSend: function () {
+                    $("#loading").fadeIn("slow");
+                },
                 success: function () {
                     swal("Información", `Registro exitoso!, puedes seleccionar tu nueva dirección en la lista desplegable con la descripción ${data.descripcion}`, "success");
                     $('#calle_nuevo_permiso_temporal').val("");
@@ -498,7 +514,12 @@ if (isset($authUrl)) {
                     consultar_direcciones(data.id_usuario);
                     cambiar_direccion(data.id_usuario);
                 }
-            });
+            })
+                    .always(function () {
+                        setInterval(function () {
+                            $("#loading").fadeOut("slow");
+                        }, 1000);
+                    });
             return;
         }
         swal("Información", "Debe llenar todos los campos!", "error");
@@ -662,11 +683,15 @@ if (isset($authUrl)) {
                 url: "/pruebascd/icloud/Transportes/common/post_nuevo_permiso.php",
                 type: "POST",
                 data: model,
+                beforeSend: function () {
+                    $("#btn_enviar_formulario").prop("disabled", true);
+                    $("#loading").fadeIn("slow");
+                },
                 success: function (res) {
                     if (res == 1) {
                         swal("Información", "Registro exitoso!", "success");
                         setInterval(() => {
-                            window.location = "https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Temporal/PTemporal.php";
+                            window.location = "https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Temporal/PTemporal.php?idseccion=<?php echo $idseccion;?>";
                         }, 1500);
                     } else {
                         swal("Información", res, "error");
@@ -675,7 +700,13 @@ if (isset($authUrl)) {
                         }, 10000);
                     }
                 }
-            });
+            })
+                    .always(function () {
+                        $("#btn_enviar_formulario").prop("disabled", false);
+                        setInterval(function () {
+                            $("#loading").fadeOut("slow");
+                        }, 1000);
+                    });
             coleccion_ids = [];
         }
     }

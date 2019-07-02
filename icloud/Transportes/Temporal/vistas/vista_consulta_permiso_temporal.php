@@ -12,6 +12,8 @@ require_once "$root_icloud/Model/Config.php";
 require_once "$root_icloud/Helpers/DateHelper.php";
 
 $id_permiso = $_GET['id'];
+$tipo_permiso = $_GET['tipo_permiso'];
+$idseccion = $_GET['idseccion'];
 
 if (isset($_GET['logout'])) {
     unset($_SESSION['access_token']);
@@ -208,7 +210,7 @@ if (isset($authUrl)) {
 ?>
 
 <div class="fixed-action-btn">
-    <a class="btn-floating btn-large b-azul" href="javascript:history.back(0)">
+    <a class="btn-floating btn-large b-azul" href="https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Temporal/PTemporal.php?idseccion=<?php echo $idseccion;?>">
         <i class="large material-icons">keyboard_backspace</i>
     </a>
 </div>
@@ -254,7 +256,10 @@ if (isset($authUrl)) {
             async: false,
             url: 'https://www.chmd.edu.mx/pruebascd/icloud/Transportes/common/get_consulta_permiso.php',
             type: 'GET',
-            data: {id: '<?php echo $id_permiso; ?>'},
+            data: {
+                id: '<?php echo $id_permiso; ?>',
+                tipo_permiso: '<?php echo $tipo_permiso; ?>'
+            },
             beforeSend: function () {
                 $("#loading").fadeIn("slow");
             },

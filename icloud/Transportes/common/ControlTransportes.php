@@ -16,7 +16,17 @@ class ControlTransportes {
         if ($connection) {
             $sql = "SELECT id_permiso, fecha_inicial, fecha_final, estatus, 
                 tipo_permiso, nfamilia FROM Ventana_Permisos WHERE 
-                tipo_permiso = 2 && nfamilia = '$familia'";
+                tipo_permiso = 2 && nfamilia = '$familia' ORDER BY id_permiso DESC";
+            mysqli_set_charset($connection, 'utf8');
+            return mysqli_query($connection, $sql);
+        }
+    }
+    public function listado_permiso_permanente($familia) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT id_permiso, lunes, martes, miercoles, jueves, viernes,
+                nfamilia, estatus FROM Ventana_Permisos WHERE 
+                tipo_permiso = 3 && nfamilia = '$familia' ORDER BY id_permiso DESC";
             mysqli_set_charset($connection, 'utf8');
             return mysqli_query($connection, $sql);
         }
@@ -67,7 +77,28 @@ class ControlTransportes {
             return mysqli_query($connection, $sql);
         }
     }
-
+public function consultar_permiso_permanente($id) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT responsable,
+                    fecha_creacion,
+                    idusuario,
+                    lunes,
+                    martes,
+                    miercoles,
+                    jueves,
+                    viernes,
+                    calle_numero,
+                    colonia,
+                    comentarios, 
+                    mensaje,
+                    ruta,
+                    cp 
+                    FROM Ventana_Permisos WHERE id_permiso  = '$id'";
+            mysqli_set_charset($connection, 'utf8');
+            return mysqli_query($connection, $sql);
+        }
+    }
     public function consultar_alumnos_permiso($id) {
         $connection = $this->con->conectar1();
         if ($connection) {
