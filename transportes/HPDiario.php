@@ -26,23 +26,23 @@ if (isset ( $_POST ['nombre_nivel'] ))
   $nombre = $_POST ['nombre_nivel'];
   $funcion = $_POST ['funcion'];
   $mensaje= $_POST ['mensaje'];
-  $status= $_POST ['status'];
+  $estatus= $_POST ['estatus'];
   if ($nombre) {
     header ( 'Content-type: application/json; charset=utf-8' );
     //$existe = mysql_query ( "SELECT * FROM Ventana_Permiso_diario WHERE id='1'" );
     //$existe = mysql_fetch_array ( $existe );
-    if ($status==3)
+    if ($estatus==3)
     {
       $query = "UPDATE Ventana_Permisos SET mensaje = '$mensaje',estatus=3 WHERE id_permiso=$funcion";
-      mysql_query ( $query );
+      mysqli_query ( $conexion, $query );
       $json = array (
       'estatus' => '0'
       );
     }
-    else if ($status==2)
+    else if ($estatus==2)
     {
       $query = "UPDATE Ventana_Permisos SET mensaje = '$mensaje',estatus=2 WHERE id_permiso=$funcion";
-      mysql_query ( $query );
+      mysqli_query ( $conexion, $query );
       $json = array (
       'estatus' => '0'
       );
@@ -129,15 +129,15 @@ placeholder="Buscar Solicitud..."><br> <br>
 
       $mensaje=$dato['mensaje'];
       $familia=$dato['familia'];
-      $fecha1=$dato['fecha_cambio'];
+      $fecha_cambio=$dato['fecha_cambio'];
       $frespuesta=$dato['fecha_respuesta'];
-      if($fecha1==0)
+      if($fecha_cambio==0)
       {
         $ppermiso=$fecha;
       }
       else
       {
-        $ppermiso= $fecha1;
+        $ppermiso= $fecha_cambio;
       }
 
       ?>
@@ -169,9 +169,9 @@ placeholder="Buscar Solicitud..."><br> <br>
         data-colonia1="<?php echo $colonia1?>"
 
         data-mensaje="<?php echo $mensaje?>"
-        data-fecha1="<?php echo $ppermiso?>"
+        data-fechacambio="<?php echo $ppermiso?>"
         data-frespuesta="<?php echo $frespuesta?>"
-        data-status="<?php echo $estatus?>">
+        data-estatus="<?php echo $estatus?>">
 
 
 
@@ -206,7 +206,7 @@ placeholder="Buscar Solicitud..."><br> <br>
   ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->
   <script type="text/javascript"
-  src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script type="text/javascript" src="dist/js/bootstrap.js"></script>
   <script type="text/javascript" src="js/PDiario.js"></script>
 </body>
@@ -265,126 +265,10 @@ aria-labelledby="myModalLabel" aria-hidden="true">
             <td>Grado</td>
             <td>Grupo</td>
           </tr>
-          <tr>
-
-            <td>
-
-              <input
-              name="alumno1" id="alumno1" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-            </td>
-
-            <td>
-              <input
-              name="grado1" id="grado1" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-            </td>
-            <td>
-              <input
-              name="grupo1" id="grupo1" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-
-            </td>
-          </tr>
-          <!------------------------------------------------------->
-          <tr>
-
-            <td>
-
-              <input
-              name="alumno2" id="alumno2" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-            </td>
-
-            <td>
-              <input
-              name="grado2" id="grado2" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-            </td>
-            <td>
-              <input
-              name="grupo2" id="grupo2" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-
-            </td>
-          </tr>
-          <!-------------------------------------------------------------------->
-          <tr>
-
-            <td>
-
-              <input
-              name="alumno3" id="alumno3" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-            </td>
-
-            <td>
-              <input
-              name="grado3" id="grado3" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-            </td>
-            <td>
-              <input
-              name="grupo3" id="grupo3" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-
-            </td>
-          </tr>
-          <!------------------------------------------------------------------>
-          <tr>
-
-            <td>
-
-              <input
-              name="alumno4" id="alumno4" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-            </td>
-
-            <td>
-              <input
-              name="grado4" id="grado4" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-            </td>
-            <td>
-              <input
-              name="grupo4" id="grupo4" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-
-            </td>
-          </tr>
-          <!------------------------------------------------------------------>
-          <tr>
-
-            <td>
-
-              <input
-              name="alumno5" id="alumno5" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-            </td>
-
-            <td>
-              <input
-              name="grado5" id="grado5" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-            </td>
-            <td>
-              <input
-              name="grupo5" id="grupo5" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-
-            </td>
-          </tr>
           <!------------------------------------------------------------------------->
-
-          <tr>
-            <td colspan="3">
-              fecha para el permiso:
-              <input
-              name="fecha1" id="fecha1" type="text"
-              class="form-control" placeholder="Sin Fecha de Permiso"  style="width : 500px; heigth : 4px" readonly>
-            </td>
-          </tr>
-          <!------------------------------------------------------------------------->
+        </table>
+        <table id="tabla_alumnos" border="0" WIDTH="700">
+          <!-------------------------- Tabla de  Alumnos ----------------------------------------------->
         </table>
 
         <table border="0" WIDTH="700">
@@ -393,9 +277,16 @@ aria-labelledby="myModalLabel" aria-hidden="true">
               <h4>Domicilio de Actual:</h4>
             </td>
           </tr>
-
         </table>
         <table border="0" WIDTH="700">
+          <tr>
+            <td colspan="3">
+              fecha para el permiso:
+              <input
+              name="fechacambio" id="fechacambio" type="text"
+              class="form-control" placeholder="Sin Fecha de Permiso"  style="width : 500px; heigth : 4px" readonly>
+            </td>
+          </tr>
           <tr>
             <td colspan="2">
               Calle:
@@ -468,9 +359,9 @@ aria-labelledby="myModalLabel" aria-hidden="true">
 
       Fecha de Respuesta:
       <input name="frespuesta" id="frespuesta" type="text"
-      class="form-control" placeholder="frespuesta" readonly>
+      class="form-control" placeholder="frespuesta" readonly><br>
       Accion:
-      <select name="status" id="status">
+      <select name="estatus" id="estatus">
         <option value="0">Selecciona</option>
         <option value="2"style="color:white;background-color:#0b1d3f;">Autorizado</option>
         <option value="3" style="color:red;background-color:yellow;">Declinado</option>

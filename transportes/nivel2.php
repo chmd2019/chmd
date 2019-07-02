@@ -32,18 +32,18 @@
 				require_once ('FirePHPCore/FirePHP.class.php');
 				$firephp = FirePHP::getInstance ( true );
 				ob_start ();
-				
+
 				if (isset ( $_POST ['guardar'] )) {
 					$nombre = $_POST ['nombre_nivel'];
 					$funcion = $_POST ['funcion'];
-					
+
 					if ($nombre == '') {
 						$verificar = '<div class="alert alert-warning alert-dismissable">' . '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' . '<h4>¡Verificar!</h4>' . 'Inserta el nombre del Nivel' . '</div>';
 					} else {
-						
+
 						header ( 'Content-type: application/json; charset=utf-8' );
 						include 'conexion.php';
-						
+
 						$conexion = mysql_connect ( $host, $usuario, $password ) or die ( "Fallo en el establecimiento de la conexión" );
 						mysql_select_db ( $db );
 						mysql_query ( "SET NAMES 'utf8'" );
@@ -53,13 +53,13 @@
 						} else if ($funcion > 0) {
 							$query = "UPDATE nivel SET nombre = '" . $nombre . "' WHERE id=" . $funcion;
 						}
-						
+
 						mysql_query ( $query );
-						
+
 						header ( 'Location: nivel.php' );
 					}
 				}
-				
+
 				?>
 
     <div class="container">
@@ -158,7 +158,7 @@
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
 	<script type="text/javascript"
-		src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script type="text/javascript" src="dist/js/bootstrap.js"></script>
 	<script type="text/javascript" src="js/admin.js"></script>
 </body>

@@ -134,8 +134,6 @@ placeholder="Buscar Solicitud..."><br> <br>
       if($estatus==3){$staus1="Declinado";}
       if($estatus==4){$staus1="Cancelado por el usuario";}
 
-
-
       $nfamila= $dato['nfamilia'];
       $calle_numero1=$dato['calle'];
       $colonia1=$dato['colonia1'];
@@ -259,7 +257,7 @@ placeholder="Buscar Solicitud..."><br> <br>
   ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->
   <script type="text/javascript"
-  src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script type="text/javascript" src="dist/js/bootstrap.js"></script>
   <script type="text/javascript" src="js/PDiario.js"></script>
   <script type="text/javascript" src="js/1min_inactivo.js" ></script>
@@ -390,22 +388,14 @@ aria-labelledby="myModalLabel" aria-hidden="true">
               name="colonia" id="colonia" type="text"
               class="form-control" placeholder="Colonia" readonly>
             </td>
-
-
-
-
             <td>Ruta:
               <input
               name="ruta" id="ruta" type="text"
               class="form-control" placeholder="Agrega Ruta" readonly>
             </td>
           </tr>
-
         </table>
         <!--
-
-
-
         -->
 
         Comentarios de solicitud:

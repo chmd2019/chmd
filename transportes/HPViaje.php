@@ -34,24 +34,24 @@ if (isset ( $_POST ['nombre_nivel'] )) {
   $nombre = $_POST ['nombre_nivel'];
   $funcion = $_POST ['funcion'];
   $mensaje= $_POST ['mensaje'];
-  $status= $_POST ['status'];
+  $estatus= $_POST ['estatus'];
   if ($nombre) {
     header ( 'Content-type: application/json; charset=utf-8' );
 
     //$existe =mysqli_query ($conexion, "SELECT * FROM nivel WHERE nombre='$nombre'" );
     //$existe = mysql_fetch_array ( $existe );
-    if ($status==3)
+    if ($estatus==3)
     {
       $query = "UPDATE Ventana_Permisos SET mensaje = '$mensaje',estatus=3 WHERE id_permiso=$funcion";
-      mysql_query ( $query );
+      mysqli_query ( $conexion, $query );
       $json = array (
       'estatus' => '0'
       );
     }
-    else if ($status==2)
+    else if ($estatus==2)
     {
       $query = "UPDATE Ventana_Permisos SET mensaje = '$mensaje',estatus=2 WHERE id_permiso=$funcion";
-      mysql_query ( $query );
+    mysqli_query ( $conexion, $query );
       $json = array (
       'estatus' => '0'
       );
@@ -176,6 +176,7 @@ placeholder="Buscar Solicitud..."><br> <br>
         data-responsable="<?php echo $responsable?>"
         data-parentesco="<?php echo $parentesco?>"
         data-celular="<?php echo $celular?>"
+        data-estatus="<?php echo $estatus?>"
         data-telefono="<?php echo $telefono?>">
         <span class="glyphicon glyphicon-pencil">Ver</span>
       </button>
@@ -209,7 +210,7 @@ placeholder="Buscar Solicitud..."><br> <br>
   ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->
   <script type="text/javascript"
-  src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script type="text/javascript" src="dist/js/bootstrap.js"></script>
   <script type="text/javascript" src="js/PViaje.js"></script>
 </body>
@@ -266,92 +267,10 @@ aria-labelledby="myModalLabel" aria-hidden="true">
             <td>Grado</td>
             <td>Grupo</td>
           </tr>
-          <tr>
-            <td>
-              <input
-              name="alumno1" id="alumno1" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-            </td>
-
-            <td>
-              <input
-              name="grado1" id="grado1" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-            </td>
-            <td>
-              <input
-              name="grupo1" id="grupo1" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-
-            </td>
-          </tr>
-          <!------------------------------------------------------->
-          <tr>
-
-            <td>
-
-              <input
-              name="alumno2" id="alumno2" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-            </td>
-
-            <td>
-              <input
-              name="grado2" id="grado2" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-            </td>
-            <td>
-              <input
-              name="grupo2" id="grupo2" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-
-            </td>
-          </tr>
-          <!-------------------------------------------------------------------->
-          <tr>
-
-            <td>
-
-              <input
-              name="alumno3" id="alumno3" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-            </td>
-
-            <td>
-              <input
-              name="grado3" id="grado3" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-            </td>
-            <td>
-              <input
-              name="grupo3" id="grupo3" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-
-            </td>
-          </tr>
-          <!------------------------------------------------------------------>
-          <tr>
-
-            <td>
-
-              <input
-              name="alumno4" id="alumno4" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-            </td>
-
-            <td>
-              <input
-              name="grado4" id="grado4" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-            </td>
-            <td>
-              <input
-              name="grupo4" id="grupo4" type="text"
-              class="form-control" placeholder="sin datos" readonly>
-
-            </td>
-          </tr>
           <!------------------------------------------------------------------------->
+        </table>
+        <table id="tabla_alumnos" border="0" WIDTH="700">
+          <!-------------------------- Tabla de  Alumnos ----------------------------------------------->
         </table>
 
         <table border="0" WIDTH="700">
@@ -467,7 +386,7 @@ aria-labelledby="myModalLabel" aria-hidden="true">
       <input name="funcion" id="funcion" type="text"
       class="form-control" value="0" required style="display: none;"><br>
       Accion:
-      <select name="status" id="status">
+      <select name="estatus" id="estatus">
         <option value="0">Selecciona</option>
         <option value="2"style="color:white;background-color:#0b1d3f;">Autorizado</option>
         <option value="3" style="color:red;background-color:yellow;">Declinado</option>

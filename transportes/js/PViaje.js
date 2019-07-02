@@ -5,8 +5,8 @@ $(function() {
     function(e) {
       var nombre_nivel = $('#nombre_nivel').val();
       var mensaje = $('#mensaje').val();
-      var status = $('#status').val();
-      if(status==0)
+      var estatus = $('#estatus').val();
+      if(estatus==0)
       {
         alert("Seleciona el estatus");
         return false;
@@ -25,7 +25,7 @@ $(function() {
           funcion : funcion,
           nombre_nivel : nombre_nivel,
           mensaje : mensaje,
-          status : status
+          estatus : estatus
         }
       })
       .done(
@@ -67,7 +67,8 @@ $(function() {
           $(this).attr('data-responsable'),
           $(this).attr('data-parentesco'),
           $(this).attr('data-celular'),
-          $(this).attr('data-telefono')
+          $(this).attr('data-telefono'),
+          $(this).attr('data-estatus')
         );
         funcion = $(this).attr('data-id');
       });
@@ -92,7 +93,7 @@ $(function() {
 
       function editarNivel(qwert,nombre,nombre1,calle_numero,colonia,cp,fecha_inicial,fecha_final,
         comentarios,calle_numero1,colonia1,ruta,mensaje,
-        responsable,parentesco,celular,telefono)
+        responsable,parentesco,celular,telefono,estatus)
         {
           $("#modalNivelTitulo").text("Ver Solicitud Temporal ");
           $("#folio").val(qwert);
@@ -114,13 +115,13 @@ $(function() {
           $("#celular").val(celular);
           $("#funcion").val(qwert);
 
-          if (status==1 || status==4){
-            $("#status").val(0);
+          if (estatus==1 || estatus==4){
+            $("#estatus").val(0);
           }else {
-            if( status==2 || status==3){
-              $("#status").val(status);
+            if( estatus==2 || estatus==3){
+              $("#estatus").val(estatus);
             }else{
-              $("#status").val(0);
+              $("#estatus").val(0);
             }
           }
           //remover todos los alumnos de la lista

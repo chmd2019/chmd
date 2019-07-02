@@ -12,9 +12,16 @@ function Alta_viaje()
   var parentesco = document.getElementById('parentesco').value;
   var celular = document.getElementById('celular').value;
   var telefono = document.getElementById('telefono').value;
-
   var fechaini = document.getElementById('fechaini').value;
   var fechater = document.getElementById('fechater').value;
+
+  var fechai = new Date (fechaini);
+  var fechaf = new Date (fechater);
+//fecha final > fecha Inicial
+if (fechaf.getTime() < fechai.getTime()){
+  alert('La Fecha Final debe ser mayor a la Fecha Inicial. ');
+  return false;
+}
 
   //validacion de alumnos
  var suma = 0;
@@ -67,12 +74,17 @@ function Alta_viaje()
     }
 
 
-    if(viaje.cp.value.length<=4)
-    { //¿Tiene 0 caracteres?
-      viaje.cp.focus();    // Damos el foco al control
-      alert('Ingresa cp'); //Mostramos el mensaje
-      return false; //devolvemos el foco
+    if( viaje.cp.value.length==0){
+      cp= '00000';
+    }else{
+      if(viaje.cp.value.length>5 || viaje.cp.value.length<4 )
+      { //¿Tiene 0 caracteres?
+        viaje.cp.focus();   // Damos el foco al control
+      alert('Ingresa un cp de 4 o 5 Digitos'); //Mostramos el mensaje
+       return false; //devolvemos el foco
+      }
     }
+
 
     /************datos responsable**************/
 

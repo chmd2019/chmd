@@ -54,11 +54,15 @@ if(diario.calle.value.length<=1)
     return false; //devolvemos el foco
   }
 
-   if(diario.cp.value.length<=4)
-   { //¿Tiene 0 caracteres?
-    diario.cp.focus();    // Damos el foco al control
-   alert('Ingresa cp'); //Mostramos el mensaje
-    return false; //devolvemos el foco
+  if( diario.cp.value.length==0){
+    cp= '00000';
+  }else{
+    if(diario.cp.value.length>5 || diario.cp.value.length<4 )
+    { //¿Tiene 0 caracteres?
+     diario.cp.focus();    // Damos el foco al control
+    alert('Ingresa un cp de 4 o 5 Digitos'); //Mostramos el mensaje
+     return false; //devolvemos el foco
+    }
   }
 
  //validar seleccion de dia

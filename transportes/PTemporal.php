@@ -36,14 +36,14 @@ $datos = mysqli_query ( $conexion,"SELECT vp.id_permiso,vp.fecha_creacion,
     $nombre = $_POST ['nombre_nivel'];
     $funcion = $_POST ['funcion'];
     $mensaje= $_POST ['mensaje'];
-    $status= $_POST ['status'];
+    $estatus= $_POST ['estatus'];
 
     if ($nombre) {
       header ( 'Content-type: application/json; charset=utf-8' );
 
       //$existe = mysql_query ( "SELECT * FROM nivel WHERE nombre='$nombre'" );
       //$existe = mysql_fetch_array ( $existe );
-      if ($status==3)
+      if ($estatus==3)
       {
         $query = "UPDATE Ventana_Permisos SET mensaje = '$mensaje',estatus=3, archivado=1 WHERE id_permiso=$funcion";
         mysqli_query ($conexion, $query );
@@ -51,7 +51,7 @@ $datos = mysqli_query ( $conexion,"SELECT vp.id_permiso,vp.fecha_creacion,
           'estatus' => '0'
           );
         }
-        else if ($status==2)
+        else if ($estatus==2)
         {
           $query = "UPDATE Ventana_Permisos SET mensaje = '$mensaje',estatus=2, archivado=1 WHERE id_permiso=$funcion";
           mysqli_query ($conexion, $query );
@@ -217,7 +217,8 @@ placeholder="Buscar Solicitud..."><br> <br>
         data-parentesco="<?php echo $parentesco?>"
         data-celular="<?php echo $celular?>"
         data-telefono="<?php echo $telefono?>"
-        data-ruta="<?php echo $ruta?>">
+        data-ruta="<?php echo $ruta?>"
+        data-estatus ="<?php echo $estatus?>">
         <span class="glyphicon glyphicon-pencil"> Ver</span>
       </button>
 
@@ -250,7 +251,7 @@ placeholder="Buscar Solicitud..."><br> <br>
   ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->
   <script type="text/javascript"
-  src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script type="text/javascript" src="dist/js/bootstrap.js"></script>
   <script type="text/javascript" src="js/PViaje.js"></script>
   <script type="text/javascript" src="js/1min_inactivo.js" ></script>

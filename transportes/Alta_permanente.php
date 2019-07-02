@@ -131,7 +131,7 @@ if(isset($_POST['submit']))
       <?php $perfil_actual='permanente'; include ('perfiles_dinamicos.php'); ?>
     </div>
     <br>
-    <center><?php echo isset($_POST['guardar'])?$verificar:''; ?></center>
+    <center><?php // echo isset($_POST['guardar'])?$verificar:''; ?></center>
     <!-- Button trigger modal -->
     <center>
       <h2>Nueva solicitud permanentes:</h2>
@@ -361,7 +361,7 @@ if(isset($_POST['submit']))
   ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->
   <script type="text/javascript"
-  src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script type="text/javascript" src="dist/js/bootstrap.js"></script>
   <script type="text/javascript" src="js/Alta_permanente.js"></script>
 </body>

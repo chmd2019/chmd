@@ -122,7 +122,7 @@ include ('perfiles_dinamicos.php');
    ?>
     </div>
     <br>
-    <center><?php echo isset($_POST['guardar']) ? $verificar : '' ; ?></center>
+    <center><?php // echo isset($_POST['guardar']) ? $verificar=1 : '' ; ?></center>
     <!-- Button trigger modal -->
     <center>
       <h2>Nueva solicitud de diario:</h2>
@@ -139,9 +139,10 @@ include ('perfiles_dinamicos.php');
     }
     else {
       $familia=$_GET["nfamilia"];
-      $datos = mysqli_query ($conexion, "SELECT id, papa ,calle ,colonia,cp from usuarios where password='$familia'" );
+      $datos = mysqli_query ($conexion, "SELECT id,mama, papa ,calle ,colonia,cp from usuarios where password='$familia'" );
       if($rows=mysqli_fetch_array($datos))
       {
+        $mama=$rows['mama'];
         $papa=$rows['papa'];
         $calle=$rows['calle'];
         $colonia=$rows['colonia'];
@@ -156,13 +157,20 @@ include ('perfiles_dinamicos.php');
           <div class="modal-body">
             <table border="0" WIDTH="800" >
               <tr>
-                <td colspan="2" WIDTH="60%">Fecha de solicitud:
+                <td colspan="1" WIDTH="100%">Fecha de solicitud:
                   <input name="fecha" id="fecha" type="text" class="form-control" placeholder="Fecha"  value="<?php echo $arrayDias[date('w')].", ".date('d')." de ".$arrayMeses[date('m')-1]." de ".date('Y').",".date("H:i:s");?>" readonly="readonly">
+                </td>
+                </tr>
+              <tr>
+                <td  WIDTH="50%">Solicitante:
+                  <input
+                  name="papa" id="papa" type="radio"
+                  class="form-control" placeholder="Correo"  value="<?php echo $papa ?>" readonly>
                 </td>
                 <td  WIDTH="50%">Solicitante:
                   <input
-                  name="papa" id="papa" type="text"
-                  class="form-control" placeholder="Correo"  value="<?php echo $papa ?>" readonly>
+                  name="mama" id="mama" type="radio"
+                  class="form-control" placeholder="Correo"  value="<?php echo $mamas ?>" readonly>
                 </td>
               </tr>
               <tr>
@@ -170,7 +178,9 @@ include ('perfiles_dinamicos.php');
                   <h4>Alumnos Solicitantes:</h4><br>
                 </td>
               </tr>
+
             </table>
+
             <table  style="border-style: dotted"  WIDTH="800" >
               <tr>
                 <td style="text-align:center;border-style: groove">Alumno</td>
@@ -222,7 +232,7 @@ include ('perfiles_dinamicos.php');
                   CP:
                   <input
                   name="cp1" id="cp1" type="text"
-                  class="form-control" placeholder="cp" value="<?php echo $cp ?>" readonly="" >
+                  class="form-control" placeholder="cp"  value="<?php echo $cp ?>" readonly="" >
                 </td>
               </tr>
               <tr>
@@ -300,7 +310,7 @@ include ('perfiles_dinamicos.php');
   ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->
   <script type="text/javascript"
-  src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script type="text/javascript" src="dist/js/bootstrap.js"></script>
   <script type="text/javascript" src="js/Alta_diario.js"></script>
 </body>
