@@ -12,6 +12,6 @@
         <link href="https://fonts.googleapis.com/css?family=Varela+Round&display=swap" rel="stylesheet">
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-        <script src="/pruebascd/icloud/Transportes/common/js/common.js""></script>
+        <script src="/pruebascd/icloud/Transportes/common/js/common.js"></script>
     </head>
     <body>

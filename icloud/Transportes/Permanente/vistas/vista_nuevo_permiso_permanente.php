@@ -75,7 +75,7 @@ if (isset($authUrl)) {
             <div class="col s12 l8 b-blanco border-azul" style="float: none;margin: 0 auto;">
                 <br>
                 <br>
-                <h5 class="center-align c-azul">Nuevo permiso permanente</h5>
+                <h5 class="center-align c-azul">Cambio Permanente</h5>
                 <br>
                 <div class="row" style="padding:0rem .5rem;">
                     <div class="col s12 l6">
@@ -93,7 +93,7 @@ if (isset($authUrl)) {
                         </div>
                     </div>    
                     <br><div class="col s12">
-                        <h5 class="c-azul text-center">Alumnos</h5>
+                        <h5 class="c-azul text-center">Selecciona Alumnos</h5>
                         <?php
                         $consulta1 = $objCliente->mostrar_alumnos($familia);
                         if ($consulta1) {
@@ -135,7 +135,7 @@ if (isset($authUrl)) {
                     <h5 class="center-align c-azul">Dirección de Casa</h5>
                     <br>
                     <div class="col s12">
-                        <label for="calle_guardada_permanente" style="margin-left: 1rem">Calle y número</label>
+                        <label for="calle_guardada_permanente">Calle y número</label>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">person_pin</i>
                             <textarea class="materialize-textarea"
@@ -168,26 +168,29 @@ if (isset($authUrl)) {
                         <i class="material-icons c-azul">person_pin_circle</i>
                         <select id="reside" class="input-field" onchange="cambiar_direccion('<?php echo $id; ?>')">
                         </select>
-                        <label style="margin-left: 1rem">Direcciones guardadas</label>
+                        <label style="margin-left: 1rem">Dirección Guardada</label>
                     </div>
                     <div class="input-field col s12">
                         <i class="material-icons c-azul">person_pin_circle</i>
                         <textarea id="calle_nuevo_permiso_permanente" 
                                   class="materialize-textarea"                              
-                                  placeholder="INGRESE CALLE Y NUMERO"></textarea>    
+                                  placeholder="Agrega calle número"></textarea>                        
+                        <label>Calle y Número</label>
                     </div>
                     <div class="input-field col s12">
                         <i class="material-icons c-azul">person_pin_circle</i>
                         <textarea class="materialize-textarea"  
                                   id="colonia_nuevo_permiso_permanente" 
-                                  placeholder="INGRESE COLONIA"></textarea> 
+                                  placeholder="Agrega colonia"></textarea> 
+                        <label>Colonia</label>
                     </div>                 
                     <div class="input-field col s12">
                         <i class="material-icons c-azul">person_pin_circle</i>
-                        <input placeholder="INGRESE CP" 
+                        <input placeholder="Ingrese CP" 
                                id="cp" 
                                type="tel"
                                onkeypress="return validar_solo_numeros(event)">
+                        <label>CP</label>
                     </div> 
                     <div class="switch col s12">
                         <label>
@@ -257,10 +260,11 @@ if (isset($authUrl)) {
                         <div class="input-field col s12">
                             <i class="material-icons c-azul">departure_board</i>
                             <select class="input-field" id="ruta_nuevo_permiso_permanente" >
-                                <option value="">Seleccione ruta</option>
+                                <option value="">Seleccione opción</option>
                                 <option value="General 2:50 PM">General 2:50 PM</option>
                                 <option value="Taller 4:30 PM">Taller 4:30 PM</option>
                             </select>
+                        <label>Ruta</label>
                         </div>
                     </div>
                     <br>
@@ -532,7 +536,7 @@ if (isset($authUrl)) {
             //fecha solicitud, solicitante, fecha del permiso, nombre del alumno, alumnos, calle, colonia
             var calle_nuevo_permiso_permanente = $("#calle_nuevo_permiso_permanente").val();
             var colonia_nuevo_permiso_permanente = $("#colonia_nuevo_permiso_permanente").val();
-            var cp = $("#cp").val();
+            var cp = $("#cp").val() !==""? $("#cp").val(): "00000";
             var responsable = $("#solicitante_permiso_permanente").val();
             var lunes = $("#lunes").prop("checked")? $("#lunes").val():"";
             var martes = $("#martes").prop("checked")? $("#martes").val():"";

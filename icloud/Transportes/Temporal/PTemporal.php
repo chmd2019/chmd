@@ -15,7 +15,7 @@ if (isset($authUrl)) {
         <div class="col s12 m12 l9 b-blanco border-azul" style="float: none;margin: 0 auto;"> 
             <div>
                 <br>
-                <h4 class="c-azul" style="text-align: center;">Cambio de temporal</h4>
+                <h4 class="c-azul" style="text-align: center;">Cambio temporal</h4>
                 <div>
                     <?php include './View_temporal.php'; ?> 
                 </div>

@@ -25,7 +25,7 @@ if (isset($authUrl)) {
     <div class="row"><br><br>
         <div class="col-sm-12 col-md-9 b-blanco" style="margin:auto; width: 100vw">
             <?php
-            echo '<h2 class="alert alert-light  b-azul c-blanco text-center border-azul border-radius-none" role="alert">' . $titulo . '</h2>';
+            echo '<h2 class="alert alert-light  b-azul c-blanco text-center border-azul border-radius-none w-100" role="alert">' . $titulo . '</h2>';
             ?>
             <div class="btn-group right" role="group">
                 <a href="index.php" class="btn b-azul white-text" ><i class="fas fa-home"></i>&nbsp;Menú inicial</a>

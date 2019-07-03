@@ -14,7 +14,6 @@ require_once "$root_icloud/Helpers/DateHelper.php";
 $id_permiso = $_GET['id'];
 $tipo_permiso = $_GET['tipo_permiso'];
 $idseccion = $_GET['idseccion'];
-
 if (isset($_GET['logout'])) {
     unset($_SESSION['access_token']);
 }
@@ -137,6 +136,8 @@ if (isset($authUrl)) {
                                    value=""/>       
                         </div>
                     </div>
+                    <br>
+                    <h5 class="center-align c-azul">Datos de responsable</h5>
                     <div class="col s12 l6">
                         <label for="parentesco" style="margin-left: 2rem;">Parentesco</label>
                         <div class="input-field">

@@ -94,7 +94,7 @@ if (isset($authUrl)) {
                     </div>    
                     <br>
                     <div class="col s12">
-                        <h5 class="c-azul text-center">Alumnos</h5>
+                        <h5 class="c-azul text-center">Selecciona Alumnos</h5>
                         <?php
                         $consulta1 = $objCliente->mostrar_alumnos($familia);
                         if ($consulta1) {
@@ -136,7 +136,7 @@ if (isset($authUrl)) {
                     <h5 class="center-align c-azul">Dirección de Casa</h5>
                     <br>
                     <div class="col s12">
-                        <label for="calle_guardada_nuevo" style="margin-left: 1rem">Calle y número</label>
+                        <label for="calle_guardada_nuevo" style="margin-left: 1rem">Calle y Número</label>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">person_pin</i>
                             <textarea class="materialize-textarea"
@@ -169,23 +169,27 @@ if (isset($authUrl)) {
                         <i class="material-icons c-azul">person_pin_circle</i>
                         <select id="reside" class="input-field" onchange="cambiar_direccion('<?php echo $id; ?>')">
                         </select>
-                        <label style="margin-left: 1rem">Direcciones guardadas</label>
+                        <label style="margin-left: 1rem">Dirección Guardada</label>
                     </div>
                     <div class="input-field col s12">
+                        <label for="calle_nuevo_permiso_temporal" style="margin-left: 1rem">Calle y Número</label>
                         <i class="material-icons c-azul">person_pin_circle</i>
                         <textarea id="calle_nuevo_permiso_temporal" 
                                   class="materialize-textarea"                                
                                   placeholder="INGRESE CALLE Y NUMERO"></textarea> 
                     </div>
                     <div class="input-field col s12">
+                        <label for="colonia_nuevo_permiso_temporal " style="margin-left: 1rem">Colonia</label>
                         <i class="material-icons c-azul">person_pin_circle</i>
                         <textarea class="materialize-textarea"  
                                   id="colonia_nuevo_permiso_temporal" 
                                   placeholder="INGRESE COLONIA"></textarea> 
                     </div>                    
                     <div class="input-field col s12">
+                        <label for="cp " style="margin-left: 1rem">CP</label>
                         <i class="material-icons c-azul">person_pin_circle</i>
                         <input placeholder="INGRESE CP" 
+                               autocomplete="off"
                                id="cp" 
                                type="tel"
                                onkeypress="return validar_solo_numeros(event)">
@@ -209,39 +213,45 @@ if (isset($authUrl)) {
                         </div>
                     </div>  
                     <br>
+                    <h5 class="center-align c-azul">Datos de responsable</h5>
                     <div class="input-field col s12">
+                        <label for="nombre_nuevo_permiso_temporal " style="margin-left: 1rem">Nombre</label>
                         <i class="material-icons c-azul">person</i>
                         <textarea id="nombre_nuevo_permiso_temporal" 
                                   class="materialize-textarea"                                
-                                  placeholder="Nombre"></textarea>    
+                                  placeholder="Obligatorio"></textarea>    
                     </div>
                     <div>
                         <div class="input-field col s12 l6">
+                        <label for="parentesco_nuevo_permiso_temporal " style="margin-left: 1rem">Parentesco</label>
                             <i class="material-icons c-azul">people</i>
                             <input 
-                                placeholder="Parentesco" 
+                                placeholder="Obligatorio" 
                                 id="parentesco_nuevo_permiso_temporal" 
                                 type="text" 
                                 autocomplete="off"/>
                         </div>
                         <div class="input-field col s12 l6">
+                        <label for="celular_nuevo_permiso_temporal " style="margin-left: 1rem">Celular</label>
                             <i class="material-icons c-azul">smartphone</i>
-                            <input placeholder="Celular" 
-                                   id="celular_nuevo_permiso_temporal" 
+                            <input placeholder="Agrega 10 dígitos" 
+                                    autocomplete="off"
+                                    id="celular_nuevo_permiso_temporal" 
                                    type="tel"
                                    onkeypress="return validar_solo_numeros(event)">
                         </div>
                         <div class="input-field col s12 l6">
+                        <label for="telefono_nuevo_permiso_temporal " style="margin-left: 1rem">Teléfono</label>
                             <i class="material-icons c-azul">phone_in_talk</i>
-                            <input placeholder="Teléfono" 
+                            <input placeholder="Agrega 8 dígitos" 
+                               autocomplete="off"
                                    id="telefono_nuevo_permiso_temporal" 
                                    type="tel"
                                    onkeypress="return validar_solo_numeros(event)">
                         </div>  
                     </div>
                     <br>
-                    <h5 class="col s12 center-align c-azul">Fecha de cambio</h5>
-                    <br>
+                    <div class="col s12"></div>
                     <div>
                         <link rel='stylesheet' href='../../common/css/calendario.css'> 
                         <div id="wrapper1" class="col s12 l6 input-field">
@@ -309,11 +319,12 @@ if (isset($authUrl)) {
                     <div class="input-field col s12">
                         <i class="material-icons c-azul">departure_board</i>
                         <select class="input-field" id="ruta_nuevo_permiso_temporal" >
-                            <option value="">Seleccione ruta</option>
+                            <option value="">Selecciona opción</option>
                             <option value="Mañana">Mañana</option> 
                             <option value="Tarde">Tarde</option> 
                             <option value="Mañana-Tarde">Mañana-Tarde</option> 
                         </select>
+                        <label>Ruta</label>
                     </div> 
                     <br>
                     <div class="input-field col s12">
@@ -321,6 +332,7 @@ if (isset($authUrl)) {
                         <textarea id="comentarios_nuevo_permiso_temporal" 
                                   class="materialize-textarea"                                
                                   placeholder="Comentarios"></textarea>    
+                        <label>Comentarios</label>
                     </div>
                     <div class="col s12 l6" style="float: none;margin: 0 auto;">
                         <button class="btn waves-effect waves-light b-azul white-text w-100" 
@@ -344,7 +356,7 @@ if (isset($authUrl)) {
     </a>
     <ul>
         <li>
-            <a class="btn-floating blue" href="https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Temporal/PTemporal.php">
+            <a class="btn-floating blue" href="https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Temporal/PTemporal.php?idseccion=<?php echo $idseccion;?>">
                 <i class="material-icons">keyboard_backspace</i>
             </a>
         </li>
@@ -637,7 +649,7 @@ if (isset($authUrl)) {
             //fecha solicitud, solicitante, fecha del permiso, nombre del alumno, alumnos, calle, colonia
             var calle_nuevo_permiso_temporal = $("#calle_nuevo_permiso_temporal").val();
             var colonia_nuevo_permiso_temporal = $("#colonia_nuevo_permiso_temporal").val();
-            var cp = $("#cp").val();
+            var cp = $("#cp").val() !==""? $("#cp").val(): "00000";
             var responsable = $("#nombre_nuevo_permiso_temporal").val();
             var parentesco = $("#parentesco_nuevo_permiso_temporal").val();
             var celular = $("#celular_nuevo_permiso_temporal").val();

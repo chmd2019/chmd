@@ -3,9 +3,10 @@
     <div class="modal-content orange lighten-2">
         <div>
             <h6 class="">Información importante</h6>
-            Los cambios para el mismo día deberán solicitarse antes de las 11:30 horas,
-            ya que el sistema no permitirá realizar solicitudes después del horario establecido,
-            sin embargo podrá hacer solicitudes para fechas posteriores.<br>
+            Una vez autorizado el cambio permanente, el departamento de transporte escolar confirmará con 
+            el solicitante la fecha en que dará inicio. De no hacer uso del cambio permanente, 
+            es indispensable realizar la cancelación del mismo. En caso de que el solicitante no 
+            cancele el cambio permanente el(los) alumno(s) será(n) entregado(s) en el domicilio solicitado.<br>
             <strong><b>NOTA:!</b></strong> Todas las solicitudes están sujetas a disponibilidad.
         </div>  
     </div>

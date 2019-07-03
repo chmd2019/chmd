@@ -1,13 +1,16 @@
 <?php
-include '../components/layout_top.php';
-include '../components/sesion.php';
-include '../components/navbar.php';
+$root_icloud = $_SERVER['DOCUMENT_ROOT'] . "/pruebascd/icloud";
+include_once "$root_icloud/Transportes/components/layout_top.php";
+include_once "$root_icloud/Transportes/components/navbar.php";
+include_once "$root_icloud/Transportes/components/sesion.php";
+$idseccion = $_GET['idseccion'];
+
 $user = $service->userinfo->get(); //get user info
 $correo = $user->email;
 $objCliente = new Login();
 $consulta = $objCliente->Acceso($correo);
 //zona horaria para America/Mexico_city 
-require '../../Helpers/DateHelper.php';
+require "$root_icloud/Helpers/DateHelper.php";
 $objDateHelper = new DateHelper();
 $objDateHelper->set_timezone();
 $fecha_actual = date('m-d-Y');
@@ -33,7 +36,7 @@ if (isset($authUrl)) {
                 <br>
                 <h4 class="c-azul" style="text-align: center;">Cambio del dia</h4>
                 <div>
-                    <?php include('View_Diario.php'); ?> 
+                    <?php //include('View_Diario.php');  ?> 
                 </div>
                 <?php
             }
@@ -45,10 +48,10 @@ if (isset($authUrl)) {
 <div class="fixed-action-btn">
     <a class="btn-floating btn-large b-azul">
         <i class="large material-icons">edit</i>
-    </a>|
+    </a>
     <ul>
-        <li><a class="btn-floating green accent-3" href="vistas/vista_nuevo_permiso_diario.php"><i class="material-icons">add</i></a></li>
-        <li><a class="btn-floating blue" href="javascript:history.back(0)"><i class="material-icons">keyboard_backspace</i></a></li>
+        <li><a class="btn-floating green accent-3" href="vistas/vista_nuevo_permiso_diario.php?idseccion=<?php echo $idseccion; ?>"><i class="material-icons">add</i></a></li>
+        <li><a class="btn-floating blue" href="https://www.chmd.edu.mx/pruebascd/icloud/menu.php?idseccion=<?php echo $idseccion; ?>"><i class="material-icons">keyboard_backspace</i></a></li>
             <?php
             echo '<li><a href="' . $redirect_uri . '?logout=1" class="btn-floating red" >'
             . "<i class='material-icons'>exit_to_app</i>Salir</a></li>";
@@ -65,4 +68,4 @@ if (isset($authUrl)) {
     });
 </script>
 
-<?php include '../components/layout_bottom.php'; ?>
+<?php include "$root_icloud/Transportes/components/layout_bottom.php"; ?>

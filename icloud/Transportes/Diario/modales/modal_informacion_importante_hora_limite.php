@@ -3,8 +3,9 @@
     <div class="modal-content orange lighten-2">
         <div>
             <h6 class="">Información importante</h6>
-            Es indispensable realizar la solicitud del cambio temporal con 3 días de anticipación. 
-            Este iniciará en la fecha en que el departamento de Transporte Escolar confirme con el solicitante.<br>
+            Los cambios para el mismo día deberán solicitarse antes de las 11:30 horas, 
+            ya que el sistema no permitirá realizar solicitudes después del horario establecido, 
+            sin embargo podrá hacer solicitudes para fechas posteriores.<br>
             <strong><b>NOTA:!</b></strong> Todas las solicitudes están sujetas a disponibilidad.
         </div>  
     </div>

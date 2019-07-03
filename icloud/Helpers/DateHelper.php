@@ -1,6 +1,7 @@
 <?php
 
-include_once '../Model/DBManager.php';
+$root_icloud = $_SERVER['DOCUMENT_ROOT']."/pruebascd/icloud";
+include_once "$root_icloud/Model/DBManager.php";
 
 class DateHelper {
 

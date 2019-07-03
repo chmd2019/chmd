@@ -18,7 +18,7 @@ if (isset($authUrl)) {
         <div class="col s12 m12 l9 b-blanco border-azul" style="float: none;margin: 0 auto;"> 
             <div>
                 <br>
-                <h4 class="c-azul" style="text-align: center;">Cambio de permanente</h4>
+                <h4 class="c-azul" style="text-align: center;">Cambio permanente</h4>
                 <div>
                     <?php include './View_permanente.php';; ?> 
                 </div>
@@ -49,6 +49,9 @@ if (isset($authUrl)) {
             hoverEnabled: false
         });
         $('.modal').modal();
+        setInterval(function(){            
+            window.location.reload();
+        }, 30000);
     });
 </script>
 
