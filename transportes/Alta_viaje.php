@@ -153,17 +153,15 @@ else
   }
   else {
     $familia=$_GET["nfamilia"];
-
-    $datos = mysqli_query ($conexion, "SELECT id,papa,calle,colonia,cp from usuarios where password='$familia'" );
-    if($rows=mysqli_fetch_array($datos))
+    $direccion = mysqli_query($conexion, "SELECT calle,colonia,cp FROM direccion_familias WHERE nfamilia='$familia' limit 1");
+    while ($rows=mysqli_fetch_array($direccion))
     {
-      $papa=$rows['papa'];
       $calle=$rows['calle'];
       $colonia=$rows['colonia'];
       $cp=$rows['cp'];
-      $idusuario=$rows['id'];
-      //$idusuario=40;
     }
+
+    $datos = mysqli_query ($conexion, "SELECT id,correo from Ventana_user WHERE nfamilia='$familia'" );
     ?>
     <center>
       <form id="viaje"  name="viaje" class="form-signin save-nivel" method='post'   onsubmit='Alta_viaje(); return false'>
@@ -171,15 +169,44 @@ else
         <div class="modal-body">
           <table border="0" WIDTH="800" >
             <tr>
-              <td colspan="2" WIDTH="60%">Fecha de solicitud:
+              <td colspan="2" WIDTH="100%">Fecha de solicitud:
                 <input name="fecha" id="fecha" type="text" class="form-control" placeholder="Fecha"  value="<?php echo $arrayDias[date('w')].", ".date('d')." de ".$arrayMeses[date('m')-1]." de ".date('Y').",".date("H:i:s");?>" readonly="readonly">
               </td>
-              <td  WIDTH="50%">Solicitante:
-                <input
-                name="papa" id="papa" type="text"
-                class="form-control" placeholder="Correo"  value="<?php echo $papa ?>" readonly>
+            </tr>
+            <tr >
+              <td><br> </td>
+            </tr>
+            <tr>
+              <td colspan="1"> Solicitante:</td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                  <div class="row">
+                     <div class="col-sm-10">
+                    <?php
+                   while ($rows=mysqli_fetch_array($datos))
+                   {
+                     $idusuario=$rows['id'];
+                     $correo= $rows['correo'];
+                     ?>
+
+                       <div class="form-check">
+                         <input class="form-check-input" type="radio" name="idusuario" id="solicitante<?=$idusuario?>" value="<?=$idusuario?>" >
+                         <label class="form-check-label" for="solicitante<?=$idusuario?>">
+                         <?=$correo?>
+                         </label>
+                       </div>
+                     <?php
+                   }
+                   ?>
+                      </div>
+                  </div>
               </td>
             </tr>
+          </table>
+          <table>
             <tr>
               <td WIDTH="100%" colspan="3">
                 <h4>Alumnos Solicitantes:</h4><br>
@@ -295,13 +322,11 @@ else
                   Celular:
                   <input class="form-control"  name="celular" type="number"  id="celular"  pattern="[0-9]{10}" placeholder="Agrega 10 digitos" required />
                 </td>
-
                 <td>
                   Telefono:
                   <input class="form-control"  name="telefono" type="number"  id="telefono"   pattern="[0-9]{8}" placeholder="Agrega 8"digitos required />
                 </td>
               </tr>
-
               <tr>
                 <td>
                   Fecha Inicial:
@@ -313,11 +338,9 @@ else
                 </td>
               </tr>
             </table>
-
             <br><b>Comentarios de solicitud:</b>
             <textarea class="form-control"  id="Comentarios" name="comentarios"  ></textarea>
-
-            <input type="hidden" name="idusuario" id="idusuario"  value="<?php echo $idusuario ?>" />
+          <!--  <input type="hidden" name="idusuario" id="idusuario"  value="<?php echo $idusuario ?>" />-->
             <input type="hidden" name="nfamilia" id="nfamilia"  value="<?php echo $familia ?>" />
             <input type="hidden" name="talumnos" id="talumnos"  value="<?php echo $talumnos ?>" />
 

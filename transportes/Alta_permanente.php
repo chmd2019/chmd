@@ -155,42 +155,61 @@ if(isset($_POST['submit']))
     }
     else {
       $familia=$_GET["nfamilia"];
-
-      $datos = mysqli_query ($conexion, "select papa,calle,colonia,cp from usuarios where password='$familia'" );
-      if($rows=mysqli_fetch_array($datos))
+      $direccion = mysqli_query($conexion, "SELECT calle,colonia,cp FROM direccion_familias WHERE nfamilia='$familia' limit 1");
+      while ($rows=mysqli_fetch_array($direccion))
       {
-        $papa=$rows[0];
-        $calle=$rows[1];
-        $colonia=$rows[2];
-        $cp=$rows[3];
-        $idusuario=40;
+        $calle=$rows['calle'];
+        $colonia=$rows['colonia'];
+        $cp=$rows['cp'];
       }
+
+
+      $datos = mysqli_query ($conexion, "SELECT id,correo from Ventana_user WHERE nfamilia='$familia'" );
       ?>
-      <center>
+        <center>
         <form id="permanente"  name="permanente" class="form-signin save-nivel" method='post'   onsubmit='Alta_permanente(); return false'>
           <div class="alert-save"></div>
           <div class="modal-body">
             <table border="0" WIDTH="800" >
-
               <tr>
-
-
                 <td colspan="2" WIDTH="60%">Fecha de solicitud:
                   <input name="fecha" id="fecha" type="text" class="form-control" placeholder="Fecha"  value="<?php echo $arrayDias[date('w')].", ".date('d')." de ".$arrayMeses[date('m')-1]." de ".date('Y').",".date("H:i:s");?>" readonly="readonly">
-
-
                 </td>
-
-                <td  WIDTH="50%">Solicitante:
-                  <input
-                  name="papa" id="papa" type="text"
-                  class="form-control" placeholder="Correo"  value="<?php echo $papa ?>" readonly>
-                </td>
-
               </tr>
+              <tr >
+                <td><br> </td>
+              </tr>
+              <tr>
+                <td colspan="1"> Solicitante:</td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    <div class="row">
+                       <div class="col-sm-10">
+                      <?php
+                     while ($rows=mysqli_fetch_array($datos))
+                     {
+                       $idusuario=$rows['id'];
+                       $correo= $rows['correo'];
+                       ?>
 
-
-
+                         <div class="form-check">
+                           <input class="form-check-input" type="radio" name="idusuario" id="solicitante<?=$idusuario?>" value="<?=$idusuario?>" >
+                           <label class="form-check-label" for="solicitante<?=$idusuario?>">
+                           <?=$correo?>
+                           </label>
+                         </div>
+                       <?php
+                     }
+                     ?>
+                        </div>
+                    </div>
+                </td>
+              </tr>
+            </table>
+            <table>
               <tr>
                 <td WIDTH="100%" colspan="3">
                   <h4>Alumnos Solicitantes:</h4><br>
@@ -311,24 +330,18 @@ if(isset($_POST['submit']))
               <h4><b>Dias  de cambio:</b></h4>
               <table>
                 <tr>
-
                   <td> <b>Lunes</b>&nbsp;&nbsp;<input type="checkbox" name="dia[]" id="lunes" class="form-control" value="lunes"></td>
                   <td> <b>Martes</b>&nbsp;&nbsp;<input type="checkbox" name="dia[]" id="martes" class="form-control" value="martes"> </td>
                   <td> <b>Miercoles</b>&nbsp;&nbsp;<input type="checkbox" name="dia[]" id="miercoles" class="form-control" value="miercoles"> </td>
                   <td> <b>Jueves</b>&nbsp;&nbsp;<input type="checkbox" name="dia[]" id="jueves" class="form-control" value="jueves"></td>
                   <td> <b>Viernes</b>&nbsp;&nbsp;<input type="checkbox" name="dia[]" id="viernes" class="form-control" value="viernes"> </td>
-
-
-
                 </tr>
               </table>
-
-
             </table>
             <br><b>Comentarios de solicitud:</b>
             <textarea class="form-control"  id="Comentarios" name="comentarios"  ></textarea>
 
-            <input type="hidden" name="idusuario" id="idusuario"  value="<?php echo $idusuario ?>" />
+    <!--    <input type="hidden" name="idusuario" id="idusuario"  value="<?php echo $idusuario ?>" /> -->
             <input type="hidden" name="nfamilia" id="nfamilia"  value="<?php echo $familia ?>" />
             <input type="hidden" name="talumnos" id="talumnos"  value="<?php echo $talumnos ?>" />
 

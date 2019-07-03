@@ -1,8 +1,12 @@
 function Alta_viaje()
 {
   var fecha = document.getElementById('fecha').value;
-  var idusuario = document.getElementById('idusuario').value;
-  var nfamilia = document.getElementById('nfamilia').value;
+  if(document.querySelector('input[name="idusuario"]:checked')){
+    var idusuario = document.querySelector('input[name="idusuario"]:checked').value;
+  }else{
+    alert("Seleccione un familiar como Solicitante");
+    return false;
+  }  var nfamilia = document.getElementById('nfamilia').value;
   var talumnos = document.getElementById('talumnos').value;
   var calle = document.getElementById('calle').value;
   var colonia = document.getElementById('colonia').value;

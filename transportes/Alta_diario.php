@@ -136,20 +136,16 @@ include ('perfiles_dinamicos.php');
         <input type="submit" value="Aceptar">
       </form>
       <?php
-    }
-    else {
+    }else {
       $familia=$_GET["nfamilia"];
-      $datos = mysqli_query ($conexion, "SELECT id,mama, papa ,calle ,colonia,cp from usuarios where password='$familia'" );
-      if($rows=mysqli_fetch_array($datos))
+      $direccion = mysqli_query($conexion, "SELECT calle,colonia,cp FROM direccion_familias WHERE nfamilia='$familia' limit 1");
+      while ($rows=mysqli_fetch_array($direccion))
       {
-        $mama=$rows['mama'];
-        $papa=$rows['papa'];
         $calle=$rows['calle'];
         $colonia=$rows['colonia'];
         $cp=$rows['cp'];
-        $idusuario=$rows['id'];
-        //$idusuario=40;
       }
+      $datos = mysqli_query ($conexion, "SELECT id,correo from Ventana_user WHERE nfamilia='$familia'" );
       ?>
       <center>
         <form id="diario"  name="diario" class="form-signin save-nivel" method='post'   onsubmit='Alta_diario(); return false'>
@@ -157,30 +153,50 @@ include ('perfiles_dinamicos.php');
           <div class="modal-body">
             <table border="0" WIDTH="800" >
               <tr>
-                <td colspan="1" WIDTH="100%">Fecha de solicitud:
+                <td colspan="3" WIDTH="100%">Fecha de solicitud:
                   <input name="fecha" id="fecha" type="text" class="form-control" placeholder="Fecha"  value="<?php echo $arrayDias[date('w')].", ".date('d')." de ".$arrayMeses[date('m')-1]." de ".date('Y').",".date("H:i:s");?>" readonly="readonly">
                 </td>
-                </tr>
+              </tr>
+              <tr >
+                <td><br> </td>
+              </tr>
               <tr>
-                <td  WIDTH="50%">Solicitante:
-                  <input
-                  name="papa" id="papa" type="radio"
-                  class="form-control" placeholder="Correo"  value="<?php echo $papa ?>" readonly>
-                </td>
-                <td  WIDTH="50%">Solicitante:
-                  <input
-                  name="mama" id="mama" type="radio"
-                  class="form-control" placeholder="Correo"  value="<?php echo $mamas ?>" readonly>
+                <td colspan="1"> Solicitante:</td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    <div class="row">
+                       <div class="col-sm-10">
+                      <?php
+                     while ($rows=mysqli_fetch_array($datos))
+                     {
+                       $idusuario=$rows['id'];
+                       $correo= $rows['correo'];
+                       ?>
+
+                         <div class="form-check">
+                           <input class="form-check-input" type="radio" name="idusuario" id="solicitante<?=$idusuario?>" value="<?=$idusuario?>">
+                           <label class="form-check-label" for="solicitante<?=$idusuario?>">
+                           <?=$correo?>
+                           </label>
+                         </div>
+                       <?php
+                     }
+                     ?>
+                        </div>
+                    </div>
                 </td>
               </tr>
+            </table>
+            <table>
               <tr>
                 <td WIDTH="100%" colspan="3">
                   <h4>Alumnos Solicitantes:</h4><br>
                 </td>
               </tr>
-
             </table>
-
             <table  style="border-style: dotted"  WIDTH="800" >
               <tr>
                 <td style="text-align:center;border-style: groove">Alumno</td>
@@ -278,7 +294,7 @@ include ('perfiles_dinamicos.php');
             </table>
             <br><b>Comentarios de solicitud:</b>
             <textarea class="form-control"  id="Comentarios" name="comentarios"  ></textarea>
-            <input type="hidden" name="idusuario" id="idusuario"  value="<?php echo $idusuario ?>" />
+          <!--  <input type="hidden" name="idusuario" id="idusuario"  value="<?php echo $idusuario ?>" />  -->
             <input type="hidden" name="nfamilia" id="nfamilia"  value="<?php echo $familia ?>" />
             <input type="hidden" name="talumnos" id="talumnos"  value="<?php echo $talumnos ?>" />
           </div>
