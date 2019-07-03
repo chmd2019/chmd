@@ -18,7 +18,7 @@ from
 Ventana_Permisos vp
 LEFT JOIN Ventana_user vs on vp.idusuario=vs.id
 LEFT JOIN usuarios usu on vp.nfamilia=usu.`password`
-where vp.archivado=1 and YEAR(vp.fecha_respuesta)='$year' and MONTH(vp.fecha_respuesta)='$mes' order by vp.id_permiso desc";
+where vp.tipo_permiso='1' and vp.archivado=1 and YEAR(vp.fecha_respuesta)='$year' and MONTH(vp.fecha_respuesta)='$mes'  order by vp.id_permiso desc";
 
 $datos = mysqli_query ($conexion, $sql );
 if (isset ( $_POST ['nombre_nivel'] ))

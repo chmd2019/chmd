@@ -27,7 +27,7 @@ from
 Ventana_Permisos vp
 LEFT JOIN Ventana_user vs on vp.idusuario=vs.id
 LEFT JOIN usuarios usu on vp.nfamilia=usu.`password`
-where  vp.archivado=1 order by vp.id_permiso desc";
+where  vp.archivado=1 and vp.tipo_permiso='2'  order by vp.id_permiso desc";
 
 $datos =mysqli_query ($conexion, $sql );
 if (isset ( $_POST ['nombre_nivel'] )) {
