@@ -99,6 +99,8 @@ echo 'Solicitud Guardada';
       <link rel="shortcut icon" href="img/favicon.png">
       <title>CHMD :: Alta Diario</title>
       <link href="dist/css/bootstrap.css" rel="stylesheet">
+      <link href="css/bootstrap-datetimepicker.css" rel="stylesheet">
+      <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet">
       <link href="css/menu.css" rel="stylesheet">
     </head>
     <body>
@@ -287,9 +289,13 @@ include ('perfiles_dinamicos.php');
                 <tr>
                   <td><br>
                     Fecha del Permiso:
-                    <input class="form-control" id="fecha_permiso" name="fecha_permiso" type="date" min="2018-08-20" max="2019-07-20" required/>
+                    <div class="input-group date datepicker" data-date-format="dd/mm/yyyy">
+                      <input class="form-control" size="15" id="fecha_permiso" name="fecha_permiso" placeholder="dd/mm/aaaa" type="text" disabled required/>
+                      <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                    </div>
                   </td>
                 </tr>
+
               </table>
             </table>
             <br><b>Comentarios de solicitud:</b>
@@ -329,6 +335,40 @@ include ('perfiles_dinamicos.php');
   src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script type="text/javascript" src="dist/js/bootstrap.js"></script>
   <script type="text/javascript" src="js/Alta_diario.js"></script>
+  <script type="text/javascript" src="js/bootstrap-datetmepicker.js" charset="UTF-8"></script>
+  <script type="text/javascript" src="js/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
+
+  <?php
+
+  $i = 0;
+  $lista_fechas;
+  $sql = "SELECT * FROM Calendario_escolar";
+  $fecha_calendario_escolar = mysqli_query($conexion, $sql);
+  if ($fecha_calendario_escolar) {
+      while ($respuesta_calendario_escolar = mysqli_fetch_array($fecha_calendario_escolar)) {
+          $lista_fechas[$i] = $respuesta_calendario_escolar[1];
+          $i++;
+      }
+  }
+  ?>
+  <script type="text/javascript">
+      var calendario_escolar = <?php echo json_encode($lista_fechas) ;?>;
+      $('.datepicker').datetimepicker({
+        language: 'es',
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        startDate: '+3d',
+        daysOfWeekDisabled: [0, 6],
+        datesDisabled: calendario_escolar,
+        forceParse: 0,
+        format: "dd/mm/yyyy"
+      });
+
+  </script>
 </body>
 </html>
 <?php

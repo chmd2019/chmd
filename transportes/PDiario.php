@@ -12,7 +12,7 @@ $datos = mysqli_query ( $conexion,"SELECT vp.id_permiso,vp.fecha_creacion,
 vs.correo,vp.calle_numero,vp.colonia,
 vp.cp,
 vp.comentarios,vp.estatus,vp.nfamilia,
-usu.calle,usu.colonia as colonia1,
+df.calle,df.colonia as colonia1,
 vp.mensaje,usu.familia,
 vp.responsable,
 vp.parentesco,
@@ -27,6 +27,7 @@ usu.telefonomama
 from
 Ventana_Permisos vp
 LEFT JOIN Ventana_user vs on vp.idusuario=vs.id
+LEFT JOIN direccion_familias df on vp.nfamilia= df.nfamilia
 LEFT JOIN usuarios usu on vp.nfamilia=usu.`password`
 where not vp.estatus=3 and vp.archivado=0 and vp.tipo_permiso='1'   order by vp.estatus DESC ,vp.id_permiso" );
 
@@ -78,6 +79,7 @@ if (isset ( $_POST ['nombre_nivel'] ))
   <link rel="shortcut icon" href="img/favicon.png">
   <title>CHMD :: Diario</title>
   <link href="dist/css/bootstrap.css" rel="stylesheet">
+
   <link href="css/menu.css" rel="stylesheet">
 </head>
 <body>
@@ -160,7 +162,7 @@ placeholder="Buscar Solicitud..."><br> <br>
       $fecha_respuesta = $dato['fecha_respuesta'];
 
       $fecha_actual = strtotime(date("d-m-Y H:i:00",time()));
-      $fecha_entrada = strtotime($fecha_cambio);
+      $fecha_entrada = strtotime ($fecha_cambio);
 
       if($fecha_actual > $fecha_entrada){
             $otro_dia=false;
@@ -168,8 +170,7 @@ placeholder="Buscar Solicitud..."><br> <br>
             $otro_dia=true;
       }
 
-
-      $telefonomama=$dato['telefonomama'];
+    //  $telefonomama=$dato['telefonomama'];
 /*
       if($fecha_inicial==0)
       {
@@ -261,6 +262,8 @@ placeholder="Buscar Solicitud..."><br> <br>
   <script type="text/javascript" src="dist/js/bootstrap.js"></script>
   <script type="text/javascript" src="js/PDiario.js"></script>
   <script type="text/javascript" src="js/1min_inactivo.js" ></script>
+
+
 </body>
 </html>
 <!-- Modal -->

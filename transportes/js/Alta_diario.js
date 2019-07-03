@@ -14,7 +14,10 @@ var calle = document.getElementById('calle').value;
 var colonia = document.getElementById('colonia').value;
 var cp = document.getElementById('cp').value;
 var fecha_permiso = document.getElementById('fecha_permiso').value;
-
+if (fecha_permiso==''){
+  alert('Seleccione la fecha del permiso.');
+  return false;
+}
  //validacion de alumnos
 var suma = 0;
 var los_cboxes = document.getElementsByName('alumno[]');
@@ -115,3 +118,18 @@ function Cancelar()
 {
      window.location.replace("../transportes/PDiario.php");
 }
+
+//  var calendario_escolar = <?php //echo json_encode($lista_fechas) ;?>;
+$('#fecha_permiso').datepicker({
+     language: 'es',
+    // weekStart: 1,
+    //  todayBtn: 1,
+    //  autoclose: 1,
+    //  todayHighlight: 1,
+    //  startView: 2,
+  //    minView: 2,
+  //    startDate: '+3d',
+      daysOfWeekDisabled: '0, 6'
+    ///  datesDisabled: calendario_escolar,
+  //    forceParse: 0
+  });

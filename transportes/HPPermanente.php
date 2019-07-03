@@ -11,7 +11,7 @@ ob_start ();
 $existe = '';
 $sql="select vp.id_permiso,vp.fecha_creacion,vs.correo,vp.calle_numero,vp.colonia,
 vp.cp,vp.ruta,vp.comentarios,vp.estatus,vp.nfamilia,
-usu.calle,usu.colonia as colonia1,
+df.calle,df.colonia as colonia1,
 vp.mensaje,usu.familia,
 vp.lunes,
 vp.martes,
@@ -21,6 +21,7 @@ vp.viernes,usu.telefonomama
 from
 Ventana_Permisos vp
 LEFT JOIN Ventana_user vs on vp.idusuario=vs.id
+LEFT JOIN direccion_familias df on vp.nfamilia= df.nfamilia
 LEFT JOIN usuarios usu on vp.nfamilia=usu.`password`
 where   vp.archivado=1 and vp.tipo_permiso='3'  order by vp.id_permiso desc";
 $datos =mysqli_query ($conexion, $sql );
@@ -124,7 +125,7 @@ if (isset ( $_POST ['nombre_nivel'] )) {
               $estatus= $dato['estatus'];
               $calle_numero=$dato['calle_numero'];
               $colonia=$dato['colonia'];
-              $cp=$dato['telefonomama'];
+              $cp=$dato['cp'];
               $ruta=$dato['ruta'];
               $comentarios=$dato['comentarios'];
 
@@ -321,10 +322,10 @@ if (isset ( $_POST ['nombre_nivel'] )) {
                     class="form-control" placeholder="Calle_numero"  style="width : 500px; heigth : 4px" readonly>
                   </td>
                   <td>
-                    Telefono:
+                    CP:
                     <input
                     name="cp" id="cp" type="text"
-                    class="form-control" placeholder="Agrega cp" readonly>
+                    class="form-control" placeholder="Sin  cp" readonly>
                   </td>
 
                 </tr>

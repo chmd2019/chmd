@@ -12,7 +12,7 @@ $datos = mysqli_query ( $conexion,"SELECT vp.id_permiso,vp.fecha_creacion,
   vs.correo,vp.calle_numero,vp.colonia,
   vp.cp,
   vp.comentarios,vp.estatus,vp.nfamilia,
-  usu.calle,usu.colonia as colonia1,
+  df.calle,df.colonia as colonia1,
   vp.mensaje,usu.familia,
   vp.responsable,
   vp.parentesco,
@@ -28,6 +28,7 @@ $datos = mysqli_query ( $conexion,"SELECT vp.id_permiso,vp.fecha_creacion,
   from
   Ventana_Permisos vp
   LEFT JOIN Ventana_user vs on vp.idusuario=vs.id
+  LEFT JOIN direccion_familias df on vp.nfamilia= df.nfamilia
   LEFT JOIN usuarios usu on vp.nfamilia=usu.`password`
   where not vp.estatus=3 and vp.archivado=0 and vp.tipo_permiso='2'    order by vp.estatus DESC ,vp.id_permiso" );
 
@@ -129,7 +130,7 @@ placeholder="Buscar Solicitud..."><br> <br>
       $estatus= $dato['estatus'];
       $calle_numero=$dato['calle_numero'];
       $colonia=$dato['colonia'];
-      $cp=$dato['telefonomama'];
+      $cp=$dato['cp'];
 
       $responsable=$dato['responsable'];
       $parentesco=$dato['parentesco'];
@@ -354,40 +355,40 @@ aria-labelledby="myModalLabel" aria-hidden="true">
               class="form-control" placeholder="Añadir Fecha Final" readonly>
             </td>
           </tr>
-
-
+        </table>
+        <table border="0" WIDTH="700">
           <tr>
-            <td colspan="3">
+            <td colspan="2">
               Calle:
               <input
               name="calle_numero" id="calle_numero" type="text"
-              class="form-control" placeholder="Calle_numero"   readonly>
+              class="form-control" placeholder="Calle_numero"  style="width : 500px; heigth : 4px" readonly>
+            </td>
+            <td>
+              CP:
+              <input
+              name="cp" id="cp" type="text"
+              class="form-control" placeholder="Sin CP" readonly>
             </td>
 
           </tr>
+        </table>
+        <table border="0" WIDTH="700">
           <tr>
-
             <td colspan="2">Colonia:
               <input
               name="colonia" id="colonia" type="text"
               class="form-control" placeholder="Colonia" readonly>
             </td>
-            <td>
-              Telefono mama:
-              <input
-              name="cp" id="cp" type="text"
-              class="form-control" placeholder="Agrega cp" readonly>
-            </td>
-
-          </tr>
-          <tr>
-            <td colspan="3">Ruta
+            <td>Ruta:
               <input
               name="ruta" id="ruta" type="text"
-              class="form-control" placeholder="ruta" readonly>
+              class="form-control" placeholder="Agrega Ruta" readonly>
             </td>
           </tr>
+        </table>
 
+        <table border="0" WIDTH="700">
           <tr>
             <td WIDTH="100%" colspan="3">
               <h4>Datos responsable:</h4>

@@ -19,13 +19,21 @@ function Alta_viaje()
   var fechaini = document.getElementById('fechaini').value;
   var fechater = document.getElementById('fechater').value;
 
+  if (fechaini==''){
+    alert('Seleccione la fecha Inicial del permiso.');
+    return false;
+  }
+  if (fechater==''){
+    alert('Seleccione la Fecha Final del permiso.');
+    return false;
+  }
+  //fecha final > fecha inicial
   var fechai = new Date (fechaini);
   var fechaf = new Date (fechater);
-//fecha final > fecha Inicial
-if (fechaf.getTime() < fechai.getTime()){
-  alert('La Fecha Final debe ser mayor a la Fecha Inicial. ');
-  return false;
-}
+  if (fechaf.getTime() <= fechai.getTime()){
+    alert('La Fecha Final debe ser mayor a la Fecha Inicial. ');
+    return false;
+  }
 
   //validacion de alumnos
  var suma = 0;

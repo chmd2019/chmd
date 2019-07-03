@@ -13,7 +13,7 @@ $sql= "select vp.id_permiso,vp.fecha_creacion,
 vs.correo,vp.calle_numero,vp.colonia,
 vp.cp,
 vp.comentarios,vp.estatus,vp.nfamilia,
-usu.calle,usu.colonia as colonia1,
+df.calle,df.colonia as colonia1,
 vp.mensaje,usu.familia,
 vp.responsable,
 vp.parentesco,
@@ -26,6 +26,7 @@ usu.telefonomama
 from
 Ventana_Permisos vp
 LEFT JOIN Ventana_user vs on vp.idusuario=vs.id
+LEFT JOIN direccion_familias df on vp.nfamilia= df.nfamilia
 LEFT JOIN usuarios usu on vp.nfamilia=usu.`password`
 where  vp.archivado=1 and vp.tipo_permiso='2'  order by vp.id_permiso desc";
 
@@ -124,7 +125,7 @@ placeholder="Buscar Solicitud..."><br> <br>
       $estatus= $dato['estatus'];
       $calle_numero=$dato['calle_numero'];
       $colonia=$dato['colonia'];
-      $cp=$dato['telefonomama'];
+      $cp=$dato['cp'];
       $responsable=$dato['responsable'];
       $parentesco=$dato['parentesco'];
       $celular=$dato['celular'];
@@ -318,10 +319,10 @@ aria-labelledby="myModalLabel" aria-hidden="true">
               class="form-control" placeholder="Colonia" readonly>
             </td>
             <td>
-              Telefono mama:
+              CP:
               <input
               name="cp" id="cp" type="text"
-              class="form-control" placeholder="Agrega cp" readonly>
+              class="form-control" placeholder="Sin cp" readonly>
             </td>
 
           </tr>

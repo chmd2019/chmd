@@ -12,11 +12,12 @@ ob_start ();
 $existe = '';
 $sql ="SELECT vp.id_permiso, vp.fecha_creacion, vs.correo,vp.calle_numero,vp.colonia,
 vp.cp,vp.ruta,vp.comentarios,vp.estatus,vp.nfamilia,
-usu.calle,usu.colonia as colonia1,
+df.calle,df.colonia as colonia1,
 vp.mensaje,usu.familia,vp.fecha_cambio,vp.fecha_respuesta,usu.telefonomama
 from
 Ventana_Permisos vp
 LEFT JOIN Ventana_user vs on vp.idusuario=vs.id
+LEFT JOIN direccion_familias df on vp.nfamilia= df.nfamilia
 LEFT JOIN usuarios usu on vp.nfamilia=usu.`password`
 where vp.tipo_permiso='1' and vp.archivado=1 and YEAR(vp.fecha_respuesta)='$year' and MONTH(vp.fecha_respuesta)='$mes'  order by vp.id_permiso desc";
 
@@ -113,7 +114,7 @@ placeholder="Buscar Solicitud..."><br> <br>
       $estatus= $dato['estatus'];
       $calle_numero=$dato['calle_numero'];
       $colonia=$dato['colonia'];
-      $cp=$dato['telefonomama'];
+      $cp=$dato['cp'];
       $ruta=$dato['ruta'];
       $comentarios=$dato['comentarios'];
 
@@ -319,10 +320,10 @@ aria-labelledby="myModalLabel" aria-hidden="true">
               class="form-control" placeholder="Calle_numero"  style="width : 500px; heigth : 4px" readonly>
             </td>
             <td>
-              telefono:
+              CP:
               <input
               name="cp" id="cp" type="text"
-              class="form-control" placeholder="Agrega cp" readonly>
+              class="form-control" placeholder="Sin cp" readonly>
             </td>
 
           </tr>
