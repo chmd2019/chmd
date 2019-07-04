@@ -1,212 +1,224 @@
 <?php
-$Idpermiso = $_GET['id'];
-$familia = $_GET['familia'];
-include '../../components/layout_top.php';
-include '../../components/navbar.php';
-?>
-<div class="row">
-    <div class="col s12 l8 border-azul b-blanco" style="float: none;margin: 0 auto;padding:1rem">
-        <div id="loading" hidden>
-            <div class="progress light-blue lighten-3">
-                <div class="indeterminate white"></div>
-            </div>
-        </div>
-        <div>
-            <h4 class="c-azul center-align">Consulta de permiso</h4>
-            <br>
-            <div class="row"> 
-                <div class="col s12 l6">
-                    <label for="fecha_solicitud_consulta_<?php echo "$Idpermiso"; ?>" style="margin-left: 1rem">Fecha de solicitud</label>
-                    <div class="input-field">
-                        <i class="material-icons prefix c-azul">calendar_today</i>
-                        <input readonly  id="fecha_solicitud_consulta_<?php echo "$Idpermiso"; ?>" style="font-size: 1rem" type="text" >               
-                    </div>
-                </div>
-                <div class="col s12 l6">
-                    <label for="correo_consulta_<?php echo "$Idpermiso"; ?>" style="margin-left: 1rem">Solicitante</label>
-                    <div class="input-field">
-                        <i class="material-icons prefix c-azul">person</i>
-                        <input readonly  id="correo_consulta_<?php echo "$Idpermiso"; ?>" type="text"  style="font-size: 1rem"  >               
-                    </div>
-                </div>
-                <div>
-                    <label for="fecha_permiso_consulta_<?php echo "$Idpermiso"; ?>" style="margin-left: 1rem">Fecha del permiso</label>
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix c-azul">calendar_today</i>
-                        <input readonly  id="fecha_permiso_consulta_<?php echo "$Idpermiso"; ?>" type="text" style="font-size: 1rem"  >               
-                    </div>
-                </div>
-                <div>
-                    <h4 class="c-azul text-center">Dirección guardada</h4>
-                    <label for="calle_consulta_<?php echo "$Idpermiso"; ?>" style="margin-left: 1rem">Calle y número</label>
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix c-azul">person_pin</i>
-                        <textarea readonly  id="calle_consulta_<?php echo "$Idpermiso"; ?>" class="materialize-textarea" style="font-size: .9rem">   </textarea>            
-                    </div>
-                    <br>
-                    <label for="colonia_consulta_<?php echo "$Idpermiso"; ?>" style="margin-left: 1rem">Colonia</label>
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix c-azul">person_pin</i>
-                        <textarea readonly  id="colonia_consulta_<?php echo "$Idpermiso"; ?>" class="materialize-textarea" style="font-size: .9rem">   </textarea>            
-                    </div>
-                    <br>
-                    <div>
-                        <label for="cp_consulta_<?php echo "$Idpermiso"; ?>" style="margin-left: 1rem">CP</label>
-                        <div class="input-field col s12">
-                            <i class="material-icons prefix c-azul">person_pin</i>
-                            <input readonly  id="cp_consulta_<?php echo "$Idpermiso"; ?>" type="text" style="font-size: 1rem"  >               
+$root_icloud = $_SERVER['DOCUMENT_ROOT'] . "/pruebascd/icloud";
+
+include_once "$root_icloud/Transportes/components/layout_top.php";
+include_once "$root_icloud/Transportes/components/navbar.php";
+
+session_start();
+require_once "$root_icloud/libraries/Google/autoload.php";
+require_once "$root_icloud/Model/Login.php";
+require_once "$root_icloud/Model/DBManager.php";
+require_once "$root_icloud/Model/Config.php";
+require_once "$root_icloud/Helpers/DateHelper.php";
+
+$id_permiso = $_GET['id'];
+$tipo_permiso = $_GET['tipo_permiso'];
+$idseccion = $_GET['idseccion'];
+if (isset($_GET['logout'])) {
+    unset($_SESSION['access_token']);
+}
+
+$service = new Google_Service_Oauth2($client);
+
+if (isset($_GET['code'])) {
+    $client->authenticate($_GET['code']);
+    $_SESSION['access_token'] = $client->getAccessToken();
+    header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
+    exit;
+}
+
+if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
+    $client->setAccessToken($_SESSION['access_token']);
+} else {
+    $authUrl = $client->createAuthUrl();
+}
+if (isset($authUrl)) {
+    ?>
+    <div class="caja-login" align="center">
+        <h5 class="c-azul">Mi Maguen</h5>
+        <?php echo '<a href="' . $authUrl . '"><img class = "logo-login" src="../../../images/google.png"/></a>'; ?>
+    </div>
+    <?php
+} else {
+    ?>
+    <div class="row">
+        <div class="col s12 l8 border-azul b-blanco" style="float: none;margin: 0 auto;padding:1rem">
+            <div>
+                <h5 class="c-azul center-align">Consulta de permiso</h5>
+                <br>
+                <div class="row"> 
+                    <div class="col s12 l6">
+                        <label for="fecha_solicitud" style="margin-left: 1rem">Fecha de solicitud</label>
+                        <div class="input-field">
+                            <i class="material-icons prefix c-azul">calendar_today</i>
+                            <input readonly  id="fecha_solicitud" style="font-size: 1rem" type="text" >               
                         </div>
                     </div>
-                </div>
-                <div>
-                    <h4 class="c-azul text-center">Alumnos</h4>
-                    <div style="padding:.9rem">
-                        <span>
-                            <div>
-                                <input type="text" class="input-field" 
-                                       id="alumnos_consulta_1_<?php echo "$Idpermiso"; ?>" readonly hidden  style="font-size: 1rem" />
-                                <br>
-                            </div>
-                            <div> 
-                                <input type="text" class="input-field" 
-                                       id="alumnos_consulta_2_<?php echo "$Idpermiso"; ?>" readonly hidden  style="font-size: 1rem" />
-                                <br>
-                            </div>
-                            <div>
-                                <input type="text" class="input-field" 
-                                       id="alumnos_consulta_3_<?php echo "$Idpermiso"; ?>" readonly hidden style="font-size: 1rem"  />
-                                <br>
-                            </div>
-                            <div>
-                                <input type="text" class="input-field" 
-                                       id="alumnos_consulta_4_<?php echo "$Idpermiso"; ?>" readonly hidden  style="font-size: 1rem" />
-                                <br>
-                            </div>
-                            <div>
-                                <input type="text" class="input-field" 
-                                       id="alumnos_consulta_5_<?php echo "$Idpermiso"; ?>" readonly hidden  style="font-size: 1rem" />
-                                <br>
-                            </div>
-                        </span>
-                    </div>
-                </div>
-                <div>
-                    <h4 class="c-azul text-center">Dirección de permiso</h4>
-                    <label for="ncalle_consulta_<?php echo "$Idpermiso"; ?>" style="margin-left: 1rem">Calle y número</label>
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix c-azul">person_pin</i>
-                        <textarea readonly  id="ncalle_consulta_<?php echo "$Idpermiso"; ?>" class="materialize-textarea" style="font-size: .9rem">   </textarea>            
-                    </div>
-                    <br>
-                    <label for="ncolonia_consulta_<?php echo "$Idpermiso"; ?>" style="margin-left: 1rem">Colonia</label>
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix c-azul">person_pin</i>
-                        <textarea readonly  id="ncolonia_consulta_<?php echo "$Idpermiso"; ?>" class="materialize-textarea" style="font-size: .9rem">   </textarea>            
-                    </div>
-                    <br>
-                    <div>
-                        <label for="ncp_consulta_<?php echo "$Idpermiso"; ?>" style="margin-left: 1rem">CP</label>
-                        <div class="input-field col s12">
-                            <i class="material-icons prefix c-azul">person_pin</i>
-                            <input readonly  id="ncp_consulta_<?php echo "$Idpermiso"; ?>" type="text" >               
+                    <div class="col s12 l6">
+                        <label for="fecha_permiso" style="margin-left: 1rem">Fecha programada</label>
+                        <div class="input-field">
+                            <i class="material-icons prefix c-azul">calendar_today</i>
+                            <input readonly  id="fecha_permiso" type="text" style="font-size: 1rem"  >               
                         </div>
                     </div>
-                </div>
-                <div>
-                    <label for="comentarios_consulta_<?php echo "$Idpermiso"; ?>" style="margin-left: 1rem">Comentarios</label>
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix c-azul">comment</i>
-                        <textarea readonly  id="comentarios_consulta_<?php echo "$Idpermiso"; ?>" class="materialize-textarea" style="font-size: .9rem">   </textarea>            
+                    <div class="col s12 l6">
+                        <label for="responsable" style="margin-left: 1rem">Solicitante</label>
+                        <div class="input-field">
+                            <i class="material-icons prefix c-azul">person</i>
+                            <input readonly  id="responsable" type="text"  style="font-size: 1rem"  >               
+                        </div>
                     </div>
-                </div>
-                <div >
-                    <label for="ruta_consulta_<?php echo "$Idpermiso"; ?>" style="margin-left: 1rem">Ruta</label>
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix c-azul">hourglass_full</i>
-                        <input readonly  id="ruta_consulta_<?php echo "$Idpermiso"; ?>" type="text" >               
+                    <br>
+                    <h5 class="c-azul text-center col s12">Alumnos</h5>
+                    <div class="col s12">
+                        <label for="alumnos" style="margin-left: 1rem">Alumnos del permiso</label>
+                        <div class="input-field">
+                            <i class="material-icons prefix c-azul">school</i>
+                            <textarea class="materialize-textarea"
+                                      readonly  
+                                      id="alumnos" 
+                                      style="font-size: .9rem"></textarea> 
+                        </div>
                     </div>
-                </div>
-                <div>
-                    <label for="respuesta_consulta_<?php echo "$Idpermiso"; ?>" style="margin-left: 1rem">Respuesta</label>
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix c-azul">comment</i>
-                        <textarea readonly  id="respuesta_consulta_<?php echo "$Idpermiso"; ?>" class="materialize-textarea" style="font-size: .9rem">   </textarea>            
+                    <h5 class="c-azul text-center col s12">Dirección de cambio</h5>
+                    <div class="col s12">                        
+                        <label for="calle" style="margin-left: 1rem">Calle y número</label>
+                        <div class="input-field">
+                            <i class="material-icons prefix c-azul">person_pin</i>
+                            <textarea readonly  
+                                      id="calle" 
+                                      class="materialize-textarea" 
+                                      style="font-size: .9rem"></textarea>            
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col s12">                        
+                        <label for="colonia" style="margin-left: 1rem">Colonia</label>
+                        <div class="input-field">
+                            <i class="material-icons prefix c-azul">person_pin</i>
+                            <textarea readonly  
+                                      id="colonia" 
+                                      class="materialize-textarea" 
+                                      style="font-size: .9rem"></textarea>            
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col s12 l6">   
+                        <label for="cp" style="margin-left: 1rem">CP</label>
+                        <div class="input-field">
+                            <i class="material-icons prefix c-azul">person_pin</i>
+                            <input readonly  id="cp" type="text" style="font-size: 1rem"  >               
+                        </div>
+                    </div>
+                    <div class="col s12 l6">   
+                        <label for="ruta" style="margin-left: 1rem">Ruta</label>
+                        <div class="input-field">
+                            <i class="material-icons prefix c-azul">departure_board</i>
+                            <input readonly  id="ruta" type="text" >               
+                        </div>
+                    </div>
+                    <div class="col s12">   
+                        <label for="comentarios" style="margin-left: 1rem">Comentarios</label>
+                        <div class="input-field">
+                            <i class="material-icons prefix c-azul">comment</i>
+                            <textarea readonly  
+                                      id="comentarios" 
+                                      class="materialize-textarea" 
+                                      style="font-size: .9rem"></textarea>            
+                        </div>
+                    </div>
+                    <div class="col s12">   
+                        <label for="respuesta" style="margin-left: 1rem">Respuesta</label>
+                        <div class="input-field">
+                            <i class="material-icons prefix c-azul">question_answer</i>
+                            <textarea readonly  
+                                      id="respuesta" 
+                                      class="materialize-textarea" 
+                                      style="font-size: .9rem"></textarea>            
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+    <?php
+}
+?>
+
 <div class="fixed-action-btn">
-    <a class="btn-floating btn-large b-azul" href="javascript:history.back(0)">
+    <a class="btn-floating btn-large b-azul" href="https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Diario/PDiario.php?idseccion=<?php echo $idseccion; ?>">
         <i class="large material-icons">keyboard_backspace</i>
     </a>
+</div>
+
+<div class="loading" hidden id="loading">
+    <div class="preloader-wrapper big active">
+        <div class="spinner-layer spinner-blue-only">
+            <div class="circle-clipper left">
+                <div class="circle"></div>
+            </div><div class="gap-patch">
+                <div class="circle"></div>
+            </div><div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+        </div>
+    </div>
 </div>
 <script>
     $(document).ready(function () {
         $('.fixed-action-btn').floatingActionButton({
             hoverEnabled: false
         });
-        var id = '<?php echo "$Idpermiso"; ?>';
-        var familia = '<?php echo "$familia"; ?>';
-        var data = {id: id, familia: familia};
+
+        var fecha_solicitud = $("#fecha_solicitud");
+        var fecha_cambio = $("#fecha_permiso");
+        var responsable = $("#responsable");
+        var alumnos = $("#alumnos");
+        var calle = $("#calle");
+        var colonia = $("#colonia");
+        var cp = $("#cp");
+        var ruta = $("#ruta");
+        var comentarios = $("#comentarios");
+        var respuesta = $("#respuesta");
+
         $.ajax({
-            url: "https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Diario/posts_gets/get_consultar_diario.php",
-            type: "GET",
-            data: data,
+            url: 'https://www.chmd.edu.mx/pruebascd/icloud/Transportes/common/get_consulta_permiso.php',
+            type: 'GET',
+            data: {
+                id: '<?php echo $id_permiso; ?>',
+                tipo_permiso: '<?php echo $tipo_permiso; ?>'
+            },
             beforeSend: function () {
-                $("#loading").show();
+                $("#loading").fadeIn("slow");
             },
             success: function (res) {
                 res = JSON.parse(res);
-                $("#fecha_solicitud_consulta_" + id).val(res.fecha_solicitud);
-                $("#correo_consulta_" + id).val(res.correo);
-                $("#fecha_permiso_consulta_" + id).val(res.fecha_permiso);
-                $("#calle_consulta_" + id).val(res.calle);
-                $("#colonia_consulta_" + id).val(res.colonia);
-                $("#cp_consulta_" + id).val(res.cp);
-                $("#ncalle_consulta_" + id).val(res.ncalle);
-                $("#ncolonia_consulta_" + id).val(res.ncolonia);
-                $("#ncp_consulta_" + id).val(res.ncp);
-                $("#comentarios_consulta_" + id).val(res.comentarios);
-                $("#ruta_consulta_" + id).val(res.ruta);
-                $("#respuesta_consulta_" + id).val(res.mensaje);
-                //autoresize del textarea
-
-                M.textareaAutoResize($('#calle_consulta_' + id));
-                M.textareaAutoResize($('#colonia_consulta_' + id));
-                M.textareaAutoResize($('#ncalle_consulta_' + id));
-                M.textareaAutoResize($('#ncolonia_consulta_' + id));
-                M.textareaAutoResize($('#calle_consulta_' + id));
-                M.textareaAutoResize($('#comentarios_consulta_' + id));
-                M.textareaAutoResize($('#respuesta_consulta_' + id));
-
-                if (res.alumnos.alumno1 != null) {
-                    $("#alumnos_consulta_1_" + id).show();
-                    $("#alumnos_consulta_1_" + id).val(res.alumnos.alumno1);
+                console.log(res);
+                fecha_solicitud.val(res.fecha_solicitud);
+                fecha_cambio.val(res.fecha_cambio);
+                responsable.val(res.responsable);
+                var alumnos_res = "";
+                for (var item in res.alumnos) {
+                    alumnos_res += `${parseInt(item) + 1} - ${res.alumnos[item].alumno}\n`;
                 }
-                if (res.alumnos.alumno2 != null) {
-                    $("#alumnos_consulta_2_" + id).show();
-                    $("#alumnos_consulta_2_" + id).val(res.alumnos.alumno2);
-                }
-                if (res.alumnos.alumno3 != null) {
-                    $("#alumnos_consulta_3_" + id).show();
-                    $("#alumnos_consulta_3_" + id).val(res.alumnos.alumno3);
-                }
-                if (res.alumnos.alumno4 != null) {
-                    $("#alumnos_consulta_4_" + id).show();
-                    $("#alumnos_consulta_4_" + id).val(res.alumnos.alumno4);
-                }
-                if (res.alumnos.alumno5 != null) {
-                    $("#alumnos_consulta_5_" + id).show();
-                    $("#alumnos_consulta_5_" + id).val(res.alumnos.alumno5);
-                }
-            },
-            complete: function () {
-                $("#loading").hide();
+                alumnos.val(alumnos_res);
+                M.textareaAutoResize($('#alumnos'));
+                calle.val(res.calle);
+                M.textareaAutoResize($('#calle'));
+                colonia.val(res.colonia);
+                M.textareaAutoResize($('#colonia'));
+                cp.val(res.cp);
+                ruta.val(res.ruta);
+                comentarios.val(res.comentarios);
+                M.textareaAutoResize($('#comentarios'));
+                respuesta.val(res.mensaje);
+                M.textareaAutoResize($('#respuesta'));
             }
+        }).always(function () {
+            setInterval(function () {
+                $("#loading").fadeOut("slow");
+            }, 1000);
         });
+
     });
 </script>
-
-<?php include '../../components/layout_bottom.php'; ?>

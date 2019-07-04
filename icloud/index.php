@@ -2,17 +2,25 @@
 include './components/layout_top.php';
 include './components/sesion.php';
 include './components/navbar.php';
-
+?>
+<h4 class="b-azul c-blanco text-center" style="padding:1rem;margin-top:0px">
+    Mi Maguen 
+    <?php
+    echo $anio_actual;
+    echo '<a href="' . $redirect_uri . '?logout=1" class="waves-effect waves-light btn red right">'
+    . "<i class='material-icons left'>lock</i>&nbsp;Salir</a>";
+    ?>
+</h4>
+<?php
 if (isset($authUrl)) {
     //show login url
     ?>    
     <div class="main">
         <div class="caja-login" align="center">
-            <h2 class="alert alert-light text-center c-azul border-radius-none" role="alert">
+            <h2 class="text-center c-azul border-radius-none" role="alert">
                 Mi Maguen <br>
-                <?php echo '<a  href="' . $authUrl . '"><img src="images/google.png" alt="login" height="187px" width="200px"></a>' ?>
+    <?php echo '<a  href="' . $authUrl . '"><img src="images/google.png" alt="login" height="187px" width="200px"></a>' ?>
             </h2>
-
             <br>
         </div>
         <?php
@@ -33,180 +41,260 @@ if (isset($authUrl)) {
                 if ($perfil == 3) {
                     ?>
                     <!--MENU PERFIL3-->
-                    <div class="row"><br><br>
-                        <div class="col-sm-12 col-md-9 b-blanco" style="margin:auto;">
-                            <?php
-                            echo '<h2 class="alert alert-light text-center b-azul c-blanco border-azul border-radius-none" role="alert">Mi Maguen ' . $anio_actual . '</h2>';
-                            echo '<a href="' . $redirect_uri . '?logout=1" class="btn btn-pill b-azul white-text mr-3 right">'
-                            . "<i class='fas fa-sign-out-alt'></i>&nbsp;Salir</a><div style='clear:both'></div>";
-                            ?>
-                            <br>
-
-                            <div class='row' style='width:100%;margin:auto;'>
-                                <div class='col-sm-12 col-md-3 mb-3'>
-                                    <div class="view p-3 text-center">
-                                        <img src="pics/activos/transportes.png" class="img-fluid p-3 m-auto">
-                                        <a href='menu.php?idseccion=1'>
-                                            <div class="mask rgba-white-slight"></div>
-                                        </a>
-                                        <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
-                                                data-content="Solicitudes de cambio Permanente, Temporal, Del día." >Info</button>
+                    <div class="row">
+                        <div class="container b-blanco">
+                            <div class="row">
+                                <div class="row">
+                                    <div class="col s12 m6 l4">
+                                        <div class="card" style="box-shadow: none"> 
+                                            <div class="card-image waves-effect waves-block waves-light">     
+                                                <a href='menu.php?idseccion=1'>
+                                                    <img src="pics/activos/transportes.png" style="padding:3rem;">  
+                                                </a>
+                                            </div>
+                                            <div class="card-content text-center" style="padding:0px;margin-top: -15px">
+                                                <span class="activator waves-effect waves-light btn b-azul c-blanco">
+                                                    INFO
+                                                </span>      
+                                            </div>
+                                            <div class="card-reveal">
+                                                <span class="card-title grey-text text-darken-4">Información adicional<i class="material-icons right">close</i></span>
+                                                <p>Solicitudes de cambio Permanente, Temporal, Del día.</p>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-
-                                <div class='col-sm-12 col-md-3 mb-3'>
-                                    <div class="view p-3 text-center">
-                                        <img src="pics/activos/schoolcloud.png" class="img-fluid p-3 m-auto">
-                                        <a href='https://users.schoolcloud.net/campus/chmd'>
-                                            <div class="mask rgba-white-slight"></div>
-                                        </a>
-                                        <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
-                                                data-content="Consulta de evaluación." >Info</button>
+                                    <div class="col s12 m6 l4">
+                                        <div class="card" style="box-shadow: none">
+                                            <div class="card-image waves-effect waves-block waves-light">        
+                                                <a href='https://users.schoolcloud.net/campus/chmd'>
+                                                    <img src="pics/activos/schoolcloud.png" style="padding:3rem;">  
+                                                </a>
+                                            </div>
+                                            <div class="card-content text-center" style="padding:0px;margin-top: -15px">
+                                                <span class="activator waves-effect waves-light btn b-azul c-blanco">
+                                                    INFO
+                                                </span>      
+                                            </div>
+                                            <div class="card-reveal">
+                                                <span class="card-title grey-text text-darken-4">Información adicional<i class="material-icons right">close</i></span>
+                                                <p>Consulta de evaluación.</p>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-
-                                <div class='col-sm-12 col-md-3 mb-3'>
-                                    <div class="view p-3 text-center">
-                                        <img src="pics/activos/uniformes.png" class="img-fluid p-3 m-auto">
-                                        <a href='Uniformes/menu.php'>
-                                            <div class="mask rgba-white-slight"></div>
-                                        </a>
-                                        <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
-                                                data-content="Pedidos de paquete de uniformes incluido en la canasta básica y de uniformes adicionales." >Info</button>
+                                    <div class="col s12 m6 l4">
+                                        <div class="card" style="box-shadow: none">
+                                            <div class="card-image waves-effect waves-block waves-light">
+                                                <a href='Uniformes/menu.php'>
+                                                    <img src="pics/activos/uniformes.png" style="padding:3rem;">
+                                                </a>
+                                            </div>
+                                            <div class="card-content text-center" style="padding:0px;margin-top: -15px">
+                                                <span class="activator waves-effect waves-light btn b-azul c-blanco">
+                                                    INFO
+                                                </span>      
+                                            </div>
+                                            <div class="card-reveal">
+                                                <span class="card-title grey-text text-darken-4">Información adicional<i class="material-icons right">close</i></span>
+                                                <p>Pedidos de paquete de uniformes incluido en la canasta básica y de uniformes adicionales.</p>
+                                            </div>
+                                        </div>
+                                    </div>                                        
+                                    <div class="col s12 m6 l4">
+                                        <div class="card" style="box-shadow: none">
+                                            <div class="card-image waves-effect waves-block waves-light">
+                                                <a href='https://chmd.edu.mx/galeria/' class="mb-3">
+                                                    <img src="pics/activos/galeria.png" style="padding:3rem;">
+                                                </a>
+                                            </div>
+                                            <div class="card-content text-center" style="padding:0px;margin-top: -15px">
+                                                <span class="activator waves-effect waves-light btn b-azul c-blanco">
+                                                    INFO
+                                                </span>      
+                                            </div>
+                                            <div class="card-reveal">
+                                                <span class="card-title grey-text text-darken-4">Información adicional<i class="material-icons right">close</i></span>
+                                                <p>Podrás ver las imágenes de eventos del colegio.</p>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div> 
-                                <div class='col-sm-12 col-md-3 mb-3'>
-                                    <div class="view p-3 text-center">
-                                        <img src="pics/activos/galeria.png" class="img-fluid p-3 m-auto">
-                                        <a href='https://chmd.edu.mx/galeria/'>
-                                            <div class="mask rgba-white-slight"></div>
-                                        </a>
-                                        <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
-                                                data-content="Podrás ver las imágenes de eventos del colegio." >Info</button>
-                                    </div>  
-                                </div>
-                                <div class='col-sm-12 col-md-3 mb-3'>
-                                    <div class="view p-3 text-center">
-                                        <img src="pics/activos/permisos.png" class="img-fluid p-3 m-auto">
-                                        <a href='https://chmd.edu.mx/galeria/'>
-                                            <div class="mask rgba-white-slight"></div>
-                                        </a>
-                                        <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
-                                                data-content="Generar permisos extraordinarios, Cumpleaños, bar mitzvah." >Info</button>
+                                    <div class="col s12 m6 l4">
+                                        <div class="card" style="box-shadow: none">
+                                            <div class="card-image waves-effect waves-block waves-light">
+                                                <a href='https://chmd.edu.mx/galeria/'>
+                                                    <img src="pics/activos/permisos.png" style="padding:3rem;">
+                                                </a>
+                                            </div>
+                                            <div class="card-content text-center" style="padding:0px;margin-top: -15px">
+                                                <span class="activator waves-effect waves-light btn b-azul c-blanco">
+                                                    INFO
+                                                </span>      
+                                            </div>
+                                            <div class="card-reveal">
+                                                <span class="card-title grey-text text-darken-4">Información adicional<i class="material-icons right">close</i></span>
+                                                <p>Generar permisos extraordinarios, Cumpleaños, bar mitzvah.</p>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-
-                                <div class='col-sm-12 col-md-3 mb-3'>
-                                    <div class="view p-3 text-center">
-                                        <img src="pics/activos/choferes.png" class="img-fluid p-3 m-auto">
-                                        <a href='Eventos/menu.php '>
-                                            <div class="mask rgba-white-slight"></div>
-                                        </a>
-                                        <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
-                                                data-content="Podrás realizar un evento y generación de minuta del evento." >Info</button>
-                                    </div>                                    
+                                    <div class="col s12 m6 l4">
+                                        <div class="card" style="box-shadow: none">
+                                            <div class="card-image waves-effect waves-block waves-light">
+                                                <a href='Eventos/menu.php'>
+                                                    <img src="pics/activos/choferes.png" style="padding:3rem;">
+                                                </a>
+                                            </div>
+                                            <div class="card-content text-center" style="padding:0px;margin-top: -15px">
+                                                <span class="activator waves-effect waves-light btn b-azul c-blanco">
+                                                    INFO
+                                                </span>      
+                                            </div>
+                                            <div class="card-reveal">
+                                                <span class="card-title grey-text text-darken-4">Información adicional<i class="material-icons right">close</i></span>
+                                                <p>Podrás realizar un evento y generación de minuta del evento.</p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>   
                     <?php
                 } elseif ($perfil == 4) {
+                    echo '<a href="' . $redirect_uri . '?logout=1" class="btn b-azul white-text right">'
+                    . "<i class='fas fa-sign-out-alt'></i>&nbsp;Salir</a><div style='clear:both'></div>";
                     ?>  
                     <!--MENU PERFIL4-->
-
-                    <div class="row"><br><br>
-                        <div class="col-sm-12 col-md-9 b-blanco" style="margin:auto;">
-                            <?php
-                            echo '<h2 class="alert alert-light text-center b-azul c-blanco border-azul border-radius-none" role="alert">Mi Maguen ' . $anio_actual . '</h2>';
-                            echo '<a href="' . $redirect_uri . '?logout=1" class="btn b-azul white-text btn-pill mr-3 right">'
-                            . "<i class='fas fa-sign-out-alt'></i>&nbsp;Salir</a><div style='clear:both'></div>";
-                            ?>
-                            <br>
-                            <div class='row b-blanco' style='margin:auto'>
-                                <div class='col-sm-12 col-md-3 mb-3 text-center'>
-                                    <div class="view p-3">
-                                        <img src="pics/activos/transportes.png" class="img-fluid p-3 m-auto">
-                                        <a href='menu.php?idseccion=1'>
-                                            <div class="mask rgba-white-slight"></div>
-                                        </a>
-                                    </div>
-                                    <button class="btn b-azul white-text"
-                                            type="button"
-                                            data-toggle="popover" 
-                                            data-placement="top" 
-                                            title="Información"
-                                            data-content="Solicitudes de cambio Permanente, Temporal, Del día." >Info</button>
-                                </div>
-
-                                <div class='col-sm-12 col-md-3 mb-3'>
-                                    <div class="view p-3 text-center">
-                                        <img src="pics/activos/schoolcloud.png" class="img-fluid p-3 m-auto">
-                                        <a href='https://users.schoolcloud.net/campus/chmd'>
-                                            <div class="mask rgba-white-slight"></div>
-                                        </a>
-                                        <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
-                                                data-content="Consulta de evaluación." >Info</button>
+                    <br>
+                    <div class="container b-blanco">
+                        <div class="row">
+                            <div class="row">
+                                <div class="col s12 m6 l4">
+                                    <div class="card" style="box-shadow: none"> 
+                                        <div class="card-image waves-effect waves-block waves-light">     
+                                            <a href='menu.php?idseccion=1'>
+                                                <img src="pics/activos/transportes.png" style="padding:3rem;">  
+                                            </a>
+                                        </div>
+                                        <div class="card-content text-center" style="padding:0px;margin-top: -15px">
+                                            <span class="activator waves-effect waves-light btn b-azul c-blanco">
+                                                INFO
+                                            </span>      
+                                        </div>
+                                        <div class="card-reveal">
+                                            <span class="card-title grey-text text-darken-4">Información adicional<i class="material-icons right">close</i></span>
+                                            <p>Solicitudes de cambio Permanente, Temporal, Del día.</p>
+                                        </div>
                                     </div>
                                 </div>
-
-                                <div class='col-sm-12 col-md-3 mb-3'>
-                                    <div class="view p-3 text-center">
-                                        <img src="pics/activos/uniformes.png" class="img-fluid p-3 m-auto">
-                                        <a href='Uniformes/menu.php'>
-                                            <div class="mask rgba-white-slight"></div>
-                                        </a>
-                                        <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
-                                                data-content="Pedidos de paquete de uniformes incluido en la canasta básica y de uniformes adicionales." >Info</button>
-                                    </div>
-                                </div> 
-                                <div class='col-sm-12 col-md-3 mb-3'>
-                                    <div class="view p-3 text-center">
-                                        <img src="pics/activos/galeria.png" class="img-fluid p-3 m-auto">
-                                        <a href='https://chmd.edu.mx/galeria/' class="mb-3">
-                                            <div class="mask rgba-white-slight"></div>
-                                        </a>
-                                        <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
-                                                data-content="Podrás ver las imágenes de eventos del colegio." >Info</button>
-                                    </div>                                
-                                </div>
-
-                                <div class='col-sm-12 col-md-3 mb-3'>
-                                    <div class="view p-3 text-center">
-                                        <img src="pics/activos/permisos.png" class="img-fluid p-3 m-auto">
-                                        <a href='https://chmd.edu.mx/galeria/'>
-                                            <div class="mask rgba-white-slight"></div>
-                                        </a>
-                                        <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
-                                                data-content="Generar permisos extraordinarios, Cumpleaños, bar mitzvah." >Info</button>
+                                <div class="col s12 m6 l4">
+                                    <div class="card" style="box-shadow: none">
+                                        <div class="card-image waves-effect waves-block waves-light">        
+                                            <a href='https://users.schoolcloud.net/campus/chmd'>
+                                                <img src="pics/activos/schoolcloud.png" style="padding:3rem;">  
+                                            </a>
+                                        </div>
+                                        <div class="card-content text-center" style="padding:0px;margin-top: -15px">
+                                            <span class="activator waves-effect waves-light btn b-azul c-blanco">
+                                                INFO
+                                            </span>      
+                                        </div>
+                                        <div class="card-reveal">
+                                            <span class="card-title grey-text text-darken-4">Información adicional<i class="material-icons right">close</i></span>
+                                            <p>Consulta de evaluación.</p>
+                                        </div>
                                     </div>
                                 </div>
-
-                                <div class='col-sm-12 col-md-3 mb-3'>
-                                    <div class="view p-3 text-center">
-                                        <img src="pics/activos/choferes.png" class="img-fluid p-3 m-auto">
-                                        <a href='Eventos/menu.php '>
-                                            <div class="mask rgba-white-slight"></div>
-                                        </a>
-                                        <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
-                                                data-content="Podrás realizar un evento y generación de minuta del evento." >Info</button>
-                                    </div>                                    
+                                <div class="col s12 m6 l4">
+                                    <div class="card" style="box-shadow: none">
+                                        <div class="card-image waves-effect waves-block waves-light">
+                                            <a href='Uniformes/menu.php'>
+                                                <img src="pics/activos/uniformes.png" style="padding:3rem;">
+                                            </a>
+                                        </div>
+                                        <div class="card-content text-center" style="padding:0px;margin-top: -15px">
+                                            <span class="activator waves-effect waves-light btn b-azul c-blanco">
+                                                INFO
+                                            </span>      
+                                        </div>
+                                        <div class="card-reveal">
+                                            <span class="card-title grey-text text-darken-4">Información adicional<i class="material-icons right">close</i></span>
+                                            <p>Pedidos de paquete de uniformes incluido en la canasta básica y de uniformes adicionales.</p>
+                                        </div>
+                                    </div>
                                 </div>
-
-
-                                <div class='col-sm-12 col-md-3 mb-3'>
-                                    <div class="view p-3 text-center">
-                                        <img src="pics/activos/minuta.png" class="img-fluid p-3 m-auto">
-                                        <a href='Eventos/menu.php '>
-                                            <div class="mask rgba-white-slight"></div>
-                                        </a>
-                                        <button type="button" class="btn b-azul white-text" data-toggle="popover" data-placement="top" title="Información"
-                                                data-content="Podrás realizar un evento y generación de minuta del evento." >Info</button>
-                                    </div>                                    
+                                <div class="col s12 m6 l4">
+                                    <div class="card" style="box-shadow: none">
+                                        <div class="card-image waves-effect waves-block waves-light">
+                                            <a href='https://chmd.edu.mx/galeria/' class="mb-3">
+                                                <img src="pics/activos/galeria.png" style="padding:3rem;">
+                                            </a>
+                                        </div>
+                                        <div class="card-content text-center" style="padding:0px;margin-top: -15px">
+                                            <span class="activator waves-effect waves-light btn b-azul c-blanco">
+                                                INFO
+                                            </span>      
+                                        </div>
+                                        <div class="card-reveal">
+                                            <span class="card-title grey-text text-darken-4">Información adicional<i class="material-icons right">close</i></span>
+                                            <p>Podrás ver las imágenes de eventos del colegio.</p>
+                                        </div>
+                                    </div>
                                 </div>
-
-                            </div>
-
-                        </div>
+                                <div class="col s12 m6 l4">
+                                    <div class="card" style="box-shadow: none">
+                                        <div class="card-image waves-effect waves-block waves-light">
+                                            <a href='https://chmd.edu.mx/galeria/'>
+                                                <img src="pics/activos/permisos.png" style="padding:3rem;">
+                                            </a>
+                                        </div>
+                                        <div class="card-content text-center" style="padding:0px;margin-top: -15px">
+                                            <span class="activator waves-effect waves-light btn b-azul c-blanco">
+                                                INFO
+                                            </span>      
+                                        </div>
+                                        <div class="card-reveal">
+                                            <span class="card-title grey-text text-darken-4">Información adicional<i class="material-icons right">close</i></span>
+                                            <p>Generar permisos extraordinarios, Cumpleaños, bar mitzvah.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col s12 m6 l4">
+                                    <div class="card" style="box-shadow: none">
+                                        <div class="card-image waves-effect waves-block waves-light">
+                                            <a href='Eventos/menu.php'>
+                                                <img src="pics/activos/choferes.png" style="padding:3rem;">
+                                            </a>
+                                        </div>
+                                        <div class="card-content text-center" style="padding:0px;margin-top: -15px">
+                                            <span class="activator waves-effect waves-light btn b-azul c-blanco">
+                                                INFO
+                                            </span>      
+                                        </div>
+                                        <div class="card-reveal">
+                                            <span class="card-title grey-text text-darken-4">Información adicional<i class="material-icons right">close</i></span>
+                                            <p>Podrás realizar un evento y generación de minuta del evento.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col s12 m6 l4">
+                                    <div class="card" style="box-shadow: none">
+                                        <div class="card-image waves-effect waves-block waves-light">
+                                            <a href='Eventos/menu.php '>
+                                                <img src="pics/activos/minuta.png" style="padding:3rem;">
+                                            </a>
+                                        </div>
+                                        <div class="card-content text-center" style="padding:0px;margin-top: -15px">
+                                            <span class="activator waves-effect waves-light btn b-azul c-blanco">
+                                                INFO
+                                            </span>      
+                                        </div>
+                                        <div class="card-reveal">
+                                            <span class="card-title grey-text text-darken-4">Información adicional<i class="material-icons right">close</i></span>
+                                            <p>Podrás realizar un evento y generación de minuta del evento.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>    
+                        </div>  
                     </div>
                     <?php
                 } else {
@@ -306,9 +394,9 @@ if (isset($authUrl)) {
     <br>
 </div>
 <script>
-    $(function () {
-        $('[data-toggle="popover"]').popover();
-    })
+    $(document).ready(function () {
+        $('.tooltipped').tooltip();
+    });
 </script>
 <?php include './components/layout_bottom.php'; ?>
 

@@ -204,11 +204,11 @@ if (isset($authUrl)) {
                 fecha_solicitud.val(res.fecha_creacion);
                 solicitante.val(res.responsable);
                 var dias_permiso_res = "";
-                res.lunes = res.lunes !==""? dias_permiso_res += `${res.lunes}\n`:"";
-                res.martes = res.martes !==""? dias_permiso_res += `${res.martes}\n`:"";
-                res.miercoles = res.miercoles !==""? dias_permiso_res += `${res.miercoles}\n`:"";
-                res.jueves = res.jueves !==""? dias_permiso_res += `${res.jueves}\n`:"";
-                res.viernes = res.viernes !==""? dias_permiso_res += `${res.viernes}\n`:"";
+                res.lunes = res.lunes !=="" && res.lunes !=="0" ? dias_permiso_res += `${res.lunes}\n`:"";
+                res.martes = res.martes !=="" && res.martes !=="0" ? dias_permiso_res += `${res.martes}\n`:"";
+                res.miercoles = res.miercoles !=="" && res.miercoles !=="0" ? dias_permiso_res += `${res.miercoles}\n`:"";
+                res.jueves = res.jueves !=="" && res.jueves !=="0" ? dias_permiso_res += `${res.jueves}\n`:"";
+                res.viernes = res.viernes !=="" && res.viernes !=="0" ? dias_permiso_res += `${res.viernes}\n`:"";
                 dias_permiso.val(dias_permiso_res);
                 M.textareaAutoResize($('#dias_permiso'));
                 var alumnos_res = "";

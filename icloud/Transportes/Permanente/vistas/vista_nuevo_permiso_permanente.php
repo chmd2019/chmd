@@ -189,7 +189,8 @@ if (isset($authUrl)) {
                         <input placeholder="Ingrese CP" 
                                id="cp" 
                                type="tel"
-                               onkeypress="return validar_solo_numeros(event)">
+                               onkeypress="return validar_solo_numeros(event)"
+                               readonly>
                         <label>CP</label>
                     </div> 
                     <div class="switch col s12">

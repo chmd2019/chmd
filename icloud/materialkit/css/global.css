@@ -8,11 +8,6 @@ body, html {
 }
 body{
     height: 100%; 
-    background-image: url('/pruebascd/icloud/pics/body_bg.jpg');
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
     font-family: 'Varela Round';
     font-weight: 400;
 }

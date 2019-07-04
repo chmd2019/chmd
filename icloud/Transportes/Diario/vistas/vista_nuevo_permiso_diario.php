@@ -135,31 +135,31 @@ if (isset($authUrl)) {
                         </div>
                     </div>
                     <script>
-                                    //obtiene el calendario escolar en db
-                                    var calendario_escolar = obtener_calendario_escolar();
-                                    //asigna en el objeto del calendario dias sabados y domigos para deshabilitar
-                                    calendario_escolar.push(6);
-                                    calendario_escolar.push(7);
-                                    //fix de error al mostrar calendario (se oculta inmediatamente se abre)
-                                    $(".datepicker").on('mousedown', function (event) {
-                                        event.preventDefault();
-                                    });
-                                    $('.datepicker').pickadate({
-                                        format: 'dddd, dd De mmmm De yyyy',
-                                        today: false,
-                                        clear: false,
-                                        close: 'Aceptar',
-                                        closeOnSelect: false,
-                                        monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                                        monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                                        weekdaysFull: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
-                                        weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-                                        weekdaysLetter: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
-                                        disable: calendario_escolar,
-                                        firstDay: 1,
-                                        disableWeekends: true,
-                                        min: new Date('<?php echo $fecha_minima; ?>')
-                                    });
+                        //obtiene el calendario escolar en db
+                        var calendario_escolar = obtener_calendario_escolar();
+                        //asigna en el objeto del calendario dias sabados y domigos para deshabilitar
+                        calendario_escolar.push(6);
+                        calendario_escolar.push(7);
+                        //fix de error al mostrar calendario (se oculta inmediatamente se abre)
+                        $(".datepicker").on('mousedown', function (event) {
+                            event.preventDefault();
+                        });
+                        $('.datepicker').pickadate({
+                            format: 'dddd, dd De mmmm De yyyy',
+                            today: false,
+                            clear: false,
+                            close: 'Aceptar',
+                            closeOnSelect: false,
+                            monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                            monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                            weekdaysFull: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
+                            weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                            weekdaysLetter: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+                            disable: calendario_escolar,
+                            firstDay: 1,
+                            disableWeekends: true,
+                            min: new Date('<?php echo $fecha_minima; ?>')
+                        });
                     </script>  
                     <br>
                     <div class="col s12">
@@ -370,19 +370,10 @@ if (isset($authUrl)) {
     function mostrar_fecha_para() {
         if ($("#fecha_para").prop("hidden")) {
             $("#fecha_para").prop("hidden", false);
+            $("#fecha_solicitud_nuevo").val("");
         } else {
             $("#fecha_para").prop("hidden", true);
         }
-    }
-    function validar_solo_numeros(num) {
-        var charCode = (num.which) ? num.which : num.keyCode;
-        if (charCode != 46 && charCode > 31
-                && (charCode < 48 || charCode > 57))
-            return false;
-        if ($("#cp").val().length > 4) {
-            return false;
-        }
-        return true;
     }
     function cambiar_direccion(id) {
         var dato = $('select[id=reside]').val();
@@ -525,6 +516,12 @@ if (isset($authUrl)) {
         }
     }
     function validar_formulario() {
+        //valida callefecha_solicitud_nuevo
+        var fecha_solicitud_nuevo = $("#fecha_solicitud_nuevo");
+        if (fecha_solicitud_nuevo.val() === "") {
+            swal("Error en fecha del permiso", "Debe seleccionar una fecha válida", "error");
+            return false;
+        }
         //valida checks de alumnos
         var selected = '';
         $('.checks-alumnos input[type=checkbox]').each(function () {

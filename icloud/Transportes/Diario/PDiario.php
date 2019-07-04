@@ -36,7 +36,7 @@ if (isset($authUrl)) {
                 <br>
                 <h4 class="c-azul" style="text-align: center;">Cambio del dia</h4>
                 <div>
-                    <?php //include('View_Diario.php');  ?> 
+                    <?php include('View_Diario.php');  ?> 
                 </div>
                 <?php
             }
@@ -60,12 +60,13 @@ if (isset($authUrl)) {
 </div>
 
 <script>
-
     $(document).ready(function () {
         $('.fixed-action-btn').floatingActionButton({
             hoverEnabled: false
         });
+        $('.modal').modal();
     });
 </script>
+
 
 <?php include "$root_icloud/Transportes/components/layout_bottom.php"; ?>

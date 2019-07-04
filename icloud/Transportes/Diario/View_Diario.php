@@ -1,129 +1,114 @@
 <?php
-$time = time();
-$arrayMeses = array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
+$root_icloud = $_SERVER['DOCUMENT_ROOT'] . "/pruebascd/icloud";
+require_once "$root_icloud/Model/Login.php";
+require_once "$root_icloud/Transportes/common/ControlTransportes.php";
+$idseccion = $_GET['idseccion'];
+$user = $service->userinfo->get(); //get user info 
+$correo = $user->email;
+$objCliente = new Login();
+$consulta = $objCliente->Acceso($correo);
+//zona horaria para America/Mexico_city 
+require_once "$root_icloud/Helpers/DateHelper.php";
+$objDateHelper = new DateHelper();
+$objDateHelper->set_timezone();
+$fecha_actual = date('m/d/Y');
+$fecha_actual_impresa_script = "<script>var fecha = new Date('$fecha_actual');"
+        . "var options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };"
+        . "fecha = fecha.toLocaleDateString('es-MX', options);"
+        . "fecha = `\${fecha.charAt(0).toUpperCase()}\${fecha.slice(1).toLowerCase()}`;"
+        . "document.write(fecha)</script>";
+$consulta = mysqli_fetch_array($consulta);
+$familia = str_pad($consulta[4], 4, 0, STR_PAD_LEFT);
+?>
 
-$arrayDias = array('Domingo', 'Lunes', 'Martes',
-    'Miercoles', 'Jueves', 'Viernes', 'Sabado');
-if ($consulta) { //if user already exist change greeting text to "Welcome Back"
-    if ($cliente = mysqli_fetch_array($consulta)) {
+<br>
+<div>
+    <span>
+        <h6 class=""><?php echo $fecha_actual_impresa_script; ?></h6>
+    </span>
+
+    <?php
+    $control_diario = new ControlTransportes();
+    $listado_permiso_diario = $control_diario->listado_permiso_diario($familia);
+    $contador = mysqli_num_rows($listado_permiso_diario);
+    if ($contador == 0) {
         ?>
         <br>
-        <div>
-            <span>
-                <h6 class=""><?php echo $objDateHelper->fecha_formato_datalle(date("m/d/Y")); ?></h6>
-            </span>
-        </div>
-        <br>
-        <br>
-
+        <span class="badge blue c-blanco col s12">Sin permisos para mostrar</span>
         <?php
-        $id = $cliente[0];
-        $correo = $cliente[1];
-        $perfil = $cliente[2];
-        $estatus = $cliente[3];
-        $familia = $cliente[4];
-        /////////////////////////////////
-        require('./posts_gets/Control_dia.php');
-        $objDia = new Control_dia();
-        $consulta2 = $objDia->mostrar_diario($familia);
-        $domicilio = $objDia->mostrar_domicilio($familia);
-        $domicilio = mysqli_fetch_array($domicilio);
-        $papa = $domicilio[0];
-        $calle1 = $domicilio[1];
-        $colonia1 = $domicilio[2];
-        $cp1 = $domicilio[3];
-        $idusuario = 1;
-//inicio del while
-        $contador = 0;
-        $total = mysqli_num_rows($consulta2);
-        if ($total == 0) {
-            ?>
-            <div class="alert alert-danger" role="alert">Sin registros para mostrar</div>
-        <?php } else {
-            ?>
-
-            <!--Pinta solo el encabezado de la tabla-->
-            <table class="highlight">
-                <thead>
-                    <tr class="b-azul white-text">
-                        <th scope="col">Fecha programada</th>
-                        <th scope="col">Estatus</th>
-                        <th scope="col">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    while ($cliente2 = mysqli_fetch_array($consulta2)) {
-                        $contador++;
-                        //captura de registros 
-                        $Idpermiso = $cliente2[0];
-                        $ruta = $cliente2[11]; //ruta
-                        $fecha_solicitud = $cliente2[20];
-                        $fecha_destino = $cliente2[21]; //fecha
-                        $status1 = $cliente2[14];
-                        //deshabilita input de fecha si se ha pasado la hora
-                        include_once './Control_dia.php';
-                        $objControlDia = new Control_dia();
-                        $consulta_permiso_diario = $objControlDia->comprueba_cancelacion_transporte($Idpermiso);
-                        $permiso_diario = mysqli_fetch_array($consulta_permiso_diario);
-                        $ver_btn_cancelar = "";
-                        if ($objDateHelper->obtener_hora_limite() && $objDateHelper->comprobar_fecha_igual($fecha_destino) || $status1 != 1) {
-                            $ver_btn_cancelar = "d-none";
-                        }
-                        if ($fecha_destino == "0") {
-                            $fecha_destino = $fecha_solicitud;
-                        } else {
-                            $fecha_destino = str_replace("/", "-", $fecha_destino);
-                            $fecha_destino = date("m-d-Y", strtotime($fecha_destino));
-                        }
-                        if ($status1 == 1) {
-                            $status_detalle = "Pendiente";
-                        }
-                        if ($status1 == 2) {
-                            $status_detalle = "Autorizado";
-                        }
-                        if ($status1 == 3) {
-                            $status_detalle = "Declinado";
-                        }
-                        if ($status1 == 4) {
-                            $status_detalle = "Cancelado por usuario";
-                        }
-                        if ($solicitud_vencida = $objDateHelper->comprobar_solicitud_vencida($fecha_destino)) {
-                            ?> 
-                            <!--Pinta en filas cada registro encontrado por el while y verifica si esta vencida con el if-->
-                            <tr style="cursor:pointer;">
-                                <th scope="row"><?php echo $objDateHelper->fecha_formato_mexico($fecha_destino); ?></th>
-                                <td><?php echo "$status_detalle"; ?></td>
-                                <td>            
-                                    <div class="row">
-                                        <div class="col s12 l3">  
-                                            <?php //include './modales/modal_consulta_diario.php'; ?>
-                                            <a class="waves-effect waves-light btn green accent-3" 
-                                               href="https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Diario/vistas/vista_consulta_permiso_diario.php?id=<?php echo $Idpermiso;?>&&familia=<?php echo $familia;?>">
-                                                <i class="material-icons">pageview</i>
-                                            </a>
-                                        </div>
-                                        &nbsp;
-                                        <div class="col s12 l3">  
-                                            <?php include './modales/modal_cancelar_permiso.php'; ?>
-                                        </div>                                    
-                                    </div>
-                                </td>
-                            </tr> 
-                            <?php
-                        }
+    } else {
+        ?>
+        <br>
+        <!--Pinta solo el encabezado de la tabla-->
+        <table class="highlight">
+            <thead>
+                <tr class="b-azul white-text">
+                    <th scope="col">Fecha programada</th>
+                    <th scope="col">Estatus</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody> 
+                <?php
+                while ($permiso = mysqli_fetch_array($listado_permiso_diario)) {
+                    $id_permiso = $permiso[0];
+                    $fecha_cambio = $permiso[1];
+                    $estatus = $permiso[2];
+                    $tipo_permiso = $permiso[3];
+                    $nfamilia = $permiso[4];
+                    if ($estatus == 1) {
+                        $status_detalle = "Pendiente";
+                        $badge = "badge blue c-blanco";
                     }
-                    ?>
-                </tbody>
-            </table>        
-            <?php
-        }
-    }
-}
-?>
-<script>
-    $(document).ready(function () {
-        $('.modal').modal();
-    });
-</script>
+                    if ($estatus == 2) {
+                        $status_detalle = "Autorizado";
+                        $badge = "badge green c-blanco";
+                    }
+                    if ($estatus == 3) {
+                        $status_detalle = "Declinado";
+                        $badge = "badge orange c-blanco";
+                    }
+                    if ($estatus == 4) {
+                        $status_detalle = "Cancelado por usuario";
+                        $badge = "badge red c-blanco";
+                    }
+                    //formatea fecha LUNES, dd De mmmm Del YYYY a dd-mm-yyyy
+                    $fecha_destino = $objDateHelper->formatear_fecha_calendario($fecha_cambio);
+                    //oculta boton de cancelar de acuerdi a condiciones de hora limite, status
+                    $ver_btn_cancelar = "";
+                    if ($objDateHelper->obtener_hora_limite() && $objDateHelper->comprobar_fecha_igual($fecha_destino) || $estatus != 1) {
+                        $ver_btn_cancelar = "d-none";
+                    }
+                    $solicitud_vencida = $objDateHelper->comprobar_solicitud_vencida_d_m_y_guion($fecha_destino);
+                    if ($solicitud_vencida) {
+                        ?>
+                        <tr style="cursor:pointer;">
+                            <th scope="row"><?php echo $fecha_cambio; ?></th>
+                            <td><span class="<?php echo $badge; ?>"><?php echo $status_detalle; ?></span></td>
+                            <td>   
+                                <div class="row">
+                                    <div class="col s12 l3">  
+                                        <a class="waves-effect waves-light btn green accent-3" 
+                                           href="https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Diario/vistas/vista_consulta_permiso_diario.php?id=<?php echo $id_permiso; ?>&&tipo_permiso=1&&idseccion=<?php echo $idseccion; ?>">
+                                            <i class="material-icons">pageview</i>
+                                        </a>
+                                    </div>
+                                    &nbsp;
+                                    &nbsp;
+                                    &nbsp;
+                                    <div class="col s12 l3">
+                                        <?php include './modales/modal_cancelar_permiso.php'; ?>
+                                    </div>                                    
+                                </div>
+                            </td>
+                        </tr> 
+                        <?php
+                    }
+                }
+            }
+            ?>
+        </tbody>
+    </table>    
+</div>
+<br>
+<br>

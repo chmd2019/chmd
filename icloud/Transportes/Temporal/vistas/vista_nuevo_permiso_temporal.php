@@ -636,14 +636,6 @@ if (isset($authUrl)) {
         }
         return true;
     }
-    function validar_solo_numeros(num) {
-        var charCode = (num.which) ? num.which : num.keyCode;
-        if (charCode != 46 && charCode > 31
-                && (charCode < 48 || charCode > 57))
-            return false;
-
-        return true;
-    }
     function enviar_formulario(id, familia, tipo_permiso) {
         if (validar_formulario()) {
             //fecha solicitud, solicitante, fecha del permiso, nombre del alumno, alumnos, calle, colonia

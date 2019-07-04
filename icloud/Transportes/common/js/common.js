@@ -102,10 +102,22 @@ function formatear_fecha_calendario_formato_m_d_a(fecha) {
         mes = "12";
     return `${mes}-${dia}-${anio}`;
 }
-    function validar_regex(reg, val) {
-        var regex = new RegExp(reg);
-        if (regex.test(val)) {
-            return true;
-        }
+function validar_regex(reg, val) {
+    var regex = new RegExp(reg);
+    if (regex.test(val)) {
+        return true;
+    }
+    return false;
+}
+
+function validar_solo_numeros(num) {
+    var charCode = (num.which) ? num.which : num.keyCode;
+    if (charCode != 46 && charCode > 31
+            && (charCode < 48 || charCode > 57))
+        return false;
+
+    if ($("#cp").val().length > 4) {
         return false;
     }
+    return true;
+}

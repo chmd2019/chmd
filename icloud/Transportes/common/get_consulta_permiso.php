@@ -10,10 +10,36 @@ $control_temporal = new ControlTransportes();
 $alumnos_permiso = $control_temporal->consultar_alumnos_permiso($id_permiso);
 
 if ($tipo_permiso == 1) {
-    
-} else if ($tipo_permiso == 2) {
     //permisos
-    $permiso = $control_temporal->consultar_permiso($id_permiso);
+    $permiso = $control_temporal->consultar_permiso_diario($id_permiso);
+    $permiso = mysqli_fetch_array($permiso);
+    if ($alumnos_permiso) {
+        $response = array();
+        while ($data = mysqli_fetch_array($alumnos_permiso)) {
+            $alumno = $control_temporal->consultar_nombre_alumno($data[2]);
+            $alumno = mysqli_fetch_array($alumno);
+            array_push($response, ["alumno" => $alumno[0]]);
+        }
+        $permiso = [
+            "id_permiso" => $permiso[0],
+            "fecha_solicitud" => $permiso[1],
+            "responsable" => $permiso[2],
+            "calle" => $permiso[3],
+            "colonia" => $permiso[4],
+            "cp" => $permiso[5],
+            "ruta" => $permiso[6],
+            "comentarios" => $permiso[7],
+            "mensaje" => $permiso[8],
+            "fecha_cambio" => $permiso[9],
+            "alumnos" => $response
+        ];
+        echo json_encode($permiso);
+        return;
+    }
+} 
+else if ($tipo_permiso == 2) {
+    //permisos
+    $permiso = $control_temporal->consultar_permiso_temporal($id_permiso);
     $permiso = mysqli_fetch_array($permiso);
     if ($alumnos_permiso) {
         $response = array();
@@ -46,7 +72,8 @@ if ($tipo_permiso == 1) {
         echo json_encode($permiso);
         return;
     }
-} else if ($tipo_permiso == 3) {
+} 
+else if ($tipo_permiso == 3) {
     //permisos
     $permiso = $control_temporal->consultar_permiso_permanente($id_permiso);
     $permiso = mysqli_fetch_array($permiso);

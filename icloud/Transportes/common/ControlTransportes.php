@@ -11,6 +11,16 @@ class ControlTransportes {
         $this->con = new DBManager();
     }
 
+    public function listado_permiso_diario($familia) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT id_permiso, fecha_cambio, estatus, tipo_permiso, "
+                    . "nfamilia FROM Ventana_Permisos WHERE tipo_permiso = 1 "
+                    . "&& nfamilia = '$familia' ORDER BY id_permiso DESC";
+            mysqli_set_charset($connection, 'utf8');
+            return mysqli_query($connection, $sql);
+        }
+    }
     public function listado_permiso_temporal($familia) {
         $connection = $this->con->conectar1();
         if ($connection) {
@@ -31,7 +41,6 @@ class ControlTransportes {
             return mysqli_query($connection, $sql);
         }
     }
-
     function mostrar_domicilio($fam) {
         $connection = $this->con->conectar1();
         if ($connection) {
@@ -40,7 +49,6 @@ class ControlTransportes {
             return mysqli_query($connection, $sql);
         }
     }
-
     public function cancela_permiso($id) {
         $connection = $this->con->conectar1();
         if ($connection) {
@@ -51,8 +59,25 @@ class ControlTransportes {
         }
         return false;
     }
-
-    public function consultar_permiso($id) {
+    public function consultar_permiso_diario($id) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT "
+                    . "id_permiso, "
+                    . "fecha_creacion, "
+                    . "responsable, "
+                    . "calle_numero, "
+                    . "colonia, "
+                    . "cp, "
+                    . "ruta, "
+                    . "comentarios, "
+                    . "mensaje, "
+                    . "fecha_cambio FROM Ventana_Permisos WHERE id_permiso  = '$id'";
+            mysqli_set_charset($connection, 'utf8');
+            return mysqli_query($connection, $sql);
+        }
+    }
+    public function consultar_permiso_temporal($id) {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "SELECT id_permiso, "
@@ -77,7 +102,7 @@ class ControlTransportes {
             return mysqli_query($connection, $sql);
         }
     }
-public function consultar_permiso_permanente($id) {
+    public function consultar_permiso_permanente($id) {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "SELECT responsable,
