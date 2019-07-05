@@ -1,10 +1,8 @@
 <?php ?>
-<nav class="nav-extended b-azul" style="padding:1rem;">
-    <div class="nav-wrapper">
-        <div>
-        </div>  
+<nav class="nav-extended b-azul" style="padding:.6rem;">
+    <div class="nav-wrapper"> 
         <a href="https://www.chmd.edu.mx/pruebascd/icloud/" class="brand-logo">
-            <img class="logo" src="https://www.chmd.edu.mx/wp-content/uploads/2018/07/LogoMaguenWT.png" style="margin-left:5rem;">
+            <img class="logo" src="https://www.chmd.edu.mx/wp-content/uploads/2018/07/LogoMaguenWT.png" style="margin-left:2rem;">
         </a>
         <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">

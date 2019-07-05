@@ -37,7 +37,7 @@ if (isset($authUrl)) {
     $user = $service->userinfo->get(); //get user info
     $correo = $user->email;
     $objCliente = new Login();
-    $consulta = $objCliente->Acceso($correo);
+    $consulta = $objCliente->acceso_login($correo);
     $date_helper = new DateHelper();
     $date_helper->set_timezone();
     $hora_limite = $date_helper->obtener_hora_limite();
@@ -47,18 +47,15 @@ if (isset($authUrl)) {
     }
     if ($consulta = mysqli_fetch_array($consulta)) {
         $id = $consulta[0];
-        $correo = $consulta[1];
-        $perfil = $consulta[2];
-        $status = $consulta[3];
-        $familia = str_pad($consulta[4], 4, 0, STR_PAD_LEFT);
+        $nombre = $consulta[1];
+        $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
         require_once '../../common/ControlTransportes.php';
         $control_temporal = new ControlTransportes();
         $domicilio = $control_temporal->mostrar_domicilio($familia);
         $domicilio = mysqli_fetch_array($domicilio);
-        $papa = $domicilio[0];
-        $calle = $domicilio[1];
-        $colonia = $domicilio[2];
-        $cp = $domicilio[3];
+        $calle = $domicilio[0]; 
+        $colonia = $domicilio[1];
+        $cp = $domicilio[2];
         $time = time();
         $fecha_minima = date("Y-m-d");
         $fecha_minima = strtotime("+3 day", strtotime($fecha_minima));
@@ -89,7 +86,7 @@ if (isset($authUrl)) {
                         <label for="solicitante_permiso_temporal" style="margin-left: 1rem">Solicitante</label>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">person</i>
-                            <input value="<?php echo $correo; ?>" readonly  id="solicitante_permiso_temporal" style="font-size: 1rem" type="text" />               
+                            <input value="<?php echo $nombre; ?>" readonly  id="solicitante_permiso_temporal" style="font-size: 1rem" type="text" />               
                         </div>
                     </div>    
                     <br>
@@ -223,7 +220,7 @@ if (isset($authUrl)) {
                     </div>
                     <div>
                         <div class="input-field col s12 l6">
-                        <label for="parentesco_nuevo_permiso_temporal " style="margin-left: 1rem">Parentesco</label>
+                            <label for="parentesco_nuevo_permiso_temporal " style="margin-left: 1rem">Parentesco</label>
                             <i class="material-icons c-azul">people</i>
                             <input 
                                 placeholder="Obligatorio" 
@@ -232,22 +229,22 @@ if (isset($authUrl)) {
                                 autocomplete="off"/>
                         </div>
                         <div class="input-field col s12 l6">
-                        <label for="celular_nuevo_permiso_temporal " style="margin-left: 1rem">Celular</label>
+                            <label for="celular_nuevo_permiso_temporal " style="margin-left: 1rem">Celular</label>
                             <i class="material-icons c-azul">smartphone</i>
                             <input placeholder="Agrega 10 dígitos" 
-                                    autocomplete="off"
-                                    id="celular_nuevo_permiso_temporal" 
+                                   autocomplete="off"
+                                   id="celular_nuevo_permiso_temporal" 
                                    type="tel"
-                                   onkeypress="return validar_solo_numeros(event)">
+                                   onkeypress="return validar_solo_numeros_max(event)">
                         </div>
                         <div class="input-field col s12 l6">
-                        <label for="telefono_nuevo_permiso_temporal " style="margin-left: 1rem">Teléfono</label>
+                            <label for="telefono_nuevo_permiso_temporal " style="margin-left: 1rem">Teléfono</label>
                             <i class="material-icons c-azul">phone_in_talk</i>
                             <input placeholder="Agrega 8 dígitos" 
-                               autocomplete="off"
+                                   autocomplete="off"
                                    id="telefono_nuevo_permiso_temporal" 
                                    type="tel"
-                                   onkeypress="return validar_solo_numeros(event)">
+                                   onkeypress="return validar_solo_numeros_max(event)">
                         </div>  
                     </div>
                     <br>
@@ -356,7 +353,7 @@ if (isset($authUrl)) {
     </a>
     <ul>
         <li>
-            <a class="btn-floating blue" href="https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Temporal/PTemporal.php?idseccion=<?php echo $idseccion;?>">
+            <a class="btn-floating blue" href="https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Temporal/PTemporal.php?idseccion=<?php echo $idseccion; ?>">
                 <i class="material-icons">keyboard_backspace</i>
             </a>
         </li>
@@ -461,10 +458,10 @@ if (isset($authUrl)) {
                     }
                 }
             }).always(function () {
-                        setInterval(function () {
-                            $("#loading").fadeOut("slow");
-                        }, 1000);
-                    });                    
+                setInterval(function () {
+                    $("#loading").fadeOut("slow");
+                }, 1000);
+            });
             //limpia recordar direccion
             $('#recordar_direccion').prop("checked", false);
             $('#container_descripcion_recordar_direccion').hide();
@@ -509,7 +506,8 @@ if (isset($authUrl)) {
                 "colonia": colonia,
                 "descripcion": descripcion,
                 "cp": cp,
-                "id_usuario":<?php echo $id; ?>
+                "id_usuario":<?php echo $id; ?>,
+                "familia":<?php echo $familia; ?>
             }
             $.ajax({
                 url: "/pruebascd/icloud/Transportes/common/post_nueva_direccion.php",
@@ -636,12 +634,19 @@ if (isset($authUrl)) {
         }
         return true;
     }
+    function validar_solo_numeros_max(num) {
+    var charCode = (num.which) ? num.which : num.keyCode;
+        if (charCode != 46 && charCode > 31
+                && (charCode < 48 || charCode > 57))
+            return false;
+        return true;
+    }
     function enviar_formulario(id, familia, tipo_permiso) {
         if (validar_formulario()) {
             //fecha solicitud, solicitante, fecha del permiso, nombre del alumno, alumnos, calle, colonia
             var calle_nuevo_permiso_temporal = $("#calle_nuevo_permiso_temporal").val();
             var colonia_nuevo_permiso_temporal = $("#colonia_nuevo_permiso_temporal").val();
-            var cp = $("#cp").val() !==""? $("#cp").val(): "00000";
+            var cp = $("#cp").val() !== "" ? $("#cp").val() : "00000";
             var responsable = $("#nombre_nuevo_permiso_temporal").val();
             var parentesco = $("#parentesco_nuevo_permiso_temporal").val();
             var celular = $("#celular_nuevo_permiso_temporal").val();
@@ -695,7 +700,7 @@ if (isset($authUrl)) {
                     if (res == 1) {
                         swal("Información", "Registro exitoso!", "success");
                         setInterval(() => {
-                            window.location = "https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Temporal/PTemporal.php?idseccion=<?php echo $idseccion;?>";
+                            window.location = "https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Temporal/PTemporal.php?idseccion=<?php echo $idseccion; ?>";
                         }, 1500);
                     } else {
                         swal("Información", res, "error");

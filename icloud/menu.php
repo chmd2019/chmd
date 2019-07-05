@@ -1,11 +1,23 @@
 <?php
 include './components/layout_top.php';
-include './components/sesion.php';
 include './components/navbar.php';
+include './components/sesion.php';
 
 if (isset($authUrl)) {
     //show login url
     ?>
+    <style>
+        body{
+            background-image: url('/pruebascd/icloud/pics/body_bg.jpg');
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            padding:0px;
+            margin:0px;
+            overflow: hidden;
+        }
+    </style>
     <div class="main" style="overflow: hidden;">
         <div class="caja-login" align="center">
             <h2 class="alert alert-light text-center c-azul" role="alert">Mi Maguen</h2>
@@ -25,8 +37,6 @@ if (isset($authUrl)) {
             Mi Maguen 
             <?php
             echo $anio_actual;
-            echo '<a href="' . $redirect_uri . '?logout=1" class="waves-effect waves-light btn red right">'
-            . "<i class='material-icons left'>lock</i>&nbsp;Salir</a>";
             ?>
         </h4>
         <!--MENU-->
@@ -39,15 +49,11 @@ if (isset($authUrl)) {
                 $correo = $user->email;
                 require('Model/Login.php');
                 $objCliente = new Login();
-                $consulta = $objCliente->Acceso($correo);
+                $consulta = $objCliente->acceso_login($correo);
                 if ($consulta) {
                     if ($cliente = mysqli_fetch_array($consulta)) {
-                        $id = $cliente[0];
-                        $correo = $cliente[1];
-                        $perfil = $cliente[2];
-                        $estatus = $cliente[3];
-                        ///////////////////////////////////////////
-                        $consulta1 = $objCliente->Acceso2($correo, $idseccion);
+                        
+                        $consulta1 = $objCliente->acceso_perfil($correo, $idseccion);
                         $contador = 0;
                         while ($cliente1 = mysqli_fetch_array($consulta1)) {
                             $modulo = $cliente1[0];
@@ -77,8 +83,8 @@ if (isset($authUrl)) {
                                             INFO
                                         </span>      
                                     </div>
-                                    <div class="card-reveal">
-                                        <span class="card-title grey-text text-darken-4">Información adicional<i class="material-icons right">close</i></span>
+                                    <div class="card-reveal b-azul white-text">
+                                        <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
                                         <p>Pedidos de paquete de uniformes incluido en la canasta básica y de uniformes adicionales.</p>
                                     </div>
                                 </div>
@@ -104,7 +110,7 @@ if (isset($authUrl)) {
         <i class="large material-icons">edit</i>
     </a>
     <ul>
-        <li><a class="btn-floating green accent-3" href="index.php"><i class="material-icons">keyboard_backspace</i></a></li>
+        <li><a class="btn-floating blue" href="index.php"><i class="material-icons">keyboard_backspace</i></a></li>
             <?php
             echo '<li><a href="' . $redirect_uri . '?logout=1" class="btn-floating red" >'
             . "<i class='material-icons'>exit_to_app</i>Salir</a></li>";

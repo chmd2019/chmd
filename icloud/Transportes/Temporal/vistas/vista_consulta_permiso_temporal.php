@@ -138,6 +138,15 @@ if (isset($authUrl)) {
                     </div>
                     <br>
                     <h5 class="center-align c-azul">Datos de responsable</h5>
+                    <div class="col s12">
+                        <label for="responsable" style="margin-left: 1rem">Responsable</label>
+                        <div class="input-field">
+                            <i class="material-icons prefix c-azul">person_pin</i>
+                            <input readonly  
+                                   id="responsable"
+                                   style="font-size: .9rem"/>       
+                        </div>
+                    </div>
                     <div class="col s12 l6">
                         <label for="parentesco" style="margin-left: 2rem;">Parentesco</label>
                         <div class="input-field">
@@ -211,7 +220,7 @@ if (isset($authUrl)) {
 ?>
 
 <div class="fixed-action-btn">
-    <a class="btn-floating btn-large b-azul" href="https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Temporal/PTemporal.php?idseccion=<?php echo $idseccion;?>">
+    <a class="btn-floating btn-large b-azul" href="https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Temporal/PTemporal.php?idseccion=<?php echo $idseccion; ?>">
         <i class="large material-icons">keyboard_backspace</i>
     </a>
 </div>
@@ -244,6 +253,7 @@ if (isset($authUrl)) {
         var calle_cambio = $("#calle_cambio");
         var colonia_cambio = $("#colonia_cambio");
         var cp_cambio = $("#cp_cambio");
+        var responsable = $("#responsable");
         var parentesco = $("#parentesco");
         var celular = $("#celular");
         var telefono = $("#telefono");
@@ -264,16 +274,16 @@ if (isset($authUrl)) {
             beforeSend: function () {
                 $("#loading").fadeIn("slow");
             },
-        })
-        .done(function (res) {
+        }).done(function (res) {
             var respuesta = JSON.parse(res);
             nfamilia = respuesta.nfamilia;
             fecha_solicitud.val(respuesta.fecha_creacion);
-            solicitante.val(respuesta.responsable);
+            solicitante.val(respuesta.usuario);
             ////calle guardada
             calle_cambio.val(respuesta.calle_numero);
             colonia_cambio.val(respuesta.colonia);
             cp_cambio.val(respuesta.cp);
+            responsable.val(respuesta.responsable);
             parentesco.val(respuesta.parentesco);
             celular.val(respuesta.celular);
             telefono.val(respuesta.telefono);
@@ -310,12 +320,10 @@ if (isset($authUrl)) {
                     M.textareaAutoResize($('#cp_guardada'));
                 }
             });
-        })
-        .always(function () {
+        }).always(function () {
             setInterval(function () {
                 $("#loading").fadeOut("slow");
             }, 1000);
         });
-
     });
 </script>

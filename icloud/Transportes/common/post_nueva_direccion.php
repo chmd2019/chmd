@@ -9,10 +9,11 @@ $colonia = $_POST['colonia'];
 $descripcion = $_POST['descripcion'];
 $id_usuario = $_POST['id_usuario'];
 $cp = $_POST['cp'];
+$familia = $_POST['familia'];
 
 if ($connection) {
-    $sql = "INSERT INTO direccion_familias (`calle`, `colonia`, `descripcion`,`cp`, `id_usuario`) "
-            . "VALUES ('$calle', '$colonia', '$descripcion', '$cp', '$id_usuario');";
+    $sql = "INSERT INTO direccion_familias (`calle`, `colonia`, `descripcion`,`cp`, `id_usuario`, `nfamilia`) "
+            . "VALUES ('$calle', '$colonia', '$descripcion', '$cp', '$id_usuario', '$familia');";
     mysqli_set_charset($connection, "utf8");
     $insertar = mysqli_query($connection, $sql);
     if (!$insertar) {

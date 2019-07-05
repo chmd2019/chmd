@@ -8,7 +8,7 @@ $idseccion = $_GET['idseccion'];
 $user = $service->userinfo->get(); //get user info
 $correo = $user->email;
 $objCliente = new Login();
-$consulta = $objCliente->Acceso($correo);
+$consulta = $objCliente->acceso_login($correo);
 //zona horaria para America/Mexico_city 
 require "$root_icloud/Helpers/DateHelper.php";
 $objDateHelper = new DateHelper();

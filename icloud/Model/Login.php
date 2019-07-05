@@ -50,6 +50,27 @@ class Login {
             return mysqli_query($connection, $sql);
         }
     }
+    public function acceso_login($correo) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT * from usuarios WHERE correo = '$correo'";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+    public function acceso_perfil($correo, $idseccion) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT md.modulo,md.link,md.imagen,md.idseccion,md.estatus,us.id,md.id,us.numero
+                    from usuarios us
+                    LEFT JOIN user_perfil p on us.tipo=p.id_perfil
+                    LEFT JOIN Ventana_secciones sec on sec.idperfil=p.id_perfil
+                    LEFT JOIN Ventana_modulos md on md.idseccion=sec.id
+                    WHERE us.correo='$correo' and md.idseccion='$idseccion' ORDER BY md.id desc";
+            mysqli_set_charset($connection, 'utf8');
+            return mysqli_query($connection, $sql);
+        }
+    }
 
     public function Acceso1($id) {
         $connection = $this->con->conectar1();

@@ -44,7 +44,7 @@ class ControlTransportes {
     function mostrar_domicilio($fam) {
         $connection = $this->con->conectar1();
         if ($connection) {
-            $sql = "select papa,calle,colonia,cp from usuarios where password='$fam'";
+            $sql = "SELECT calle,colonia,cp FROM usuarios WHERE numero='$fam'";
             mysqli_set_charset($connection, 'utf8');
             return mysqli_query($connection, $sql);
         }
@@ -96,7 +96,7 @@ class ControlTransportes {
                     . "turno, "
                     . "tipo_permiso, "
                     . "estatus, "
-                    . "fecha_creacion,"
+                    . "fecha_creacion, "
                     . "mensaje FROM Ventana_Permisos WHERE id_permiso  = '$id'";
             mysqli_set_charset($connection, 'utf8');
             return mysqli_query($connection, $sql);
@@ -136,6 +136,14 @@ class ControlTransportes {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "SELECT nombre FROM alumnoschmd WHERE id  = '$id'";
+            mysqli_set_charset($connection, 'utf8');
+            return mysqli_query($connection, $sql);
+        }
+    }
+    public function consultar_nombre_usuario($id){
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT nombre FROM usuarios WHERE id = '$id'";
             mysqli_set_charset($connection, 'utf8');
             return mysqli_query($connection, $sql);
         }

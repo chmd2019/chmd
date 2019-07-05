@@ -40,7 +40,7 @@ if (isset($authUrl)) {
     $user = $service->userinfo->get(); //get user info
     $correo = $user->email;
     $objCliente = new Login();
-    $consulta = $objCliente->Acceso($correo);
+    $consulta = $objCliente->acceso_login($correo);
     $date_helper = new DateHelper();
     $date_helper->set_timezone();
     $hora_limite = $date_helper->obtener_hora_limite();
@@ -50,18 +50,15 @@ if (isset($authUrl)) {
     }
     if ($consulta = mysqli_fetch_array($consulta)) {
         $id = $consulta[0];
-        $correo = $consulta[1];
-        $perfil = $consulta[2];
-        $status = $consulta[3];
-        $familia = str_pad($consulta[4], 4, 0, STR_PAD_LEFT);
+        $nombre = $consulta[1];
+        $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
         require_once '../../common/ControlTransportes.php';
         $control_temporal = new ControlTransportes();
         $domicilio = $control_temporal->mostrar_domicilio($familia);
         $domicilio = mysqli_fetch_array($domicilio);
-        $papa = $domicilio[0];
-        $calle = $domicilio[1];
-        $colonia = $domicilio[2];
-        $cp = $domicilio[3];
+        $calle = $domicilio[0];
+        $colonia = $domicilio[1];
+        $cp = $domicilio[2];
         $time = time();
         //manejo de fechas
         $arrayMeses = array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
@@ -89,7 +86,7 @@ if (isset($authUrl)) {
                         <label for="solicitante_permiso_permanente" style="margin-left: 1rem">Solicitante</label>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">person</i>
-                            <input value="<?php echo $correo; ?>" readonly  id="solicitante_permiso_permanente" style="font-size: 1rem" type="text" />               
+                            <input value="<?php echo $nombre; ?>" readonly  id="solicitante_permiso_permanente" style="font-size: 1rem" type="text" />               
                         </div>
                     </div>    
                     <br><div class="col s12">
@@ -189,8 +186,7 @@ if (isset($authUrl)) {
                         <input placeholder="Ingrese CP" 
                                id="cp" 
                                type="tel"
-                               onkeypress="return validar_solo_numeros(event)"
-                               readonly>
+                               onkeypress="return validar_solo_numeros(event)" autocomplete="off">
                         <label>CP</label>
                     </div> 
                     <div class="switch col s12">
@@ -452,7 +448,8 @@ if (isset($authUrl)) {
                 "colonia": colonia,
                 "descripcion": descripcion,
                 "cp": cp,
-                "id_usuario":<?php echo $id; ?>
+                "id_usuario":<?php echo $id; ?>,
+                "familia":<?php echo $familia;?>
             }
             $.ajax({
                 url: "/pruebascd/icloud/Transportes/common/post_nueva_direccion.php",
@@ -576,7 +573,7 @@ if (isset($authUrl)) {
                 nfamilia:familia,
                 fecha_creacion:fecha_creacion,
                 tipo_permiso:tipo_permiso,
-                responsable:'<?php echo "$correo";?>',
+                responsable:responsable,
                 coleccion_ids: coleccion_ids,
             };
             $.ajax({

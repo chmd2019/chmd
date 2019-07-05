@@ -201,6 +201,7 @@ if (isset($authUrl)) {
             },
             success:function(res){   
                 res = JSON.parse(res);
+                console.log(res);
                 fecha_solicitud.val(res.fecha_creacion);
                 solicitante.val(res.responsable);
                 var dias_permiso_res = "";

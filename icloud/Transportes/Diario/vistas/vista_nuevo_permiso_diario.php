@@ -39,7 +39,7 @@ if (isset($authUrl)) {
     $user = $service->userinfo->get();
     $correo = $user->email;
     $objCliente = new Login();
-    $consulta = $objCliente->Acceso($correo);
+    $consulta = $objCliente->acceso_login($correo);
     $date_helper = new DateHelper();
     $date_helper->set_timezone();
     $hora_limite = $date_helper->obtener_hora_limite();
@@ -49,18 +49,15 @@ if (isset($authUrl)) {
     }
     if ($consulta = mysqli_fetch_array($consulta)) {
         $id = $consulta[0];
-        $correo = $consulta[1];
-        $perfil = $consulta[2];
-        $status = $consulta[3];
-        $familia = str_pad($consulta[4], 4, 0, STR_PAD_LEFT);
+        $nombre = $consulta[1];
+        $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
         require_once "$root_icloud/Transportes/common/ControlTransportes.php";
         $control_temporal = new ControlTransportes();
         $domicilio = $control_temporal->mostrar_domicilio($familia);
         $domicilio = mysqli_fetch_array($domicilio);
-        $papa = $domicilio[0];
-        $calle = $domicilio[1];
-        $colonia = $domicilio[2];
-        $cp = $domicilio[3];
+        $calle = $domicilio[0];
+        $colonia = $domicilio[1];
+        $cp = $domicilio[2];
         $time = time();
         //manejo de fechas
         $arrayMeses = array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
@@ -94,7 +91,7 @@ if (isset($authUrl)) {
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">calendar_today</i>
                             <input value="<?php
-                            echo $arrayDias[date('w')] . " , " . date('d') .
+                            echo $arrayDias[date('w')] . ", " . date('d') .
                             " de " . $arrayMeses[date('m') - 1] . " de " . date('Y') .
                             ", " . date("h:i a");
                             ?>" readonly  id="fecha_creacion" style="font-size: 1rem" type="text" >               
@@ -103,8 +100,8 @@ if (isset($authUrl)) {
                     <div class="col s12 l6">
                         <label for="responsable" style="margin-left: 1rem">Solicitante</label>
                         <div class="input-field">
-                            <i class="material-icons prefix c-azul">mail</i>
-                            <input value="<?php echo " $correo "; ?>" readonly  id="responsable" style="font-size: 1rem" type="text" >               
+                            <i class="material-icons prefix c-azul">person</i>
+                            <input value="<?php echo " $nombre "; ?>" readonly  id="responsable" style="font-size: 1rem" type="text" >               
                         </div>
                     </div>                   
                     <?php
@@ -373,6 +370,8 @@ if (isset($authUrl)) {
             $("#fecha_solicitud_nuevo").val("");
         } else {
             $("#fecha_para").prop("hidden", true);
+            $("#fecha_solicitud_nuevo").val("<?php echo $arrayDias[date('w')] . ", " . date('d') .
+                            " de " . $arrayMeses[date('m') - 1] . " de " . date('Y'); ?>");
         }
     }
     function cambiar_direccion(id) {
@@ -479,7 +478,8 @@ if (isset($authUrl)) {
                 "colonia": colonia,
                 "descripcion": descripcion,
                 "cp": cp,
-                "id_usuario":<?php echo $id; ?>
+                "id_usuario":<?php echo $id; ?>,
+                "familia":<?php echo $familia;?>
             }
             $.ajax({
                 url: "/pruebascd/icloud/Transportes/common/post_nueva_direccion.php",

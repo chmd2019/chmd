@@ -69,6 +69,8 @@ else if ($tipo_permiso == 2) {
             "mensaje" => $permiso[17],
             "alumnos" => $response
         ];
+        $usuario = mysqli_fetch_array($control_temporal->consultar_nombre_usuario($permiso['id_usuario']));
+        $permiso["usuario"] = $usuario[0];
         echo json_encode($permiso);
         return;
     }

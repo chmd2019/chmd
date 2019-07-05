@@ -2,26 +2,29 @@
 include './components/layout_top.php';
 include './components/sesion.php';
 include './components/navbar.php';
-?>
-<h4 class="b-azul c-blanco text-center" style="padding:1rem;margin-top:0px">
-    Mi Maguen 
-    <?php
-    echo $anio_actual;
-    echo '<a href="' . $redirect_uri . '?logout=1" class="waves-effect waves-light btn red right">'
-    . "<i class='material-icons left'>lock</i>&nbsp;Salir</a>";
-    ?>
-</h4>
-<?php
+
 if (isset($authUrl)) {
     //show login url
     ?>    
+    <style>
+        body{
+            background-image: url('/pruebascd/icloud/pics/body_bg.jpg');
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            padding:0px;
+            margin:0px;
+            overflow: hidden;
+        }
+    </style>
     <div class="main">
         <div class="caja-login" align="center">
-            <h2 class="text-center c-azul border-radius-none" role="alert">
-                Mi Maguen <br>
-    <?php echo '<a  href="' . $authUrl . '"><img src="images/google.png" alt="login" height="187px" width="200px"></a>' ?>
-            </h2>
+            <h3 class="text-center c-azul" style="margin:-10px">
+                Mi Maguen
+            </h3> 
             <br>
+            <?php echo '<a  href="' . $authUrl . '"><img src="images/google.png" alt="login" height="240px" width="250px"></a>' ?>
         </div>
         <?php
     } else {
@@ -29,17 +32,19 @@ if (isset($authUrl)) {
         $correo = $user->email;
         require('Model/Login.php');
         $objCliente = new Login();
-        $consulta = $objCliente->Acceso($correo);
+        $consulta = $objCliente->acceso_login($correo);
         if ($consulta) { //if user already exist change greeting text to "Welcome Back"
             if ($cliente = mysqli_fetch_array($consulta)) {
-                $id = $cliente[0];
-                $correo1 = $cliente[1];
-                $perfil = $cliente[2];
-                $estatus = $cliente[3];
-                $anio_actual = date("Y");
+                $tipo = $cliente[12];
 
-                if ($perfil == 3) {
+                if ($tipo == 3 || $tipo == 4) {//pendiente por asignar a tipo de usuario correspondiente
                     ?>
+                    <div class="fixed-action-btn">
+                        <?php
+                        echo '<a href="' . $redirect_uri . '?logout=1" class="btn-floating btn-large red" >'
+                        . "<i class='material-icons'>exit_to_app</i>Salir</a>";
+                        ?>
+                    </div>
                     <!--MENU PERFIL3-->
                     <div class="row">
                         <div class="container b-blanco">
@@ -57,8 +62,8 @@ if (isset($authUrl)) {
                                                     INFO
                                                 </span>      
                                             </div>
-                                            <div class="card-reveal">
-                                                <span class="card-title grey-text text-darken-4">Información adicional<i class="material-icons right">close</i></span>
+                                            <div class="card-reveal b-azul white-text">
+                                                <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
                                                 <p>Solicitudes de cambio Permanente, Temporal, Del día.</p>
                                             </div>
                                         </div>
@@ -75,8 +80,8 @@ if (isset($authUrl)) {
                                                     INFO
                                                 </span>      
                                             </div>
-                                            <div class="card-reveal">
-                                                <span class="card-title grey-text text-darken-4">Información adicional<i class="material-icons right">close</i></span>
+                                            <div class="card-reveal b-azul white-text">
+                                                <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
                                                 <p>Consulta de evaluación.</p>
                                             </div>
                                         </div>
@@ -93,8 +98,8 @@ if (isset($authUrl)) {
                                                     INFO
                                                 </span>      
                                             </div>
-                                            <div class="card-reveal">
-                                                <span class="card-title grey-text text-darken-4">Información adicional<i class="material-icons right">close</i></span>
+                                            <div class="card-reveal b-azul white-text">
+                                                <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
                                                 <p>Pedidos de paquete de uniformes incluido en la canasta básica y de uniformes adicionales.</p>
                                             </div>
                                         </div>
@@ -111,8 +116,8 @@ if (isset($authUrl)) {
                                                     INFO
                                                 </span>      
                                             </div>
-                                            <div class="card-reveal">
-                                                <span class="card-title grey-text text-darken-4">Información adicional<i class="material-icons right">close</i></span>
+                                            <div class="card-reveal b-azul white-text">
+                                                <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
                                                 <p>Podrás ver las imágenes de eventos del colegio.</p>
                                             </div>
                                         </div>
@@ -120,7 +125,7 @@ if (isset($authUrl)) {
                                     <div class="col s12 m6 l4">
                                         <div class="card" style="box-shadow: none">
                                             <div class="card-image waves-effect waves-block waves-light">
-                                                <a href='https://chmd.edu.mx/galeria/'>
+                                                <a href='Transportes/Especial/menu.php'>
                                                     <img src="pics/activos/permisos.png" style="padding:3rem;">
                                                 </a>
                                             </div>
@@ -129,8 +134,8 @@ if (isset($authUrl)) {
                                                     INFO
                                                 </span>      
                                             </div>
-                                            <div class="card-reveal">
-                                                <span class="card-title grey-text text-darken-4">Información adicional<i class="material-icons right">close</i></span>
+                                            <div class="card-reveal b-azul white-text">
+                                                <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
                                                 <p>Generar permisos extraordinarios, Cumpleaños, bar mitzvah.</p>
                                             </div>
                                         </div>
@@ -147,8 +152,8 @@ if (isset($authUrl)) {
                                                     INFO
                                                 </span>      
                                             </div>
-                                            <div class="card-reveal">
-                                                <span class="card-title grey-text text-darken-4">Información adicional<i class="material-icons right">close</i></span>
+                                            <div class="card-reveal b-azul white-text">
+                                                <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
                                                 <p>Podrás realizar un evento y generación de minuta del evento.</p>
                                             </div>
                                         </div>
@@ -158,10 +163,15 @@ if (isset($authUrl)) {
                         </div>
                     </div>   
                     <?php
-                } elseif ($perfil == 4) {
-                    echo '<a href="' . $redirect_uri . '?logout=1" class="btn b-azul white-text right">'
-                    . "<i class='fas fa-sign-out-alt'></i>&nbsp;Salir</a><div style='clear:both'></div>";
+                } 
+                elseif ($tipo == 5) {
                     ?>  
+                <div class="fixed-action-btn">
+                    <?php
+                    echo '<a href="' . $redirect_uri . '?logout=1" class="btn-floating btn-large red" >'
+                    . "<i class='material-icons'>exit_to_app</i>Salir</a>";
+                    ?>
+                </div>
                     <!--MENU PERFIL4-->
                     <br>
                     <div class="container b-blanco">
@@ -179,8 +189,8 @@ if (isset($authUrl)) {
                                                 INFO
                                             </span>      
                                         </div>
-                                        <div class="card-reveal">
-                                            <span class="card-title grey-text text-darken-4">Información adicional<i class="material-icons right">close</i></span>
+                                        <div class="card-reveal b-azul white-text">
+                                            <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
                                             <p>Solicitudes de cambio Permanente, Temporal, Del día.</p>
                                         </div>
                                     </div>
@@ -197,8 +207,8 @@ if (isset($authUrl)) {
                                                 INFO
                                             </span>      
                                         </div>
-                                        <div class="card-reveal">
-                                            <span class="card-title grey-text text-darken-4">Información adicional<i class="material-icons right">close</i></span>
+                                        <div class="card-reveal b-azul white-text">
+                                            <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
                                             <p>Consulta de evaluación.</p>
                                         </div>
                                     </div>
@@ -215,8 +225,8 @@ if (isset($authUrl)) {
                                                 INFO
                                             </span>      
                                         </div>
-                                        <div class="card-reveal">
-                                            <span class="card-title grey-text text-darken-4">Información adicional<i class="material-icons right">close</i></span>
+                                        <div class="card-reveal b-azul white-text">
+                                            <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
                                             <p>Pedidos de paquete de uniformes incluido en la canasta básica y de uniformes adicionales.</p>
                                         </div>
                                     </div>
@@ -233,8 +243,8 @@ if (isset($authUrl)) {
                                                 INFO
                                             </span>      
                                         </div>
-                                        <div class="card-reveal">
-                                            <span class="card-title grey-text text-darken-4">Información adicional<i class="material-icons right">close</i></span>
+                                        <div class="card-reveal b-azul white-text">
+                                            <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
                                             <p>Podrás ver las imágenes de eventos del colegio.</p>
                                         </div>
                                     </div>
@@ -251,8 +261,8 @@ if (isset($authUrl)) {
                                                 INFO
                                             </span>      
                                         </div>
-                                        <div class="card-reveal">
-                                            <span class="card-title grey-text text-darken-4">Información adicional<i class="material-icons right">close</i></span>
+                                        <div class="card-reveal b-azul white-text">
+                                            <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
                                             <p>Generar permisos extraordinarios, Cumpleaños, bar mitzvah.</p>
                                         </div>
                                     </div>
@@ -270,7 +280,7 @@ if (isset($authUrl)) {
                                             </span>      
                                         </div>
                                         <div class="card-reveal">
-                                            <span class="card-title grey-text text-darken-4">Información adicional<i class="material-icons right">close</i></span>
+                                            <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
                                             <p>Podrás realizar un evento y generación de minuta del evento.</p>
                                         </div>
                                     </div>
@@ -287,8 +297,8 @@ if (isset($authUrl)) {
                                                 INFO
                                             </span>      
                                         </div>
-                                        <div class="card-reveal">
-                                            <span class="card-title grey-text text-darken-4">Información adicional<i class="material-icons right">close</i></span>
+                                        <div class="card-reveal b-azul white-text">
+                                            <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
                                             <p>Podrás realizar un evento y generación de minuta del evento.</p>
                                         </div>
                                     </div>
@@ -297,10 +307,15 @@ if (isset($authUrl)) {
                         </div>  
                     </div>
                     <?php
-                } else {
-                    echo '<a href="' . $redirect_uri . '?logout=1" class="btn btn-pill b-azul white-text mr-3 float-right">'
-                    . "<i class='fas fa-sign-out-alt'></i>&nbsp;Salir</a><div style='clear:both'></div>";
+                } 
+                else {
                     ?>
+                    <div class="fixed-action-btn">
+                        <?php
+                        echo '<a href="' . $redirect_uri . '?logout=1" class="btn-floating btn-large red" >'
+                        . "<i class='material-icons'>exit_to_app</i>Salir</a>";
+                        ?>
+                    </div>
                     <div class="row ">                  
                         <div class="col-sm-12 col-md-10" style='background-color: white;margin:auto'>
                             <br><br>
@@ -393,9 +408,12 @@ if (isset($authUrl)) {
     <br>
     <br>
 </div>
+
 <script>
     $(document).ready(function () {
-        $('.tooltipped').tooltip();
+        $('.fixed-action-btn').floatingActionButton({
+            hoverEnabled: false
+        });
     });
 </script>
 <?php include './components/layout_bottom.php'; ?>

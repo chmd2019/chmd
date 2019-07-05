@@ -6,7 +6,7 @@ $idseccion = $_GET['idseccion'];
 $user = $service->userinfo->get(); //get user info 
 $correo = $user->email;
 $objCliente = new Login();
-$consulta = $objCliente->Acceso($correo);
+$consulta = $objCliente->acceso_login($correo);
 //zona horaria para America/Mexico_city 
 require_once "$root_icloud/Helpers/DateHelper.php";
 $objDateHelper = new DateHelper();
@@ -18,7 +18,7 @@ $fecha_actual_impresa_script = "<script>var fecha = new Date('$fecha_actual');"
         . "fecha = `\${fecha.charAt(0).toUpperCase()}\${fecha.slice(1).toLowerCase()}`;"
         . "document.write(fecha)</script>";
 $consulta = mysqli_fetch_array($consulta);
-$familia = str_pad($consulta[4], 4, 0, STR_PAD_LEFT);
+$familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
 ?>
 
 <br>

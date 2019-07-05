@@ -17,6 +17,8 @@ body{
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    padding:0px;
+    margin:0px;
 }
 .content-logo{
     margin-left: 7%;
@@ -139,8 +141,8 @@ footer{
 }
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
+    -webkit-appearance: none; 
+    margin: 0; 
 }
 
 input[type=number] { -moz-appearance:textfield; }
@@ -152,9 +154,10 @@ input[type=number] { -moz-appearance:textfield; }
         margin-left: 0px;
     }
     .logo{
-        width:70%;
+        width:100%;
+        margin-left: 0;
     }
     .logo-login{
-        width:70%;
+        width:90%;
     }
 }
