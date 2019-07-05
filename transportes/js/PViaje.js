@@ -30,7 +30,7 @@ $( function() {
       })
       .done(
         function(data) {
-          if (data.estatus == -1) {
+          if (data.estatus == '-1') {
             $('.alert-save')
             .html(
               '<div class="alert alert-warning alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>  El nombre del nivel ya existe, por favor escribe otro</div>')

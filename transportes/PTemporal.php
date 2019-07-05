@@ -42,29 +42,29 @@ $datos = mysqli_query ( $conexion,"SELECT vp.id_permiso,vp.fecha_creacion,
       //$existe = mysql_fetch_array ( $existe );
       if ($estatus==3)
       {
-        $query = "UPDATE Ventana_Permisos SET mensaje = '$mensaje',estatus=3, archivado=1 WHERE id_permiso=$funcion";
-        mysqli_query ($conexion, $query );
-        $json = array (
-          'estatus' => '0'
-          );
-        }
-        else if ($estatus==2)
-        {
-          $query = "UPDATE Ventana_Permisos SET mensaje = '$mensaje',estatus=2, archivado=1 WHERE id_permiso=$funcion";
-          mysqli_query ($conexion, $query );
-          $json = array (
-          'estatus' => '0'
-          );
-        } elseif ($existe) {
-          $json = array (
-          'estatus' => '-1'
-          );
-        }
-      } else {
+        $query = "UPDATE Ventana_Permisos SET mensaje = '$mensaje',estatus=3 WHERE id_permiso=$funcion";
+        mysqli_query ( $conexion, $query );
         $json = array (
         'estatus' => '0'
         );
       }
+      else if ($estatus==2)
+      {
+        $query = "UPDATE Ventana_Permisos SET mensaje = '$mensaje',estatus=2 WHERE id_permiso=$funcion";
+      mysqli_query ( $conexion, $query );
+        $json = array (
+        'estatus' => '0'
+        );
+      } elseif ($existe) {
+        $json = array (
+        'estatus' => '-1'
+        );
+      }
+    } else {
+      $json = array (
+      'estatus' => '0'
+      );
+    }
       echo json_encode ( $json );
       exit ();
     }
@@ -216,7 +216,8 @@ placeholder="Buscar Solicitud..."><br> <br>
         data-telefono="<?php echo $telefono?>"
         data-ruta="<?php echo $ruta?>"
         data-estatus ="<?php echo $estatus?>">
-        <span class="glyphicon glyphicon-pencil"> Ver</span>
+
+        <span class="glyphicon glyphicon-pencil">Ver</span>
       </button>
 
       <button class="btn-borrar btn btn-danger" type="button"
@@ -366,7 +367,6 @@ aria-labelledby="myModalLabel" aria-hidden="true">
               name="cp" id="cp" type="text"
               class="form-control" placeholder="Sin CP" readonly>
             </td>
-
           </tr>
         </table>
         <table border="0" WIDTH="700">
@@ -405,14 +405,7 @@ aria-labelledby="myModalLabel" aria-hidden="true">
               name="parentesco" id="parentesco" type="text"
               class="form-control" placeholder="Agrega parentesco" readonly>
             </td>
-
-
-
           </tr>
-
-
-
-
           <tr>
             <td >Celular:
               <input
@@ -427,16 +420,9 @@ aria-labelledby="myModalLabel" aria-hidden="true">
               name="telefono" id="telefono" type="text"
               class="form-control" placeholder="Agrega telefono" readonly>
             </td>
-
-
-
           </tr>
-
         </table>
         <!--
-
-
-
       -->
     </table>
     Comentarios de solicitud:
@@ -446,7 +432,7 @@ aria-labelledby="myModalLabel" aria-hidden="true">
     <input name="funcion" id="funcion" type="text"
     class="form-control" value="0" required style="display: none;"><br>
     Accion:
-    <select name="status" id="status">
+    <select name="estatus" id="estatus">
       <option value="0">Selecciona</option>
       <option value="2"style="color:white;background-color:#0b1d3f;">Autorizado</option>
       <option value="3" style="color:red;background-color:yellow;">Declinado</option>

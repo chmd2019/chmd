@@ -230,15 +230,12 @@ aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="alert-save"></div>
       <div class="modal-body">
         <table border="0" WIDTH="700">
-
           <tr>
             <td WIDTH="10%" >Folio:
               <input
               name="folio" id="folio" type="text" style="width : 100px; heigth : 4px"
               class="form-control" placeholder="folio"  readonly>
-
             </td>
-
             <td WIDTH="30%">Fecha de solicitud:
               <input
               name="nombre_nivel" id="nombre_nivel" type="text" style="width : 200px; heigth : 4px"
@@ -250,10 +247,8 @@ aria-labelledby="myModalLabel" aria-hidden="true">
               name="nombre_nivel1" id="nombre_nivel1" type="text"
               class="form-control" placeholder="Correo"  style="width : 400px; heigth : 4px" readonly>
             </td>
-
           </tr>
         </table>
-
         <table>
           <tr>
             <td WIDTH="100%" colspan="3">
@@ -323,7 +318,6 @@ aria-labelledby="myModalLabel" aria-hidden="true">
               name="cp" id="cp" type="text"
               class="form-control" placeholder="Sin cp" readonly>
             </td>
-
           </tr>
           <tr>
             <td>Ruta:
@@ -364,7 +358,7 @@ aria-labelledby="myModalLabel" aria-hidden="true">
             <td>Fecha Inicial:
               <input
               name="fecha_inicial" id="fecha_inicial" type="text"
-              class="form-control" placeholder="Agrega Ruta" readonly>
+              class="form-control" placeholder="Sin fecha inicial" readonly>
             </td>
             <td>Fecha Final:
               <input
@@ -374,9 +368,6 @@ aria-labelledby="myModalLabel" aria-hidden="true">
           </tr>
         </table>
         <!--
-
-
-
         -->
       </table>
       Comentarios de solicitud:
