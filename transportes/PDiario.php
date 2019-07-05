@@ -9,10 +9,10 @@ $firephp = FirePHP::getInstance ( true );
 ob_start ();
 $existe = '';
 $datos = mysqli_query ( $conexion,"SELECT vp.id_permiso,vp.fecha_creacion,
-vs.correo,vp.calle_numero,vp.colonia,
+usu.correo,vp.calle_numero,vp.colonia,
 vp.cp,
 vp.comentarios,vp.estatus,vp.nfamilia,
-df.calle,df.colonia as colonia1,
+usu.calle,usu.colonia as colonia1,
 vp.mensaje,usu.familia,
 vp.responsable,
 vp.parentesco,
@@ -22,13 +22,10 @@ vp.turno,
 vp.ruta,
 vp.fecha_creacion,
 vp.fecha_cambio,
-vp.fecha_respuesta,
-usu.telefonomama
+vp.fecha_respuesta
 from
 Ventana_Permisos vp
-LEFT JOIN Ventana_user vs on vp.idusuario=vs.id
-LEFT JOIN direccion_familias df on vp.nfamilia= df.nfamilia
-LEFT JOIN usuarios usu on vp.nfamilia=usu.`password`
+LEFT JOIN usuarios usu on vp.idusuario=usu.id
 where not vp.estatus=3 and vp.archivado=0 and vp.tipo_permiso='1'   order by vp.estatus DESC ,vp.id_permiso" );
 
 if (isset ( $_POST ['nombre_nivel'] ))

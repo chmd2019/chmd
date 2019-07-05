@@ -155,7 +155,7 @@ if(isset($_POST['submit']))
     }
     else {
       $familia=$_GET["nfamilia"];
-      $direccion = mysqli_query($conexion, "SELECT calle,colonia,cp FROM direccion_familias WHERE nfamilia='$familia' limit 1");
+      $direccion = mysqli_query($conexion, "SELECT calle,colonia,cp FROM usuarios WHERE numero='$familia' limit 1");
       while ($rows=mysqli_fetch_array($direccion))
       {
         $calle=$rows['calle'];
@@ -164,7 +164,7 @@ if(isset($_POST['submit']))
       }
 
 
-      $datos = mysqli_query ($conexion, "SELECT id,correo from Ventana_user WHERE nfamilia='$familia'" );
+      $datos = mysqli_query ($conexion, "SELECT id,nombre,correo from usuarios WHERE numero='$familia'" );
       ?>
         <center>
         <form id="permanente"  name="permanente" class="form-signin save-nivel" method='post'   onsubmit='Alta_permanente(); return false'>
@@ -192,13 +192,14 @@ if(isset($_POST['submit']))
                      while ($rows=mysqli_fetch_array($datos))
                      {
                        $idusuario=$rows['id'];
+                       $nombre= $rows['nombre'];
                        $correo= $rows['correo'];
                        ?>
 
                          <div class="form-check">
                            <input class="form-check-input" type="radio" name="idusuario" id="solicitante<?=$idusuario?>" value="<?=$idusuario?>" >
                            <label class="form-check-label" for="solicitante<?=$idusuario?>">
-                           <?=$correo?>
+                          <?=$nombre?>
                            </label>
                          </div>
                        <?php

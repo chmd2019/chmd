@@ -1,4 +1,4 @@
-$(function() {
+$( function() {
   var funcion;
   $('.save-nivel')
   .submit(

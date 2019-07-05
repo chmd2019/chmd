@@ -9,11 +9,11 @@ require_once ('FirePHPCore/FirePHP.class.php');
 $firephp = FirePHP::getInstance ( true );
 ob_start ();
 $existe = '';
-$sql= "select vp.id_permiso,vp.fecha_creacion,
-vs.correo,vp.calle_numero,vp.colonia,
+$sql= "SELECT vp.id_permiso,vp.fecha_creacion,
+usu.correo,vp.calle_numero,vp.colonia,
 vp.cp,
 vp.comentarios,vp.estatus,vp.nfamilia,
-df.calle,df.colonia as colonia1,
+usu.calle,usu.colonia as colonia1,
 vp.mensaje,usu.familia,
 vp.responsable,
 vp.parentesco,
@@ -21,21 +21,20 @@ vp.celular,
 vp.telefono,
 vp.fecha_inicial,
 vp.fecha_final,
-vp.ruta,
-usu.telefonomama
+vp.ruta
 from
 Ventana_Permisos vp
-LEFT JOIN Ventana_user vs on vp.idusuario=vs.id
-LEFT JOIN direccion_familias df on vp.nfamilia= df.nfamilia
-LEFT JOIN usuarios usu on vp.nfamilia=usu.`password`
+LEFT JOIN usuarios usu on vp.idusuario=usu.id
 where  vp.archivado=1 and vp.tipo_permiso='2'  order by vp.id_permiso desc";
 
 $datos =mysqli_query ($conexion, $sql );
+
 if (isset ( $_POST ['nombre_nivel'] )) {
   $nombre = $_POST ['nombre_nivel'];
   $funcion = $_POST ['funcion'];
   $mensaje= $_POST ['mensaje'];
   $estatus= $_POST ['estatus'];
+
   if ($nombre) {
     header ( 'Content-type: application/json; charset=utf-8' );
 

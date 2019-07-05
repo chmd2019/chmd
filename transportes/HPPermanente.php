@@ -9,20 +9,18 @@ require_once ('FirePHPCore/FirePHP.class.php');
 $firephp = FirePHP::getInstance ( true );
 ob_start ();
 $existe = '';
-$sql="select vp.id_permiso,vp.fecha_creacion,vs.correo,vp.calle_numero,vp.colonia,
+$sql="SELECT vp.id_permiso,vp.fecha_creacion,usu.correo,vp.calle_numero,vp.colonia,
 vp.cp,vp.ruta,vp.comentarios,vp.estatus,vp.nfamilia,
-df.calle,df.colonia as colonia1,
+usu.calle,usu.colonia as colonia1,
 vp.mensaje,usu.familia,
 vp.lunes,
 vp.martes,
 vp.miercoles,
 vp.jueves,
-vp.viernes,usu.telefonomama
+vp.viernes
 from
 Ventana_Permisos vp
-LEFT JOIN Ventana_user vs on vp.idusuario=vs.id
-LEFT JOIN direccion_familias df on vp.nfamilia= df.nfamilia
-LEFT JOIN usuarios usu on vp.nfamilia=usu.`password`
+LEFT JOIN usuarios usu on vp.idusuario=usu.id
 where   vp.archivado=1 and vp.tipo_permiso='3'  order by vp.id_permiso desc";
 $datos =mysqli_query ($conexion, $sql );
 if (isset ( $_POST ['nombre_nivel'] )) {
@@ -42,7 +40,7 @@ if (isset ( $_POST ['nombre_nivel'] )) {
       'estatus' => '0'
       );
     } else if ($estatus==2)  {
-      $query = "UPDATE Ventana_Permisos SET mensaje = '$mensaje',estatus=2 WHERE id=$funcion";
+      $query = "UPDATE Ventana_Permisos SET mensaje = '$mensaje',estatus=2 WHERE id_permiso=$funcion";
     mysqli_query ( $conexion, $query );
       $json = array (
       'estatus' => '0'

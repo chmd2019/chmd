@@ -10,15 +10,13 @@ require_once ('FirePHPCore/FirePHP.class.php');
 $firephp = FirePHP::getInstance ( true );
 ob_start ();
 $existe = '';
-$sql ="SELECT vp.id_permiso, vp.fecha_creacion, vs.correo,vp.calle_numero,vp.colonia,
-vp.cp,vp.ruta,vp.comentarios,vp.estatus,vp.nfamilia,
-df.calle,df.colonia as colonia1,
-vp.mensaje,usu.familia,vp.fecha_cambio,vp.fecha_respuesta,usu.telefonomama
+$sql = "SELECT vp.id_permiso, vp.fecha_creacion, usu.correo,vp.calle_numero,vp.colonia,
+vp.cp, vp.ruta, vp.comentarios, vp.estatus, vp.nfamilia,
+usu.calle, usu.colonia as colonia1,
+vp.mensaje, usu.familia, vp.fecha_cambio, vp.fecha_respuesta
 from
 Ventana_Permisos vp
-LEFT JOIN Ventana_user vs on vp.idusuario=vs.id
-LEFT JOIN direccion_familias df on vp.nfamilia= df.nfamilia
-LEFT JOIN usuarios usu on vp.nfamilia=usu.`password`
+LEFT JOIN usuarios usu on vp.idusuario=usu.id
 where vp.tipo_permiso='1' and vp.archivado=1 and YEAR(vp.fecha_respuesta)='$year' and MONTH(vp.fecha_respuesta)='$mes'  order by vp.id_permiso desc";
 
 $datos = mysqli_query ($conexion, $sql );
@@ -132,15 +130,17 @@ placeholder="Buscar Solicitud..."><br> <br>
       $familia=$dato['familia'];
       $fecha_cambio=$dato['fecha_cambio'];
       $frespuesta=$dato['fecha_respuesta'];
-      if($fecha_cambio==0)
+
+  /*    if($fecha_cambio==0)
       {
         $ppermiso=$fecha;
       }
       else
       {
         $ppermiso= $fecha_cambio;
-      }
+      }*/
 
+      $ppermiso= $fecha_cambio;
       ?>
       <tr data-row="<?php echo $dato['id_permiso']?>">
         <td><?php echo $id ?></td>
