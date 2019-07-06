@@ -99,7 +99,6 @@ echo 'Solicitud Guardada';
       <link rel="shortcut icon" href="img/favicon.png">
       <title>CHMD :: Alta Diario</title>
       <link href="dist/css/bootstrap.css" rel="stylesheet">
-      <link href="css/bootstrap-datetimepicker.css" rel="stylesheet">
       <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet">
       <link href="css/menu.css" rel="stylesheet">
     </head>
@@ -291,7 +290,7 @@ include ('perfiles_dinamicos.php');
                   <td><br>
                     Fecha del Permiso:
                     <div class="input-group date datepicker" data-date-format="dd/mm/yyyy">
-                      <input class="form-control" size="15" id="fecha_permiso" name="fecha_permiso" placeholder="dd/mm/aaaa" type="text" disabled required/>
+                      <input class="form-control" size="15" id="fecha_permiso" name="fecha_permiso" placeholder="Seleccione una fecha" type="text" disabled required/>
                       <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                     </div>
                   </td>
@@ -336,7 +335,6 @@ include ('perfiles_dinamicos.php');
   src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script type="text/javascript" src="dist/js/bootstrap.js"></script>
   <script type="text/javascript" src="js/Alta_diario.js"></script>
-  <script type="text/javascript" src="js/bootstrap-datetmepicker.js" charset="UTF-8"></script>
   <script type="text/javascript" src="js/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
 
   <?php
@@ -357,16 +355,16 @@ include ('perfiles_dinamicos.php');
       $('.datepicker').datetimepicker({
         language: 'es',
         weekStart: 1,
-        todayBtn: 1,
+        todayBtn: 0,
         autoclose: 1,
         todayHighlight: 1,
         startView: 2,
         minView: 2,
-        startDate: '+3d',
+        startDate: '+0d',
         daysOfWeekDisabled: [0, 6],
         datesDisabled: calendario_escolar,
         forceParse: 0,
-        format: "dd/mm/yyyy"
+        format: "DD, dd MM yyyy"
       });
 
   </script>

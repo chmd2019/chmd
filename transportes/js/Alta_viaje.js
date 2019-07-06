@@ -6,7 +6,8 @@ function Alta_viaje()
   }else{
     alert("Seleccione un familiar como Solicitante");
     return false;
-  }  var nfamilia = document.getElementById('nfamilia').value;
+  }
+  var nfamilia = document.getElementById('nfamilia').value;
   var talumnos = document.getElementById('talumnos').value;
   var calle = document.getElementById('calle').value;
   var colonia = document.getElementById('colonia').value;
@@ -22,19 +23,52 @@ function Alta_viaje()
   if (fechaini==''){
     alert('Seleccione la fecha Inicial del permiso.');
     return false;
+  }else{
+    let array1= fechaini.split(',');
+    let dia_letra=array1[0];
+    let fecha_more= array1[1];
+    let array2 = fecha_more.split(' ');
+    let dia= array2[1];
+    let mes= array2[2];
+    let anio=array2[3];
+    //procesar mes
+    let _mes = get_mes(mes);
+    //procesar año
+    let _anio= anio % 100;
+    fechaini=  _mes +"/"+ dia  + "/" + _anio;
+    //alert(fechaini);
+    var format_fechaini = dia_letra + ", "  + dia + " De " + mes + " De " + anio;
   }
+
   if (fechater==''){
     alert('Seleccione la Fecha Final del permiso.');
     return false;
+  }else{
+    let array1= fechater.split(',');
+    let dia_letra=array1[0];
+    let fecha_more= array1[1];
+    let array2 = fecha_more.split(' ');
+    let dia= array2[1];
+    let mes=array2[2];
+    let anio=array2[3];
+    //procesar mes
+    let _mes = get_mes(mes);
+    //procesar año
+    let _anio= anio % 100;
+
+    fechater=_mes +"/"+ dia  + "/" + _anio;
+    //alert(fechater);
+    var format_fechater = dia_letra + ", "  + dia + " De " + mes + " De " + anio;
   }
   //fecha final > fecha inicial
   var fechai = new Date (fechaini);
   var fechaf = new Date (fechater);
+  //alert(fechai.getDate() +" & " + (fechai.getMonth()+1) +" & " + fechai.getYear() +'&'+ fechai.getTime());
+  //return false;
   if (fechaf.getTime() <= fechai.getTime()){
-    alert('La Fecha Final debe ser mayor a la Fecha Inicial. ');
+    alert('La Fecha Final debe ser mayor a la Fecha Inicial.');
     return false;
   }
-
   //validacion de alumnos
  var suma = 0;
  var los_cboxes = document.getElementsByName('alumno[]');
@@ -66,7 +100,7 @@ function Alta_viaje()
  }
 //alert(alumnos);
 
-  // agregar los alumnos
+    // agregar los alumnos
 
     //validar domicilio
 
@@ -161,8 +195,8 @@ function Alta_viaje()
         parentesco: parentesco,
         celular: celular,
         telefono: telefono,
-        fechaini: fechaini,
-        fechater:fechater,
+        fechaini: format_fechaini,
+        fechater:format_fechater,
         comentarios:comentarios,
         suma:suma,
         nfamilia:nfamilia,
@@ -183,4 +217,47 @@ function Alta_viaje()
   function Cancelar()
   {
     window.location.replace("../transportes/PTemporal.php");
+  }
+
+  function get_mes(mes){
+      switch (mes) {
+      case "Enero":
+      return 1;
+      break;
+      case "Febrero":
+      return 2;
+      break;
+      case "Marzo":
+      return 3;
+      break;
+      case "Abril":
+      return 4;
+      break;
+      case "Mayo":
+      return 5;
+      break;
+      case "Junio":
+      return 6;
+      break;
+      case "Julio":
+      return 7;
+      return ;
+      break;
+      case "Agosto":
+      return 8;
+      break;
+      case "Septiembre":
+      return 9;
+      break;
+      case "Octubre":
+      return 10;
+      break;
+      case "Noviembre":
+      return 11;
+      break;
+      case "Diciembre":
+      return 12;
+      break;
+
+    }
   }

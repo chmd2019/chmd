@@ -1,6 +1,5 @@
 function Alta_diario()
 {
-
 var fecha = document.getElementById('fecha').value;
 if(document.querySelector('input[name="idusuario"]:checked')){
   var idusuario = document.querySelector('input[name="idusuario"]:checked').value;
@@ -17,8 +16,17 @@ var fecha_permiso = document.getElementById('fecha_permiso').value;
 if (fecha_permiso==''){
   alert('Seleccione la fecha del permiso.');
   return false;
+}else{
+  let array1= fecha_permiso.split(',');
+  let dia_letra=array1[0];
+  let fecha_more= array1[1];
+  let array2 = fecha_more.split(' ');
+  let dia=array2[1];
+  let mes=array2[2];
+  let anio=array2[3];
+  var fecha_permiso = dia_letra + ", "  + dia + " De " + mes + " De " + anio;
 }
- //validacion de alumnos
+ //validacion de alumnoss
 var suma = 0;
 var los_cboxes = document.getElementsByName('alumno[]');
 var alumnos = '';

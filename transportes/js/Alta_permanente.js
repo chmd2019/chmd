@@ -97,13 +97,11 @@ function Alta_permanente()
       var dia4 = document.getElementById('jueves').checked;
       var dia5 = document.getElementById('viernes').checked;
 
-      if (dia1==true){var lunes = document.getElementById('lunes').value;}else{var lunes =0;}
-      if (dia2==true){var martes = document.getElementById('martes').value;}else{var martes =0;}
-      if (dia3==true){var miercoles = document.getElementById('miercoles').value;}else{var miercoles =0;}
-      if (dia4==true){var jueves = document.getElementById('jueves').value;}else{var jueves =0;}
-      if (dia5==true){var viernes = document.getElementById('viernes').value;}else{var viernes =0;}
-
-
+      if (dia1==true){var lunes = document.getElementById('lunes').value;}else{var lunes ='';}
+      if (dia2==true){var martes = document.getElementById('martes').value;}else{var martes ='';}
+      if (dia3==true){var miercoles = document.getElementById('miercoles').value;}else{var miercoles ='';}
+      if (dia4==true){var jueves = document.getElementById('jueves').value;}else{var jueves ='';}
+      if (dia5==true){var viernes = document.getElementById('viernes').value;}else{var viernes ='';}
     }
 
 
@@ -117,11 +115,7 @@ function Alta_permanente()
       return false;
     }
     var ruta =document.permanente.ruta.value;
-
     var comentarios =document.permanente.comentarios.value;
-
-
-
 
     $.ajax({
       url: 'Alta_permanente.php',

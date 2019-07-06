@@ -149,12 +149,27 @@ LEFT JOIN usuarios usu on vp.idusuario=usu.id
 
           $mensaje=$dato['mensaje'];
           $familia=$dato['familia'];
-          $lunes=$dato['lunes'];
-          $martes=$dato['martes'];
-          $miercoles=$dato['miercoles'];
-          $jueves=$dato['jueves'];
-          $viernes=$dato['viernes'];
 
+          $lunes=$dato['lunes'];
+          if($lunes=='0' || $lunes==''){
+              $lunes= '   -   ';
+          }
+          $martes=$dato['martes'];
+          if($martes=='0' || $martes==''){
+              $martes= '   -   ';
+          }
+          $miercoles=$dato['miercoles'];
+          if($miercoles=='0' || $miercoles==''){
+              $miercoles= '   -   ';
+          }
+          $jueves=$dato['jueves'];
+          if($jueves=='0' || $jueves==''){
+              $jueves= '   -   ';
+          }
+          $viernes=$dato['viernes'];
+          if($viernes=='0' || $viernes==''){
+              $viernes= '   -   ';
+          }
           /************************************/
           $color = '#fff';
           $borde= '#ddd';

@@ -1504,8 +1504,9 @@
       suffix:      ['st', 'nd', 'rd', 'th'],
       today:       'Today',
       clear:       'Clear'
-    }
-  };
+    },
+es: { days:        ['Domingo', 'Lunes ', 'Martes', 'Miecoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'], daysShort:   ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom'], daysMin:     ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa', 'Do'], months:      ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'], monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'], meridiem:    ['am', 'pm'], suffix:      ['ro', 'do', 'ro', 'to'], today:       'Hoy', clear:       'Limpiar' }
+};
 
   var DPGlobal = {
     modes:            [
@@ -1857,7 +1858,7 @@
                 '</tr>' +
       '</thead>',
     contTemplate: '<tbody><tr><td colspan="7"></td></tr></tbody>',
-    footTemplate: '<tfoot>' + 
+    footTemplate: '<tfoot>' +
                     '<tr><th colspan="7" class="today"></th></tr>' +
                     '<tr><th colspan="7" class="clear"></th></tr>' +
                   '</tfoot>'
