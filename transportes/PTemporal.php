@@ -151,8 +151,56 @@ placeholder="Buscar Solicitud..."><br> <br>
       $ruta=$dato['ruta'];
       $fecha_respuesta = $dato['fecha_respuesta'];
 
+
       $fecha_actual = strtotime(date("d-m-Y H:i:00",time()));
-      $fecha_entrada = strtotime($fecha_inicial);
+      $array1 = explode(',' , $fecha_inicial );
+      $array2= explode(' ',$array1[1]);
+      $dia= $array2[1];
+      $mes= '';
+      switch ($array2[3]) {
+            case 'Enero':
+            $mes=1;
+            break;
+            case 'Febrero':
+            $mes=2;
+            break;
+            case 'Marzo':
+            $mes=3;
+            break;
+            case 'Abril':
+            $mes=4;
+            break;
+            case 'Mayo':
+            $mes=5;
+            break;
+            case 'Junio':
+            $mes=6;
+            break;
+            case 'Julio':
+            $mes=7;
+            break;
+            case 'Agosto':
+            $mes=8;
+            break;
+            case 'Septiembre':
+            $mes=9;
+            break;
+            case 'Octubre':
+            $mes=10;
+            break;
+            case 'Noviembre':
+            $mes=11;
+            break;
+            case 'Diciembre':
+              $mes=12;
+            break;
+            default:
+            $mes = -1;
+          break;
+      }
+      $anio= $array2[5] % 100;
+      $_fecha_inicial= $mes.'/'.$dia.'/'.$anio;
+      $fecha_entrada = strtotime($_fecha_inicial);
 
       if($fecha_actual > $fecha_entrada){
             $otro_dia=false;

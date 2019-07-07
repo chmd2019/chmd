@@ -136,31 +136,60 @@ placeholder="Buscar Solicitud..."><br> <br>
       $nfamila= $dato['nfamilia'];
       $calle_numero1=$dato['calle'];
       $colonia1=$dato['colonia1'];
-      /*
-      $alumno1=$dato['alumno1'];
-      $grado1=$dato['grado1'];
-      $grupo1=$dato['grupo1'];
-      $alumno2=$dato['alumno2'];
-      $grado2=$dato['grado2'];
-      $grupo2=$dato['grupo2'];
-      $alumno3=$dato['alumno3'];
-      $grado3=$dato['grado3'];
-      $grupo3=$dato['grupo3'];
-      $alumno4=$dato['alumno4'];
-      $grado4=$dato['grado4'];
-      $grupo4=$dato['grupo4'];
-      $alumno5=$dato['alumno5'];
-      $grado5=$dato['grado5'];
-      $grupo5=$dato['grupo5'];
-      */
       $mensaje=$dato['mensaje'];
       $familia=$dato['familia'];
       $fecha_cambio=$dato['fecha_cambio'];
       $fecha_respuesta = $dato['fecha_respuesta'];
 
       $fecha_actual = strtotime(date("d-m-Y H:i:00",time()));
-      $fecha_entrada = strtotime ($fecha_cambio);
-
+      $array1 = explode(',' , $fecha_cambio );
+      $array2= explode(' ',$array1[1]);
+      $dia= $array2[1];
+      $mes= '';
+      switch ($array2[3]) {
+            case 'Enero':
+            $mes=1;
+            break;
+            case 'Febrero':
+            $mes=2;
+            break;
+            case 'Marzo':
+            $mes=3;
+            break;
+            case 'Abril':
+            $mes=4;
+            break;
+            case 'Mayo':
+            $mes=5;
+            break;
+            case 'Junio':
+            $mes=6;
+            break;
+            case 'Julio':
+            $mes=7;
+            break;
+            case 'Agosto':
+            $mes=8;
+            break;
+            case 'Septiembre':
+            $mes=9;
+            break;
+            case 'Octubre':
+            $mes=10;
+            break;
+            case 'Noviembre':
+            $mes=11;
+            break;
+            case 'Diciembre':
+              $mes=12;
+            break;
+            default:
+            $mes = -1;
+          break;
+      }
+      $anio= $array2[5] % 100;
+      $_fecha_cambio= $mes.'/'.$dia.'/'.$anio;
+      $fecha_entrada = strtotime ($_fecha_cambio);
       if($fecha_actual > $fecha_entrada){
             $otro_dia=false;
       }else{
@@ -178,7 +207,6 @@ placeholder="Buscar Solicitud..."><br> <br>
         $fpermiso= $fecha_inicial;
       }
 */
-
        if ($otro_dia==true){
         $color = '#ddd';
         $borde= '#ddd';
@@ -191,7 +219,6 @@ placeholder="Buscar Solicitud..."><br> <br>
         $borde= '#ffb1b1';
       }
       ?>
-
       <tr  style="background:<?=$color?>; border-bottom:  1px solid <?=$borde?>"  data-row="<?php echo $dato['id_permiso']?>">
         <td><?php echo $id ?></td>
         <td><?php echo $fecha?></td>

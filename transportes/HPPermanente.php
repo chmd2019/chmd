@@ -217,6 +217,7 @@ if (isset ( $_POST ['nombre_nivel'] )) {
         src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script type="text/javascript" src="dist/js/bootstrap.js"></script>
         <script type="text/javascript" src="js/PPermanente.js"></script>
+        <script type="text/javascript" src="js/1min_inactivo.js" ></script>
       </body>
       </html>
 
