@@ -37,7 +37,7 @@ function Alta_viaje()
     let _anio= anio % 100;
     fechaini=  _mes +"/"+ dia  + "/" + _anio;
     //alert(fechaini);
-    var format_fechaini = dia_letra + ", "  + dia + " De " + mes + " De " + anio;
+    var format_fechaini = dia_letra + ", "  + dia + " de " + mes + " de " + anio;
   }
 
   if (fechater==''){
@@ -58,7 +58,7 @@ function Alta_viaje()
 
     fechater=_mes +"/"+ dia  + "/" + _anio;
     //alert(fechater);
-    var format_fechater = dia_letra + ", "  + dia + " De " + mes + " De " + anio;
+    var format_fechater = dia_letra + ", "  + dia + " de " + mes + " de " + anio;
   }
   //fecha final > fecha inicial
   var fechai = new Date (fechaini);

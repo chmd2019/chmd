@@ -301,7 +301,7 @@ if(isset($_POST['submit']))
                   CP:
                   <input
                   name="cp" id="cp" type="text"
-                  class="form-control" placeholder="Agrega cp" style="width : 300px; heigth : 4px" >
+                  class="form-control" placeholder="Agrega cp" maxlength="5" style="width : 300px; heigth : 4px" >
                 </td>
 
               </tr>

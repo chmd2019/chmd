@@ -250,7 +250,7 @@ include ('perfiles_dinamicos.php');
                   CP:
                   <input
                   name="cp1" id="cp1" type="text"
-                  class="form-control" placeholder="cp"  value="<?php echo $cp ?>" readonly="" >
+                  class="form-control" placeholder="cp" maxlength="5" value="<?php echo $cp ?>" readonly="" >
                 </td>
               </tr>
               <tr>

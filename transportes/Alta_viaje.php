@@ -286,7 +286,7 @@ else
               <td colspan="2">
                 CP:
                 <input
-                name="cp" id="cp" type="text"
+                name="cp" id="cp" type="text" maxlength="5"
                 class="form-control" placeholder="Agrega cp" style="width : 300px; heigth : 4px" >
               </td>
             </tr>

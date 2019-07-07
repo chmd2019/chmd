@@ -24,7 +24,7 @@ if (fecha_permiso==''){
   let dia=array2[1];
   let mes=array2[2];
   let anio=array2[3];
-  var fecha_permiso = dia_letra + ", "  + dia + " De " + mes + " De " + anio;
+  var fecha_permiso = dia_letra + ", "  + dia + " de " + mes + " de " + anio;
 }
  //validacion de alumnoss
 var suma = 0;
