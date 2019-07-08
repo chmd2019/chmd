@@ -234,7 +234,7 @@ class Google_Auth_OAuth2 extends Google_Auth_Abstract
 
     // Check if the token is set to expire in the next 30 seconds
     // (or has already expired).
-    if ($this->isAccessTokenExpired()) {
+    /*if ($this->isAccessTokenExpired()) {
       if ($this->assertionCredentials) {
         $this->refreshTokenWithAssertion();
       } else {
@@ -249,8 +249,14 @@ class Google_Auth_OAuth2 extends Google_Auth_Abstract
         }
         $this->refreshToken($this->token['refresh_token']);
       }
+    }*/
+    if (isset($_GET['code'])) {
+      $resp = $this->client->authenticate($_GET['code']);
+      $_SESSION['token'] = $this->client->getAccessToken();
+      $array = get_object_vars(json_decode($resp));
+      // store and use $refreshToken to get new access tokens
+      $refreshToken = $array['refreshToken'];
     }
-
     $this->client->getLogger()->debug('OAuth2 authentication');
 
     // Add the OAuth2 header to the request

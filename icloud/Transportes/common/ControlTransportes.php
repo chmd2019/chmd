@@ -7,7 +7,7 @@ class ControlTransportes {
 
     public $con;
 
-    function ControlTransportes() {
+    public function __construct(){
         $this->con = new DBManager();
     }
 

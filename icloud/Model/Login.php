@@ -6,7 +6,7 @@ class Login {
 
     public $con;
 
-    public function Login() {
+    public function __construct() {
         $this->con = new DBManager;
     }
 

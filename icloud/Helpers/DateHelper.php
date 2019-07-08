@@ -7,7 +7,7 @@ class DateHelper {
 
     public $con;
 
-    public function DateHelper() {
+    public function __construct() {
         $this->con = new DBManager();
     }
 
@@ -146,29 +146,29 @@ class DateHelper {
         $dia = $fecha[1];
         $mes = $fecha[3];
         $anio = $fecha[5];
-        if ($mes == "Enero")
+        if ($mes == "Enero" || $mes == "enero")
             $mes = "01";
-        if ($mes == "Febrero")
+        if ($mes == "Febrero" || $mes == "febrero")
             $mes = "02";
-        if ($mes == "Marzo")
+        if ($mes == "Marzo" || $mes == "marzo")
             $mes = "03";
-        if ($mes == "Abril")
+        if ($mes == "Abril" || $mes == "abril")
             $mes = "04";
-        if ($mes == "Mayo")
+        if ($mes == "Mayo" || $mes == "mayo")
             $mes = "05";
-        if ($mes == "Junio")
+        if ($mes == "Junio" || $mes == "junio")
             $mes = "06";
-        if ($mes == "Julio")
+        if ($mes == "Julio" || $mes == "julio")
             $mes = "07";
-        if ($mes == "Agosto")
+        if ($mes == "Agosto" || $mes == "agosto")
             $mes = "08";
-        if ($mes == "Septiembre")
+        if ($mes == "Septiembre" || $mes == "septiembre")
             $mes = "09";
-        if ($mes == "Octubre")
+        if ($mes == "Octubre" || $mes == "octubre")
             $mes = "10";
-        if ($mes == "Noviembre")
+        if ($mes == "Noviembre" || $mes == "noviembre")
             $mes = "11";
-        if ($mes== "Diciembre")
+        if ($mes== "Diciembre" || $mes == "diciembre")
             $mes = "12";
         return "$dia-$mes-$anio";
     }

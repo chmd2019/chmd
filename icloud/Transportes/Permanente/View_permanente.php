@@ -2,13 +2,6 @@
 $root_icloud = $_SERVER['DOCUMENT_ROOT'] . "/pruebascd/icloud";
 require_once "$root_icloud/Model/Login.php";
 require_once "$root_icloud/Transportes/common/ControlTransportes.php";
-$idseccion = $_GET['idseccion'];
-$user = $service->userinfo->get(); //get user info
-$correo = $user->email;
-$objCliente = new Login();
-$consulta = $objCliente->acceso_login($correo);
-//zona horaria para America/Mexico_city
-require_once "$root_icloud/Model/Login.php";
 require_once "$root_icloud/Helpers/DateHelper.php";
 $objDateHelper = new DateHelper();
 $objDateHelper->set_timezone();
@@ -25,10 +18,21 @@ $dias = array("domingo", "lunes", "martes", "mi&eacute;rcoles", "jueves", "viern
 
 <br>
 <div>
-    <span>
-        <h6 class=""><?php echo $fecha_actual_impresa_script; ?></h6>
-    </span>
 
+    <span>
+        <h6><?php echo $fecha_actual_impresa_script; ?></h6>
+        <br>
+        <div style="text-align: right">   
+            <a class="waves-effect waves-light btn b-azul c-blanco" 
+		href="https://www.chmd.edu.mx/pruebascd/icloud/menu.php?idseccion=<?php echo $idseccion; ?>">
+                <i class="material-icons left">keyboard_backspace</i>Atrás
+            </a>                
+            <a class="waves-effect waves-light btn red" href="#!" onclick="logout()">
+                <i class="material-icons left">lock</i>Salir
+            </a>  
+        </div>
+    </span>
+    
     <?php
     $control_permanente = new ControlTransportes();
     $listado_permiso_permanente = $control_permanente->listado_permiso_permanente($familia);

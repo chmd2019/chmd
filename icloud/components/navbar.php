@@ -1,8 +1,7 @@
-<?php ?>
-<nav class="nav-extended b-azul" style="padding:.6rem;">
-    <div class="nav-wrapper"> 
+<nav class="nav-extended b-azul" style="padding:1rem;">
+    <div class="nav-wrapper">
         <a href="https://www.chmd.edu.mx/pruebascd/icloud/" class="brand-logo">
-            <img class="logo" src="https://www.chmd.edu.mx/wp-content/uploads/2018/07/LogoMaguenWT.png" style="margin-left:2rem;">
+            <img class="logo" src="https://www.chmd.edu.mx/wp-content/uploads/2018/07/LogoMaguenWT.png">
         </a>
         <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
@@ -50,6 +49,7 @@
     <li><a href="https://www.chmd.edu.mx/bolsa-de-trabajo/" class="c-azul">Trabaja con nosotros</a></li>
     <li><a href="https://www.evaluatest.com/CHMD/evaluate/IUEvaluacion/CHMDBolsaTrabajo.asp" class="c-azul">Vacantes</a></li>
 </ul>
+
 <!-- Dropdown movil -->
 <ul id="dropdown_somos_movil" class="dropdown-content">
     <li><a href="https://www.chmd.edu.mx/filosofia/" class="c-azul">Filosofía</a></li>

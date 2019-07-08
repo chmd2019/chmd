@@ -1,10 +1,9 @@
 <?php
 $root_icloud = $_SERVER['DOCUMENT_ROOT'] . "/pruebascd/icloud";
-
-include_once "$root_icloud/Transportes/components/layout_top.php";
-include_once "$root_icloud/Transportes/components/navbar.php";
-
 session_start();
+
+include_once "$root_icloud/components/layout_top.php";
+
 require_once "$root_icloud/libraries/Google/autoload.php";
 require_once "$root_icloud/Model/Login.php";
 require_once "$root_icloud/Model/DBManager.php";
@@ -34,13 +33,9 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
     $authUrl = $client->createAuthUrl();
 }
 if (isset($authUrl)) {
-    ?>
-    <div class="caja-login" align="center">
-        <h5 class="c-azul">Mi Maguen</h5>
-        <?php echo '<a href="' . $authUrl . '"><img class = "logo-login" src="../../../images/google.png"/></a>'; ?>
-    </div>
-    <?php
+    header("Location: $redirect_uri?logout=1");
 } else {
+    include_once "$root_icloud/components/navbar.php";
     ?>
     <div class="row">
         <div class="col s12 l8 b-blanco border-azul" style="float: none;margin: 0 auto;">
@@ -153,7 +148,8 @@ if (isset($authUrl)) {
 ?>
 
 <div class="fixed-action-btn">
-    <a class="btn-floating btn-large b-azul" href="https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Permanente/PPermanente.php?idseccion=<?php echo $idseccion;?>">
+    <a class="btn-floating btn-large waves-effect waves-light b-azul"
+        href="<?php echo $redirect_uri?>Transportes/Permanente/PPermanente.php?idseccion=<?php echo $idseccion; ?>">
         <i class="large material-icons">keyboard_backspace</i>
     </a>
 </div>
@@ -233,3 +229,4 @@ if (isset($authUrl)) {
         });
     });
 </script>
+<?php include "$root_icloud/components/layout_bottom.php"; ?>

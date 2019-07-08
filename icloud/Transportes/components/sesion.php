@@ -1,9 +1,9 @@
 <?php
 session_start(); //session start
 //include_once("Model/DBManager.php");
-require_once('../../libraries/Google/autoload.php');
-require_once '../../Model/Config.php';
-require_once '../../Model/Login.php';
+require_once "$root_icloud/libraries/Google/autoload.php";
+require_once "$root_icloud/Model/Config.php";
+require_once "$root_icloud/Model/Login.php";
 //incase of logout request, just unset the session var
 if (isset($_GET['logout'])) {
     unset($_SESSION['access_token']);

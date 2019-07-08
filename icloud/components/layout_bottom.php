@@ -1,19 +1,29 @@
+<script>
+    function logout() {
+        var win = window.open("http://accounts.google.com/logout", "target");
+        setInterval(function () {
+            win.close();
+            window.location.href = "<?php echo $redirect_uri; ?>?logout=1";
+        }, 1000);
+    }
+</script>
+
 <!-- Footer -->
-<footer style="overflow: hidden">
+<footer>
     <div class="b-blanco">  
         <br>
         <br>
         <div class="row">
-            <div class="col s12 m3 text-center">
+            <div class="col s12 m12 l3 text-center">
                 <img class="img-fluid " src="https://www.chmd.edu.mx/wp-content/uploads/2018/07/LogoCHMD.png">
             </div>
-            <div class="col s12 m3 text-center">
+            <div class="col s12 m12 l3 text-center">
                 <img class="img-fluid" src="https://www.chmd.edu.mx/wp-content/uploads/2018/07/imgBachillerato.jpg">
             </div>
-            <div class="col s12 m3 text-center">
+            <div class="col s12 m12 l3 text-center">
                 <img class="img-fluid" src="https://www.chmd.edu.mx/wp-content/uploads/2018/07/imgISTE.jpg">
             </div>
-            <div class="col s12 m3 text-center">
+            <div class="col s12 m12 l3 text-center">
                 <h5 class="c-azul"><strong>CONTACTO</strong></h5>
                 <div class="c-gris">
                     <table>

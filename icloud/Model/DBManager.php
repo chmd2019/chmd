@@ -6,7 +6,8 @@ class DBManager
     public $Servidor;
     public $Usuario;
     public $Clave;
-    public function DBManager()
+    
+    public function __construct()
     {
         $this->BaseDatos = "chmd_sistemas";
         $this->Servidor = "132.148.43.14";

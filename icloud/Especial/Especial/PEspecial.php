@@ -17,20 +17,19 @@ $fecha_actual_impresa_script = "<script>var fecha = new Date('$fecha_actual');"
 if (isset($authUrl)) {
     header("Location: $redirect_uri?logout=1");
 } else {
-    
-$user = $service->userinfo->get();
-$correo = $user->email;
-$objCliente = new Login();
-$consulta = $objCliente->acceso_login($correo);
-include_once "$root_icloud/components/navbar.php";
+    $user = $service->userinfo->get();
+    $correo = $user->email;
+    $objCliente = new Login();
+    $consulta = $objCliente->acceso_login($correo);
+    include_once "$root_icloud/components/navbar.php";
     ?>
     <div class="row">    
         <div class="col s12 m12 l9 b-blanco border-azul" style="float: none;margin: 0 auto;"> 
             <div>
                 <br>
-                <h4 class="c-azul" style="text-align: center;">Cambio del dia</h4>
+                <h4 class="c-azul" style="text-align: center;">Especial</h4>
                 <div>
-                    <?php include('View_Diario.php');  ?> 
+                    <?php //include './View_especial.php'; ?> 
                 </div>
                 <?php
             }
@@ -41,22 +40,18 @@ include_once "$root_icloud/components/navbar.php";
 
 <div class="fixed-action-btn">
     <a class="btn-floating btn-large waves-effect waves-light b-azul"
-       href="vistas/vista_nuevo_permiso_diario.php?idseccion=<?php echo $idseccion; ?>">
+       href="vistas/vista_nuevo_permiso_especial.php?idseccion=<?php echo $idseccion; ?>">
         <i class="large material-icons">add</i>
     </a>
 </div>
-
 <script>
+
     $(document).ready(function () {
         $('.fixed-action-btn').floatingActionButton({
             hoverEnabled: false
         });
-        $('.modal').modal();
-        setInterval(function(){            
-            window.location.reload();
-        }, 30000);
     });
 </script>
 
 
-<?php include "$root_icloud/components/layout_bottom.php"; ?>
+<?php include_once "$root_icloud/components/layout_bottom.php"; ?>

@@ -1,12 +1,6 @@
 <?php
 $root_icloud = $_SERVER['DOCUMENT_ROOT'] . "/pruebascd/icloud";
-require_once "$root_icloud/Model/Login.php";
 require_once "$root_icloud/Transportes/common/ControlTransportes.php";
-$idseccion = $_GET['idseccion'];
-$user = $service->userinfo->get(); //get user info 
-$correo = $user->email;
-$objCliente = new Login();
-$consulta = $objCliente->acceso_login($correo);
 //zona horaria para America/Mexico_city 
 require_once "$root_icloud/Helpers/DateHelper.php";
 $objDateHelper = new DateHelper();
@@ -24,7 +18,17 @@ $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
 <br>
 <div>
     <span>
-        <h6 class=""><?php echo $fecha_actual_impresa_script; ?></h6>
+        <h6><?php echo $fecha_actual_impresa_script; ?></h6>
+        <br>
+        <div style="text-align: right">   
+            <a class="waves-effect waves-light btn b-azul c-blanco" 
+		href="https://www.chmd.edu.mx/pruebascd/icloud/menu.php?idseccion=<?php echo $idseccion; ?>">
+                <i class="material-icons left">keyboard_backspace</i>Atrás
+            </a>                
+            <a class="waves-effect waves-light btn red" href="#!" onclick="logout()">
+                <i class="material-icons left">lock</i>Salir
+            </a>  
+        </div>
     </span>
 
     <?php

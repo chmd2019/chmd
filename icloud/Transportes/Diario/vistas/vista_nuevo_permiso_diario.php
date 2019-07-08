@@ -1,8 +1,10 @@
 <?php
-$root_icloud = $_SERVER['DOCUMENT_ROOT'] . "/pruebascd/icloud";
-include "$root_icloud/Transportes/components/layout_top.php";
-include "$root_icloud/Transportes/components/navbar.php";
 session_start();
+
+$root_icloud = $_SERVER['DOCUMENT_ROOT'] . "/pruebascd/icloud";
+
+include "$root_icloud/components/layout_top.php";
+
 require_once "$root_icloud/libraries/Google/autoload.php";
 require_once "$root_icloud/Model/Login.php";
 require_once "$root_icloud/Model/DBManager.php";
@@ -29,12 +31,7 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
     $authUrl = $client->createAuthUrl();
 }
 if (isset($authUrl)) {
-    ?>
-    <div class="caja-login" align="center">
-        <h5 class="c-azul">Mi Maguen</h5>
-        <?php echo '<a href="' . $authUrl . '"><img class = "logo-login" src="../../../images/google.png"/></a>' ?>
-    </div>
-    <?php
+    header("Location: $redirect_uri?logout=1");
 } else {
     $user = $service->userinfo->get();
     $correo = $user->email;
@@ -60,8 +57,8 @@ if (isset($authUrl)) {
         $cp = $domicilio[2];
         $time = time();
         //manejo de fechas
-        $arrayMeses = array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-            'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
+        $arrayMeses = array('enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+            'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre');
 
         $arrayDias = array('Domingo', 'Lunes', 'Martes',
             'Miercoles', 'Jueves', 'Viernes', 'Sabado');
@@ -78,6 +75,7 @@ if (isset($authUrl)) {
             $fecha_minima = date("m/d/Y");
             $btn_fecha = true;
         }
+        include "$root_icloud/components/navbar.php";
         ?>
         <div class="row">
             <div class="col s12 l8 b-blanco border-azul" style="float: none;margin: 0 auto;">
@@ -110,7 +108,7 @@ if (isset($authUrl)) {
                         ?>
                         <div class="switch" style="text-align: center">
                             <label>
-                                Si su permiso es para otro día selección aquí
+                                Si su permiso es para otro día seleccione aquí
                                 <input type="checkbox" onchange="mostrar_fecha_para()">
                                 <span class="lever"></span>
                             </label>
@@ -128,7 +126,13 @@ if (isset($authUrl)) {
                         <label for="fecha_solicitud_nuevo" style="margin-left: 1rem">Para el día</label>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">calendar_today</i>
-                            <input value ="<?php echo $fecha_hoy; ?>" type="text" class="datepicker" id="fecha_solicitud_nuevo" placeholder="Para el día">            
+                            <input 
+                                value ="<?php echo $fecha_hoy; ?>" 
+                                type="text" 
+                                class="datepicker" 
+                                id="fecha_solicitud_nuevo" 
+                                placeholder="Para el día"
+                                onchange="fecha_minusculas(this.value, 'fecha_solicitud_nuevo')">            
                         </div>
                     </div>
                     <script>
@@ -149,7 +153,7 @@ if (isset($authUrl)) {
                             closeOnSelect: false,
                             monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
                             monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                            weekdaysFull: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
+                            weekdaysFull: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sabado'],
                             weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
                             weekdaysLetter: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
                             disable: calendario_escolar,
@@ -186,8 +190,6 @@ if (isset($authUrl)) {
                                 </div>
                                 <br>
                                 <input id="id_alumno_permiso_temporal_<?php echo $counter; ?>" hidden value="<?php echo $cliente1['id']; ?>"/>
-                                <br>
-                                <br>
                                 <script>
                                     $('#nombre_nuevo_permiso_temporal_<?php echo $counter; ?>').val('<?php echo $cliente1['nombre']; ?>');
                                     M.textareaAutoResize($('#nombre_nuevo_permiso_temporal_<?php echo $counter; ?>'));
@@ -315,21 +317,11 @@ if (isset($authUrl)) {
 ?>
 
 <div class="fixed-action-btn">
-    <a class="btn-floating btn-large b-azul">
-        <i class="large material-icons">edit</i>
+    <a class="btn-floating btn-large waves-effect waves-light b-azul" href="<?php echo $redirect_uri?>Transportes/Diario/PDiario.php?idseccion=<?php echo $idseccion; ?>">
+        <i class="large material-icons">keyboard_backspace</i>
     </a>
-    <ul>
-        <li>
-            <a class="btn-floating blue" href="https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Diario/PDiario.php?idseccion=<?php echo $idseccion;?>">
-                <i class="material-icons">keyboard_backspace</i>
-            </a>
-        </li>
-        <?php
-        echo '<li><a href="' . $redirect_uri . '?logout=1" class="btn-floating red" >'
-        . "<i class='material-icons'>exit_to_app</i>Salir</a></li>";
-        ?>
-    </ul>
 </div>
+
 <div class="loading" id="loading" >
     <div class="preloader-wrapper big active">
         <div class="spinner-layer spinner-blue-only">
@@ -635,4 +627,4 @@ if (isset($authUrl)) {
     }
 </script>
 <?php include "$root_icloud/Transportes/Diario/modales/modal_informacion_importante_hora_limite.php"; ?>
-<?php include "$root_icloud/Transportes/components/layout_bottom.php"; ?>
+<?php include "$root_icloud/components/layout_bottom.php"; ?>

@@ -1,23 +1,22 @@
 <?php
-include './components/layout_top.php';
-include './components/sesion.php';
-include './components/navbar.php';
-
+$root_icloud = $_SERVER['DOCUMENT_ROOT'] . "/pruebascd/icloud";
+include_once "$root_icloud/components/sesion.php";
+include_once "$root_icloud/components/layout_top.php";
 if (isset($authUrl)) {
     //show login url
     ?>    
     <style>
         body{
             background-image: url('/pruebascd/icloud/pics/body_bg.jpg');
-            background-attachment: fixed;
+            background-attachment: scroll;
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
             padding:0px;
             margin:0px;
-            overflow: hidden;
         }
     </style>
+    <?php include_once "$root_icloud/components/navbar.php"; ?>
     <div class="main">
         <div class="caja-login" align="center">
             <h3 class="text-center c-azul" style="margin:-10px">
@@ -28,26 +27,26 @@ if (isset($authUrl)) {
         </div>
         <?php
     } else {
-        $user = $service->userinfo->get(); //get user info
+        $user = $service->userinfo->get(); 
         $correo = $user->email;
-        require('Model/Login.php');
+        require_once './Model/Login.php';
         $objCliente = new Login();
         $consulta = $objCliente->acceso_login($correo);
+        include_once "$root_icloud/components/navbar.php";
         if ($consulta) { //if user already exist change greeting text to "Welcome Back"
             if ($cliente = mysqli_fetch_array($consulta)) {
                 $tipo = $cliente[12];
 
                 if ($tipo == 3 || $tipo == 4) {//pendiente por asignar a tipo de usuario correspondiente
                     ?>
-                    <div class="fixed-action-btn">
-                        <?php
-                        echo '<a href="' . $redirect_uri . '?logout=1" class="btn-floating btn-large red" >'
-                        . "<i class='material-icons'>exit_to_app</i>Salir</a>";
-                        ?>
+                    <div class="row">     
+                    <div style="text-align: right;margin:1rem 1rem 0 0">                   
+                        <a class="waves-effect waves-light btn red" href="#!" onclick="logout()">
+                            <i class="material-icons left">lock</i>Salir
+                        </a>                            
                     </div>
-                    <!--MENU PERFIL3-->
-                    <div class="row">
-                        <div class="container b-blanco">
+                    <!--MENU PERFIL DE PADRES-->
+                    <div class="container b-blanco">
                             <div class="row">
                                 <div class="row">
                                     <div class="col s12 m6 l4">
@@ -125,7 +124,7 @@ if (isset($authUrl)) {
                                     <div class="col s12 m6 l4">
                                         <div class="card" style="box-shadow: none">
                                             <div class="card-image waves-effect waves-block waves-light">
-                                                <a href='Transportes/Especial/menu.php'>
+                                                <a href='Especial/menu.php?idseccion=1'>
                                                     <img src="pics/activos/permisos.png" style="padding:3rem;">
                                                 </a>
                                             </div>
@@ -163,15 +162,14 @@ if (isset($authUrl)) {
                         </div>
                     </div>   
                     <?php
-                } 
-                elseif ($tipo == 5) {
+                } elseif ($tipo == 5) {
                     ?>  
-                <div class="fixed-action-btn">
-                    <?php
-                    echo '<a href="' . $redirect_uri . '?logout=1" class="btn-floating btn-large red" >'
-                    . "<i class='material-icons'>exit_to_app</i>Salir</a>";
-                    ?>
-                </div>
+                    <div class="fixed-action-btn">
+                        <?php
+                        echo '<a href="' . $redirect_uri . '?logout=1" class="btn-floating btn-large red" >'
+                        . "<i class='material-icons'>exit_to_app</i>Salir</a>";
+                        ?>
+                    </div>
                     <!--MENU PERFIL4-->
                     <br>
                     <div class="container b-blanco">
@@ -252,7 +250,7 @@ if (isset($authUrl)) {
                                 <div class="col s12 m6 l4">
                                     <div class="card" style="box-shadow: none">
                                         <div class="card-image waves-effect waves-block waves-light">
-                                            <a href='https://chmd.edu.mx/galeria/'>
+                                            <a href='Especial/menu.php?idseccion=1'>
                                                 <img src="pics/activos/permisos.png" style="padding:3rem;">
                                             </a>
                                         </div>
@@ -307,8 +305,7 @@ if (isset($authUrl)) {
                         </div>  
                     </div>
                     <?php
-                } 
-                else {
+                } else {
                     ?>
                     <div class="fixed-action-btn">
                         <?php
@@ -398,17 +395,14 @@ if (isset($authUrl)) {
                 //fin validacion de alumno o maestro
             }//fin de consulta principal
             else {
-                echo 'Este usuario no tiene Acceso:' . $user->email . ',<br> !Favor de comunicarse para validar datos! <br> Salir del sitema [<a href="' . $redirect_uri . '?logout=1"> Log Out</a>]';
+                echo 'Este usuario no tiene Acceso:' . $user->email . ',<br> !Favor de comunicarse para validar datos! <br> Salir del sitema [<a href="#!" onclick="logout()"> Cerrar sesión</a>]';
             }
         } else {
             echo 'Error';
         }
     }
     ?>
-    <br>
-    <br>
 </div>
-
 <script>
     $(document).ready(function () {
         $('.fixed-action-btn').floatingActionButton({
@@ -416,5 +410,5 @@ if (isset($authUrl)) {
         });
     });
 </script>
-<?php include './components/layout_bottom.php'; ?>
+<?php include_once "$root_icloud/components/layout_bottom.php"; ?>
 
