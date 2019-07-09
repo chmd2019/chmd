@@ -1,0 +1,9 @@
+[07-Jul-2019 22:04:57 UTC] PHP Notice:  Undefined variable: service in /home/chmd2016/public_html/pruebascd/icloud/Choferes/View_choferes.php on line 3
+[07-Jul-2019 22:04:57 UTC] PHP Notice:  Trying to get property of non-object in /home/chmd2016/public_html/pruebascd/icloud/Choferes/View_choferes.php on line 3
+[07-Jul-2019 22:04:57 UTC] PHP Fatal error:  Uncaught Error: Call to a member function get() on null in /home/chmd2016/public_html/pruebascd/icloud/Choferes/View_choferes.php:3
+Stack trace:
+#0 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Choferes/View_choferes.php on line 3
+[07-Jul-2019 22:05:21 UTC] PHP Parse error:  syntax error, unexpected 'version' (T_STRING) in /home/chmd2016/public_html/pruebascd/icloud/Choferes/Choferes.php on line 258
+[09-Jul-2019 14:37:58 UTC] PHP Notice:  Undefined index: idseccion in /home/chmd2016/public_html/pruebascd/icloud/Choferes/Choferes.php on line 5
+[09-Jul-2019 15:53:52 UTC] PHP Notice:  Undefined index: idseccion in /home/chmd2016/public_html/pruebascd/icloud/Choferes/Choferes.php on line 5
