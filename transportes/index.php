@@ -1,14 +1,14 @@
 <?php
-
 session_start ();
-if (isset ( $_SESSION ['usuario'] ) && isset ( $_SESSION ['contrasena'] )) 
+if (isset ( $_SESSION ['usuario'] ) && isset ( $_SESSION ['contrasena']) && isset( $_SESSION['acceso'] ))
     {
-	header ( 'Location: menu.php' ); 
+	header ( 'Location: menu.php' );
 } else {
 	unset ( $_SESSION ['usuario'] );
 	unset ( $_SESSION ['contrasena'] );
+  unset ( $_SESSION ['acceso'] ) ;
 	session_destroy ();
-	
+
 	?>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,78 +44,74 @@ if (isset ( $_SESSION ['usuario'] ) && isset ( $_SESSION ['contrasena'] ))
     require_once ('FirePHPCore/FirePHP.class.php');
     $firephp = FirePHP::getInstance ( true );
     ob_start ();
-    if (isset ( $_POST ['entrar'] )) 
-            
-            {
-        $usuario_get = $_POST ["usuario"];
+    if (isset ( $_POST ['entrar'] ))
+      {
+       $usuario_get = $_POST ["usuario"];
        $contrasena_get = $_POST ["contrasena"];
        echo "$usuario_get";
        if ($usuario_get && $usuario_get)
        {
            include 'conexion.php';
-           
-          
-           
-           
-           
            $conexion = mysqli_connect ( $host, $usuario, $password );
-           
+
 	   mysqli_select_db ($conexion, $db );
            $tildes = $conexion->query("SET NAMES 'utf8'"); //Para que se muestren las tildes
-           
-           $resultado = mysqli_query ($conexion, "SELECT * FROM usuarios1 WHERE usuario = '" . $usuario_get . "' LIMIT 1" );
-	
-           if ($resultado) 
-          {
+
+           $resultado = mysqli_query ($conexion, "SELECT * FROM Administrador_usuarios WHERE usuario = '" . $usuario_get . "' LIMIT 1" );
+
+           if ($resultado)
+        {
         if ( $extraido = mysqli_fetch_array ( $resultado ) )
         {
             session_start ();
               $usuario = $extraido ["usuario"];
-	$contrasena = $extraido ["contrasena"];
+      	$contrasena = $extraido ["contrasena"];
+
         $_SESSION ['usuario'] = 1;
-	$_SESSION ['contrasena'] = 1;
-        $_SESSION ['id'] =$extraido ["id"];
+      	$_SESSION ['contrasena'] = 1;
+        $_SESSION ['acceso'] = $extraido ["acceso"];
+        $_SESSION ['id'] =$acceso;
         mysqli_free_result($resultado);
         mysqli_close($conexion);
-           
-           
-                    
+
+
+
           header('Location: menu.php');
-            
+
         }
         else
         {
             $_SESSION ['usuario'] = 0;
 	$_SESSION ['contrasena'] = 0;
 header('Location: https://www.chmd.edu.mx/');
-            
+
         }
-        
-      
-               
-               
-               
+
+
+
+
+
            }
-         
-        
-           
-       } 
-       else 
+
+
+
+       }
+       else
        {
            header('Location: https://www.chmd.edu.mx/');
        }
       //  header('Location: https://www.google.com/');
 //exit;
-        
+
     }
     /*
-	
+
 	//require_once ('FirePHPCore/FirePHP.class.php');
 	//$firephp = FirePHP::getInstance ( true );
 	//ob_start ();
-	
-	if (isset ( $_POST ['entrar'] )) 
-            
+
+	if (isset ( $_POST ['entrar'] ))
+
             {
             echo "ldñdñlñd";
 		$usuario_get = $_POST ["usuario"];
@@ -130,13 +126,13 @@ header('Location: https://www.chmd.edu.mx/');
 			mysqli_select_db ( $db );
 			$resultado = mysqli_query ( "SELECT * FROM usuarios1 WHERE usuario = '" . $usuario_get . "' LIMIT 1" ) or die ( "Error en query, el error  es: " . mysql_error () );
 			mysql_close ( $conexion );
-			
+
 			if ($resultado) {
-                            
+
 				if ( $usr = mysqli_fetch_array ( $resultado ) )
                                         {
 					session_start ();
-                                    
+
 					$usuario = $usr ["usuario"];
 					$contrasena = $usr ["contrasena"];
                                         $_SESSION ['usuario'] = 1;
@@ -144,7 +140,7 @@ header('Location: https://www.chmd.edu.mx/');
                                          $_SESSION ['id'] =$usr ["id"];
                                       header ( 'Location: index.php' );
 				}
-				
+
 				 else {
 					 $result = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>¡Oops!</strong><br>Usuario y/o Contraseña incorrectos</div>';
 					$_SESSION ['usuario'] = 0;
@@ -152,12 +148,12 @@ header('Location: https://www.chmd.edu.mx/');
 					header ( 'Location: index.php' );
 				}
 			}
-                        
-                        
-                      
-                        
-                        
-		} else 
+
+
+
+
+
+		} else
                     {
 			// $result = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>¡Oops!</strong><br>Usuario no Registrado</div>';
 			$_SESSION ['usuario'] = 0;
@@ -169,7 +165,7 @@ header('Location: https://www.chmd.edu.mx/');
 	?>
 
     <div class="container">
-       
+
 		<form class="form-signin" method='post' action=''>
 			<h2 class="form-signin-heading">Transportes CHMD</h2>
 
