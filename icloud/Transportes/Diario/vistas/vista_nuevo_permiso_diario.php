@@ -92,16 +92,16 @@ if (isset($authUrl)) {
                             echo $arrayDias[date('w')] . ", " . date('d') .
                             " de " . $arrayMeses[date('m') - 1] . " de " . date('Y') .
                             ", " . date("h:i a");
-                            ?>" readonly  id="fecha_creacion" style="font-size: 1rem" type="text" >               
+                            ?>" readonly  id="fecha_creacion" style="font-size: 1rem" type="text" >
                         </div>
                     </div>
                     <div class="col s12 l6">
                         <label for="responsable" style="margin-left: 1rem">Solicitante</label>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">person</i>
-                            <input value="<?php echo " $nombre "; ?>" readonly  id="responsable" style="font-size: 1rem" type="text" >               
+                            <input value="<?php echo " $nombre "; ?>" readonly  id="responsable" style="font-size: 1rem" type="text" >
                         </div>
-                    </div>                   
+                    </div>
                     <?php
                     if ($btn_fecha) {
                         $hidden = "hidden";
@@ -118,21 +118,21 @@ if (isset($authUrl)) {
                         $hidden = "";
                         echo "$btn_fecha";
                     }
-                    ?> 
+                    ?>
                     <div class="col s12" id="fecha_para" <?php echo $hidden; ?>>
-                        <link rel='stylesheet' href='../../common/css/calendario.css'> 
+                        <link rel='stylesheet' href='../../common/css/calendario.css'>
                         <script src='../../common/js/calendario.js'></script>
                         <script src="../../common/js/common.js"></script>
                         <label for="fecha_solicitud_nuevo" style="margin-left: 1rem">Para el día</label>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">calendar_today</i>
-                            <input 
-                                value ="<?php echo $fecha_hoy; ?>" 
-                                type="text" 
-                                class="datepicker" 
-                                id="fecha_solicitud_nuevo" 
+                            <input
+                                value ="<?php echo $fecha_hoy; ?>"
+                                type="text"
+                                class="datepicker"
+                                id="fecha_solicitud_nuevo"
                                 placeholder="Para el día"
-                                onchange="fecha_minusculas(this.value, 'fecha_solicitud_nuevo')">            
+                                onchange="fecha_minusculas(this.value, 'fecha_solicitud_nuevo')">
                         </div>
                     </div>
                     <script>
@@ -161,7 +161,7 @@ if (isset($authUrl)) {
                             disableWeekends: true,
                             min: new Date('<?php echo $fecha_minima; ?>')
                         });
-                    </script>  
+                    </script>
                     <br>
                     <div class="col s12">
                         <h5 class="c-azul text-center">Selecciona Alumnos</h5>
@@ -176,14 +176,14 @@ if (isset($authUrl)) {
                                 <div class="input-field">
                                     <i class="material-icons prefix c-azul">school</i>
                                     <textarea class="materialize-textarea"
-                                              readonly  
+                                              readonly
                                               id="nombre_nuevo_permiso_temporal_<?php echo $counter; ?>"
                                               style="font-size: 1rem"></textarea>
                                 </div>
                                 <div class="switch col s12">
                                     <label class="checks-alumnos">
-                                        <input type="checkbox" 
-                                               id="alumno_permiso_temporal_<?php echo $counter; ?>" 
+                                        <input type="checkbox"
+                                               id="alumno_permiso_temporal_<?php echo $counter; ?>"
                                                value="<?php echo $cliente1['id']; ?>"/>
                                         <span class="lever"></span>
                                     </label>
@@ -208,28 +208,28 @@ if (isset($authUrl)) {
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">person_pin</i>
                             <textarea class="materialize-textarea"
-                                      readonly  
-                                      id="calle_guardada" 
-                                      style="font-size: .9rem"></textarea> 
+                                      readonly
+                                      id="calle_guardada"
+                                      style="font-size: .9rem"></textarea>
                         </div>
                         <br>
                         <label for="colonia_guardada" style="margin-left: 1rem">Colonia</label>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">person_pin</i>
                             <textarea class="materialize-textarea"
-                                      readonly  
+                                      readonly
                                       id="colonia_guardada"
-                                      style="font-size: .9rem"></textarea>      
+                                      style="font-size: .9rem"></textarea>
                         </div>
                         <br>
                         <label for="cp_guardada" style="margin-left: 1rem">CP</label>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">person_pin</i>
-                            <input readonly  
+                            <input readonly
                                    id="cp_guardada"
                                    style="font-size: .9rem"
-                                   value=""/>       
-                        </div>               
+                                   value=""/>
+                        </div>
                         <br>
                         <h5 class="center-align c-azul">Dirección de cambio</h5>
                         <div class="input-field col s12">
@@ -241,75 +241,83 @@ if (isset($authUrl)) {
                         <div class="input-field col s12">
                             <label for="calle_nuevo_permiso" style="margin-left: 1rem">Calle y Número</label>
                             <i class="material-icons c-azul">person_pin_circle</i>
-                            <textarea id="calle_nuevo_permiso" 
-                                      class="materialize-textarea"                                
-                                      placeholder="INGRESE CALLE Y NUMERO"></textarea> 
+                            <textarea id="calle_nuevo_permiso"
+                                      class="materialize-textarea"
+                                      placeholder="INGRESE CALLE Y NUMERO"></textarea>
                         </div>
                         <div class="input-field col s12">
                             <label for="colonia_nuevo_permiso" style="margin-left: 1rem">Colonia</label>
                             <i class="material-icons c-azul">person_pin_circle</i>
-                            <textarea class="materialize-textarea"  
-                                      id="colonia_nuevo_permiso" 
-                                      placeholder="INGRESE COLONIA"></textarea> 
-                        </div>                    
+                            <textarea class="materialize-textarea"
+                                      id="colonia_nuevo_permiso"
+                                      placeholder="INGRESE COLONIA"></textarea>
+                        </div>
                         <div class="input-field col s12">
                             <label for="cp " style="margin-left: 1rem">CP</label>
                             <i class="material-icons c-azul">person_pin_circle</i>
-                            <input placeholder="INGRESE CP" 
+                            <input placeholder="INGRESE CP"
                                    autocomplete="off"
-                                   id="cp" 
+                                   id="cp"
                                    type="tel"
                                    onkeypress="return validar_solo_numeros(event)">
-                        </div>  
+                        </div>
                         <div class="switch col s12">
                             <label>
-                                <input type="checkbox" 
+                                <input type="checkbox"
                                        id="recordar_direccion"
                                        onchange="recordar_direccion()"/>
                                 <span>Rercordar dirección </span>
                             </label>
-                        </div> 
+                        </div>
                         <br>
                         <div id="container_descripcion_recordar_direccion" hidden>
                             <div class="input-field col s12" id="container_descripcion_recordar_direccion">
                                 <i class="material-icons prefix c-azul">store_mall_directory</i>
-                                <input id="descripcion_recordar_direccion" 
+                                <input id="descripcion_recordar_direccion"
                                        placeholder="Descripción de la dirección"
                                        autocomplete="off" />
-                                <button type="button" 
-                                        class="btn waves-effect waves-light white-text b-azul w-100" 
+                                <button type="button"
+                                        class="btn waves-effect waves-light white-text b-azul w-100"
                                         onclick="enviar_direccion()">Guardar</button>
                             </div>
-                        </div> 
-                    </div>    
-                    <br>                 
+                        </div>
+                    </div>
+                    <br>
                     <div class="input-field col s12">
                         <i class="material-icons c-azul">departure_board</i>
                         <select class="input-field" id="ruta" >
                             <option value="">Selecciona opción</option>
-                            <option value="General 2:50 PM">General 2:50 PM</option> 
-                            <option value="Taller 4:30 PM">Taller 4:30 PM</option> 
+                            <option value="General 2:50 PM">General 2:50 PM</option>
+                            <option value="Taller 4:30 PM">Taller 4:30 PM</option>
                         </select>
                         <label>Ruta</label>
-                    </div> 
+                    </div>
                     <br>
                     <div class="input-field col s12">
                         <i class="material-icons c-azul">comment</i>
-                        <textarea id="comentarios_nuevo_permiso" 
-                                  class="materialize-textarea"                                
-                                  placeholder="Comentarios"></textarea>    
+                        <textarea id="comentarios_nuevo_permiso"
+                                  class="materialize-textarea"
+                                  placeholder="Comentarios"></textarea>
                         <label>Comentarios</label>
                         <div class="col s12 l6" style="float: none;margin: 0 auto;">
-                            <button class="btn waves-effect waves-light b-azul white-text w-100" 
+                            <button class="btn waves-effect waves-light b-azul white-text w-100"
                                     id="btn_enviar_formulario"
-                                    type="button" 
+                                    type="button"
                                     onclick="enviar_formulario('<?php echo $id; ?>', '<?php echo $familia; ?>', 1)">Enviar
                                 <i class="material-icons right">send</i>
                             </button>
                         </div>
                     </div>
-                </div>                    
-            </div>                
+                    <div class="col s12 l6" style="float: none;margin: 0 auto;">
+                        <button class="btn waves-effect waves-light b-azul white-text w-100"
+                                id="btn_enviar_formulario"
+                                type="button"
+                                onclick="enviar_formulario('<?php echo $id; ?>', '<?php echo $familia; ?>', 1)">Enviar
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
         <?php
     }
@@ -416,7 +424,7 @@ if (isset($authUrl)) {
                         setInterval(function () {
                             $("#loading").fadeOut("slow");
                         }, 1000);
-                    });                    
+                    });
             //limpia recordar direccion
             $('#recordar_direccion').prop("checked", false);
             $('#container_descripcion_recordar_direccion').hide();
@@ -432,7 +440,7 @@ if (isset($authUrl)) {
         $('#container_descripcion_recordar_direccion').hide();
         $('#descripcion_recordar_direccion').val("");
         $('#calle_nuevo_permiso').focus();
-    }    
+    }
     function validar_recordar_direccion() {
         //valida calle
         var calle = $("#calle_nuevo_permiso");
@@ -493,7 +501,7 @@ if (isset($authUrl)) {
                             $("#loading").fadeOut("slow");
                         }, 1000);
                     });
-                    
+
             return;
         }
         swal("Información", "Debe llenar todos los campos!", "error");
@@ -547,7 +555,7 @@ if (isset($authUrl)) {
             swal("Error en nombre", "Agregue nombre sin acentos ni signos especiales", "error");
             return false;
         }
-        //valida seleccion de ruta 
+        //valida seleccion de ruta
         if ($("#ruta").val() === "") {
             swal("Información", "Debes seleccionar una ruta", "error");
             return false;
@@ -578,7 +586,7 @@ if (isset($authUrl)) {
                     coleccion_ids.push(ids[item]);
                 }
             }
-            
+
             console.log(coleccion_ids);
             var model = {
                 idusuario: id,
@@ -621,7 +629,7 @@ if (isset($authUrl)) {
                             $("#loading").fadeOut("slow");
                         }, 1000);
                     });
-                    
+
             coleccion_ids = [];
         }
     }

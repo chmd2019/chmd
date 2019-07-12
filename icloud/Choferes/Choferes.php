@@ -2,9 +2,9 @@
 $root_icloud = $_SERVER['DOCUMENT_ROOT'] . "/pruebascd/icloud";
 include_once "$root_icloud/Transportes/components/sesion.php";
 include_once "$root_icloud/components/layout_top.php";
-$idseccion = $_GET['idseccion'];
+//$idseccion = $_GET['idseccion'];
 
-//zona horaria para America/Mexico_city 
+//zona horaria para America/Mexico_city
 require "$root_icloud/Helpers/DateHelper.php";
 $objDateHelper = new DateHelper();
 $objDateHelper->set_timezone();
@@ -23,24 +23,24 @@ if (isset($authUrl)) {
     $consulta = $objCliente->acceso_login($correo);
     include_once "$root_icloud/components/navbar.php";
     ?>
-    <div class="row">    
-        <div class="col s12 m12 l9 b-blanco border-azul" style="float: none;margin: 0 auto;"> 
+    <div class="row">
+        <div class="col s12 m12 l9 b-blanco border-azul" style="float: none;margin: 0 auto;">
             <div>
                 <br>
-                <h4 class="c-azul" style="text-align: center;">Permisos especiales</h4>
+                <h4 class="c-azul" style="text-align: center;">Choferes y Autos</h4>
                 <div>
-                    <?php //include './View_especial.php'; ?> 
+                    <?php include './View_choferes.php'; ?>
                 </div>
                 <?php
             }
-            ?>               
+            ?>
         </div>
     </div>
 </div>
 
 <div class="fixed-action-btn">
     <a class="btn-floating btn-large waves-effect waves-light b-azul"
-       href="vistas/vista_nuevo_permiso_extraordinario.php?idseccion=<?php echo $idseccion; ?>">
+       href="vistas/vista_nuevo_chofer_auto.php">
         <i class="large material-icons">add</i>
     </a>
 </div>
@@ -50,7 +50,14 @@ if (isset($authUrl)) {
         $('.fixed-action-btn').floatingActionButton({
             hoverEnabled: false
         });
+
+        $('.modal').modal();
+        setInterval(function(){
+            window.location.reload();
+        }, 30000);
     });
+
+
 </script>
 
 

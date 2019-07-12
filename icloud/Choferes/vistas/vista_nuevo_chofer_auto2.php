@@ -85,24 +85,24 @@ if (isset($authUrl)) {
                         <label for="fecha_solicitud" style="margin-left: 1rem">Fecha de solicitud</label>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">calendar_today</i>
-                            <input value="<?php echo $fecha_creacion; ?>" 
-                                   readonly  
-                                   id="fecha_solicitud" 
-                                   style="font-size: 1rem" 
-                                   type="text" />               
+                            <input value="<?php echo $fecha_creacion; ?>"
+                                   readonly
+                                   id="fecha_solicitud"
+                                   style="font-size: 1rem"
+                                   type="text" />
                         </div>
-                    </div>  
+                    </div>
                     <div class="col s12 l6">
                         <label for="solicitante" style="margin-left: 1rem">Solicitante</label>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">person</i>
-                            <input value="<?php echo $nombre; ?>" 
-                                   readonly  
-                                   id="solicitante" 
-                                   style="font-size: 1rem" 
-                                   type="text" />               
+                            <input value="<?php echo $nombre; ?>"
+                                   readonly
+                                   id="solicitante"
+                                   style="font-size: 1rem"
+                                   type="text" />
                         </div>
-                    </div>  
+                    </div>
 
                     <div class="col s12">
                         <h5 class="c-azul text-center">Selecciona Alumnos</h5>
@@ -117,14 +117,14 @@ if (isset($authUrl)) {
                                 <div class="input-field">
                                     <i class="material-icons prefix c-azul">school</i>
                                     <textarea class="materialize-textarea"
-                                              readonly  
+                                              readonly
                                               id="nombre_alumno_<?php echo $counter; ?>"
                                               style="font-size: 1rem"></textarea>
                                 </div>
                                 <div class="switch col s12">
                                     <label class="checks-alumnos">
-                                        <input type="checkbox" 
-                                               id="alumno_<?php echo $counter; ?>" 
+                                        <input type="checkbox"
+                                               id="alumno_<?php echo $counter; ?>"
                                                value="<?php echo $alumno['id']; ?>"/>
                                         <span class="lever"></span>
                                     </label>
@@ -157,26 +157,26 @@ if (isset($authUrl)) {
                         $hidden = "";
                         echo "$btn_fecha";
                     }
-                    ?> 
+                    ?>
                     <div class="col s12">&nbsp;</div>
                     <div id="fecha_para" <?php echo $hidden; ?>>
                         <br>
                         <h5 class="c-azul text-center">Fecha y horario</h5>
                         <br>
                         <div class="col s12 l6">
-                            <link rel='stylesheet' href='/pruebascd/icloud/materialkit/css/calendario.css'> 
+                            <link rel='stylesheet' href='/pruebascd/icloud/materialkit/css/calendario.css'>
                             <script src='/pruebascd/icloud/materialkit/js/calendario.js'></script>
                             <script src="/pruebascd/icloud/materialkit/js/common.js"></script>
                             <div class="input-field">
                                 <i class="material-icons prefix c-azul">calendar_today</i>
-                                <input 
+                                <input
                                     value="<?php echo $fecha_hoy; ?>"
-                                    type="text" 
-                                    class="datepicker" 
-                                    id="fecha_permiso" 
+                                    type="text"
+                                    class="datepicker"
+                                    id="fecha_permiso"
                                     autocomplete="off"
                                     placeholder="Para el día"
-                                    onchange="fecha_minusculas(this.value, 'fecha_permiso')">            
+                                    onchange="fecha_minusculas(this.value, 'fecha_permiso')">
                             </div>
                             <script>
                                 //obtiene el calendario escolar en db
@@ -204,17 +204,17 @@ if (isset($authUrl)) {
                                     disableWeekends: true,
                                     min: new Date('<?php echo $fecha_minima; ?>')
                                 });
-                            </script>  
+                            </script>
                         </div>
-                        <div class="col s12 l6">                        
+                        <div class="col s12 l6">
                             <div class="input-field">
                                 <i class="material-icons prefix c-azul">hourglass_full</i>
-                                <input 
-                                    type="text" 
-                                    class="timepicker" 
-                                    id="hora_salida" 
+                                <input
+                                    type="text"
+                                    class="timepicker"
+                                    id="hora_salida"
                                     autocomplete="off"
-                                    placeholder="Escoja hora de salida">            
+                                    placeholder="Escoja hora de salida">
                             </div>
                             <script>
                                 $(".timepicker").on('mousedown', function (event) {
@@ -243,7 +243,7 @@ if (isset($authUrl)) {
                     <div class="col s12 l6">
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">person</i>
-                            <select id="select_responsable">                          
+                            <select id="select_responsable">
                             </select>
                             <label>Responsable</label>
                         </div>
@@ -258,14 +258,22 @@ if (isset($authUrl)) {
                     <div class="col s12 l6" id="nuevo_responsable" hidden>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">person</i>
-                            <input type="text" id="responsable" autocomplete="off"> 
+                            <input type="text" id="responsable" autocomplete="off">
                             <label>Nuevo responsable</label>
                         </div>
                         <a class="waves-effect waves-light btn col s12 b-azul c-blanco" onclick="post_nuevo_responsable()"> <i class="material-icons right">send</i>Guardar</a>
                     </div>
-                </div>  
-            </div>  
-        </div>  
+                    <div class="col s12 l6" style="float: none;margin: 0 auto;">
+                        <button class="btn waves-effect waves-light b-azul white-text w-100"
+                                id="btn_enviar_formulario"
+                                type="button"
+                                onclick="enviar_formulario('<?php echo $id; ?>', '<?php echo $familia; ?>', 1)">Enviar
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <?php
     }
 }
