@@ -1,5 +1,5 @@
 <?php
-require 'conexion.php';
+require '../conexion.php';
 $nfamilia = $_GET['nfamilia'];
 $array_padres= array();
 $sql = mysqli_query ( $conexion," SELECT nombre,correo,tipo FROM usuarios WHERE numero='$nfamilia' " );

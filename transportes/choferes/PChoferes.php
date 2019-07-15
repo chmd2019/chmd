@@ -11,49 +11,37 @@ $existe = '';
 $datos = mysqli_query ( $conexion," SELECT id,nombre,numero,fecha,
   familia,estatus,tipo,correo,celular
   FROM usuarios usu WHERE tipo='7' ");
-  /*"SELECT vp.id_permiso,vp.fecha_creacion,
-  usu.correo,vp.calle_numero,vp.colonia,vp.cp,vp.comentarios,vp.estatus,vp.nfamilia,
-  usu.calle,usu.colonia as colonia1,vp.mensaje,usu.familia,
-  vp.responsable,vp.parentesco,vp.celular, vp.telefono,vp.turno,vp.ruta,
-  vp.fecha_creacion, vp.fecha_cambio, vp.fecha_respuesta from Ventana_Permisos vp
-  LEFT JOIN usuarios usu on vp.idusuario=usu.id
-  where not vp.estatus=3 and vp.archivado=0 and vp.tipo_permiso='1' order by vp.estatus DESC ,vp.id_permiso"
-*/
-  /*if (isset ( $_POST ['nombre_nivel'] ))
-  {
-    $nombre = $_POST ['nombre_nivel'];
-    $funcion = $_POST ['funcion'];
-    $mensaje= $_POST ['mensaje'];
+
+  if (isset ( $_POST ['estatus'] )){
+    //$nombre = $_POST ['nombre_nivel'];
+    $funcion = $_POST ['funcion'];//id del chofer
+    //$mensaje= $_POST ['mensaje'];
     $estatus= $_POST ['estatus'];
-    if ($nombre) {
+    //if ($estatus) {
       header ( 'Content-type: application/json; charset=utf-8' );
       //$existe = mysql_query ( "SELECT * FROM Ventana_Permiso_diario WHERE id='1'" );
       //$existe = mysql_fetch_array ( $existe );
-      if ($estatus==3)
-      {
-        $query = "UPDATE Ventana_Permisos SET mensaje = '$mensaje', estatus=3, archivado=1 WHERE id_permiso=$funcion";
-        mysqli_query ( $conexion, $query );
+      if ($estatus==3){//declinado
+        $query = "UPDATE usuarios SET estatus=3 WHERE id='$funcion'";
+        mysqli_query ($conexion,$query);
         $json = array (
           'estatus' => '0'
         );
-      }
-      else if ($estatus==2)
-      {
-        $query = "UPDATE Ventana_Permisos SET mensaje = '$mensaje',estatus=2, archivado=1 WHERE id_permiso=$funcion";
-        mysqli_query ($conexion,  $query );
+      }else if ($estatus==2){ //autorizado
+        $query = "UPDATE usuarios SET estatus=2 WHERE id='$funcion'";
+        mysqli_query ($conexion,$query);
         $json = array (
         'estatus' => '0'
         );
-      } else if ($existe)
-      {
+      }/*else if ($existe){
         $json = array (
         'estatus' => '-1'
         );
-      }
-    }
+      }*/
+    //}
     echo json_encode ( $json );
     exit ();
-  }*/
+  }
   ?>
   <!DOCTYPE html>
   <html lang="en">
@@ -299,7 +287,7 @@ aria-labelledby="myModalLabel" aria-hidden="true">
             <td>Correo</td>
           </tr>
         </table>
-        <table id="tabla_solicitantes" border="0" WIDTH="700"> <!-- antes tabla_alumnos -->
+        <table id="tabla_solicitantes" border="0" WIDTH="700" style="margin-bottom:20px;"> <!-- antes tabla_alumnos -->
         </table>
         Accion:
         <select name="estatus" id="estatus">

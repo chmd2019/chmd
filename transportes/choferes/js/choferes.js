@@ -2,40 +2,39 @@ $(function() {
   var funcion;
 
   $('.save-nivel').submit(function(e) {
-      var nombre_nivel = $('#nombre_nivel').val();
-      var mensaje = $('#mensaje').val();
+      //var nombre_nivel = $('#nombre_nivel').val();//fecha de solicitud
+      //var mensaje = $('#mensaje').val();
       var estatus = $('#estatus').val();
       if(estatus==0){
         alert("Seleciona el estatus");
         return false;
       }
-
-      if(mensaje==null || mensaje.length<=5){
+      /*if(mensaje==null || mensaje.length<=5){
         alert("Agrega Respuesta.");
         return false;
-      }
+      }*/
       e.preventDefault();
       $.ajax({
         type : 'POST',
         data : {
-          funcion : funcion,
-          nombre_nivel : nombre_nivel,
-          mensaje : mensaje,
+          funcion : funcion,//id del usuario
+          //nombre_nivel : nombre_nivel,
+          //mensaje : mensaje,
           estatus : estatus
         }
       })
       .done(
         function(data) {
           if (data.estatus == '-1') {
-            $('.alert-save')
-            .html(
+            $('.alert-save').html(
               '<div class="alert alert-warning alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>  El nombre del nivel ya existe, por favor escribe otro</div>')
               .hide().show('fast');
-            } else {
-              location.reload();
-            }
-          });
-        });
+          } else {
+            location.reload();
+          }
+        }
+      );
+    });
         $('input.filter').keyup(function(){
           var rex = new RegExp($(this).val(), 'i');
           $('.searchable tr').hide();
@@ -55,7 +54,7 @@ $(function() {
           );
           funcion = $(this).attr('data-id');
         });
-/*
+
         $('.btn-borrar').click(function(){
           eliminarNivel($(this).attr('data-id'), $(this).attr('data-nombre'));
         });
@@ -70,7 +69,7 @@ $(function() {
           $("#nombre_nivel1").val('');
           funcion = 0;
         });
-*/
+
         function editarNivel(qwert,fecha_solicitud,correo,nfamilia,estatus,nombre){
           $("#modalNivelTitulo").text("Editar solicitud chofer");
           $("#id").val(qwert);
