@@ -9,8 +9,8 @@ $firephp = FirePHP::getInstance ( true );
 ob_start ();
 $existe = '';
 $datos = mysqli_query ( $conexion," SELECT id,nombre,numero,fecha,
-  familia,estatus,tipo,correo,celular
-  FROM usuarios usu WHERE tipo='7' ");
+  familia,estatus,tipo,correo
+  FROM usuarios WHERE tipo='7' ORDER BY estatus ASC, fecha DESC  ");
 
   if (isset ( $_POST ['estatus'] )){
     //$nombre = $_POST ['nombre_nivel'];
@@ -88,7 +88,6 @@ $datos = mysqli_query ( $conexion," SELECT id,nombre,numero,fecha,
         <td><b>Fecha de Solicitud</b></td>
         <td><b>Estatus</b></td>
         <td><b>Nombre</b></td>
-        <td><b>Celular</b></td>
         <td class="text-right"><b>Acciones</b></td>
       </thead>
     <tbody class="searchable" style="overflow: auto; max-height: 500px;">
@@ -100,88 +99,13 @@ $datos = mysqli_query ( $conexion," SELECT id,nombre,numero,fecha,
       $familia=$dato['familia'];
       $correo= $dato['correo'];
       $estatus= $dato['estatus'];
-      $celular=$dato['celular'];
 
       if($estatus==1){$staus1="Pendiente";}
       if($estatus==2){$staus1="Autorizado";}
       if($estatus==3){$staus1="Declinado";}
       if($estatus==4){$staus1="Cancelado por el usuario";}
 
-      /*$fecha_actual = strtotime(date("d-m-Y H:i:00",time()));
-      //$array1 = explode(',' , $fecha_cambio );
-      $array1 = explode(',' , $fecha );
-      $array2= explode(' ',$array1[1]);
-      $dia= $array2[1];
-      $mes= '';
-      switch ($array2[3]) {
-        case 'Enero':
-        $mes=1;
-        break;
-        case 'Febrero':
-        $mes=2;
-        break;
-        case 'Marzo':
-        $mes=3;
-        break;
-        case 'Abril':
-        $mes=4;
-        break;
-        case 'Mayo':
-        $mes=5;
-        break;
-        case 'Junio':
-        $mes=6;
-        break;
-        case 'Julio':
-        $mes=7;
-        break;
-        case 'Agosto':
-        $mes=8;
-        break;
-        case 'Septiembre':
-        $mes=9;
-        break;
-        case 'Octubre':
-        $mes=10;
-        break;
-        case 'Noviembre':
-        $mes=11;
-        break;
-        case 'Diciembre':
-        $mes=12;
-        break;
-        default:
-        $mes = -1;
-        break;
-      }
-      $anio= $array2[5] % 100;
-      $fecha= $mes.'/'.$dia.'/'.$anio;*/
-
-      /*$fecha_entrada = strtotime ($fecha);
-      if($fecha_actual > $fecha_entrada){
-        $otro_dia=false;
-      }else{
-        $otro_dia=true;
-      }*/
-
-      //  $telefonomama=$dato['telefonomama'];
-      /*
-      if($fecha_inicial==0)
-      {
-        $fpermiso=$fecha;
-      }
-      else
-      {
-        $fpermiso= $fecha_inicial;
-      }
-      */
-      /*if ($otro_dia==true){
-          $color = '#ddd';
-          $borde= '#ddd';
-        }else{
-          $color = '#fff';
-          $borde= '#ddd';
-        }*/
+      
       if ($estatus==4){
         $color = '#ffd5d5';
         $borde= '#ffb1b1';
@@ -192,7 +116,6 @@ $datos = mysqli_query ( $conexion," SELECT id,nombre,numero,fecha,
         <td><?php echo $fecha;?></td>
         <td><?php echo $staus1?></td>
         <td><?php echo $nombre?></td>
-        <td><?php echo $celular?></td>
 
         <td class="text-right">
           <!--
@@ -212,11 +135,11 @@ $datos = mysqli_query ( $conexion," SELECT id,nombre,numero,fecha,
               data-nombre ="<?php echo $nombre?>">
               <span class="glyphicon glyphicon-pencil">Ver</span>
             </button>
-          <button class="btn-borrar btn btn-danger" type="button"
+        <!--  <button class="btn-borrar btn btn-danger" type="button"
             data-id="<?php echo $id?>"
             data-nombre="<?php echo $num_familia ?>">
             <span class="glyphicon glyphicon-trash">Archivar</span>
-          </button>
+          </button>-->
         </td>
       </tr>
 <?php }?>
@@ -250,26 +173,33 @@ aria-labelledby="myModalLabel" aria-hidden="true">
     <form class="form-signin save-nivel" method='post'>
       <div class="alert-save"></div>
       <div class="modal-body">
-        <table border="0" WIDTH="700" style="margin-bottom:20px;">
-          <tr>
-            <td WIDTH="10%">
-              <h4>Chofer: </h4>
-            </td>
-            <td WIDTH="70%">
-              <input id="nombre_chofer" type="text" style="width:400px;heigth:4px" class="form-control" readonly>
-            </td>
-          </tr>
-        </table>
+
         <table border="0" WIDTH="700">
-          <tr>
-            <td WIDTH="10%">Id:
+          <tr colspan=2>
+            <td WIDTH="10%">ID Usuario:
               <input name="id" id="id" type="text" style="width:100px;heigth:4px" class="form-control" placeholder="id" readonly>
             </td>
-            <td WIDTH="30%">Fecha de solicitud:
-              <input name="fecha_solicitud" id="fecha_solicitud" type="text" style="width:200px;heigth:4px" class="form-control" placeholder="Fecha" readonly>
+            <td>Fecha de solicitud:
+              <input name="fecha_solicitud" id="fecha_solicitud" type="text"  class="form-control" placeholder="Fecha" readonly>
             </td>
-            <td  WIDTH="60%">Correo:
-              <input name="correo" id="correo" type="text" class="form-control" placeholder="Correo"  style="width:400px;heigth:4px" readonly>
+          </tr>
+          <tr>
+            <td><br> </td>
+          </tr>
+        </table>
+
+        <table border="0" WIDTH="700" style="margin-bottom:20px;">
+          <tr>
+            <td WIDTH="100%">
+              <h4>Datos del Chofer: </h4>
+            </td>
+          </tr>
+          <tr>
+            <td WIDTH="100%">Nombre del Chofer</td>
+          </tr>
+          <tr>
+            <td WIDTH="100%">
+              <input id="nombre_chofer" type="text" class="form-control" readonly>
             </td>
           </tr>
         </table>
@@ -282,9 +212,8 @@ aria-labelledby="myModalLabel" aria-hidden="true">
         </table>
         <table  border="0" WIDTH="700">
           <tr>
-            <td>Nombre</td>
+            <td WIDTH= "50%">Nombre</td>
             <td>Parentesco</td>
-            <td>Correo</td>
           </tr>
         </table>
         <table id="tabla_solicitantes" border="0" WIDTH="700" style="margin-bottom:20px;"> <!-- antes tabla_alumnos -->

@@ -71,7 +71,7 @@ $(function() {
         });
 
         function editarNivel(qwert,fecha_solicitud,correo,nfamilia,estatus,nombre){
-          $("#modalNivelTitulo").text("Editar solicitud chofer");
+          $("#modalNivelTitulo").text("Solicitud de Chofer");
           $("#id").val(qwert);
           $("#fecha_solicitud").val(fecha_solicitud);
           $("#correo").val(correo);
@@ -103,7 +103,7 @@ $(function() {
               }else if (tipo=='4') {
                 padre='Mamá';
               }
-              var text= "<tr class='lista-padres'><td><input type='text' class='form-control' value='"+nombre+"' readonly></td><td><input type='text' class='form-control' value='"+padre+"' readonly></td><td><input type='text' class='form-control' value='"+correo+"' readonly></td></tr>";
+              var text= "<tr class='lista-padres m-5'><td><input type='text' class='form-control' value='"+nombre+"' readonly></td><td><input type='text' class='form-control' value='"+padre+"' readonly></td></tr>";
               $("#tabla_solicitantes").append(text);
             }
           }
@@ -112,7 +112,7 @@ $(function() {
 
         /*Cancelar permiso*/
         function eliminarNivel(qwert, nombre) {
-          var respuesta = confirm("Desea archivar el permiso numero: " + qwert);
+          var respuesta = confirm("Desea archivar la solicitud del chofer con ID: " + qwert);
           if (respuesta) {
             var contenido = "";
             $.ajax({
