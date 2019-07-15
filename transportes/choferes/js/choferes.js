@@ -108,8 +108,6 @@ $(function() {
             }
           }
         }
-
-
         /*Cancelar permiso*/
         function eliminarNivel(qwert, nombre) {
           var respuesta = confirm("Desea archivar la solicitud del chofer con ID: " + qwert);
