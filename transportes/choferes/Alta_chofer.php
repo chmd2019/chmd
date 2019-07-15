@@ -51,7 +51,7 @@ if(isset($_POST['submit']))
           <a href="cerrar_sesion.php" style="float: right; cursor: pointer;"
           role="button" class="btn btn-default btn-sm"> <span
           class="glyphicon glyphicon-user"></span> Cerrar Sesión
-        </a> &nbsp <a href="menu.php">
+        </a> &nbsp <a href="../menu.php">
           <button style="float: right; cursor: pointer;" type="button"
           class="btn btn-default btn-sm">
           <span class="glyphicon glyphicon-th"></span> Menu
