@@ -69,7 +69,7 @@ include ('perfiles_dinamicos.php');
     <center><?php // echo isset($_POST['guardar']) ? $verificar=1 : '' ; ?></center>
     <!-- Button trigger modal -->
     <center>
-      <h2>Nueva solicitud de diario:</h2>
+      <h2>Crear un Nuevo Chofer en la Familia:</h2>
     </center>
     <?php
     if (!$_GET)
@@ -82,14 +82,34 @@ include ('perfiles_dinamicos.php');
       <?php
     }else {
       $familia=$_GET["nfamilia"];
-      $direccion = mysqli_query($conexion, "SELECT calle,colonia,cp FROM usuarios WHERE numero='$familia' limit 1");
-      while ($rows=mysqli_fetch_array($direccion))
+
+      $sql = "SELECT count(*) as nchoferes from usuarios where not estatus=4 and tipo=7 and numero=$familia limit 2;";
+      mysqli_set_charset($conexion, 'utf8');
+      $query=mysqli_query($conexion, $sql);
+
+      if ($chofer=mysqli_fetch_array( $query))
       {
-        $calle=$rows['calle'];
-        $colonia=$rows['colonia'];
-        $cp=$rows['cp'];
+        $nchoferes= $chofer['nchoferes'];
+        //echo $nchoferes;
+        }
+
+      //conseguir Padres
+      $sql = "SELECT  id, nombre,tipo,fotografia from usuarios where tipo>=3 and tipo<=4 and numero=$familia limit 2;";
+      mysqli_set_charset($conexion, 'utf8');
+      $padres= mysqli_query($conexion, $sql);
+      while($familiar=mysqli_fetch_array( $padres))
+      {
+        $tipo= $familiar['tipo'];
+        if ($tipo==3){
+          //papa
+          $nombre_papa=$familiar['nombre'];
+        }
+        if ($tipo ==4){
+          //mama
+          $nombre_mama=$familiar['nombre'];
+
+        }
       }
-      $datos = mysqli_query ($conexion, "SELECT id,nombre,correo from usuarios WHERE numero='$familia'" );
       ?>
       <center>
         <form id="chofer"  name="chofer" class="form-signin save-nivel" method='post'   onsubmit='Alta_chofer(); return false'>
@@ -117,7 +137,7 @@ include ('perfiles_dinamicos.php');
                   Nombre de Papá:
                   <input
                   name="papa" id="papa" type="text"
-                  class="form-control" placeholder="Sin papa"   value="<?php echo $calle ?>" readonly="" >
+                  class="form-control" placeholder="Sin papa"   value="<?php echo $nombre_papa ?>" readonly="" >
                 </td>
               </tr>
               <tr>
@@ -127,8 +147,8 @@ include ('perfiles_dinamicos.php');
                 <td  WIDTH="100%" colspan="3">
                   Nombre de Mama:
                   <input
-                  name="colonia1" id="colonia1" type="text"
-                  class="form-control" placeholder="Colonia1"   value="<?php echo $colonia ?>" readonly="" >
+                  name="mama" id="mama" type="text"
+                  class="form-control" placeholder="Colonia1"   value="<?php echo $nombre_mama ?>" readonly="" >
                 </td>
               </tr>
               <tr>
@@ -151,7 +171,7 @@ include ('perfiles_dinamicos.php');
                 </td>
               </tr>
               </table>
-
+              <input type="hidden" name="nchoferes" id="nchoferes"  value="<?php echo $nchoferes ?>" />
             <input type="hidden" name="nfamilia" id="nfamilia"  value="<?php echo $familia ?>" />
           </div>
           <div class="modal-footer">

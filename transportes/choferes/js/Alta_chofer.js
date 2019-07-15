@@ -14,6 +14,13 @@ if (apellidos_chofer==''){
 //captura de numero de familia
 var nfamilia = document.getElementById('nfamilia').value;
 
+//asegurarse la cantidad de choferes activos que estan en la $familia
+var choferes_activos = document.getElementById('nchoferes').value;
+if (choferes_activos>=2){
+  alert('La familia tiene dos choferes activos registrados, Debe eliminar uno para almacenar un nuevo chofer. ');
+  return false;
+}
+
 $.ajax({
 		url: 'Alta_chofer.php',
 		type: "POST",
