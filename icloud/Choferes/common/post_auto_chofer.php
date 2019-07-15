@@ -23,14 +23,15 @@ if (isset($_POST['submit'])){
     if ($c<=$nchoferes){
       $info_chofer= explode("|", $chofer);
           $nombre = $info_chofer[0];
-          $celular = $info_chofer[1];
+          $apellido = $info_chofer[1];
 
-//          echo "Nombre: $nombre  Celular: $celular";
+          $nombre= $nombre .' '.$apellido;
+//          echo "Nombre: $nombre  apellido: $apellido";
           //almacenar con un comando sql
           $connection=$db_manager->conectar1();
           if($connection){
               //Comando de insercion
-              $sql="INSERT INTO usuarios(nombre, numero, tipo, celular)VALUES('$nombre','$nfamilia', 7, '$celular' )";
+              $sql="INSERT INTO usuarios(nombre, numero, tipo, celular, telefono, correo, calle, colonia, cp, correo2 )VALUES('$nombre','$nfamilia', 7, '0000000000','0000000000', 'sin correo', 'sin calle', 'sin colonia', 'sin cp', 'sin correo'  )";
               mysqli_set_charset($connection, "utf8");
               $insertar = mysqli_query($connection, $sql);
               if (!$insertar) {

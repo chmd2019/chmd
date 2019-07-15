@@ -10,23 +10,23 @@
 <br>
 <div class="row" id='addchofer_<?=$n?>'  style="padding:0rem .5rem;"  hidden>
 <div class="col s12 l6">
-  <label for="Chofer" style="margin-left: 1rem">Nombre y Apellido</label>
+  <label for="Chofer" style="margin-left: 1rem">Nombres</label>
   <div class="input-field">
     <i class="material-icons prefix c-azul">person</i>
     <input value=""
     id="Chofer<?=$n?>"
     style="font-size: 1rem"
-    type="text" placeholder="INGRESE NOMBRE Y APELLIDO" />
+    type="text" placeholder="INGRESE NOMBRES" />
   </div>
 </div>
 <div class="col s12 l6">
-  <label for="Chofer" style="margin-left: 1rem">Celular</label>
+  <label for="Chofer" style="margin-left: 1rem">Apellidos</label>
   <div class="input-field">
-    <i class="material-icons prefix c-azul">phone</i>
+    <i class="material-icons prefix c-azul">person</i>
     <input value=""
-    id="celular<?=$n?>"
+    id="Apellido<?=$n?>"
     style="font-size: 1rem"
-    type="text" placeholder="INGRESE NUMERO CELULAR" />
+    type="text" placeholder="INGRESE APELLIDOS" />
   </div>
 </div>
 </div>

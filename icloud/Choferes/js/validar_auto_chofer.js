@@ -9,20 +9,20 @@ function enviar_formulario(nchoferesT,nautosT, nfamilia){
           let value = $(this).val();
 //          alert(value);
           let nombre = $("#Chofer" + value).val();
-          let celular = $("#celular" + value).val();
+          let apellido = $("#Apellido" + value).val();
           //validar que no estan vacios
           if (nombre==''){
             isgood=false;
-            alert("Falta agregar Nombre");
+            alert("Falta agregar Nombres");
             return false;
           }
-          if (celular==''){
+          if (apellido==''){
             isgood=false;
-            alert("Falta agregar celular");
+            alert("Falta agregar Apellidos");
             return false;
           }
         //almacenar en implote
-        choferes=choferes + nombre + '|' + celular +',';
+        choferes=choferes + nombre + '|' + apellido +',';
       }
   });
   //Listo cn los choferes

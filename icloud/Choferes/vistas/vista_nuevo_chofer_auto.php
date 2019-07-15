@@ -138,7 +138,7 @@ if (isset($authUrl)) {
             <ul class="collapsible">
             <li>
             <div class="collapsible-header"><i class="material-icons">directions_car</i>No más de dos Carros</div>
-            <div class="collapsible-body"><span>La familia solo puede tener dos Automoviles asignados, si desea cambiarlo debe editar los ya existentes.</span></div>
+            <div class="collapsible-body"><span>La familia solo puede tener dos Automoviles asignados, si desea cambiarlos debe eliminar los existentes y crear un nuevo registro, o editar los ya existentes.</span></div>
             </li>
             </ul>
           <?php
