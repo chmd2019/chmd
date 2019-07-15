@@ -1,6 +1,6 @@
 <ul class="nav nav-justified">
   <?php
-  $perfiles= mysqli_query($conexion, "SELECT * FROM Ventana_modulos_transporte WHERE  idseccion=1 order by id;");//colocer idseccion=3, para nuevo de choferes
+  $perfiles= mysqli_query($conexion, "SELECT * FROM Ventana_modulos_transporte WHERE  idseccion=3 order by id;");//colocer idseccion=3, para nuevo de choferes
   while($perfil = mysqli_fetch_assoc($perfiles)){
     if ($perfil['modulo']==$perfil_actual){
       ?>

@@ -56,7 +56,7 @@ include('sesion_admin.php');?>
       </div>
       <div class="col-lg-6 justify-self-center" style="margin-bottom:30px">
         <center>
-          <a href="choferes/index.php">
+          <a href="choferes/PChoferes.php">
             <button style="width:100%;height:150px;" class="btn btn-large btn-warning" type="button">Choferes</button>
           </a>
         </center>
