@@ -1,27 +1,21 @@
 $(function() {
-
   var funcion;
 
-  $('.save-nivel')
-  .submit(
-    function(e) {
+  $('.save-nivel').submit(function(e) {
       var nombre_nivel = $('#nombre_nivel').val();
       var mensaje = $('#mensaje').val();
       var estatus = $('#estatus').val();
-      if(estatus==0)
-      {
+      if(estatus==0){
         alert("Seleciona el estatus");
         return false;
       }
 
-      if(mensaje==null || mensaje.length<=5)
-      {
+      if(mensaje==null || mensaje.length<=5){
         alert("Agrega Respuesta.");
         return false;
       }
       e.preventDefault();
-      $
-      .ajax({
+      $.ajax({
         type : 'POST',
         data : {
           funcion : funcion,
@@ -40,11 +34,9 @@ $(function() {
             } else {
               location.reload();
             }
-
           });
         });
-        $('input.filter').keyup(function()
-        {
+        $('input.filter').keyup(function(){
           var rex = new RegExp($(this).val(), 'i');
           $('.searchable tr').hide();
           $('.searchable tr').filter(function() {
@@ -52,61 +44,38 @@ $(function() {
           }).show();
         });
 
-        $('.btn-editar').click(function()
-        {
-          editarNivel($(this).attr('data-id'),
-          $(this).attr('data-nombre'),
-          $(this).attr('data-nombre1'),
-          $(this).attr('data-calle_numero'),
-          $(this).attr('data-colonia'),
-          $(this).attr('data-cp'),
-          $(this).attr('data-ruta'),
-          $(this).attr('data-comentarios'),
-          $(this).attr('data-calle_numero1'),
-          $(this).attr('data-colonia1'),
-          //alunmnos
-          $(this).attr('data-mensaje'),
-          $(this).attr('data-fechacambio'),
-          $(this).attr('data-frespuesta'),
-          $(this).attr('data-estatus'));
-
+        $('.btn-editar').click(function(){
+          editarNivel(
+            $(this).attr('data-id'),
+            $(this).attr('data-fecha_solicitud'),//era data-nombre
+            $(this).attr('data-correo'), //era data-nombre1
+            $(this).attr('data-nfamilia'),
+            $(this).attr('data-estatus')
+          );
           funcion = $(this).attr('data-id');
         });
-
-        $('.btn-borrar').click(function()
-        {
+/*
+        $('.btn-borrar').click(function(){
           eliminarNivel($(this).attr('data-id'), $(this).attr('data-nombre'));
         });
 
-        $('.btn-autorizar').click(function()
-        {
+        $('.btn-autorizar').click(function(){
           Autorizar($(this).attr('data-id'), $(this).attr('data-nombre'));
         });
 
-        $('.btn-nuevo').click(function()
-        {
+        $('.btn-nuevo').click(function(){
           $("#modalNivelTitulo").text("Agrega Solicitud");
           $("#nombre_nivel").val('');
           $("#nombre_nivel1").val('');
           funcion = 0;
         });
-
-        function editarNivel(qwert,nombre,nombre1,calle_numero,colonia,cp,ruta,comentarios,calle_numero1,colonia1,mensaje,fechacambio,frespuesta,estatus)
-        {
-          $("#modalNivelTitulo").text("Editar Solicitud de Diario");
-          $("#folio").val(qwert);
-          $("#nombre_nivel").val(nombre);
-          $("#nombre_nivel1").val(nombre1);
-          $("#calle_numero").val(calle_numero);
-          $("#colonia").val(colonia);
-          $("#cp").val(cp);
-          $("#ruta").val(ruta);
-          $("#comentarios").val(comentarios);
-          $("#calle_numero1").val(calle_numero1);
-          $("#colonia1").val(colonia1);
-          $("#mensaje").val(mensaje);
-          $("#fechacambio").val(fechacambio);
-          $("#frespuesta").val(frespuesta);
+*/
+        function editarNivel(qwert,fecha_solicitud,correo,nfamilia,estatus){
+          $("#modalNivelTitulo").text("Editar solicitud chofer");
+          $("#id").val(qwert);
+          $("#fecha_solicitud").val(fecha_solicitud);
+          $("#correo").val(correo);
+          $("#familia").val(nfamilia);
           if (estatus==1 || estatus==4){
             $("#estatus").val(0);
           }else {
@@ -116,23 +85,25 @@ $(function() {
               $("#estatus").val(0);
             }
           }
-
           $("#funcion").val(qwert);
-          //remover todos los alumnos de la lista
-          $(".lista-alumnos").remove();
-          //$("#tabla_alumnos").append("<h1 class='lista-alumnos'>Good</h1>");
-          $.get("get_alumnos.php", {id:qwert}, verificar, 'text' );
+          $(".lista-padres").remove();
+          $.get("get_padres.php",{nfamilia:nfamilia},verificar,'text');
           //Funcion del ajax
           function verificar(respuesta){
-            var array_alumnos = respuesta.split('!');
-            for (var i = 0; i< array_alumnos.length ; i++){
-                var datos_alumno = array_alumnos[i].split('|');
-                //$("#tabla_alumnos").append("<h1 class='lista-alumnos'>"+ datos_alumno[0]+","+datos_alumno[1]+","+datos_alumno[2]+"," +"</h1>");
-                var nombre= datos_alumno[0];
-                var grado=  datos_alumno[1];
-                var grupo = datos_alumno[2];
-                var text= "<tr class='lista-alumnos'><td><input name='alumno' id='alumno' type='text' class='form-control' value='" + nombre + "'  readonly> </td> <td><input name='grado' id='grado' type='text' class='form-control' value='" + grado + "' readonly></td> <td> <input name='grupo' id='grupo' type='text' class='form-control' value='"+ grupo + "' readonly></td></tr>";
-              $("#tabla_alumnos").append(text);
+            var array_padres = respuesta.split('!');
+            for (var i = 0; i< array_padres.length ; i++){
+              var padre='';
+              var datos_padres = array_padres[i].split('|');
+              var nombre= datos_padres[0];
+              var correo=  datos_padres[1];
+              var tipo = datos_padres[2];
+              if (tipo=='3') {
+                padre='Papá';
+              }else if (tipo=='4') {
+                padre='Mamá';
+              }
+              var text= "<tr class='lista-padres'><td><input type='text' class='form-control' value='"+nombre+"' readonly></td><td><input type='text' class='form-control' value='"+padre+"' readonly></td><td><input type='text' class='form-control' value='"+correo+"' readonly></td></tr>";
+              $("#tabla_solicitantes").append(text);
             }
           }
         }
