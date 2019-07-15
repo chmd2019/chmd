@@ -220,7 +220,8 @@ $datos = mysqli_query ( $conexion," SELECT id,nombre,numero,fecha,
               data-fecha_solicitud="<?php echo $fecha?>"
               data-correo="<?php echo $correo?>"
               data-nfamilia="<?php echo $num_familia;?>"
-              data-estatus ="<?php echo $estatus?>">
+              data-estatus ="<?php echo $estatus?>"
+              data-nombre ="<?php echo $nombre?>">
               <span class="glyphicon glyphicon-pencil">Ver</span>
             </button>
           <button class="btn-borrar btn btn-danger" type="button"
@@ -261,6 +262,16 @@ aria-labelledby="myModalLabel" aria-hidden="true">
     <form class="form-signin save-nivel" method='post'>
       <div class="alert-save"></div>
       <div class="modal-body">
+        <table border="0" WIDTH="700" style="margin-bottom:20px;">
+          <tr>
+            <td WIDTH="10%">
+              <h4>Chofer: </h4>
+            </td>
+            <td WIDTH="70%">
+              <input id="nombre_chofer" type="text" style="width:400px;heigth:4px" class="form-control" readonly>
+            </td>
+          </tr>
+        </table>
         <table border="0" WIDTH="700">
           <tr>
             <td WIDTH="10%">Id:

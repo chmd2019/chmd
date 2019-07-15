@@ -50,7 +50,8 @@ $(function() {
             $(this).attr('data-fecha_solicitud'),//era data-nombre
             $(this).attr('data-correo'), //era data-nombre1
             $(this).attr('data-nfamilia'),
-            $(this).attr('data-estatus')
+            $(this).attr('data-estatus'),
+            $(this).attr('data-nombre'),
           );
           funcion = $(this).attr('data-id');
         });
@@ -70,12 +71,13 @@ $(function() {
           funcion = 0;
         });
 */
-        function editarNivel(qwert,fecha_solicitud,correo,nfamilia,estatus){
+        function editarNivel(qwert,fecha_solicitud,correo,nfamilia,estatus,nombre){
           $("#modalNivelTitulo").text("Editar solicitud chofer");
           $("#id").val(qwert);
           $("#fecha_solicitud").val(fecha_solicitud);
           $("#correo").val(correo);
           $("#familia").val(nfamilia);
+          $("#nombre_chofer").val(nombre);
           if (estatus==1 || estatus==4){
             $("#estatus").val(0);
           }else {
