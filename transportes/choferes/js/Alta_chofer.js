@@ -33,7 +33,7 @@ $.ajax({
 		success: function(datos)
      {
   			alert("Guardado exitosamente");
-        window.location = "../Choferes/PChoferes.php";
+        window.location = "../choferes/PChoferes.php";
 			}
 		});
 		return false;
@@ -42,5 +42,5 @@ $.ajax({
 
 function Cancelar()
 {
-     window.location.replace("../Choferes/PChoferes.php");
+     window.location.replace("../choferes/PChoferes.php");
 }

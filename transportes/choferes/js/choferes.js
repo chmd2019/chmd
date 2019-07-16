@@ -89,7 +89,11 @@ $(function() {
           $("#funcion").val(qwert);
           $(".lista-padres").remove();
           $.get("get_padres.php",{nfamilia:nfamilia},verificar,'text');
-          //Funcion del ajax
+
+          $(".lista-autos").remove();
+          $.get("get_autos.php",{nfamilia:nfamilia},verificar_autos,'text');
+
+          //Funcion del ajax padres
           function verificar(respuesta){
             var array_padres = respuesta.split('!');
             for (var i = 0; i< array_padres.length ; i++){
@@ -107,6 +111,32 @@ $(function() {
               $("#tabla_solicitantes").append(text);
             }
           }
+
+          //Funcion del ajax autos
+          function verificar_autos(respuesta){
+            var array_autos = respuesta.split('!');
+            if (array_autos.length ==1 && array_autos[0]==''){
+              //imprime que no tiene carros asignados.
+
+              var text= "<tr  class = 'lista-autos'><td  class='text-center'>Sin autos asignados</td></tr>";
+              $("#tabla_autos").append(text);
+            }else{
+              for (var i = 0; i< array_autos.length ; i++){
+                var datos_autos = array_autos[i].split('|');
+                var marca =  datos_autos[0];
+                var modelo=  datos_autos[1];
+                var color = datos_autos[2];
+                var placa = datos_autos[3];
+
+                var text= "<tr class = 'lista-autos'><td WIDTH= '25%''><input id='marca' type='text' class='form-control' value='" + marca + "'  readonly></td><td WIDTH= '25%'><input id='modelo' type='text' class='form-control' value='"+ modelo+"' readonly></td><td WIDTH= '25%'><input id='color' type='text' class='form-control' value='"+color+ "' readonly></td><td WIDTH= '25%'><input id='placa' type='text' class='form-control' value='"+ placa+"' readonly></td></tr>";
+
+                $("#tabla_autos").append(text);
+              }
+            }
+
+          }
+
+
         }
         /*Cancelar permiso*/
         function eliminarNivel(qwert, nombre) {

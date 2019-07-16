@@ -105,7 +105,7 @@ $datos = mysqli_query ( $conexion," SELECT id,nombre,numero,fecha,
       if($estatus==3){$staus1="Declinado";}
       if($estatus==4){$staus1="Cancelado por el usuario";}
 
-      
+
       if ($estatus==4){
         $color = '#ffd5d5';
         $borde= '#ffb1b1';
@@ -218,6 +218,27 @@ aria-labelledby="myModalLabel" aria-hidden="true">
         </table>
         <table id="tabla_solicitantes" border="0" WIDTH="700" style="margin-bottom:20px;"> <!-- antes tabla_alumnos -->
         </table>
+
+        <table border="0" WIDTH="700" style="margin-bottom:20px;">
+          <tr WIDTH="100%" colspan="3">
+            <td WIDTH="100%" colspan="3">
+              <h4>Automoviles asociada a la familia: </h4>
+            </td>
+          </tr>
+        </table>
+        <table  border="0" WIDTH="700">
+          <tr>
+            <td WIDTH= "25%">Marca</td>
+            <td WIDTH= "25%">Modelo</td>
+            <td WIDTH= "25%">Color</td>
+            <td WIDTH= "25%">Placa</td>
+          </tr>
+        </table>
+
+        <table id="tabla_autos" border="0" WIDTH="700" style="margin-bottom:20px;"> <!-- antes tabla_alumnos -->
+        </table>
+        <br>
+
         Accion:
         <select name="estatus" id="estatus">
           <option value="0" >Selecciona</option>
