@@ -3,6 +3,7 @@ function enviar_formulario(nchoferesT,nautosT, nfamilia){
   var isgood=true;
   var choferes=''
   var counter=0;
+
   $('.checks-choferes input[type=checkbox]').each(function () {
       if (this.checked) {
           counter++;

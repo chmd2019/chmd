@@ -22,7 +22,7 @@ $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
   <thead class="b-azul white-text">
       <th >Chofer</th>
       <th >Estatus</th>
-      <th >Cancelar</th>
+      <th >Acciones</th>
     </thead>
 <?php
 $ctrol=new ControlChoferes();
@@ -77,9 +77,8 @@ if($estatus!=4){
     <td><?=$nombre?></td>
     <td><span class="<?=$badge?>"><?=$status_detalle?></span></td>
     <td>
-       <div class="col s12 l3">
+         <?php include './modales/modal_pdf_chofer.php'; ?>
           <?php include './modales/modal_cancelar_chofer.php'; ?>
-       </div>
     </td>
   </tr>
   <?php
@@ -124,7 +123,7 @@ while($auto = mysqli_fetch_array($consulta2))
     <td><?=$auto['placas']?></td>
     <td>
       <a class="waves-effect waves-light btn green accent-3"
-         href="https://www.chmd.edu.mx/pruebascd/icloud/Choferes/vistas/vista_editar_auto.php?idcarro=<?php echo $id_auto;?>">
+         href="./vistas/vista_editar_auto.php?idcarro=<?php echo $id_auto;?>">
           <i class="material-icons">edit</i>
       </a>
       <?php include './modales/modal_cancelar_auto.php'; ?>

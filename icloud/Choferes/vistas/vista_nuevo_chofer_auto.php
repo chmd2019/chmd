@@ -151,6 +151,7 @@ if (isset($authUrl)) {
 if ($NChoferes<2 || $Nautos<2)  {
 ?>
 
+
 <div class="col s12 l6" style="float: none;margin: 0 auto;">
     <button class="btn waves-effect waves-light b-azul white-text w-100"
             id="btn_enviar_formulario"

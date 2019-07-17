@@ -2,6 +2,7 @@
 require '../../Model/DBManager.php';
 
 $db_manager = new DBManager();
+$connection=$db_manager->conectar1();
 $isgood=true;
 //Recoleccion de datos pos
 if (isset($_POST['submit'])){
@@ -14,7 +15,16 @@ if (isset($_POST['submit'])){
   $maxautos= $_POST['maxautos'] ;
   $nfamilia= $_POST['nfamilia'] ;
 
+/************************** Conseguir la famila del chofer ********************************/
+  if($connection){
+    $sql = "SELECT familia from usuarios where numero=$nfamilia limit 1;";
+    mysqli_set_charset($connection, 'utf8');
+    $get_familia = mysqli_query($connection, $sql);
 
+    if ($familia_apellidos = mysqli_fetch_array($get_familia)){
+      $familia_letras=$familia_apellidos['familia'];
+    }
+}
 /*************************Registro de nuevo choferes *********************/
   // Obtengo el arreglo de choferes
   $array_choferes= explode(",", $choferes );
@@ -24,14 +34,13 @@ if (isset($_POST['submit'])){
       $info_chofer= explode("|", $chofer);
           $nombre = $info_chofer[0];
           $apellido = $info_chofer[1];
-
           $nombre= $nombre .' '.$apellido;
 //          echo "Nombre: $nombre  apellido: $apellido";
           //almacenar con un comando sql
-          $connection=$db_manager->conectar1();
+
           if($connection){
               //Comando de insercion
-              $sql="INSERT INTO usuarios(nombre, numero, tipo, celular, telefono, correo, calle, colonia, cp, correo2 )VALUES('$nombre','$nfamilia', 7, '0000000000','0000000000', 'sin correo', 'sin calle', 'sin colonia', 'sin cp', 'sin correo'  )";
+              $sql="INSERT INTO usuarios(nombre, numero, tipo, familia, celular, telefono, correo, calle, colonia, cp, correo2 )VALUES('$nombre','$nfamilia', 7, '$familia_letras', '0000000000','0000000000', 'sin correo', 'sin calle', 'sin colonia', 'sin cp', 'sin correo'  )";
               mysqli_set_charset($connection, "utf8");
               $insertar = mysqli_query($connection, $sql);
               if (!$insertar) {
@@ -41,10 +50,11 @@ if (isset($_POST['submit'])){
               }else{
               //    echo 'Registro exitoso';
                 $ultimo_id_conexion = mysqli_insert_id($connection);
-                $foto=$ultimo_id_conexion.'.png';
-                $sql="UPDATE usuarios SET  fotografia='$foto' where id=$ultimo_id_conexion limit 1";
-                mysqli_set_charset($connection, "utf8");
-                  $insertar = mysqli_query($connection, $sql);
+
+                $fotografia = "C:\\\\IDCARDDESIGN\\\\CREDENCIALES\\\\padres\\\\$ultimo_id_conexion.jpg";
+
+                $sql="UPDATE usuarios SET  fotografia='$fotografia'  where id=$ultimo_id_conexion";
+                $insertar = mysqli_query($connection, $sql);
                   if (!$insertar) {
                       die("error:" . mysqli_error($connection));
                   //    echo "Registro fallido";

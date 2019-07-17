@@ -17,6 +17,15 @@ class ControlChoferes{
       }
   }
 
+  public function listado_hijos($familia) {
+      $connection = $this->con->conectar1();
+      if ($connection) {
+          $sql = "SELECT id, nombre, grupo, grado from alumnoschmd where  idfamilia=$familia; ";
+          mysqli_set_charset($connection, 'utf8');
+          return mysqli_query($connection, $sql);
+      }
+  }
+
   public function listado_autos($familia) {
       $connection = $this->con->conectar1();
       if ($connection) {
@@ -29,6 +38,15 @@ class ControlChoferes{
       $connection = $this->con->conectar1();
       if ($connection) {
           $sql = "SELECT * from Ventana_autos where idcarro=$id_auto limit 1;";
+          mysqli_set_charset($connection, 'utf8');
+          return mysqli_query($connection, $sql);
+      }
+  }
+
+  public function get_chofer($id_chofer) {
+      $connection = $this->con->conectar1();
+      if ($connection) {
+          $sql = "SELECT id, nombre, numero from usuarios where tipo=7 and id=$id_chofer limit 1; ";
           mysqli_set_charset($connection, 'utf8');
           return mysqli_query($connection, $sql);
       }
@@ -51,6 +69,16 @@ class ControlChoferes{
       return mysqli_query($connection, $sql);
     }
   }
+
+  public function get_familia($familia) {
+    $connection = $this->con->conectar1();
+    if ($connection) {
+      $sql = "SELECT familia from usuarios where numero=$familia limit 1;";
+      mysqli_set_charset($connection, 'utf8');
+      return mysqli_query($connection, $sql);
+    }
+  }
+
   public function Cant_Autos($familia) {
       $connection = $this->con->conectar1();
       if ($connection) {
