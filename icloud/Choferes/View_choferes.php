@@ -77,7 +77,11 @@ if($estatus!=4){
     <td><?=$nombre?></td>
     <td><span class="<?=$badge?>"><?=$status_detalle?></span></td>
     <td>
-         <?php include './modales/modal_pdf_chofer.php'; ?>
+         <?php
+         if ($estatus==1){
+           include './modales/modal_pdf_chofer.php';
+         }
+          ?>
           <?php include './modales/modal_cancelar_chofer.php'; ?>
     </td>
   </tr>
@@ -108,7 +112,7 @@ else{
         <th >Modelo</th>
         <th >Color</th>
         <th >Placas</th>
-        <th >Modifcar</th>
+        <th >Acciones</th>
   </thead>
 <?php
 $consulta2=$ctrol->listado_autos($familia);

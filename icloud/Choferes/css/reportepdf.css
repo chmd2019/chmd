@@ -23,14 +23,14 @@ input:focus
 {
 	width: 100%;
   font-family:arial;
-	font-size: large;
-	margin: 5px;
+	font-size: 8px;
+	margin: 5px auto;
 	text-align: left;
 	border-collapse: collapse;
 }
 #gradient-style th
 {
-	font-size: large;
+	font-size: 8px;
 	font-weight: normal;
 	padding: 8px;
 	background: #b9c9fe;

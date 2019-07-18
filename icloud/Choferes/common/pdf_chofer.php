@@ -78,7 +78,7 @@ La seguridad de nuestros alumnos es primordial para el Colegio, por lo que les r
       <h2>FORMATO DE AUTORIZACIÓN A CHOFERES</h2>
       <h3> Ciclo escolar 2019-2020</h3></p>
   </page_header>
-  <br><br>&nbsp;&nbsp;<br><br>&nbsp;&nbsp;
+  <br>&nbsp;&nbsp;
   <p align="right">
     <b>Ciudad de México a: <?php echo $arrayDias[date('w')].", ".date('d')." de ".$arrayMeses[date('m')-1]." de ".date('Y').",".date("H:i:s");?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
   </p>
