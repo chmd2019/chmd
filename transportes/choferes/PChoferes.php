@@ -10,7 +10,7 @@ ob_start ();
 $existe = '';
 $datos = mysqli_query ( $conexion," SELECT id,nombre,numero,fecha,
   familia,estatus,tipo,correo
-  FROM usuarios WHERE tipo='7' ORDER BY estatus ASC, fecha DESC  ");
+  FROM usuarios WHERE tipo='7' and estatus='1' ORDER BY  fecha DESC  ");
 
   if (isset ( $_POST ['estatus'] )){
     //$nombre = $_POST ['nombre_nivel'];
@@ -52,7 +52,7 @@ $datos = mysqli_query ( $conexion," SELECT id,nombre,numero,fecha,
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="shortcut icon" href="img/favicon.png">
-    <title>CHMD :: Diario</title>
+    <title>CHMD :: Choferes</title>
     <link href="../dist/css/bootstrap.css" rel="stylesheet">
     <link href="../css/menu.css" rel="stylesheet">
   </head>
@@ -135,6 +135,12 @@ $datos = mysqli_query ( $conexion," SELECT id,nombre,numero,fecha,
               data-nombre ="<?php echo $nombre?>">
               <span class="glyphicon glyphicon-pencil">Ver</span>
             </button>
+            <button class="btn btn-primary" onclick="descargarpdf(<?=$id?>)" type="button">
+              <span class="glyphicon glyphicon-save">PDF</span>
+            </button>
+
+
+
         <!--  <button class="btn-borrar btn btn-danger" type="button"
             data-id="<?php echo $id?>"
             data-nombre="<?php echo $num_familia ?>">
@@ -154,6 +160,14 @@ $datos = mysqli_query ( $conexion," SELECT id,nombre,numero,fecha,
 <!-- Bootstrap core JavaScript
   ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->
+  <script type="text/javascript">
+    function descargarpdf(id){
+      setTimeout(() => {
+         window.location='./common/pdf_chofer.php?idchofer='+id;
+       }, 1000);
+    }
+  </script>
+
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script type="text/javascript" src="../dist/js/bootstrap.js"></script>
   <script type="text/javascript" src="js/choferes.js"></script>

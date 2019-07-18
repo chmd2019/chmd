@@ -14,23 +14,7 @@ require_once ('../FirePHPCore/FirePHP.class.php');
 $firephp = FirePHP::getInstance ( true );
 ob_start ();
 $existe = '';
-//$datos = mysql_query ( "select papa,calle,colonia,cp from usuarios where password='$fam'" );
 
-if(isset($_POST['submit']))
-{
-
-  $nfamilia= htmlspecialchars(trim($_POST['nfamilia']));
-  $nombres_chofer = htmlspecialchars(trim($_POST['nombres_chofer']));
-  $apellidos_chofer = htmlspecialchars(trim($_POST['apellidos_chofer']));
-
-  $nombre = $nombres_chofer. ' '. $apellidos_chofer;
-
-  $sql="INSERT INTO usuarios(nombre, numero, tipo, celular, telefono, correo, calle, colonia, cp, correo2 )VALUES('$nombre','$nfamilia', 7, '0000000000','0000000000', 'sin correo', 'sin calle', 'sin colonia', 'sin cp', 'sin correo'  )";
-  mysqli_set_charset($connection, "utf8");
-  mysqli_query ($conexion, $sql );
-  echo 'Solicitud Guardada';
-
-}else{
     ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -41,7 +25,7 @@ if(isset($_POST['submit']))
       <meta name="description" content="">
       <meta name="author" content="">
       <link rel="shortcut icon" href="img/favicon.png">
-      <title>CHMD :: Alta Choferes y Autos</title>
+      <title>CHMD :: Choferes</title>
       <link href="../dist/css/bootstrap.css" rel="stylesheet">
       <link href="../css/menu.css" rel="stylesheet">
     </head>
@@ -61,7 +45,7 @@ if(isset($_POST['submit']))
       <hr>
   <?php
 //variable debe ser creada para el perfil
-$perfil_actual='Choferes';
+$perfil_actual='Por Familia';
 include ('perfiles_dinamicos.php');
    ?>
     </div>
@@ -69,20 +53,19 @@ include ('perfiles_dinamicos.php');
     <center><?php // echo isset($_POST['guardar']) ? $verificar=1 : '' ; ?></center>
     <!-- Button trigger modal -->
     <center>
-      <h2>Crear un Nuevo Chofer en la Familia:</h2>
+      <h2>Busqueda de chofere por Familia:</h2>
     </center>
     <?php
     if (!$_GET)
     {
       ?>
-      <form  method='get' action="Alta_chofer.php" >
-        <input type="text" name="nfamilia" id="nfamilia"  placeholder="Agregar numero" size="5"  minlength="4" required>
+      <form  method='get' action="PChoferesPorFamilia.php" >
+        <input type="text" name="nfamilia" id="nfamilia"  placeholder="Agregar numero familia" size="20"  minlength="4" required>
         <input type="submit" value="Aceptar">
       </form>
       <?php
     }else {
-
-      include ('./vistas/view_agregar_auto_chofer.php');
+      include ('./vistas/view_por_familia.php');
     }
     ?>
     <!-- Site footer -->
@@ -97,9 +80,5 @@ include ('perfiles_dinamicos.php');
   src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script type="text/javascript" src="../dist/js/bootstrap.js"></script>
   <script type="text/javascript" src="js/Alta_chofer.js"></script>
-
-
 </body>
 </html>
-<?php
-}

@@ -1,46 +1,129 @@
-function Alta_chofer()
-{
-  var nombres_chofer = document.getElementById('nombres_chofer').value;
-  var apellidos_chofer = document.getElementById('apellidos_chofer').value;
-//validacion
-if (nombres_chofer==''){
-  alert('Debe agregar los nombres del chofer.');
-  return false;
-}
-if (apellidos_chofer==''){
-  alert('Debe agregar los apelldos del chofer.');
-  return false;
-}
-//captura de numero de familia
-var nfamilia = document.getElementById('nfamilia').value;
-
-//asegurarse la cantidad de choferes activos que estan en la $familia
-var choferes_activos = document.getElementById('nchoferes').value;
-if (choferes_activos>=2){
-  alert('La familia tiene dos choferes activos registrados, Debe eliminar uno para almacenar un nuevo chofer. ');
-  return false;
-}
-
-$.ajax({
-		url: 'Alta_chofer.php',
-		type: "POST",
-    data : {
-      submit: 0,
-      nfamilia: nfamilia,
-      nombres_chofer:nombres_chofer,
-      apellidos_chofer: apellidos_chofer
-    },
-		success: function(datos)
-     {
-  			alert("Guardado exitosamente");
-        window.location = "../choferes/PChoferes.php";
-			}
-		});
-		return false;
-}
-
-
 function Cancelar()
 {
      window.location.replace("../choferes/PChoferes.php");
+}
+
+
+/****************************************************************************/
+function enviar_formulario(nchoferesT,nautosT, nfamilia){
+  $("#loading").hide();
+  var isgood=true;
+  var choferes='';
+  var counter=0;
+  $('.checks-choferes input[type=checkbox]').each(function () {
+      if (this.checked) {
+        //alert('All Ok!');
+          counter++;
+          let value = $(this).val();
+//          alert(value);
+          let nombre = $("#nombres" + value).val();
+          let apellido = $("#apellidos" + value).val();
+          //validar que no estan vacios
+          if (nombre==''){
+            isgood=false;
+            alert("Falta agregar Nombres");
+            return false;
+          }
+          if (apellido==''){
+            isgood=false;
+            alert("Falta agregar Apellidos");
+            return false;
+          }
+        //almacenar en implote
+        choferes=choferes + nombre + '|' + apellido +',';
+      }
+  });
+
+  //Listo cn los choferes
+  var Nchoferes=counter;
+  //alert(choferes);
+/********************** autos *****************************/
+  var autos='';
+  counter=0;
+  $('.checks-autos input[type=checkbox]').each(function () {
+      if (this.checked) {
+          counter++;
+          let value = $(this).val();
+
+  //          alert(value);
+          let marca = $("#marca" + value).val();
+          let modelo = $("#modelo" + value).val();
+          let color = $("#color" + value).val();
+          let placa = $("#placa" + value).val();
+
+          //validar que no estan vacios
+
+          if (marca==''){
+            isgood=false;
+            alert("Falta agregar Marca");
+            return false;
+          }
+          if (modelo==''){
+            isgood=false;
+            alert("Falta agregar Modelo");
+            return false;
+          }
+
+          if (color==''){
+            isgood=false;
+            alert("Falta agregar Color");
+            return false;
+          }
+          if (placa==''){
+            isgood=false;
+            alert("Falta agregar Placa");
+            return false;
+          }
+        //almacenar en implote
+        autos=autos + marca + '|' + modelo +'|'+color +'|'+ placa + ',';
+      }
+
+  });
+
+  //Listo cn los autos
+
+  var Nautos=counter;
+
+//  alert(autos);
+
+//hacer el llamado ajax
+
+  var ncheckbox_selected= Nautos+Nchoferes;
+if(isgood==true && ncheckbox_selected>0 ){
+  $.ajax({
+    url: './common/post_auto_chofer.php',
+    type: 'POST',
+    data: {
+      submit: true,
+      nchoferes:Nchoferes,
+      choferes: choferes,
+      nautos:Nautos,
+      autos: autos,
+      maxchoferes:nchoferesT ,
+      maxautos: nautosT,
+      nfamilia: nfamilia
+    },
+
+    success: function(res){
+      if (res == 1) {
+        alert("Guardado exitosamente");
+        setInterval(() => {
+              window.location = "../choferes/PChoferes.php";
+          }, 1500);
+      } else {
+
+          alert("Ha ocurido un Error");
+          setInterval(() => {
+              location.reload();
+          }, 5000);
+      }
+
+    }
+
+  });
+
+}
+
+return false;
+
 }
