@@ -89,9 +89,9 @@ La seguridad de nuestros alumnos es primordial para el Colegio, por lo que les r
   <p align="left">
     <table id="gradient-style" summary="Meeting Results">
       <tr>
-        <td>Alumno</td>
-        <td>Grado</td>
-        <td>Grupo</td>
+        <th>Alumno</th>
+        <th>Grado</th>
+        <th>Grupo</th>
       </tr>
       <?php
       while( $alumno = mysqli_fetch_array($hijos)){
@@ -114,10 +114,10 @@ La seguridad de nuestros alumnos es primordial para el Colegio, por lo que les r
     <b>Con el automóvil:</b><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <table id="gradient-style" summary="Meeting Results">
       <tr>
-        <td>Marca</td>
-        <td>Modelo</td>
-        <td>Color</td>
-        <td>Placas</td>
+        <th>Marca</th>
+        <th>Modelo</th>
+        <th>Color</th>
+        <th>Placas</th>
       </tr>
       <?php
       while( $auto = mysqli_fetch_array($autos)){
