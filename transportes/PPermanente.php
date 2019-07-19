@@ -231,7 +231,7 @@ LEFT JOIN usuarios usu on vp.idusuario=usu.id
 </table>
 <!-- Site footer -->
 <div class="footer">
-  <p>&copy; Aplicaciones CHMD 2017</p>
+  <p>&copy; Aplicaciones CHMD 2019</p>
 </div>
 
 </div>

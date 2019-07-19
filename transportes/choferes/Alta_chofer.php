@@ -87,7 +87,7 @@ include ('perfiles_dinamicos.php');
     ?>
     <!-- Site footer -->
     <div class="footer">
-      <p>&copy; Aplicaciones CHMD 2017</p>
+      <p>&copy; Aplicaciones CHMD 2019</p>
     </div>
   </div>
   <!-- Bootstrap core JavaScript

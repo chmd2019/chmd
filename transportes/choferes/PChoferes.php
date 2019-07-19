@@ -84,7 +84,9 @@ $datos = mysqli_query ( $conexion," SELECT id,nombre,numero,fecha,
     <input type="text" class="form-control filter" placeholder="Buscar Choferes...">
     <br><br>
     <table class="table" id="niveles_table">
-      <thead><td><b>ID Usuario</b></td>
+      <thead>
+        <td><b>Nfamilia</b></td>
+        <td><b>ID Usuario</b></td>
         <td><b>Fecha de Solicitud</b></td>
         <td><b>Estatus</b></td>
         <td><b>Nombre</b></td>
@@ -112,6 +114,7 @@ $datos = mysqli_query ( $conexion," SELECT id,nombre,numero,fecha,
       }
       ?>
       <tr style="background:<?=$color?>; border-bottom: 1px solid <?=$borde?>"  data-row="<?php //echo $dato['id_permiso']?>">
+        <td><?php echo $num_familia;?></td>
         <td><?php echo $id;?></td>
         <td><?php echo $fecha;?></td>
         <td><?php echo $staus1?></td>
@@ -153,7 +156,7 @@ $datos = mysqli_query ( $conexion," SELECT id,nombre,numero,fecha,
 </table>
 <!-- Site footer -->
 <div class="footer">
-  <p>&copy; Aplicaciones CHMD 2017</p>
+  <p>&copy; Aplicaciones CHMD 2019</p>
 </div>
 </div>
 <!-- /container -->
