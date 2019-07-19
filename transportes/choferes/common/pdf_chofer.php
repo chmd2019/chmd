@@ -173,11 +173,11 @@ La seguridad de nuestros alumnos es primordial para el Colegio, por lo que les r
 
       <tr>
 
-        <td>Alumno</td>
+        <th>Alumno</th>
 
-        <td>Grado</td>
+        <th>Grado</th>
 
-        <td>Grupo</td>
+        <th>Grupo</th>
 
       </tr>
 
@@ -223,13 +223,13 @@ La seguridad de nuestros alumnos es primordial para el Colegio, por lo que les r
 
       <tr>
 
-        <td>Marca</td>
+        <th>Marca</th>
 
-        <td>Modelo</td>
+        <th>Modelo</th>
 
-        <td>Color</td>
+        <th>Color</th>
 
-        <td>Placas</td>
+        <th>Placas</th>
 
       </tr>
 
