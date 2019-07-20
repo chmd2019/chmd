@@ -1,34 +1,44 @@
+
 <?php
-include 'sesion_admin.php';
-include 'conexion.php';
-$year=date('Y');
-$mes=date('m');
+include '../sesion_admin.php';
+include '../conexion.php';
 $conexion = mysqli_connect ( $host, $usuario, $password ) or die ( "Fallo en el establecimiento de la conexión" );
 mysqli_select_db ($conexion, $db );
 $tildes = $conexion->query("SET NAMES 'utf8'");
-require_once ('FirePHPCore/FirePHP.class.php');
+require_once ('../FirePHPCore/FirePHP.class.php');
 $firephp = FirePHP::getInstance ( true );
 ob_start ();
 $existe = '';
-$sql = "SELECT vp.id_permiso, vp.fecha_creacion, usu.correo,vp.calle_numero,vp.colonia,
-vp.cp, vp.ruta, vp.comentarios, vp.estatus, vp.nfamilia,
-usu.calle, usu.colonia as colonia1,
-vp.mensaje, usu.familia, vp.fecha_cambio, vp.fecha_respuesta
+$sql= "SELECT vp.id_permiso,vp.fecha_creacion,
+usu.correo,vp.calle_numero,vp.colonia,
+vp.cp,
+vp.comentarios,vp.estatus,vp.nfamilia,
+usu.calle,usu.colonia as colonia1,
+vp.mensaje,usu.familia,
+vp.responsable,
+vp.parentesco,
+vp.celular,
+vp.telefono,
+vp.fecha_inicial,
+vp.fecha_final,
+vp.ruta
 from
 Ventana_Permisos vp
 LEFT JOIN usuarios usu on vp.idusuario=usu.id
-where vp.tipo_permiso='1' and vp.archivado=1 and YEAR(vp.fecha_respuesta)='$year' and MONTH(vp.fecha_respuesta)='$mes'  order by vp.id_permiso desc";
+where  vp.archivado=1 and vp.tipo_permiso='2'  order by vp.id_permiso desc";
 
-$datos = mysqli_query ($conexion, $sql );
-if (isset ( $_POST ['nombre_nivel'] ))
-{
+$datos =mysqli_query ($conexion, $sql );
+
+if (isset ( $_POST ['nombre_nivel'] )) {
   $nombre = $_POST ['nombre_nivel'];
   $funcion = $_POST ['funcion'];
   $mensaje= $_POST ['mensaje'];
   $estatus= $_POST ['estatus'];
+
   if ($nombre) {
     header ( 'Content-type: application/json; charset=utf-8' );
-    //$existe = mysql_query ( "SELECT * FROM Ventana_Permiso_diario WHERE id='1'" );
+
+    //$existe =mysqli_query ($conexion, "SELECT * FROM nivel WHERE nombre='$nombre'" );
     //$existe = mysql_fetch_array ( $existe );
     if ($estatus==3)
     {
@@ -41,16 +51,19 @@ if (isset ( $_POST ['nombre_nivel'] ))
     else if ($estatus==2)
     {
       $query = "UPDATE Ventana_Permisos SET mensaje = '$mensaje',estatus=2 WHERE id_permiso=$funcion";
-      mysqli_query ( $conexion, $query );
+    mysqli_query ( $conexion, $query );
       $json = array (
       'estatus' => '0'
       );
-    } elseif ($existe)
-    {
+    } elseif ($existe) {
       $json = array (
       'estatus' => '-1'
       );
     }
+  } else {
+    $json = array (
+    'estatus' => '0'
+    );
   }
   echo json_encode ( $json );
   exit ();
@@ -65,17 +78,18 @@ if (isset ( $_POST ['nombre_nivel'] ))
   <meta name="description" content="">
   <meta name="author" content="">
   <link rel="shortcut icon" href="img/favicon.png">
-  <title>CHMD :: Historial Diario</title>
-  <link href="dist/css/bootstrap.css" rel="stylesheet">
-  <link href="css/menu.css" rel="stylesheet">
+  <title>CHMD :: Historial Temporal</title>
+  <link href="../dist/css/bootstrap.css" rel="stylesheet">
+  <link href="../css/menu.css" rel="stylesheet">
 </head>
+
 <body>
 <div class="container">
   <div class="masthead">
-    <a href="cerrar_sesion.php" style="float: right; cursor: pointer;"
+    <a href="../cerrar_sesion.php" style="float: right; cursor: pointer;"
     role="button" class="btn btn-default btn-sm"> <span
     class="glyphicon glyphicon-user"></span> Cerrar Sesión
-  </a> &nbsp <a href="menu.php">
+  </a> &nbsp <a href="../menu.php">
     <button style="float: right; cursor: pointer;" type="button"
     class="btn btn-default btn-sm">
     <span class="glyphicon glyphicon-th"></span> Menu
@@ -83,28 +97,26 @@ if (isset ( $_POST ['nombre_nivel'] ))
 </a>
 <h3 class="text-muted">Colegio Hebreo Maguén David</h3>
 <hr>
-<?php $perfil_actual='Historial de diario';
+<?php $perfil_actual='Historial de viaje';
       include ("perfiles_dinamicos_historico.php");
  ?>
 </div>
 <br>
-<center><?php echo isset($_POST['guardar']) ? $verificar : '' ; ?></center>
+<center><?php echo isset($_POST['guardar'])?$verificar:''; ?></center>
 <!-- Button trigger modal -->
-</a>
-</button>
-<h2>Historial de solicitides de diario:<?php echo $mes;?></h2>
+<h2>Historial de solicitides Temporal:</h2>
 <input type="text" class="form-control filter"
 placeholder="Buscar Solicitud..."><br> <br>
 <table class="table table-striped" id="niveles_table">
   <thead><td><b>Folio</b></td>
     <td><b>Fecha</b></td>
+
     <td><b>Estatus</b></td>
-    <td><b>Para el dia</b></td>
     <td><b>Familia</b></td>
     <td class="text-right"><b>Acciones</b></td>
   </thead>
   <tbody class="searchable" style="overflow: auto; max-height: 500px;">
-      <?php while ( $dato = mysqli_fetch_assoc ( $datos ) )
+    <?php while ( $dato = mysqli_fetch_assoc ( $datos ) )
     {
       $id= $dato['id_permiso'];
       $fecha= $dato['fecha_creacion'];
@@ -113,44 +125,33 @@ placeholder="Buscar Solicitud..."><br> <br>
       $calle_numero=$dato['calle_numero'];
       $colonia=$dato['colonia'];
       $cp=$dato['cp'];
-      $ruta=$dato['ruta'];
+      $responsable=$dato['responsable'];
+      $parentesco=$dato['parentesco'];
+      $celular=$dato['celular'];
+      $telefono=$dato['telefono'];
+      $fecha_inicial=$dato['fecha_inicial'];
+      $fecha_final=$dato['fecha_final'];
       $comentarios=$dato['comentarios'];
-
-
       if($estatus==1){$staus1="Pendiente";}
       if($estatus==2){$staus1="Autorizado";}
       if($estatus==3){$staus1="Declinado";}
       if($estatus==4){$staus1="Cancelado por el usuario";}
-
+      $famila= $dato['familia'];
       $nfamila= $dato['nfamilia'];
       $calle_numero1=$dato['calle'];
       $colonia1=$dato['colonia1'];
 
       $mensaje=$dato['mensaje'];
       $familia=$dato['familia'];
-      $fecha_cambio=$dato['fecha_cambio'];
-      $frespuesta=$dato['fecha_respuesta'];
-
-  /*    if($fecha_cambio==0)
-      {
-        $ppermiso=$fecha;
-      }
-      else
-      {
-        $ppermiso= $fecha_cambio;
-      }*/
-
-      $ppermiso= $fecha_cambio;
+      $ruta= $dato['ruta'];
       ?>
       <tr data-row="<?php echo $dato['id_permiso']?>">
         <td><?php echo $id ?></td>
         <td><?php echo $fecha?></td>
         <td><?php echo $staus1?></td>
-        <td><?php echo $ppermiso?></td>
-        <td><?php echo $familia?></td>
+        <td><?php echo $famila?></td>
         <td class="text-right">
-          <!--
-            <button class="btn-autorizar btn btn-success" type="button"
+          <!--	<button class="btn-autorizar btn btn-success" type="button"
             data-id="<?php echo $id?>"
             data-nombre="<?php echo $nfamila?>">
             <span class="glyphicon glyphicon-cloud">Autorizar</span>
@@ -164,18 +165,19 @@ placeholder="Buscar Solicitud..."><br> <br>
         data-calle_numero="<?php echo $calle_numero?>"
         data-colonia="<?php echo $colonia?>"
         data-cp="<?php echo $cp?>"
-        data-ruta="<?php echo $ruta?>"
+        data-fecha_inicial="<?php echo $fecha_inicial?>"
+        data-fecha_final="<?php echo$fecha_final?>"
         data-comentarios="<?php echo $comentarios?>"
         data-calle_numero1="<?php echo $calle_numero1?>"
         data-colonia1="<?php echo $colonia1?>"
+        data-ruta="<?php echo $ruta?>"
 
         data-mensaje="<?php echo $mensaje?>"
-        data-fechacambio="<?php echo $ppermiso?>"
-        data-frespuesta="<?php echo $frespuesta?>"
-        data-estatus="<?php echo $estatus?>">
-
-
-
+        data-responsable="<?php echo $responsable?>"
+        data-parentesco="<?php echo $parentesco?>"
+        data-celular="<?php echo $celular?>"
+        data-estatus="<?php echo $estatus?>"
+        data-telefono="<?php echo $telefono?>">
         <span class="glyphicon glyphicon-pencil">Ver</span>
       </button>
       <!--
@@ -188,10 +190,11 @@ placeholder="Buscar Solicitud..."><br> <br>
       <!--
         <a href="grado.php?qwert=<?php echo $dato['id']?>&amp;nombre=<?php echo $dato['nombre']?>"
           style="cursor: pointer;"><img src="img/pdf.png" width="40" height="40"/>
-        </a>-->
-      </td>
-    </tr>
-  <?php }?>
+        </a>
+      -->
+    </td>
+  </tr>
+<?php }?>
 </tbody>
 </table>
 <!-- Site footer -->
@@ -208,9 +211,9 @@ placeholder="Buscar Solicitud..."><br> <br>
   <!-- Placed at the end of the document so the pages load faster -->
   <script type="text/javascript"
   src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-  <script type="text/javascript" src="dist/js/bootstrap.js"></script>
-  <script type="text/javascript" src="js/PDiario.js"></script>
-<script type="text/javascript" src="js/1min_inactivo.js" ></script>
+  <script type="text/javascript" src="../dist/js/bootstrap.js"></script>
+  <script type="text/javascript" src="js/PViaje.js"></script>
+<script type="text/javascript" src="../js/1min_inactivo.js" ></script>
 </body>
 </html>
 
@@ -228,38 +231,31 @@ aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="alert-save"></div>
       <div class="modal-body">
         <table border="0" WIDTH="700">
-
           <tr>
             <td WIDTH="10%" >Folio:
               <input
               name="folio" id="folio" type="text" style="width : 100px; heigth : 4px"
               class="form-control" placeholder="folio"  readonly>
-
             </td>
-
-            <td WIDTH="40%">Fecha de solicitud:
+            <td WIDTH="30%">Fecha de solicitud:
               <input
-              name="nombre_nivel" id="nombre_nivel" type="text" style="width : 300px; heigth : 4px"
+              name="nombre_nivel" id="nombre_nivel" type="text" style="width : 200px; heigth : 4px"
               class="form-control" placeholder="Fecha" readonly>
             </td>
 
-            <td  WIDTH="50%">Solicitante:
+            <td  WIDTH="60%">Solicitante:
               <input
               name="nombre_nivel1" id="nombre_nivel1" type="text"
-              class="form-control" placeholder="Correo"  style="width : 300px; heigth : 4px" readonly>
+              class="form-control" placeholder="Correo"  style="width : 400px; heigth : 4px" readonly>
             </td>
-
           </tr>
         </table>
-
         <table>
-
           <tr>
             <td WIDTH="100%" colspan="3">
               <h4>Solicitantes:</h4>
             </td>
           </tr>
-
         </table>
         <table border="0" WIDTH="700">
           <tr>
@@ -279,16 +275,9 @@ aria-labelledby="myModalLabel" aria-hidden="true">
               <h4>Domicilio de Actual:</h4>
             </td>
           </tr>
+
         </table>
         <table border="0" WIDTH="700">
-          <tr>
-            <td colspan="3">
-              fecha para el permiso:
-              <input
-              name="fechacambio" id="fechacambio" type="text"
-              class="form-control" placeholder="Sin Fecha de Permiso"  style="width : 500px; heigth : 4px" readonly>
-            </td>
-          </tr>
           <tr>
             <td colspan="2">
               Calle:
@@ -302,11 +291,8 @@ aria-labelledby="myModalLabel" aria-hidden="true">
               name="colonia1" id="colonia1" type="text"
               class="form-control" placeholder="Colonia1" readonly>
             </td>
-
           </tr>
-
         </table>
-
         <table border="0" WIDTH="700">
           <tr>
             <td WIDTH="100%" colspan="3">
@@ -314,11 +300,18 @@ aria-labelledby="myModalLabel" aria-hidden="true">
             </td>
           </tr>
           <tr>
-            <td colspan="2">
+            <td colspan="3">
               Calle:
               <input
               name="calle_numero" id="calle_numero" type="text"
-              class="form-control" placeholder="Calle_numero"  style="width : 500px; heigth : 4px" readonly>
+              class="form-control" placeholder="Calle_numero"   readonly>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">Colonia:
+              <input
+              name="colonia" id="colonia" type="text"
+              class="form-control" placeholder="Colonia" readonly>
             </td>
             <td>
               CP:
@@ -326,30 +319,56 @@ aria-labelledby="myModalLabel" aria-hidden="true">
               name="cp" id="cp" type="text"
               class="form-control" placeholder="Sin cp" readonly>
             </td>
-
           </tr>
-
-        </table>
-
-        <table border="0" WIDTH="700">
           <tr>
-            <td colspan="2">Colonia:
-              <input
-              name="colonia" id="colonia" type="text"
-              class="form-control" placeholder="Colonia" readonly>
-            </td>
             <td>Ruta:
               <input
               name="ruta" id="ruta" type="text"
               class="form-control" placeholder="Agrega Ruta" readonly>
             </td>
           </tr>
+          <tr>
+            <td WIDTH="100%" colspan="3">
+              <h4>Datos responsable:</h4>
+            </td>
+          </tr>
+          <tr>
+            <td>Nombre:
+              <input
+              name="responsable" id="responsable" type="text"
+              class="form-control" placeholder="Agrega responsable" readonly>
+            </td>
+            <td>Parentesco:
+              <input
+              name="parentesco" id="parentesco" type="text"
+              class="form-control" placeholder="Agrega parentesco" readonly>
+            </td>
+            <td>Telefono:
+              <input
+              name="telefono" id="telefono" type="text"
+              class="form-control" placeholder="Agrega telefono" readonly>
+            </td>
+          </tr>
 
+          <tr>
+            <td>Celular:
+              <input
+              name="celular" id="celular" type="text"
+              class="form-control" placeholder="Agrega celular" readonly>
+            </td>
+            <td>Fecha Inicial:
+              <input
+              name="fecha_inicial" id="fecha_inicial" type="text"
+              class="form-control" placeholder="Sin fecha inicial" readonly>
+            </td>
+            <td>Fecha Final:
+              <input
+              name="fecha_final" id="fecha_final" type="text"
+              class="form-control" placeholder="Sin Fecha Final" readonly>
+            </td>
+          </tr>
         </table>
         <!--
-
-
-
         -->
       </table>
       Comentarios de solicitud:
@@ -358,10 +377,6 @@ aria-labelledby="myModalLabel" aria-hidden="true">
       <textarea class="form-control"  id="mensaje" name="mensaje"  ></textarea>
       <input name="funcion" id="funcion" type="text"
       class="form-control" value="0" required style="display: none;"><br>
-
-      Fecha de Respuesta:
-      <input name="frespuesta" id="frespuesta" type="text"
-      class="form-control" placeholder="frespuesta" readonly><br>
       Accion:
       <select name="estatus" id="estatus">
         <option value="0">Selecciona</option>

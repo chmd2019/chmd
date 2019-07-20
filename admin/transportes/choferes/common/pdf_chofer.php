@@ -1,7 +1,7 @@
 <?php
 
-require_once '../../../icloud/vendor/autoload.php';
-require '../../../icloud/Choferes/common/ControlChoferes.php';
+require_once '../../../../icloud/vendor/autoload.php';
+require '../../../../icloud/Choferes/common/ControlChoferes.php';
 
 ob_start();
 
@@ -320,7 +320,7 @@ $html = ob_get_contents();
 ob_end_clean();
 $mpdf = new \Mpdf\Mpdf();
 
-$stylesheet = file_get_contents('../../../icloud/Choferes/css/reportepdf.css');
+$stylesheet = file_get_contents('../../../../icloud/Choferes/css/reportepdf.css');
 $mpdf->WriteHTML($stylesheet,\Mpdf\HTMLParserMode::HEADER_CSS);
 $mpdf->WriteHTML($html);
 $mpdf->Output('Doc_Autorizacion.pdf', \Mpdf\Output\Destination::DOWNLOAD);

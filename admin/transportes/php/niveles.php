@@ -5,7 +5,7 @@ $firephp = FirePHP::getInstance ( true );
 ob_start ();
 
 header ( 'Content-type: application/json; charset=utf-8' );
-include '../conexion.php';
+include '../../conexion.php';
 /*
 if (isset ( $_GET ['getNiveles'] )) {
 

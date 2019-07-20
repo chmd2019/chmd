@@ -1,5 +1,5 @@
 <?php
-require '../conexion.php';
+require 'conexion.php';
 $nfamilia = $_GET['nfamilia'];
 $array_autos= array();
 $sql = mysqli_query ( $conexion, "SELECT * from Ventana_autos where idfamilia=$nfamilia limit 2" );

@@ -70,7 +70,7 @@
 				class="btn btn-default btn-sm">
 				<span class="glyphicon glyphicon-user"></span> Cerrar Sesión
 			</button>
-			&nbsp <a href="menu.php">
+			&nbsp <a href="../menu.php">
 				<button style="float: right; cursor: pointer;" type="button"
 					class="btn btn-default btn-sm">
 					<span class="glyphicon glyphicon-th"></span> Menu

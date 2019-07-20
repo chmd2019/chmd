@@ -1,10 +1,10 @@
 <?php
-include 'sesion_admin.php';
-include 'conexion.php';
+include '../sesion_admin.php';
+include '../conexion.php';
 $conexion = mysqli_connect ( $host, $usuario, $password ) or die ( "Fallo en el establecimiento de la conexión" );
 mysqli_select_db ($conexion, $db );
 $tildes = $conexion->query("SET NAMES 'utf8'"); //Para que se muestren las tildes
-require_once ('FirePHPCore/FirePHP.class.php');
+require_once ('../FirePHPCore/FirePHP.class.php');
 $firephp = FirePHP::getInstance ( true );
 ob_start ();
 $existe = '';
@@ -79,17 +79,17 @@ $datos = mysqli_query ( $conexion,"SELECT vp.id_permiso,vp.fecha_creacion,
       <meta name="author" content="">
       <link rel="shortcut icon" href="img/favicon.png">
       <title>CHMD :: Temporal</title>
-      <link href="dist/css/bootstrap.css" rel="stylesheet">
-      <link href="css/menu.css" rel="stylesheet">
+      <link href="../dist/css/bootstrap.css" rel="stylesheet">
+      <link href="../css/menu.css" rel="stylesheet">
 
     </head>
     <body>
 <div class="container">
   <div class="masthead">
-    <a href="cerrar_sesion.php" style="float: right; cursor: pointer;"
+    <a href="../cerrar_sesion.php" style="float: right; cursor: pointer;"
     role="button" class="btn btn-default btn-sm"> <span
     class="glyphicon glyphicon-user"></span> Cerrar Sesión
-  </a> &nbsp <a href="menu.php">
+  </a> &nbsp <a href="../menu.php">
     <button style="float: right; cursor: pointer;" type="button"
     class="btn btn-default btn-sm">
     <span class="glyphicon glyphicon-th"></span> Menu
@@ -298,9 +298,9 @@ placeholder="Buscar Solicitud..."><br> <br>
   <!-- Placed at the end of the document so the pages load faster -->
   <script type="text/javascript"
   src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-  <script type="text/javascript" src="dist/js/bootstrap.js"></script>
+  <script type="text/javascript" src="../dist/js/bootstrap.js"></script>
   <script type="text/javascript" src="js/PViaje.js"></script>
-  <script type="text/javascript" src="js/1min_inactivo.js" ></script>
+  <script type="text/javascript" src="../js/1min_inactivo.js" ></script>
 </body>
 </html>
 

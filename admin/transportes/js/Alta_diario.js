@@ -1,4 +1,4 @@
-function Alta_diario()
+ function Alta_diario()
 {
 var fecha = document.getElementById('fecha').value;
 if(document.querySelector('input[name="idusuario"]:checked')){

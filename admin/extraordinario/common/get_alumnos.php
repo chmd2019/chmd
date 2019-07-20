@@ -1,5 +1,5 @@
 <?php
-require 'conexion.php';
+require '../../conexion.php';
 $id_permiso = $_GET['id'];
 //alumnos
 $array_alumnos= array();

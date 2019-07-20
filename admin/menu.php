@@ -42,22 +42,29 @@ include('sesion_admin.php');?>
     <div class="row" style="margin-top:150px">
       <div class="col-lg-6" style="margin-bottom:30px">
         <center>
-          <a href="PDiario.php">
+          <a href="transportes/PDiario.php">
             <button style="width:100%;height:150px;" class="btn btn-large btn-primary" type="button">Solicitudes</button>
           </a>
         </center>
       </div>
       <div class="col-lg-6" style="margin-bottom:30px">
         <center>
-          <a href="HPDiario.php">
+          <a href="transportes/HPDiario.php">
             <button style="width:100%;height:150px;" class="btn btn-large btn-success" type="button">Historial</button>
           </a>
         </center>
       </div>
       <div class="col-lg-6 justify-self-center" style="margin-bottom:30px">
         <center>
-          <a href="choferes/PChoferes.php">
+          <a href="transportes/choferes/PChoferes.php">
             <button style="width:100%;height:150px;" class="btn btn-large btn-warning" type="button">Choferes</button>
+          </a>
+        </center>
+      </div>
+      <div class="col-lg-6 justify-self-center" style="margin-bottom:30px">
+        <center>
+          <a href="extraordinario/PextraordinarioKinder.php">
+            <button style="width:100%;height:150px;" class="btn btn-large btn-danger" type="button">Extraordinario</button>
           </a>
         </center>
       </div>
