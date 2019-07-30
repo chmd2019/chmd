@@ -46,7 +46,7 @@ $existe = '';
   <?php
 //variable debe ser creada para el perfil
 $perfil_actual='Por Familia';
-include ('perfiles_dinamicos.php');
+include ('../../menus_dinamicos/perfiles_dinamicos_choferes.php');
    ?>
     </div>
     <br>

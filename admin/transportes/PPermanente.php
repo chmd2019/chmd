@@ -100,7 +100,7 @@ LEFT JOIN usuarios usu on vp.idusuario=usu.id
     <hr>
     <?php
     $perfil_actual='permanente';
-    include ('perfiles_dinamicos.php'); ?>
+    include ('../menus_dinamicos/perfiles_dinamicos_solicitudes.php'); ?>
   </div>
   <br>
   <center><?php echo isset($_POST['guardar'])?$verificar:''; ?></center>

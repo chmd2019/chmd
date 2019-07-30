@@ -119,7 +119,7 @@ echo 'Solicitud Guardada';
   <?php
 //variable debe ser creada para el perfil
 $perfil_actual='diario';
-include ('perfiles_dinamicos.php');
+include ('../menus_dinamicos/perfiles_dinamicos_solicitudes.php');
    ?>
     </div>
     <br>

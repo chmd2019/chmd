@@ -128,7 +128,7 @@ if(isset($_POST['submit']))
       <h3 class="text-muted">Colegio Hebreo Maguén David</h3>
 
       <hr>
-      <?php $perfil_actual='permanente'; include ('perfiles_dinamicos.php'); ?>
+      <?php $perfil_actual='permanente'; include ('../menus_dinamicos/perfiles_dinamicos_solicitudes.php'); ?>
     </div>
     <br>
     <center><?php // echo isset($_POST['guardar'])?$verificar:''; ?></center>

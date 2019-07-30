@@ -96,7 +96,7 @@ if (isset ( $_POST ['nombre_nivel'] )) {
 
         <hr>
         <?php $perfil_actual='Historial de permanente';
-              include ("perfiles_dinamicos_historico.php");
+              include ("../menus_dinamicos/perfiles_dinamicos_historico.php");
          ?>
       </div>
       <br>

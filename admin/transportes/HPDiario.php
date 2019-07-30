@@ -84,7 +84,7 @@ if (isset ( $_POST ['nombre_nivel'] ))
 <h3 class="text-muted">Colegio Hebreo Maguén David</h3>
 <hr>
 <?php $perfil_actual='Historial de diario';
-      include ("perfiles_dinamicos_historico.php");
+      include ("../menus_dinamicos/perfiles_dinamicos_historico.php");
  ?>
 </div>
 <br>

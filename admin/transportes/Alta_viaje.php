@@ -134,7 +134,7 @@ else
     <hr>
     <?php
     $perfil_actual='viaje';
-    include ('perfiles_dinamicos.php'); ?>
+    include ('../menus_dinamicos/perfiles_dinamicos_solicitudes.php'); ?>
   </div>
   <br>
   <center><?php //echo isset($_POST['guardar']) ? $verificar='' : '' ; ?></center>

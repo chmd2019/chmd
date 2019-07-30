@@ -1,0 +1,65 @@
+[17-Jul-2019 15:48:45 UTC] PHP Fatal error:  Uncaught Google_Service_Exception: Error calling GET https://www.googleapis.com/oauth2/v2/userinfo: (401) Request is missing required authentication credential. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project. in /home/chmd2016/public_html/pruebascd/icloud/libraries/Google/Http/REST.php:106
+Stack trace:
+#0 /home/chmd2016/public_html/pruebascd/icloud/libraries/Google/Http/REST.php(58): Google_Http_REST::decodeHttpResponse(Object(Google_Http_Request), Object(Google_Client))
+#1 /home/chmd2016/public_html/pruebascd/icloud/libraries/Google/Task/Runner.php(174): Google_Http_REST::doExecute(Object(Google_Client), Object(Google_Http_Request))
+#2 /home/chmd2016/public_html/pruebascd/icloud/libraries/Google/Http/REST.php(43): Google_Task_Runner->run()
+#3 /home/chmd2016/public_html/pruebascd/icloud/libraries/Google/Client.php(593): Google_Http_REST::execute(Object(Google_Client), Object(Google_Http_Request))
+# in /home/chmd2016/public_html/pruebascd/icloud/libraries/Google/Http/REST.php on line 106
+[17-Jul-2019 16:44:26 UTC] PHP Notice:  Undefined variable: idseccion in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_nuevo_permiso_eventos.php on line 320
+[17-Jul-2019 16:44:26 UTC] PHP Notice:  Undefined variable: fecha_hoy in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_nuevo_permiso_eventos.php on line 344
+[17-Jul-2019 16:44:26 UTC] PHP Notice:  Undefined variable: nfamilia in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_nuevo_permiso_eventos.php on line 349
+[17-Jul-2019 16:44:26 UTC] PHP Notice:  Undefined variable: nfamilia in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_nuevo_permiso_eventos.php on line 381
+[17-Jul-2019 16:52:06 UTC] PHP Fatal error:  Uncaught Google_Service_Exception: Error calling GET https://www.googleapis.com/oauth2/v2/userinfo: (401) Request is missing required authentication credential. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project. in /home/chmd2016/public_html/pruebascd/icloud/libraries/Google/Http/REST.php:106
+Stack trace:
+#0 /home/chmd2016/public_html/pruebascd/icloud/libraries/Google/Http/REST.php(58): Google_Http_REST::decodeHttpResponse(Object(Google_Http_Request), Object(Google_Client))
+#1 /home/chmd2016/public_html/pruebascd/icloud/libraries/Google/Task/Runner.php(174): Google_Http_REST::doExecute(Object(Google_Client), Object(Google_Http_Request))
+#2 /home/chmd2016/public_html/pruebascd/icloud/libraries/Google/Http/REST.php(43): Google_Task_Runner->run()
+#3 /home/chmd2016/public_html/pruebascd/icloud/libraries/Google/Client.php(593): Google_Http_REST::execute(Object(Google_Client), Object(Google_Http_Request))
+# in /home/chmd2016/public_html/pruebascd/icloud/libraries/Google/Http/REST.php on line 106
+[18-Jul-2019 11:27:35 UTC] PHP Notice:  Undefined variable: idseccion in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_nuevo_permiso_eventos.php on line 307
+[18-Jul-2019 11:27:35 UTC] PHP Notice:  Undefined variable: fecha_hoy in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_nuevo_permiso_eventos.php on line 345
+[18-Jul-2019 11:27:35 UTC] PHP Notice:  Undefined variable: nfamilia in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_nuevo_permiso_eventos.php on line 350
+[18-Jul-2019 11:27:35 UTC] PHP Notice:  Undefined variable: nfamilia in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_nuevo_permiso_eventos.php on line 382
+[18-Jul-2019 11:47:54 UTC] PHP Notice:  Undefined variable: idseccion in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_nuevo_permiso_eventos.php on line 315
+[18-Jul-2019 11:47:54 UTC] PHP Notice:  Undefined variable: fecha_hoy in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_nuevo_permiso_eventos.php on line 353
+[18-Jul-2019 11:47:54 UTC] PHP Notice:  Undefined variable: nfamilia in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_nuevo_permiso_eventos.php on line 358
+[18-Jul-2019 11:47:54 UTC] PHP Notice:  Undefined variable: nfamilia in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_nuevo_permiso_eventos.php on line 390
+[18-Jul-2019 12:30:10 UTC] PHP Fatal error:  Uncaught Google_Service_Exception: Error calling GET https://www.googleapis.com/oauth2/v2/userinfo: (401) Request is missing required authentication credential. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project. in /home/chmd2016/public_html/pruebascd/icloud/libraries/Google/Http/REST.php:106
+Stack trace:
+#0 /home/chmd2016/public_html/pruebascd/icloud/libraries/Google/Http/REST.php(58): Google_Http_REST::decodeHttpResponse(Object(Google_Http_Request), Object(Google_Client))
+#1 /home/chmd2016/public_html/pruebascd/icloud/libraries/Google/Task/Runner.php(174): Google_Http_REST::doExecute(Object(Google_Client), Object(Google_Http_Request))
+#2 /home/chmd2016/public_html/pruebascd/icloud/libraries/Google/Http/REST.php(43): Google_Task_Runner->run()
+#3 /home/chmd2016/public_html/pruebascd/icloud/libraries/Google/Client.php(593): Google_Http_REST::execute(Object(Google_Client), Object(Google_Http_Request))
+# in /home/chmd2016/public_html/pruebascd/icloud/libraries/Google/Http/REST.php on line 106
+[18-Jul-2019 13:17:43 UTC] PHP Notice:  Undefined variable: idseccion in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_nuevo_permiso_eventos.php on line 314
+[18-Jul-2019 13:17:43 UTC] PHP Notice:  Undefined variable: fecha_hoy in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_nuevo_permiso_eventos.php on line 352
+[18-Jul-2019 13:17:43 UTC] PHP Notice:  Undefined variable: nfamilia in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_nuevo_permiso_eventos.php on line 357
+[18-Jul-2019 13:17:43 UTC] PHP Notice:  Undefined variable: nfamilia in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_nuevo_permiso_eventos.php on line 389
+[18-Jul-2019 14:27:11 UTC] PHP Fatal error:  Uncaught Google_Service_Exception: Error calling GET https://www.googleapis.com/oauth2/v2/userinfo: (401) Request is missing required authentication credential. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project. in /home/chmd2016/public_html/pruebascd/icloud/libraries/Google/Http/REST.php:106
+Stack trace:
+#0 /home/chmd2016/public_html/pruebascd/icloud/libraries/Google/Http/REST.php(58): Google_Http_REST::decodeHttpResponse(Object(Google_Http_Request), Object(Google_Client))
+#1 /home/chmd2016/public_html/pruebascd/icloud/libraries/Google/Task/Runner.php(174): Google_Http_REST::doExecute(Object(Google_Client), Object(Google_Http_Request))
+#2 /home/chmd2016/public_html/pruebascd/icloud/libraries/Google/Http/REST.php(43): Google_Task_Runner->run()
+#3 /home/chmd2016/public_html/pruebascd/icloud/libraries/Google/Client.php(593): Google_Http_REST::execute(Object(Google_Client), Object(Google_Http_Request))
+# in /home/chmd2016/public_html/pruebascd/icloud/libraries/Google/Http/REST.php on line 106
+[19-Jul-2019 07:17:04 UTC] PHP Notice:  Undefined variable: nombre in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_consulta_evento.php on line 74
+[19-Jul-2019 07:27:05 UTC] PHP Notice:  Undefined variable: todos_autorizados in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_consulta_evento.php on line 126
+[19-Jul-2019 07:27:05 UTC] PHP Notice:  Undefined variable: badge in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_consulta_evento.php on line 136
+[19-Jul-2019 07:27:16 UTC] PHP Notice:  Undefined variable: todos_autorizados in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_consulta_evento.php on line 126
+[19-Jul-2019 07:27:16 UTC] PHP Notice:  Undefined variable: badge in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_consulta_evento.php on line 136
+[19-Jul-2019 07:27:56 UTC] PHP Notice:  Undefined variable: todos_autorizados in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_consulta_evento.php on line 126
+[19-Jul-2019 07:27:56 UTC] PHP Notice:  Undefined variable: badge in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_consulta_evento.php on line 136
+[19-Jul-2019 07:28:01 UTC] PHP Notice:  Undefined variable: todos_autorizados in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_consulta_evento.php on line 126
+[19-Jul-2019 07:28:01 UTC] PHP Notice:  Undefined variable: badge in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_consulta_evento.php on line 136
+[19-Jul-2019 07:28:24 UTC] PHP Notice:  Undefined variable: badge in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_consulta_evento.php on line 128
+[19-Jul-2019 14:40:55 UTC] PHP Notice:  Undefined variable: idseccion in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_nuevo_permiso_eventos.php on line 314
+[19-Jul-2019 14:40:55 UTC] PHP Notice:  Undefined variable: idseccion in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_nuevo_permiso_eventos.php on line 341
+[19-Jul-2019 14:40:55 UTC] PHP Notice:  Undefined variable: fecha_hoy in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_nuevo_permiso_eventos.php on line 365
+[19-Jul-2019 14:40:55 UTC] PHP Notice:  Undefined variable: nfamilia in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_nuevo_permiso_eventos.php on line 370
+[19-Jul-2019 14:40:55 UTC] PHP Notice:  Undefined variable: nfamilia in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_nuevo_permiso_eventos.php on line 402
+[20-Jul-2019 03:29:40 UTC] PHP Notice:  Undefined index: id in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_consulta_evento.php on line 13
+[23-Jul-2019 03:37:35 UTC] PHP Notice:  Undefined variable: badge in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_consulta_evento.php on line 133
+[23-Jul-2019 03:38:39 UTC] PHP Notice:  Undefined variable: badge in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_consulta_evento.php on line 133
+[23-Jul-2019 03:40:59 UTC] PHP Notice:  Undefined variable: badge in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_consulta_evento.php on line 133
+[23-Jul-2019 03:53:59 UTC] PHP Notice:  Undefined variable: badge in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_consulta_evento.php on line 133
+[23-Jul-2019 03:54:35 UTC] PHP Notice:  Undefined variable: badge in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_consulta_evento.php on line 133

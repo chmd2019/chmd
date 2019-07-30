@@ -1,63 +1,16 @@
 <?php
 include '../sesion_admin.php';
 include '../conexion.php';
-$conexion = mysqli_connect ( $host, $usuario, $password ) or die ( "Fallo en el establecimiento de la conexión" );
-mysqli_select_db ($conexion, $db );
-$tildes = $conexion->query("SET NAMES 'utf8'"); //Para que se muestren las tildes
+
+if (!in_array('5', $capacidades)){
+    header('Location: PextraordinarioPrimaria.php');
+}
+
 require_once ('../FirePHPCore/FirePHP.class.php');
 $firephp = FirePHP::getInstance ( true );
 ob_start ();
-$existe = '';
 
-if (isset ( $_POST ['nombre_nivel'] ))
-{
-  $nombre = $_POST ['nombre_nivel'];
-  $funcion = $_POST ['funcion'];
-  $idpermiso = $_POST ['idpermiso'];
-  $mensaje= $_POST ['mensaje'];
-  $estatus= $_POST ['estatus'];
-
-  if ($nombre) {
-    header ( 'Content-type: application/json; charset=utf-8' );
-
-    //$existe = mysql_query ( "SELECT * FROM Ventana_Permiso_diario WHERE id='1'" );
-    //$existe = mysql_fetch_array ( $existe );
-    if ($estatus==3)
-    {
-      //se cambia el estatus de la autorizacion del alumno
-      $query = "UPDATE Ventana_permisos_alumnos SET estatus='3' WHERE id='$funcion'";
-      mysqli_query ( $conexion, $query );
-      //Se cambia el mensaje registrado en el permiso principal.
-      $query = "UPDATE Ventana_Permisos SET mensaje = '$mensaje' WHERE id_permiso='$idpermiso'";
-      mysqli_query ( $conexion, $query );
-
-      $json = array (
-      'estatus' => '0'
-      );
-    }
-    else if ($estatus==2)
-    {
-      //se cambia el estatus de la autorizacion del alumno
-      $query = "UPDATE Ventana_permisos_alumnos SET estatus=2 WHERE id=$funcion";
-      mysqli_query ( $conexion, $query );
-      //Se cambia el mensaje registrado en el permiso principal.
-      $query = "UPDATE Ventana_Permisos SET mensaje = '$mensaje' WHERE id_permiso=$idpermiso";
-      mysqli_query ( $conexion, $query );
-
-      $json = array (
-      'estatus' => '0'
-      );
-    } else if ($existe)
-    {
-      $json = array (
-      'estatus' => '-1'
-      );
-    }
-  }
-  echo json_encode ( $json );
-  exit ();
-}
-$datos = mysqli_query ( $conexion,"SELECT vpa.id as idpemisoalumno, vpa.id_alumno, ac.nombre, vp.id_permiso,vp.fecha_creacion,
+$datos = mysqli_query ( $conexion,"SELECT vpa.id as idpermisoalumno, vpa.id_alumno,ac.idcursar, ac.nombre, vp.id_permiso,vp.fecha_creacion,
   usu.correo,
   vp.comentarios,vpa.estatus,vp.nfamilia,
   vp.mensaje,
@@ -112,12 +65,14 @@ $datos = mysqli_query ( $conexion,"SELECT vpa.id as idpemisoalumno, vpa.id_alumn
 </a>
 <h3 class="text-muted">Colegio Hebreo Maguén David</h3>
 <hr>
-<?php $perfil_actual='Solicitudes de Kinder'; include ('componentes/perfiles_dinamicos.php'); ?>
+<?php $perfil_actual='11'; include ('../menus_dinamicos/perfiles_dinamicos_extraordinarios.php'); ?>
 </div>
 <br>
 <center><?php echo isset($_POST['guardar'])?$verificar:''; ?></center>
 <!-- Button trigger modal -->
-<a href="Alta_diario.php" style="cursor: pointer;" class="btn btn-primary btn-default pull-right btn-nuevo"><span class="glyphicon glyphicon-plus"></span>
+<?php
+$_nivel='1';
+include 'componentes/nuevos_permisos.php'; ?>
 </a>
 </button>
 <h2>Solicitudes de Extraordinarios Kinder</h2>
@@ -135,9 +90,9 @@ placeholder="Buscar Solicitud..."><br> <br>
   <tbody class="searchable" style="overflow: auto; max-height: 500px;">
     <?php while ( $dato = mysqli_fetch_assoc ( $datos ) )
     {
-      $idpermiso_alumno=$dato['idpemisoalumno'];
-      $id_ulumno= $dato['id_alumno'];
-
+      $idpermiso_alumno=$dato['idpermisoalumno'];
+      $id_alumno= $dato['id_alumno'];
+      $idcursar= $dato['idcursar'];
       $id_permiso= $dato['id_permiso'];
       $nfamilia= $dato['nfamilia'];
 
@@ -215,40 +170,25 @@ placeholder="Buscar Solicitud..."><br> <br>
             $mes = -1;
           break;
       }
-      $anio= $array2[5] % 100;
-      $_fecha_cambio= $mes.'/'.$dia.'/'.$anio;
-      $fecha_entrada = strtotime ($_fecha_cambio);
-      if($fecha_actual > $fecha_entrada){
+
+
+
+      if(1){
             $otro_dia=false;
       }else{
             $otro_dia=true;
       }
 
-    //  $telefonomama=$dato['telefonomama'];
-/*
-      if($fecha_inicial==0)
-      {
-        $fpermiso=$fecha;
-      }
-      else
-      {
-        $fpermiso= $fecha_inicial;
-      }
-*/
        if ($otro_dia==true){
-        $color = '#ddd';
-        $borde= '#ddd';
+        $color = '#ffc9ce';
+        $borde= '#fff';
       }else{
         $color = '#fff';
         $borde= '#ddd';
       }
-      if ($estatus==4){
-        $color = '#ffd5d5';
-        $borde= '#ffb1b1';
-      }
       ?>
-      <tr  style="background:<?=$color?>; border-bottom:  1px solid <?=$borde?>"  data-row="<?php echo $dato['id_permiso']?>">
-        <td><?php echo $nfamilia?></td>
+      <tr class="fila_alumnos" id="fila_<?=$id_alumno?>_<?=$idcursar?>_<?=$idpermiso_alumno?>"  style="background:<?=$color?>; border-bottom:  1px solid <?=$borde?>"  data-row="<?php echo $dato['id_permiso']?>">
+        <td ><?php echo $nfamilia?></td>
         <td><?php echo $fecha_creacion?></td>
         <td><?php echo $staus1?></td>
         <td><?php echo $fecha_cambio?></td>
@@ -293,11 +233,11 @@ placeholder="Buscar Solicitud..."><br> <br>
         <span class="glyphicon glyphicon-pencil">Ver</span>
       </button>
 
-      <button class="btn-borrar btn btn-danger" type="button"
+    <!--  <button class="btn-borrar btn btn-danger" type="button"
       data-id="<?php echo $idpermiso_alumno?>"
       data-nombre="<?php echo $nfamila ?>">
       <span class="glyphicon glyphicon-trash">Archivar</span>
-    </button>
+    </button> -->
 
     <!--
       <a href="grado.php?qwert=<?php echo $dato['id']?>&amp;nombre=<?php echo $dato['nombre']?>"
@@ -320,10 +260,13 @@ placeholder="Buscar Solicitud..."><br> <br>
 <!-- Bootstrap core JavaScript
   ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->
+<script type="text/javascript">
+
+</script>
   <script type="text/javascript"
   src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script type="text/javascript" src="../dist/js/bootstrap.js"></script>
-  <script type="text/javascript" src="js/PextraordinarioKinder.js"></script>
+  <script type="text/javascript" src="js/Pextraordinario.js"></script>
   <script type="text/javascript" src="../js/1min_inactivo.js" ></script>
 
 
@@ -347,20 +290,20 @@ aria-labelledby="myModalLabel" aria-hidden="true">
           <tr>
             <td WIDTH="10%" >Nfamilia:
               <input
-              name="nfamilia" id="nfamilia" type="text" style="width : 100px; heigth : 4px"
+              name="nfamilia" id="nfamilia" type="text"
               class="form-control" placeholder="nfamilia"  readonly>
             </td>
 
-            <td WIDTH="30%">Fecha de solicitud:
+            <td WIDTH="50%">Fecha de solicitud:
               <input
-              name="fecha_s" id="fecha_s" type="text" style="width : 200px; heigth : 4px"
+              name="fecha_s" id="fecha_s" type="text"
               class="form-control" placeholder="fecha_s" readonly>
             </td>
 
-            <td  WIDTH="60%">Solicitante:
+            <td  WIDTH="40%">Solicitante:
               <input
               name="solicitante" id="solicitante" type="text"
-              class="form-control" placeholder="solicitante"  style="width : 400px; heigth : 4px" readonly>
+              class="form-control" placeholder="solicitante"   readonly>
             </td>
           </tr>
         </table>

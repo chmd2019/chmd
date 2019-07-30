@@ -62,7 +62,7 @@ if(isset($_POST['submit']))
   <?php
 //variable debe ser creada para el perfil
 $perfil_actual='Choferes';
-include ('perfiles_dinamicos.php');
+include ('../../menus_dinamicos/perfiles_dinamicos_choferes.php');
    ?>
     </div>
     <br>

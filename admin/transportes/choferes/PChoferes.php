@@ -71,7 +71,7 @@ $datos = mysqli_query ( $conexion," SELECT id,nombre,numero,fecha,
         </a>
         <h3 class="text-muted">Colegio Hebreo Maguén David</h3>
         <hr>
-        <?php $perfil_actual='Choferes'; include ('perfiles_dinamicos.php'); ?>
+        <?php $perfil_actual='Choferes'; include ('../../menus_dinamicos/perfiles_dinamicos_choferes.php'); ?>
       </div>
     <br/>
     <center><?php echo isset($_POST['guardar'])?$verificar:''; ?></center>

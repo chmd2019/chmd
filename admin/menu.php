@@ -1,5 +1,7 @@
 <?php
-include('sesion_admin.php');?>
+include 'sesion_admin.php';
+include 'conexion.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,7 +22,6 @@ include('sesion_admin.php');?>
 
   <!-- Just for debugging purposes. Don't actually copy this line! -->
   <!--[if lt IE 9]><script src="../../docs-assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-
   <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!--[if lt IE 9]>
   <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -40,6 +41,9 @@ include('sesion_admin.php');?>
       <hr>
     </div>
     <div class="row" style="margin-top:150px">
+    <?php
+    if (in_array('0', $capacidades) ){
+      ?>
       <div class="col-lg-6" style="margin-bottom:30px">
         <center>
           <a href="transportes/PDiario.php">
@@ -47,6 +51,10 @@ include('sesion_admin.php');?>
           </a>
         </center>
       </div>
+      <?php
+    }
+    if (in_array('1', $capacidades)){
+      ?>
       <div class="col-lg-6" style="margin-bottom:30px">
         <center>
           <a href="transportes/HPDiario.php">
@@ -54,6 +62,10 @@ include('sesion_admin.php');?>
           </a>
         </center>
       </div>
+      <?php
+    }
+    if (in_array('2', $capacidades)){
+      ?>
       <div class="col-lg-6 justify-self-center" style="margin-bottom:30px">
         <center>
           <a href="transportes/choferes/PChoferes.php">
@@ -61,6 +73,10 @@ include('sesion_admin.php');?>
           </a>
         </center>
       </div>
+      <?php
+    }
+    if (in_array('3', $capacidades)){
+      ?>
       <div class="col-lg-6 justify-self-center" style="margin-bottom:30px">
         <center>
           <a href="extraordinario/PextraordinarioKinder.php">
@@ -68,7 +84,10 @@ include('sesion_admin.php');?>
           </a>
         </center>
       </div>
-    </div>
+      <?php
+    }
+     ?>
+   </div>
 
     <!-- Site footer -->
     <div class="footer">
