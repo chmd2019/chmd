@@ -4,7 +4,7 @@ include_once "$root_icloud/Transportes/components/sesion.php";
 include_once "$root_icloud/components/layout_top.php";
 $idseccion = $_GET['idseccion'];
 
-//zona horaria para America/Mexico_city 
+//zona horaria para America/Mexico_city
 require "$root_icloud/Helpers/DateHelper.php";
 $objDateHelper = new DateHelper();
 $objDateHelper->set_timezone();
@@ -27,9 +27,9 @@ if (isset($authUrl)) {
         <div class="col s12 m12 l9 b-blanco border-azul" style="float: none;margin: 0 auto;"> 
             <div>
                 <br>
-                <h4 class="c-azul" style="text-align: center;">Eventos</h4>
+                <h4 class="c-azul" style="text-align: center;">Solicitudes de montajes</h4>
                 <div>
-                    <?php include './View_eventos.php'; ?> 
+                <?php include './View_montajes.php'; ?> 
                 </div>
                 <?php
             }
@@ -40,7 +40,7 @@ if (isset($authUrl)) {
 
 <div class="fixed-action-btn">
     <a class="btn-floating btn-large waves-effect waves-light b-azul"
-       href="vistas/vista_nuevo_permiso_eventos.php?idseccion=<?php echo $idseccion; ?>">
+       href="vistas/vista_nueva_solicitud_montaje.php?idseccion=<?php echo $idseccion; ?>">
         <i class="large material-icons">add</i>
     </a>
 </div>
@@ -50,9 +50,12 @@ if (isset($authUrl)) {
         $('.fixed-action-btn').floatingActionButton({
             hoverEnabled: false
         });
-        $(".modal").modal();
+        $('.modal').modal();
+        setInterval(function () {
+            window.location.reload();
+        }, 30000);
     });
 </script>
 
 
-<?php include_once "$root_icloud/components/layout_bottom.php"; ?>
+<?php include "$root_icloud/components/layout_bottom.php"; ?>

@@ -38,18 +38,18 @@ if (isset($authUrl)) {
     </div>
     <!--MENU-->
     <div class="row">
-        <div class="col s12 m8" style="float:none;margin:auto">
+        <div class="col s12 m6" style="float:none;margin:auto">
             <?php
             if ($consulta) {
                 if ($cliente = mysqli_fetch_array($consulta)) {
                     $familia = $cliente[2];
                     ?>  
 
-                    <div class="col s12 m10 l4">
+                    <div class="col s12 l6">
                         <div class="card" style="box-shadow: none"> 
                             <div class="card-image waves-effect waves-block waves-light">     
-                                <a href='Extraordinario/PExtraordinario.php?idseccion=1<?php //echo "$link?idmodulo=$idmodulo&idseccion=$idseccion";         ?>'>
-                                    <img src="../pics/activos/extraudinario.png" style="padding:3rem;">  
+                                <a href='#!'>
+                                    <img src="../pics/activos/small-calendar.svg" style="padding:3rem;width: 100%;">  
                                 </a>
                             </div>
                             <div class="card-content text-center" style="padding:0px;margin-top: -15px">
@@ -63,29 +63,11 @@ if (isset($authUrl)) {
                             </div>
                         </div>
                     </div>
-                    <div class="col s12 m10 l4">
+                    <div class="col s12 l6">
                         <div class="card" style="box-shadow: none"> 
                             <div class="card-image waves-effect waves-block waves-light">     
-                                <a href='Eventos/PEventos.php<?php //echo "$link?idmodulo=$idmodulo&idseccion=$idseccion";         ?>'>
+                                <a href="montajes/PMontajes.php">
                                     <img src="../pics/activos/especial.png" style="padding:3rem;">  
-                                </a>
-                            </div>
-                            <div class="card-content text-center" style="padding:0px;margin-top: -15px">
-                                <span class="activator waves-effect waves-light btn b-azul c-blanco">
-                                    INFO
-                                </span>      
-                            </div>
-                            <div class="card-reveal b-azul white-text">
-                                <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
-                                <p>DEMO.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col s12 m10 l4">
-                        <div class="card" style="box-shadow: none"> 
-                            <div class="card-image waves-effect waves-block waves-light">     
-                                <a href='#!' onclick="abrir_modal_consultar_codigo()">
-                                    <img src="../pics/activos/ingresa_tu_codigo.png" style="padding:3rem;">  
                                 </a>
                             </div>
                             <div class="card-content text-center" style="padding:0px;margin-top: -15px">
@@ -113,20 +95,5 @@ if (isset($authUrl)) {
         <br>
     </div>
 </div> 
-
-<?php include "$root_icloud/Especial/Codigo/modales/consultar_codigo.php"; ?>
-    
-<script>
-    
-    $(document).ready(function(){  
-        $('.modal').modal();      
-    });
-    
-    function abrir_modal_consultar_codigo(){
-        var consultar_codigo = M.Modal.getInstance(document.getElementById("modal_consultar_codigo"));  
-        consultar_codigo.open();
-    }
-
-</script>    
-    
+  
 <?php include "$root_icloud/components/layout_bottom.php"; ?>

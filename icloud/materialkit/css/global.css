@@ -121,6 +121,8 @@ footer{
 .border-radius-none{
     border-radius: 0px;
 }
+/*override de clases del framework css*/
+/*date picker de materialize*/
 .picker__date-display{
     background-color: #12487E !important;
 }
@@ -142,7 +144,47 @@ input[type=number]::-webkit-outer-spin-button {
     margin: 0; 
 }
 
+.switch label input[type=checkbox]:checked+.lever:after{
+    background-color: #00C2EE;
+}
+.switch label input[type=checkbox]:checked+.lever {
+    background-color: rgba(0,0,0,0.38);
+}
+[type="checkbox"].filled-in:checked+span:not(.lever):after {
+    top: 0;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #00C2EE;
+    background-color: #00C2EE;
+    z-index: 0;
+}
+.dropdown-content li>a, .dropdown-content li>span {
+    font-size: 16px;
+    color: #12487E;
+    display: block;
+    line-height: 22px;
+    padding: 14px 16px;
+}
 input[type=number] { -moz-appearance:textfield; }
+.ui-timepicker-wrapper{
+    width: 28% !important;
+    max-height: 350px !important;
+}
+.ui-timepicker-list li {
+    padding: 15px !important;
+}
+
+/*border-bottom de los textbox*/
+
+input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):focus:not([readonly]), input[type=password]:not(.browser-default):focus:not([readonly]), input[type=email]:not(.browser-default):focus:not([readonly]), input[type=url]:not(.browser-default):focus:not([readonly]), input[type=time]:not(.browser-default):focus:not([readonly]), input[type=date]:not(.browser-default):focus:not([readonly]), input[type=datetime]:not(.browser-default):focus:not([readonly]), input[type=datetime-local]:not(.browser-default):focus:not([readonly]), input[type=tel]:not(.browser-default):focus:not([readonly]), input[type=number]:not(.browser-default):focus:not([readonly]), input[type=search]:not(.browser-default):focus:not([readonly]), textarea.materialize-textarea:focus:not([readonly]){
+    border-bottom: 1px solid #00C4F0 !important;
+    box-shadow: 0 1px 0 0 #00C4F0 !important;
+}
+
+.select-wrapper input.select-dropdown:focus {
+    border-bottom: 1px solid #00C4F0;
+}
+
 @media screen and (min-width: 280px) and (max-width:960px){
     .caja-login{
         width:90%;
@@ -156,5 +198,8 @@ input[type=number] { -moz-appearance:textfield; }
     }
     .logo-login{
         width:90%;
+    }
+    .ui-timepicker-wrapper{
+        width: 80% !important;
     }
 }

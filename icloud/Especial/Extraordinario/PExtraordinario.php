@@ -27,9 +27,9 @@ if (isset($authUrl)) {
         <div class="col s12 m12 l9 b-blanco border-azul" style="float: none;margin: 0 auto;"> 
             <div>
                 <br>
-                <h4 class="c-azul" style="text-align: center;">Cambio especial</h4>
+                <h4 class="c-azul" style="text-align: center;">Permisos especiales</h4>
                 <div>
-                    <?php //include './View_especial.php'; ?> 
+                    <?php include './View_extraordinario.php'; ?> 
                 </div>
                 <?php
             }
@@ -37,28 +37,25 @@ if (isset($authUrl)) {
         </div>
     </div>
 </div>
-<div class="fixed-action-btn">
-    <a class="btn-floating btn-large b-azul">
-        <i class="large material-icons">edit</i>
-    </a>
-    <ul>
-        <li><a class="btn-floating green accent-3" href="#!"><i class="material-icons">add</i></a></li>
-        <li><a class="btn-floating blue" href="https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Especial/menu.php?idseccion=<?php echo $idseccion; ?>"><i class="material-icons">keyboard_backspace</i></a></li>
-            <?php
-            echo '<li><a href="' . $redirect_uri . '?logout=1" class="btn-floating red" >'
-            . "<i class='material-icons'>exit_to_app</i>Salir</a></li>";
-            ?>
-    </ul>
-</div>
 
+<div class="fixed-action-btn">
+    <a class="btn-floating btn-large waves-effect waves-light b-azul"
+       href="vistas/vista_nuevo_permiso_extraordinario.php?idseccion=<?php echo $idseccion; ?>">
+        <i class="large material-icons">add</i>
+    </a>
+</div>
 <script>
 
     $(document).ready(function () {
         $('.fixed-action-btn').floatingActionButton({
             hoverEnabled: false
         });
+        $('.modal').modal();
+        setInterval(function(){            
+            window.location.reload();
+        }, 30000);
     });
 </script>
 
 
-<?php include_once "$root_icloud/components/layout_bottom.php"; ?>
+<?php include "$root_icloud/components/layout_bottom.php"; ?>

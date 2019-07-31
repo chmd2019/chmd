@@ -1,6 +1,6 @@
 <?php
 
-$root_icloud = $_SERVER['DOCUMENT_ROOT']."/pruebascd/icloud";
+$root_icloud = $_SERVER['DOCUMENT_ROOT'] . "/pruebascd/icloud";
 include_once "$root_icloud/Model/DBManager.php";
 
 class DateHelper {
@@ -36,6 +36,16 @@ class DateHelper {
 
     public function obtener_hora_limite() {
         $hora_limite = date("11:30");
+        $hora_limite_segundos = strtotime($hora_limite);
+        $hora_actual_segundos = strtotime(date("H:i"));
+        if ($hora_actual_segundos >= $hora_limite_segundos) {
+            return true;
+        }
+        return false;
+    }
+
+    public function comprobar_hora_limite($hora) {
+        $hora_limite = date("$hora");
         $hora_limite_segundos = strtotime($hora_limite);
         $hora_actual_segundos = strtotime(date("H:i"));
         if ($hora_actual_segundos >= $hora_limite_segundos) {
@@ -95,6 +105,7 @@ class DateHelper {
         }
         return false;
     }
+
     public function comprobar_solicitud_vencida_d_m_y_guion($fecha) {
         $fecha_actual = strtotime(date("d-m-Y"));
         $fecha_destino = strtotime("$fecha");
@@ -113,7 +124,8 @@ class DateHelper {
         }
         return false;
     }
-    public function comprobar_igual_actual($fecha){
+
+    public function comprobar_igual_actual($fecha) {
         $this->set_timezone();
         $fecha_actual = strtotime(date("d-m-Y"));
         $fecha = strtotime(date("$fecha"));
@@ -122,7 +134,8 @@ class DateHelper {
         }
         return false;
     }
-    public function comprobar_fecha_pasada($fecha){
+
+    public function comprobar_fecha_pasada($fecha) {
         $this->set_timezone();
         $fecha_actual = strtotime(date("d-m-Y"));
         $fecha = strtotime(date("$fecha"));
@@ -131,7 +144,8 @@ class DateHelper {
         }
         return false;
     }
-    public function comprobar_fecha_igual($fecha){
+
+    public function comprobar_fecha_igual($fecha) {
         $this->set_timezone();
         $fecha_actual = strtotime(date("d-m-Y"));
         $fecha = strtotime(date("$fecha"));
@@ -168,8 +182,40 @@ class DateHelper {
             $mes = "10";
         if ($mes == "Noviembre" || $mes == "noviembre")
             $mes = "11";
-        if ($mes== "Diciembre" || $mes == "diciembre")
+        if ($mes == "Diciembre" || $mes == "diciembre")
             $mes = "12";
         return "$dia-$mes-$anio";
     }
+
+    public function obtener_meses() {
+        return array('enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+            'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre');
+    }
+
+    public function obtener_dias() {
+        return array('Domingo', 'Lunes', 'Martes',
+            'Miercoles', 'Jueves', 'Viernes', 'Sabado');
+    }
+
+    function suma_dia_habil($fecha, $dias) {
+        $datestart = strtotime($fecha);
+        $datesuma = 15 * 86400;
+        $diasemana = date('N', $datestart);
+        $totaldias = $diasemana + $dias;
+        $findesemana = intval($totaldias / 5) * 2;
+        $diasabado = $totaldias % 5;
+        if ($diasabado == 6)
+            $findesemana++;
+        if ($diasabado == 0)
+            $findesemana = $findesemana - 2;
+
+        $total = (($dias + $findesemana) * 86400) + $datestart;
+        return $fechafinal = date('Y-m-d', $total);
+    }
+    
+    public function formato_fecha_diagonal_m_d_y($fecha){
+        $fecha = explode("-", $fecha);
+        return "$fecha[2]/$fecha[1]/$fecha[0]";
+    }
+
 }

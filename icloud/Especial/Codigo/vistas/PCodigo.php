@@ -27,9 +27,9 @@ if (isset($authUrl)) {
         <div class="col s12 m12 l9 b-blanco border-azul" style="float: none;margin: 0 auto;"> 
             <div>
                 <br>
-                <h4 class="c-azul" style="text-align: center;">Especial</h4>
+                <h4 class="c-azul" style="text-align: center;">Eventos inscritos</h4>
                 <div>
-                    <?php //include './View_especial.php'; ?> 
+                    <?php include './View_codigo.php'; ?> 
                 </div>
                 <?php
             }
@@ -38,18 +38,13 @@ if (isset($authUrl)) {
     </div>
 </div>
 
-<div class="fixed-action-btn">
-    <a class="btn-floating btn-large waves-effect waves-light b-azul"
-       href="vistas/vista_nuevo_permiso_especial.php?idseccion=<?php echo $idseccion; ?>">
-        <i class="large material-icons">add</i>
-    </a>
-</div>
 <script>
 
     $(document).ready(function () {
         $('.fixed-action-btn').floatingActionButton({
             hoverEnabled: false
         });
+        $(".modal").modal();
     });
 </script>
 
