@@ -103,6 +103,38 @@ function formatear_fecha_calendario_formato_m_d_a(fecha) {
     return `${mes}-${dia}-${anio}`;
 }
 
+
+function formatear_fecha_calendario_formato_a_m_d_guion(fecha) {
+    var dia = fecha.split(" ")[1];
+    var mes = fecha.split(" ")[3];
+    var anio = fecha.split(" ")[5];
+    if (mes === "Enero" || mes === "enero")
+        mes = "01";
+    if (mes === "Febrero" || mes === "febrero")
+        mes = "02";
+    if (mes === "Marzo" || mes === "marzo")
+        mes = "03";
+    if (mes === "Abril" || mes === "abril")
+        mes = "04";
+    if (mes === "Mayo" || mes === "mayo")
+        mes = "05";
+    if (mes === "Junio" || mes === "junio")
+        mes = "06";
+    if (mes === "Julio" || mes === "julio")
+        mes = "07";
+    if (mes === "Agosto" || mes === "agosto")
+        mes = "08";
+    if (mes === "Septiembre" || mes === "septiembre")
+        mes = "09";
+    if (mes === "Octubre" || mes === "octubre")
+        mes = "10";
+    if (mes === "Noviembre" || mes === "noviembre")
+        mes = "11";
+    if (mes === "Diciembre" || mes === "diciembre")
+        mes = "12";
+    return `${anio}-${mes}-${dia}`;
+}
+
 function validar_regex(reg, val) {
     var regex = new RegExp(reg);
     if (regex.test(val)) {

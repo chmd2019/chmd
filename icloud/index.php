@@ -332,7 +332,7 @@ if (isset($authUrl)) {
 
                                                 <img src="https://www.chmd.edu.mx/pruebascd/icloud/pics/activos/party.svg" 
 
-                                                     style="padding:3rem;width: 70%;margin: auto">
+                                                     style="padding:3rem;width: 80%;margin: auto">
 
                                             </a>
 

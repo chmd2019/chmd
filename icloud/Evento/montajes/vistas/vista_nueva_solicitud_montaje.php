@@ -99,12 +99,11 @@ if (isset($authUrl)) {
         // se asignan fechas minimas para realizar solicitud
         $fecha_minima_servicio_cafe = $date_helper->suma_dia_habil(date("d-m-Y"), $dias_servicio_cafe);
         $fecha_evento_interno = $date_helper->suma_dia_habil(date("d-m-Y"), $dias_evento_interno);
-        $fecha_evento_combinado_externo = $date_helper->suma_dia_habil(date("d-m-Y"), $dias_evento_combinado_externo);        
+        $fecha_evento_combinado_externo = $date_helper->suma_dia_habil(date("d-m-Y"), $dias_evento_combinado_externo);
         $fecha_actual = strtotime(date('d-m-Y'));
         $fecha_evento_especial = date('Y-m-d', strtotime("+2 month", $fecha_actual));
-                
+
         $fecha_minima_ensayo = $date_helper->suma_dia_habil(date("d-m-Y"), 1);
-        
         ?>
         <link rel='stylesheet' href='/pruebascd/icloud/materialkit/css/calendario.css'> 
         <script src='/pruebascd/icloud/materialkit/js/calendario.js'></script>
@@ -142,7 +141,7 @@ if (isset($authUrl)) {
                         <label  style="margin-left: 1rem">Tipo de evento</label>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">room_service</i>
-                            <select onchange="mostrar_caja_fecha(this.value)" id="tipo_evento">
+                            <select onchange="mostrar_caja_fecha(this.value);reset_check_requiero_personal()" id="tipo_evento">
                                 <option value="0" disabled selected>Selelccione una opción</option>
                                 <option value="1">Servicio de café</option>
                                 <option value="2">Montaje de evento interno</option>
@@ -162,7 +161,7 @@ if (isset($authUrl)) {
                                 id="fecha_permiso_cafe" 
                                 autocomplete="off"
                                 placeholder="Para el día"
-                                onchange="fecha_minusculas(this.value, 'fecha_permiso')">            
+                                onchange="fecha_minusculas(this.value, 'fecha_permiso_cafe');reset_check_requiero_personal()">            
                         </div>
                         <script>
                             //obtiene el calendario escolar en db
@@ -203,7 +202,7 @@ if (isset($authUrl)) {
                                 id="fecha_evento_interno" 
                                 autocomplete="off"
                                 placeholder="Para el día"
-                                onchange="fecha_minusculas(this.value, 'fecha_permiso')">            
+                                onchange="fecha_minusculas(this.value, 'fecha_evento_interno');reset_check_requiero_personal()">            
                         </div>
                         <script>
                             //obtiene el calendario escolar en db
@@ -244,7 +243,7 @@ if (isset($authUrl)) {
                                 id="fecha_evento_combinado_externo" 
                                 autocomplete="off"
                                 placeholder="Para el día"
-                                onchange="fecha_minusculas(this.value, 'fecha_permiso')">            
+                                onchange="fecha_minusculas(this.value, 'fecha_evento_combinado_externo');reset_check_requiero_personal()">            
                         </div>
                         <script>
                             //obtiene el calendario escolar en db
@@ -285,7 +284,7 @@ if (isset($authUrl)) {
                                 id="fecha_servicio_especial" 
                                 autocomplete="off"
                                 placeholder="Para el día"
-                                onchange="fecha_minusculas(this.value, 'fecha_permiso')">            
+                                onchange="fecha_minusculas(this.value, 'fecha_servicio_especial');reset_check_requiero_personal()">            
                         </div>
                         <script>
                             //obtiene el calendario escolar en db
@@ -316,16 +315,39 @@ if (isset($authUrl)) {
                             });
                         </script>  
                     </div>
+                    <input readonly id="fecha_evento_hidden" hidden>
+                    <div class="input-field col s12 l6" hidden id="check_servicio_cafe">
+                        <i class="material-icons prefix c-azul">free_breakfast</i>
+                        <label>
+                            <input type="checkbox" class="filled-in" />
+                            <span>Servicio de café</span>
+                        </label>
+                        <br>
+                        <br>
+                    </div>  
 
                     <span class="col s12"><br></span>              
                     <div class="input-field col s12 l6">
                         <i class="material-icons prefix c-azul">access_time</i>
-                        <label style="margin-left: 1rem">Horario del evento</label>
+                        <label style="margin-left: 1rem">Horario inicial del evento</label>
                         <input 
                             type="text"
                             id="horario_evento"
                             class="timepicker"
                             onkeypress="return validar_solo_numeros(event, this.id, 1)"
+                            autocomplete="off"
+                            onfocus="blur();"
+                            placeholder="Seleccione horario">  
+                    </div>                
+                    <div class="input-field col s12 l6">
+                        <i class="material-icons prefix c-azul">access_time</i>
+                        <label style="margin-left: 1rem">Horario final del evento</label>
+                        <input 
+                            type="text"
+                            id="horario_final_evento"
+                            class="timepicker"
+                            onkeypress="return validar_solo_numeros(event, this.id, 1)"
+                            onchange="validar_horario_final_ensayo(this,'horario_evento')"
                             autocomplete="off"
                             onfocus="blur();"
                             placeholder="Seleccione horario">  
@@ -354,14 +376,145 @@ if (isset($authUrl)) {
                                id="cantidad_invitados" 
                                type="tel"
                                onblur="maxima_cantidad(this.id, 2000)"
+                               onkeyup="calcular_parking(this)"
                                onkeypress="return validar_solo_numeros(event, this.id, 3)">
-                    </div>   
+                    </div>           
+                    <div class="input-field col s12 l6">
+                        <i class="material-icons prefix c-azul">drive_eta</i>
+                        <label style="margin-left: 1rem">Valet Parking</label>
+                        <input id="valet_parking"
+                               placeholder="Valet Parking" 
+                               autocomplete="off"
+                               type="text"
+                               disabled>
+                    </div>                      
+                    <div class="file-field input-field col s12 l6">
+                        <div class="waves-effect waves-light btn b-azul" style="margin-top: 1.5rem">
+                            <span><i class="material-icons c-blanco">attach_file</i></span>
+                            <input type="file" 
+                                   onchange ="return validar_file(this)" >
+                        </div>
+                        <div class="file-path-wrapper">
+                            <label>Anexa programa minuto a minuto</label>
+                            <input class="file-path validate" 
+                                   type="text" 
+                                   placeholder="Anexar archivo"
+                                   style="font-size: .8rem"> 
+                        </div>
+                        <div class="chip blue white-text">
+                            <span>Formatos permitidos: .txt .docx .pptx .pdf</span>
+                        </div>
+                        <div class="chip blue white-text">
+                            <span>Tamaño máx:3mb</span>
+                        </div>
+                    </div>
+                    <br><h5 class="col s12 c-azul text-center">Lugar y mobiliario del evento</h5>
+                    <br>    
+                    <div class="input-field col s12 l6">
+                        <i class="material-icons prefix c-azul">place</i>
+                        <select onchange="cargar_inventarios_montaje(this.value)" id="lugar_evento">
 
+                        </select>
+                        <label style="margin-left: 1rem">Lugar del evento</label>
+                    </div> 
+                    <div class="input-field col s12" hidden id="mobiliario">
+                        <h5 class="col s12 c-azul text-center">Mobiliario</h5>
+                        <div id="tabla_inventario"></div>         
+                        <div class="input-field col s12" id="caja_asignacion_manteles" hidden>  
+                            <h5 class="col s12 c-azul text-center">Asignación de manteles</h5>
+                            <br>
+                            <div style="text-align: center" id="badge_mantel_seleccion">               
+                                <span class="new badge blue" 
+                                      data-badge-caption="Debe seleccionar el lugar del evento para asignar manteles"
+                                      style="float:none;padding:.3rem">
+                                </span>
+                            </div>
+                            <div style="text-align: center" id="badge_mantel_no_asignacion" hidden>               
+                                <div class="chip red white-text">
+                                    No es posible asignación de manteles para el lugar del evento seleccionado
+                                </div>
+                            </div>
+                            <div class="input-field col s12" hidden id="manteles">
+                                <div id="tabla_manteles"></div>
+                            </div>
+                        </div>  
+                    </div>    
+                    <h5 class="col s12 c-azul text-center">Asignación de equipo personal y técnico</h5>
+                    <br>                
+                    <div class="input-field col s12 l6">
+                        <i class="material-icons prefix c-azul">settings_input_composite</i>
+                        <label>
+                            <input type="checkbox" id="check_equipo_tecnico" class="filled-in" onchange="cargar_equipo_tecnico(this)"/>
+                            <span>Requiero equipo técnico</span>
+                        </label>
+                        <br>
+                    </div>   
+                    <div class="input-field col s12" id="caja_equipo_tecnico" hidden>   
+                        <br>
+                        <h5 class="col s12 c-azul text-center">Equipo técnico</h5>
+                        <div id="tabla_equipo_tecnico"></div>
+                    </div>  
+
+                    <div class="input-field col s12 l6">
+                        <i class="material-icons prefix c-azul">group_add</i>
+                        <label>
+                            <input id="check_requiero_personal" 
+                                   type="checkbox" 
+                                   class="filled-in" 
+                                   onchange="cargar_personal_montaje(this)"/>
+                            <span>Requiero personal</span>
+                        </label>
+                    </div>   
+                    <span class="col s12"><br></span>   
+                    <div id="caja_personal_evento" hidden>
+                        <br>
+                        <h5 class="col s12 c-azul text-center">Selección de personal para el evento</h5>
+                        <br>
+                        <div class="input-field col s12 l6">
+                            <i class="material-icons prefix c-azul">build</i>
+                            <select id="select_personal_montaje"></select>
+                            <label style="margin-left: 1rem">Personal de montaje</label>
+                        </div>
+                        <div class="input-field col s12 l6">
+                            <i class="material-icons prefix c-azul">build</i>
+                            <select id="select_personal_cabina_auditorio"></select>
+                            <label style="margin-left: 1rem">Personal de cabina de auditorio</label>
+                        </div>
+                        <div class="input-field col s12 l6">
+                            <i class="material-icons prefix c-azul">build</i>
+                            <select id="select_personal_limpieza"></select>
+                            <label style="margin-left: 1rem">Personal de limpieza</label>
+                        </div>
+                        <div class="input-field col s12 l6">
+                            <i class="material-icons prefix c-azul">build</i>
+                            <select id="select_personal_vigilancia"></select>
+                            <label style="margin-left: 1rem">Personal de vigilancia</label>
+                        </div>
+                    </div>
+                    <div class="input-field col s12 l6">
+                        <i class="material-icons prefix c-azul">donut_large</i>
+                        <label>
+                            <input type="checkbox" class="filled-in" onchange="mostrar_tipo_repliegue()"/>
+                            <span>Requiero repliegue</span>
+                        </label>
+                        <br>
+                        <br>
+                    </div> 
+                    <div class="input-field col s12 l6" hidden id="caja_tipo_repliegue">
+                        <i class="material-icons prefix c-azul">donut_small</i>
+                        <select>
+                            <option value="0" disabled selected>Seleccione una opción</option>
+                            <option value="1">Estacionamiento maestros</option>
+                            <option value="2">Patio de camiones 1/2</option>
+                            <option value="3">Patio de completo</option>
+                        </select>
+                        <label style="margin-left: 1rem">Tipo de repliegue</label>
+                    </div>  
                     <br>
-                    <h5 class="col s12 c-azul text-center">Selección de ensayo</h5>
+                    <h5 class="col s12 c-azul text-center">Solicitud de ensayo</h5>
                     <br>   
                     <div class="input-field col s12 l6">
-                        <i class="material-icons prefix c-azul">play_circle_outline</i>
+                        <i class="material-icons prefix c-azul">compare_arrows</i>
                         <label>
                             <input type="checkbox" class="filled-in" onchange="check_requiero_ensayo(this)"/>
                             <span>Requiero de ensayo</span>
@@ -372,113 +525,45 @@ if (isset($authUrl)) {
                     </div>  
                     <div hidden id="caja_select_ensayo">
                         <div class="input-field col s12 l6">
-                            <i class="material-icons prefix c-azul">looks_3</i>
+                            <i class="material-icons prefix c-azul">looks_6</i>
                             <select onchange="mostrar_caja_ensayos(this)" id="select_ensayos">
                                 <option value="0" disabled selected>Selelccione una opción</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
                             </select>
                             <label style="margin-left: 1rem">Cantidad de ensayos</label>
                         </div>
                         <span class="col s12"></span>
                         <div id="caja_ensayos"></div>                        
                     </div>
-                    <span class="col s12"></span>  
-                    <h5 class="col s12 c-azul text-center">Lugar y mobiliario del evento</h5>
-                    <br>    
-
-                    <div class="input-field col s12 l6">
-                        <i class="material-icons prefix c-azul">place</i>
-                        <select onchange="cargar_inventarios_montaje(this.value)" id="lugar_evento">
-                            <option value="0" disabled selected>Seleccione lugar del evento</option>
-                            <optgroup label="SABA">
-                                <option value="1">Lobby Segundo Nivel</option>
-                                <option value="2">Terraza</option>
-                                <option value="3">Escenario</option>
-                            </optgroup>
-                            <optgroup label="KINDER">
-                                <option value="4">Terraza techada</option>
-                                <option value="5">Terraza Grande aun lado de salon de Pupi</option>
-                                <option value="6">Terraza superior</option>
-                            </optgroup>                            <optgroup label="PRIMARIA">
-                                <option value="9">Patio central</option>
-                                <option value="10">Cancha sintética de Pimaria</option>
-                                <option value="11">Patio de Primaria</option>
-                            </optgroup>	
-                            <optgroup label="CCH">
-                                <option value="12">Patio de CCH y Secundaria</option>
-                                <option value="13">Cancha sintética de Secundaria</option>
-                                <option value="14">CCH Abanico</option>
-                                <option value="16">Gimnasio</option>
-                                <option value="8">Terraza de Cafetería</option>
-                            </optgroup>
-                            <optgroup label="OTROS">
-                                <option value="7">Auditorio Cojab Muebles incluidos</option>
-                                <option value="15">Salón de Bailes</option>
-                            </optgroup>
-                        </select>
-                        <label style="margin-left: 1rem">Lugar del evento</label>
-                    </div> 
-
-                    <div class="input-field col s12" hidden id="mobiliario">
-                        <h5 class="col s12 c-azul text-center">Mobiliario</h5>
-                        <table id="tabla_inventario"></table>
-                    </div>     
-                    <br>
-                    <h5 class="col s12 c-azul text-center">Asignación de equipo técnico</h5>
-                    <br>                
-                    <div class="input-field col s12 l6">
-                        <i class="material-icons prefix c-azul">toys</i>
-                        <label>
-                            <input type="checkbox" id="check_equipo_tecnico" class="filled-in" onchange="cargar_equipo_tecnico()"/>
-                            <span>Necesito equipo técnico</span>
-                        </label>
-                        <br>
-                    </div>   
-                    <div class="input-field col s12" id="caja_equipo_tecnico" hidden>   
-                        <br>
-                        <h5 class="col s12 c-azul text-center">Equipo técnico</h5>
-                        <table id="tabla_equipo_tecnico"></table>
-                    </div>  
-
-                    <br>
-                    <h5 class="col s12 c-azul text-center">Manteles</h5>
-                    <br>
+                    <h5 class="col s12 c-azul text-center">Adicionales</h5>
                     <div class="input-field col s12">
-                        <table>
-                            <tr>
-                                <th>Artículo</th>
-                                <th >Disponible</th>
-                                <th style="text-align:center">Solicitar</th>
-                            </tr>
-                            <tr>
-                                <td>#</td>
-                                <td>
-                                    <input 
-                                        type="tel" 
-                                        tabindex="-1" 
-                                        value ="123" 
-                                        readonly style="border:none">
-                                </td>
-                                <td> 
-                                    <input placeholder="Cantidad" 
-                                           autocomplete="off" 
-                                           onkeypress="return validar_solo_numeros(event, this.id, 1)" 
-                                           type="tel" 
-                                           style="width:70%;float:right"> 
-                                </td>
-                            </tr>
-                        </table>
+                        <i class="material-icons prefix c-azul">list_alt</i>
+                        <textarea class="materialize-textarea"
+                                  id="requerimientos_especiales"
+                                  placeholder="Requerimientos especiales"></textarea>  
                     </div>
-                    <span class="col s12"><br><br></span>
-                    <div class="col s12 l6" style="float: none;margin: 0 auto;">
-                        <button class="waves-effect waves-light btn b-azul white-text w-100" 
-                                id="btn_enviar_formulario"
-                                type="button" 
-                                onclick="enviar_formulario()">Enviar
-                            <i class="material-icons right">send</i>
-                        </button>
+                    <span class="col s12"><br></span>
+                    <div class="input-field col s12">
+                        <div style="text-align: center">
+                            <button class="waves-effect waves-light btn col s12 l4" 
+                                    type="button" 
+                                    style="background-color: #00C2EE;float: none">Previsualizar
+                                <i class="material-icons right">search</i>
+                            </button>
+                            <span class="col s12 hide-on-med-and-up"><br></span>
+                            <button class="waves-effect waves-light btn b-azul white-text col s12 l4" 
+                                    id="btn_enviar_formulario"
+                                    type="button" 
+                                    onclick="enviar_formulario()"
+                                    style="background-color: #00C2EE;float: none">Enviar
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </div>
                     </div>
                     <span class="col s12"><br></span>
                 </div>  
@@ -523,19 +608,41 @@ if (isset($authUrl)) {
     var timestamp = "";
     var _push_inventario = $.ajax({});
     var codigo_ensayo = "";
+    var id_lugar = 0;
+    var archivo_cargado = null;
+    var nfamilia = '<?php echo $nfamilia; ?>';
 
     $(document).ready(function () {
         $("#loading").fadeOut("slow");
         $('select').formSelect();
+        M.textareaAutoResize($('textarea'));
         $('.timepicker').timepicker({
             'step': 15,
             'minTime': '08:00',
             'maxTime': '18:00',
-            'timeFormat': 'H:i'
+            'timeFormat': 'H:i:s'
         });
+        $("#horario_evento").change(function () {
+            reset_check_requiero_personal();
+        });
+        $("#horario_final_evento").change(function () {
+            reset_check_requiero_personal();
+        });
+        cargar_lugares();
     });
 
     //checks
+
+    function reset_check_requiero_personal() {
+        var check_requiero_personal = $("#check_requiero_personal");
+        if (check_requiero_personal.prop("checked")) {
+            check_requiero_personal.click();
+            M.toast({
+                html: 'Debe asignar el personal requerido nuevamente',
+                classes: 'blue c-blanco',
+            }, 5000);
+        }
+    }
 
     function check_requiero_ensayo(el) {
         if (el.checked) {
@@ -550,11 +657,14 @@ if (isset($authUrl)) {
     }
 
     function mostrar_caja_fecha(value) {
+        reset_check_requiero_personal();
         switch (value) {
             case "1":
                 $("#caja_servicio_cafe").prop("hidden", false);
                 $("#caja_evento_interno").prop("hidden", true);
                 $("#caja_evento_combinado_externo").prop("hidden", true);
+                $("#caja_servicio_especial").prop("hidden", true);
+                $("#check_servicio_cafe").prop("hidden", true);
                 $("#fecha_evento_interno").val("");
                 $("#fecha_evento_combinado_externo").val("");
                 $("#fecha_servicio_especial").val("");
@@ -563,6 +673,8 @@ if (isset($authUrl)) {
                 $("#caja_evento_interno").prop("hidden", false);
                 $("#caja_servicio_cafe").prop("hidden", true);
                 $("#caja_evento_combinado_externo").prop("hidden", true);
+                $("#caja_servicio_especial").prop("hidden", true);
+                $("#check_servicio_cafe").prop("hidden", false);
                 $("#fecha_permiso_cafe").val("");
                 $("#fecha_evento_combinado_externo").val("");
                 $("#fecha_servicio_especial").val("");
@@ -571,6 +683,8 @@ if (isset($authUrl)) {
                 $("#caja_evento_combinado_externo").prop("hidden", false);
                 $("#caja_servicio_cafe").prop("hidden", true);
                 $("#caja_evento_interno").prop("hidden", true);
+                $("#caja_servicio_especial").prop("hidden", true);
+                $("#check_servicio_cafe").prop("hidden", false);
                 $("#fecha_permiso_cafe").val("");
                 $("#fecha_evento_interno").val("");
                 $("#fecha_servicio_especial").val("");
@@ -579,22 +693,26 @@ if (isset($authUrl)) {
                 $("#caja_servicio_especial").prop("hidden", false);
                 $("#caja_servicio_cafe").prop("hidden", true);
                 $("#caja_evento_interno").prop("hidden", true);
+                $("#caja_evento_combinado_externo").prop("hidden", true);
+                $("#check_servicio_cafe").prop("hidden", false);
                 $("#fecha_permiso_cafe").val("");
                 $("#fecha_evento_interno").val("");
-                $("#fecha_evento_combinado_externo").val("");                
+                $("#fecha_evento_combinado_externo").val("");
                 break;
         }
     }
 
     function mostrar_caja_ensayos(el) {
-        codigo_ensayo = "";
-
+        var codigo_ensayo = "";
         for (var i = 0; i < el.value; i++) {
-            codigo_ensayo += ` <div class="col s12 l6"> <label style="margin-left: 1rem;color:#00C2EE">Fecha del ensayo # ${i + 1}</label> <div class="input-field"> <i class="material-icons prefix c-azul">calendar_today</i> <input type="text" class="datepicker" id="fecha_ensayo_${el.value}" autocomplete="off" placeholder="Escoja fecha" onchange="fecha_minusculas(this.value, 'fecha_permiso')"> </div></div><div class="col s12 l6"> <label style="margin-left: 1rem;">Horario de ensayo # ${i + 1}</label> <div class="input-field"> <i class="material-icons prefix c-azul">access_time</i> <input type="text" id="horario_ensayo_${i + 1}" class="timepicker" onkeypress="return validar_solo_numeros(event, this.id, 1)" autocomplete="off" onfocus="blur();" placeholder="Seleccione horario"> </div></div>`;
+            var codigo = `<div class="col s12 card"> <div class="card-content" style="color:#00C2EE;"> <h5>Ensayo N° ${i+1}</h5> </div><div class="card-tabs"> <ul class="tabs tabs-fixed-width"> <li class="tab blue white-text active"><a href="#tab_1_${i+1}">Información de ensayo</a> </li><li class="tab blue white-text" onclick="cargar_personal_ensayo(${i})"><a href="#tab_2_${i+1}">Personal</a> </li></ul> </div><div class="card-content"> <div id="tab_1_${i+1}"> <div class="col s12 l6"> <label style="margin-left: 1rem;color:#00C2EE">Fecha del ensayo</label> <div class="input-field"> <i class="material-icons prefix c-azul">calendar_today</i> <input type="text" class="datepicker" id="fecha_ensayo_${i}" autocomplete="off" placeholder="Escoja fecha" onchange="fecha_minusculas(this.value, 'fecha_permiso')" style="font-size: 1rem"> </div></div><div class="col s12 l6"> <label style="margin-left: 1rem;color:#00C2EE">Horario inicial</label> <div class="input-field"> <i class="material-icons prefix c-azul">access_time</i> <input type="text" id="horario_inicial_ensayo_${i}" class="timepicker" onkeypress="return validar_solo_numeros(event, this.id, 1)" autocomplete="off" onfocus="blur();" placeholder="Seleccione horario"> </div></div><div class="col s12 l6"> <label style="margin-left: 1rem;color:#00C2EE">Horario final</label> <div class="input-field"> <i class="material-icons prefix c-azul">access_time</i> <input type="text" id="horario_final_ensayo_${i}" class="timepicker" onkeypress="return validar_solo_numeros(event, this.id, 1)" onchange="validar_horario_final_ensayo(this,'horario_inicial_ensayo_${i}')" autocomplete="off" onfocus="blur();" placeholder="Seleccione horario"> </div></div><div class="input-field col s12"> <i class="material-icons prefix c-azul">list_alt</i> <textarea class="materialize-textarea" id="requerimientos_especiales_ensayo_${i}" placeholder="Requerimientos especiales"></textarea> </div></div><div id="tab_2_${i+1}"> <div id="caja_select_${i}"> <div class="input-field col s12 l6"> <i class="material-icons prefix c-azul">build</i> <select id="select_montaje_ensayo_${i}"></select> <label style="margin-left: 1rem;color:#00C2EE">Personal de montaje</label> </div><div class="input-field col s12 l6"> <i class="material-icons prefix c-azul">build</i> <select id="select_cabina_auditorio_ensayo_${i}"></select> <label style="margin-left: 1rem;color:#00C2EE">Personal de cabina de auditorio</label> </div><div class="input-field col s12 l6"> <i class="material-icons prefix c-azul">build</i> <select id="select_limpieza_ensayo_${i}"></select> <label style="margin-left: 1rem;color:#00C2EE">Personal de limpieza</label> </div></div><span class="col s12"><br></span> <div class="chip orange col s12 white-text" style="text-align: center" id="validacion_ensayo_${i}"> <span>Debe seleccionar una fecha y horarios válidos para continuar!</span> </div><span class="col s12 hide-on-med-and-down"><br><br><br><br><br></span> </div></div></div>`;
+            codigo_ensayo += `${codigo}`;
         }
 
         $("#caja_ensayos").html(codigo_ensayo);
-
+        $('.tabs').tabs();
+        $('select').formSelect();
+        M.textareaAutoResize($('textarea'));
         var calendario_escolar = obtener_calendario_escolar();
         calendario_escolar.push(6);
         calendario_escolar.push(7);
@@ -621,13 +739,150 @@ if (isset($authUrl)) {
             'step': 15,
             'minTime': '08:00',
             'maxTime': '18:00',
-            'timeFormat': 'H:i'
+            'timeFormat': 'H:i:s'
+        });
+    }
+
+    function mostrar_caja_personal_ensayo(el, i) {
+        if ($("#caja_personal_evento_" + i).prop("hidden")) {
+            $("#caja_personal_evento_" + i).prop("hidden", false);
+            $("#caja_personal_evento_" + i).fadeIn();
+            $("select").formSelect();
+            M.textareaAutoResize($('textarea'));
+            return;
+        }
+        $("#caja_personal_evento_" + i).prop("hidden", true);
+        $("#caja_personal_evento_" + i).fadeOut();
+    }
+
+    function mostrar_tipo_repliegue() {
+        if ($("#caja_tipo_repliegue").prop("hidden")) {
+            $("#caja_tipo_repliegue").fadeIn();
+            $("#caja_tipo_repliegue").prop("hidden", false);
+        } else {
+            $("#caja_tipo_repliegue").fadeOut();
+            $("#caja_tipo_repliegue").prop("hidden", true);
+        }
+    }
+
+    function calcular_parking(el) {
+        var value = el.value;
+        $("#valet_parking").val(parseInt(value * .6));
+    }
+
+    function validar_file(el) {
+        var tipos_permitidos = /(.txt|.doc|.docx|.pptx|.ppt|.pdf)$/i;
+        if (el === null) {
+            M.toast({
+                html: 'Debe seleccionar un archivo con formato válido!',
+                classes: 'deep-orange c-blanco',
+            }, 15000);
+            return false;
+        }
+        if (!tipos_permitidos.exec(el.value) || el.value === null || el.value === "") {
+            el.value = "";
+            el.focus();
+            M.toast({
+                html: 'Debe seleccionar un archivo con formato válido!',
+                classes: 'deep-orange c-blanco',
+            }, 15000);
+            return false;
+        }
+
+        var max_size = el.files[0].size / 1048576;
+        if (max_size > 3) {
+            M.toast({
+                html: 'El archivo debe tener un tamaño máximo de 3mb!',
+                classes: 'deep-orange c-blanco',
+            }, 5000);
+            el.value = "";
+            el.focus();
+            return false;
+        }
+        archivo_cargado = el;
+        return true;
+    }
+
+    function cargar_archivo_programa(archivo) {
+        if (!validar_file(archivo))
+            return;
+        archivo = archivo.files[0];
+        var datos = new FormData();
+        datos.append('archivo', archivo);
+        datos.append('nfamilia', nfamilia);
+        $.ajax({
+            url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/post_archivo_programa.php',
+            data: datos,
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: 'POST',
+            beforeSend: () => {
+                $("#loading").fadeIn();
+            }
+        }).done((res) => {
+            res = JSON.parse(res);
+            if (typeof res.success !== 'undefined') {
+                M.toast({
+                    html: 'El archivo debe tener un tamaño máximo de 3mb!',
+                    classes: 'deep-orange c-blanco',
+                }, 5000);
+                archivo.value = "";
+                return;
+            }
+            console.log(res);
+        }).always(() => {
+            $("#loading").fadeOut();
+        });
+    }
+
+    function cargar_lugares() {
+        $.ajax({
+            url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/get_lugares_evento.php',
+            type: 'GET',
+            beforeSend: () => {
+                $("#loading").fadeIn();
+            }
+        }).done((res) => {
+            res = JSON.parse(res);
+            var aux = {};
+            //Recorremos el res 
+            res.forEach(x => {
+                //Si no existe lo creamos 
+                if (!aux.hasOwnProperty(x.patio)) {
+                    aux[x.patio] = [];
+                }
+                //Agregamos los datos. 
+                aux[x.patio].push({
+                    id: x.id,
+                    descripcion: x.descripcion
+                });
+            });
+            var options = "";
+            var optgroup = "";
+            for (var item in aux) {
+                var res_item = aux[item];
+                for (var item2 in res_item) {
+                    var res_item2 = res_item[item2];
+                    options += `<option value="${res_item2.id}">${res_item2.descripcion}</option>`;
+                }
+                optgroup += `<optgroup label="${item}">${options}</optgroup>`;
+                options = "";
+            }
+            $("#lugar_evento").html(`<option value="0" disabled selected>Seleccione lugar del evento</option>${optgroup}`);
+            $("#lugar_evento").formSelect();
+        }).always(() => {
+            $("#loading").fadeOut();
         });
     }
 
     function cargar_inventarios_montaje(id_lugar_evento) {
+        if ($("#check_equipo_tecnico").prop("checked")) {
+            $("#check_equipo_tecnico").click();
+        }
+        id_lugar = id_lugar_evento;
         $.ajax({
-            url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/get_inventario_montajes.php',
+            url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/get_capacidad_mobiliario.php',
             type: 'GET',
             beforeSend: () => {
                 $("#loading").fadeIn("slow");
@@ -635,21 +890,34 @@ if (isset($authUrl)) {
             data: {"id_lugar_evento": id_lugar_evento}
         }).done((res) => {
             res = JSON.parse(res);
-            mostrar_inventario(res);
+            cargar_inventario_manteles(id_lugar_evento, res);
+            $("#badge_mantel_seleccion").prop("hidden", true);
+            $("#badge_mantel_no_asignacion").prop("hidden", true);
+            $("#caja_asignacion_manteles").prop("hidden", false);
+            $("#caja_asignacion_manteles").fadeIn();
         }).always(() => {
             $("#loading").fadeOut("slow");
         });
     }
 
-    function cargar_equipo_tecnico() {
-        if ($("#check_equipo_tecnico").prop("checked")) {
+    function cargar_equipo_tecnico(el) {
+        if (id_lugar === 0) {
+            el.checked = false;
+            M.toast({
+                html: 'Debe seleccionar un lugar del evento válido para continuar!',
+                classes: 'deep-orange c-blanco',
+            }, 5000);
+            return;
+        }
+        if (el.checked) {
             $.ajax({
 
-                url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/get_equipo_tecnico.php',
+                url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/get_capacidad_equipo_tecnico.php',
                 type: 'GET',
                 beforeSend: () => {
                     $("#loading").fadeIn("slow");
-                }
+                },
+                data: {"id_lugar": id_lugar}
             }).done((res) => {
                 res = JSON.parse(res);
                 mostrar_equipo_tecnico(res);
@@ -661,173 +929,138 @@ if (isset($authUrl)) {
         }
     }
 
+    function cargar_inventario_manteles(id_lugar_evento, inventario) {
+        $.ajax({
+            url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/get_capacidad_manteles.php',
+            type: 'GET',
+            beforeSend: () => {
+                $("#loading").fadeIn("slow");
+            },
+            data: {"id_lugar": id_lugar_evento}
+        }).done((res) => {
+            $("#tabla_manteles").html("");
+            res = JSON.parse(res);
+            mostrar_inventario(inventario);
+            mostrar_manteles(res);
+        }).always(() => {
+            $("#loading").fadeOut("slow");
+        });
+
+    }
+
+    function cargar_personal_montaje(el) {
+
+        var fecha_formateada = null;
+        var fecha_permiso_cafe = $("#fecha_permiso_cafe").val();
+        var fecha_evento_interno = $("#fecha_evento_interno").val();
+        var fecha_evento_combinado_externo = $("#fecha_evento_combinado_externo").val();
+        var fecha_servicio_especial = $("#fecha_servicio_especial").val();
+
+        if (fecha_permiso_cafe !== "") {
+            fecha_formateada = formatear_fecha_calendario_formato_a_m_d_guion(fecha_permiso_cafe);
+        } else if (fecha_evento_interno !== "") {
+            fecha_formateada = formatear_fecha_calendario_formato_a_m_d_guion(fecha_evento_interno);
+        } else if (fecha_evento_combinado_externo !== "") {
+            fecha_formateada = formatear_fecha_calendario_formato_a_m_d_guion(fecha_evento_combinado_externo);
+        } else if (fecha_servicio_especial !== "") {
+            fecha_formateada = formatear_fecha_calendario_formato_a_m_d_guion(fecha_servicio_especial);
+        }
+
+        var horario_evento = $("#horario_evento").val();
+        var horario_final_evento = $("#horario_final_evento").val();
+
+        if (fecha_formateada === null) {
+            M.toast({
+                html: 'Debe seleccionar un lugar de evento y una fecha válida para continuar!',
+                classes: 'deep-orange c-blanco',
+            }, 5000);
+            el.checked = false;
+            return;
+        }
+
+        if (horario_evento === "" || horario_final_evento === "") {
+            M.toast({
+                html: 'Debe seleccionar un horario válido para continuar!',
+                classes: 'deep-orange c-blanco',
+            }, 5000);
+            el.checked = false;
+            return;
+        }
+
+        if ($("#caja_personal_evento").prop('hidden')) {
+            $("#caja_personal_evento").fadeIn();
+            $("#caja_personal_evento").prop('hidden', false);
+
+            $.ajax({
+                url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/get_personal_montaje.php',
+                type: 'GET',
+                beforeSend: () => {
+                    $("#loading").fadeIn();
+                },
+                data: {
+                    "fecha": fecha_formateada,
+                    "horario_inicial": horario_evento,
+                    "horario_final": horario_final_evento
+                }
+            }).done((res) => {
+                res = JSON.parse(res);
+                console.log(res);
+                //toma cantidad del personal
+                var personal_montaje = res.personal_montaje.total_disponible;
+                var personal_cabina_auditorio = res.personal_cabina_auditorio.total_disponible;
+                var personal_limpieza = res.personal_limpieza.total_disponible;
+                var personal_vigilancia = res.personal_vigilancia.total_disponible;
+                //llena select con la cantidad disponible de empleados
+                llenar_select_personal($("#select_personal_montaje"), personal_montaje);
+                llenar_select_personal($("#select_personal_cabina_auditorio"), personal_cabina_auditorio);
+                llenar_select_personal($("#select_personal_limpieza"), personal_limpieza);
+                llenar_select_personal($("#select_personal_vigilancia"), personal_vigilancia);
+            
+            }).always(() => {
+                $("#loading").fadeOut();
+            });
+        } else {
+            $("#caja_personal_evento").fadeOut();
+            $("#caja_personal_evento").prop('hidden', true);
+        }
+
+    }
+
     function mostrar_inventario(inventario) {
         _push_inventario.abort();
         abortar_ajax();
         $("#mobiliario").show();
-        var tr = `<tr> <th>Artículo</th> <th >Disponible</th> <th style="text-align:center">Solicitar</th> </tr>`;
+        var tr = "";
         var id_lugar = 0;
         for (var item in inventario) {
             id_lugar = inventario[item].lugar;
-            tr += `<tr> <td>${inventario[item].articulo}</td><td><input type="tel" id="inventario_disponible_${inventario[item].id}" tabindex="-1" value ="${inventario[item].disponible}" readonly style="border:none"></td><td> <input placeholder="Cantidad" class="cantidad_mobiliario" id="cantidad_mobiliario_${inventario[item].id}" autocomplete="off" onkeypress="return validar_solo_numeros(event, this.id, 2)" onblur="validar_inventario_mobiliario_cantidad_mayor_a_disponible(this)" type="tel" style="width:70%;float:right"> </td></tr>`;
+            tr += ` <li class="collection-item avatar col s12" style="justify-content: space-around"> <div class="col s12 l6"> <br><i class="material-icons circle" style="background-color: #00C2EE">done</i> <span class="title"><b>Artículo: </b> ${inventario[item].articulo}</span> <p> <b>Capacidad del lugar: </b> ${inventario[item].capacidad}<br><b>Disponible para el evento: </b>${inventario[item].disponible}</p><b>Cantidad para el evento: </b> <div class="input-field"><i class="material-icons prefix c-azul">plus_one</i><input placeholder="Ingrese cantidad deseada" class="cantidad_mobiliario" id="cantidad_mobiliario_${inventario[item].id}" autocomplete="off" onkeypress="return validar_solo_numeros(event, this.id, 2)" type="tel"></div> </div><div class="col s12 l6 text-center"> <a href="${inventario[item].ruta_img}" data-fancybox data-caption="${inventario[item].articulo}"> <br><img src="${inventario[item].ruta_img}" width="150"/> </a> </div></li>`;
         }
-        $("#tabla_inventario").html(tr);
+        $("#tabla_inventario").html(`<ul class="collection row">${tr}</ul>`);
         push_inventario(id_lugar);
     }
 
     function mostrar_equipo_tecnico(equipo_tecnico) {
         $("#caja_equipo_tecnico").show();
-        var tr = `<tr> <th>Artículo</th> <th >Disponible</th> <th style="text-align:center">Solicitar</th> </tr>`;
+        var tr = "";
         for (var item in equipo_tecnico) {
-            tr += `<tr> <td>${equipo_tecnico[item].articulo}</td><td><input type="tel" id="equipo_tecnico_disponible_${equipo_tecnico[item].id}" tabindex="-1" value ="${equipo_tecnico[item].disponible}" readonly style="border:none"></td><td> <input placeholder="Cantidad" class ="cantidad_equipo_tecnico" id="cantidad_equipo_tecnico_${equipo_tecnico[item].id}" autocomplete="off" onkeypress="return validar_solo_numeros(event, this.id, 2)" onblur="validar_equipo_tecnico_cantidad_mayor_a_disponible(this)" type="tel" style="width:70%;float:right"> </td></tr>`;
+            tr += ` <li class="collection-item avatar col s12" style="justify-content: space-around"> <div class="col s12 l6"> <br><i class="material-icons circle" style="background-color: #00C2EE">done</i> <span class="title"><b>Artículo: </b> ${equipo_tecnico[item].articulo}</span> <p> <b>Capacidad del lugar: </b> ${equipo_tecnico[item].capacidad}<br><b>Disponible para el evento: </b>${equipo_tecnico[item].disponible}</p><b>Cantidad para el evento: </b> <div class="input-field"><i class="material-icons prefix c-azul">plus_one</i><input placeholder="Ingrese cantidad deseada" class="cantidad_mobiliario" id="cantidad_equipo_tecnico_${equipo_tecnico[item].id}" autocomplete="off" onkeypress="return validar_solo_numeros(event, this.id, 2)" type="tel"></div> </div><div class="col s12 l6 text-center"> <a href="${equipo_tecnico[item].ruta_img}" data-fancybox data-caption="${equipo_tecnico[item].articulo}"><br> <img src="${equipo_tecnico[item].ruta_img}" width="150"/> </a> </div></li>`;
         }
-        $("#tabla_equipo_tecnico").html(tr);
+        $("#tabla_equipo_tecnico").html(`<ul class="collection row">${tr}</ul>`);
     }
-    //validaciones
-    function validar_inventario_mobiliario_cantidad_mayor_a_disponible(el) {
-        var id = el.id.split("_")[2];
-        var inventario_disponible = $("#inventario_disponible_" + id);
-        if (el.value === "")
-            return;
-        var diferencia = parseInt(inventario_disponible.val()) - parseInt(el.value);
-        if (diferencia < 0) {
-            M.toast({
-                html: 'La cantidad a solicitar no puede exceder la cantidad disponible de éste artículo!',
-                classes: 'deep-orange c-blanco',
-            }, 5000);
-            el.value = "";
-            el.focus();
+
+    function mostrar_manteles(manteles) {
+        var tr = "";
+        if (manteles.length === 0) {
+            $("#badge_mantel_no_asignacion").prop("hidden", false);
+            $("#tabla_manteles").html("");
             return;
         }
-    }
-
-    function validar_equipo_tecnico_cantidad_mayor_a_disponible(el) {
-        var id = el.id.split("_")[3];
-        var equipo_tecnico_disponible = $("#equipo_tecnico_disponible_" + id);
-        if (el.value === "")
-            return;
-        var diferencia = parseInt(equipo_tecnico_disponible.val()) - parseInt(el.value);
-        if (diferencia < 0) {
-            M.toast({
-                html: 'La cantidad a solicitar no puede exceder la cantidad disponible de éste artículo!',
-                classes: 'deep-orange c-blanco',
-            }, 5000);
-            el.value = "";
-            el.focus();
-            return;
+        for (var item in manteles) {
+            tr += ` <li class="collection-item avatar col s12" style="justify-content: space-around"> <div class="col s12 l6"> <br><i class="material-icons circle" style="background-color: #00C2EE">done</i> <span class="title"><b>Artículo: </b> ${manteles[item].articulo}</span> <p> <b>Capacidad del lugar: </b> ${manteles[item].capacidad}<br><b>Disponible para el evento: </b>${manteles[item].disponible}</p><b>Cantidad para el evento: </b> <div class="input-field"><i class="material-icons prefix c-azul">plus_one</i><input placeholder="Ingrese cantidad deseada" class="cantidad_mobiliario" id="cantidad_manteles_${manteles[item].id}" autocomplete="off" onkeypress="return validar_solo_numeros(event, this.id, 2)" type="tel"></div> </div><div class="col s12 l6 text-center"> <a href="${manteles[item].ruta_img}" data-fancybox data-caption="${manteles[item].articulo}"> <br><img src="${manteles[item].ruta_img}" width="150"/> </a> </div></li>`;
         }
-    }
-
-    function validar_inventario() {
-        var mobiliario = $("#mobiliario");
-        if (mobiliario.find(".cantidad_mobiliario").length === 0) {
-            M.toast({
-                html: 'Debe seleccionar al menos un lugar para el evento!',
-                classes: 'deep-orange c-blanco',
-            }, 5000);
-            return false;
-        }
-        return true;
-    }
-
-    function validar_tipo_evento() {
-        var tipo_evento = $("#tipo_evento").val();
-        if (tipo_evento === "0" || tipo_evento === null || tipo_evento === undefined || tipo_evento === "") {
-            M.toast({
-                html: 'Debe seleccionar un tipo de evento válido para continuar!',
-                classes: 'deep-orange c-blanco',
-            }, 5000);
-            return false
-        }
-        return true;
-    }
-
-    function validar_fecha_montaje() {
-        var fecha_permiso_cafe = $("#fecha_permiso_cafe");
-        var fecha_evento_interno = $("#fecha_evento_interno");
-        var fecha_evento_combinado_externo = $("#fecha_evento_combinado_externo");
-        if (fecha_permiso_cafe.val() === "" &&
-                fecha_evento_interno.val() === "" &&
-                fecha_evento_combinado_externo.val() === "") {
-            M.toast({
-                html: 'Debe seleccionar una fecha de montaje válida para continuar!',
-                classes: 'deep-orange c-blanco',
-            }, 5000);
-            return false;
-        }
-        return true;
-    }
-
-    function validar_nombre_evento() {
-        var nombre_evento = $("#nombre_evento");
-        if (nombre_evento.val() === "") {
-            M.toast({
-                html: 'Debe ingresar un nombre del evento válido para continuar!',
-                classes: 'deep-orange c-blanco',
-            }, 5000);
-            return false;
-        }
-        return true;
-    }
-
-    function validar_numero_invitados() {
-        var cantidad_invitados = $("#cantidad_invitados");
-        if (cantidad_invitados.val() === "") {
-            M.toast({
-                html: 'Debe ingresar la cantidad de invitados al evento para continuar!',
-                classes: 'deep-orange c-blanco',
-            }, 5000);
-            return false;
-        }
-        return true;
-    }
-
-    function validar_horario_evento() {
-        var horario_evento = $("#horario_evento");
-        if (horario_evento.val() === "") {
-            M.toast({
-                html: 'Debe seleccionar un horario para el evento válido para continuar!',
-                classes: 'deep-orange c-blanco',
-            }, 5000);
-            return false;
-        }
-        return true;
-    }
-
-    function validar_fecha_ensayo() {
-        var fecha_ensayo = $("#fecha_ensayo");
-        if (fecha_ensayo.val() === "") {
-            M.toast({
-                html: 'Debe seleccionar una fecha de ensayo válida para continuar!',
-                classes: 'deep-orange c-blanco',
-            }, 5000);
-            return false;
-        }
-        return true;
-    }
-
-    function validar_horario_ensayo() {
-        var horario_ensayo = $("#horario_ensayo");
-        if (horario_ensayo.val() === "") {
-            M.toast({
-                html: 'Debe seleccionar un horario de ensayo válido para continuar!',
-                classes: 'deep-orange c-blanco',
-            }, 5000);
-            return false;
-        }
-        return true;
-    }
-
-    function validar_responsable_evento() {
-        var responsable_evento = $("#responsable_evento");
-        if (responsable_evento.val() === "") {
-            M.toast({
-                html: 'Debe ingresar un responsable del evento válido para continuar!',
-                classes: 'deep-orange c-blanco',
-            }, 5000);
-            return false;
-        }
-        return true;
+        $("#manteles").show();
+        $("#tabla_manteles").html(`<ul class="collection row">${tr}</ul>`);
     }
 
     function maxima_cantidad(id, cantidad) {
@@ -839,7 +1072,6 @@ if (isset($authUrl)) {
                 classes: 'deep-orange c-blanco',
             }, 5000);
         }
-        console.log(validar_maxima_cantidad(id, cantidad));
     }
     //recorrido de values
     function recorrido_inventario_disponible() {
@@ -871,92 +1103,7 @@ if (isset($authUrl)) {
     }
 
     function enviar_formulario() {
-        var inventario_disponible = [];
-        var inventario_equipo_tecnico = [];
-        if (!validar_tipo_evento())
-            return;
-        if (!validar_fecha_montaje())
-            return;
-        if (!validar_horario_evento())
-            return;
-        if (!validar_nombre_evento())
-            return;
-        if (!validar_responsable_evento())
-            return;
-        if (!validar_numero_invitados())
-            return;
-        if (!validar_fecha_ensayo())
-            return;
-        if (!validar_horario_ensayo())
-            return;
-        if (!validar_inventario())
-            return;
-        var fecha_permiso_cafe = $("#fecha_permiso_cafe").val();
-        var fecha_evento_interno = $("#fecha_evento_interno").val();
-        var fecha_evento_combinado_externo = $("#fecha_evento_combinado_externo").val();
-        var fecha_montaje = "";
-        if (fecha_permiso_cafe != "") {
-            fecha_montaje = fecha_permiso_cafe;
-        }
-        if (fecha_evento_interno != "") {
-            fecha_montaje = fecha_evento_interno;
-        }
-        if (fecha_evento_combinado_externo != "") {
-            fecha_montaje = fecha_evento_combinado_externo;
-        }
-
-        var fecha_solicitud = $("#fecha_solicitud").val();
-        var solicitante = $("#solicitante").val();
-        var tipo_evento = $("#tipo_evento").val();
-        switch (tipo_evento) {
-            case "1":
-                tipo_evento = "Servicio de café";
-                break;
-            case "2":
-                tipo_evento = "Montaje de evento interno";
-                break;
-            case "3":
-                tipo_evento = "Montaje de evento combinado o externo";
-                break;
-        }
-        //fecha_montaje
-        var nombre_evento = $("#nombre_evento").val();
-        var id_lugar_evento = $("#lugar_evento").val();
-        var cantidad_invitados = $("#cantidad_invitados").val();
-        var horario_evento = $("#horario_evento").val();
-        var fecha_ensayo = $("#fecha_ensayo").val();
-        var horario_ensayo = $("#horario_ensayo").val();
-        var responsable_evento = $("#responsable_evento").val();
-        inventario_disponible = recorrido_inventario_disponible();
-        inventario_equipo_tecnico = recorrido_equipo_tecnico();
-
-        var data = {
-            "fecha_solicitud": fecha_solicitud,
-            "solicitante": solicitante,
-            "tipo_evento": tipo_evento,
-            "fecha_montaje": fecha_montaje,
-            "nombre_evento": nombre_evento,
-            "id_lugar_evento": id_lugar_evento,
-            "inventario_evento": inventario_disponible,
-            "inventario_equipo_tecnico_evento": inventario_equipo_tecnico,
-            "cantidad_invitados": cantidad_invitados,
-            "horario_evento": horario_evento,
-            "fecha_ensayo": fecha_ensayo,
-            "horario_ensayo": horario_ensayo,
-            "responsable_evento": responsable_evento
-        };
-        $.ajax({
-            url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/post_nuevo_evento_montaje.php',
-            type: 'POST',
-            beforeSend: () => {
-                $("#loading").fadeIn("slow");
-            },
-            data: data
-        }).done((res) => {
-
-        }).always(() => {
-            $("#loading").fadeOut("slow");
-        });
+        cargar_archivo_programa(archivo_cargado);
     }
 
     function push_inventario(id_lugar) {
@@ -978,7 +1125,6 @@ if (isset($authUrl)) {
             }
         });
     }
-
     //aborta todas las peticiones ajax para recargar el inventario
     function abortar_ajax() {
         var xhr = new XMLHttpRequest(),
@@ -988,4 +1134,88 @@ if (isset($authUrl)) {
         xhr.send();
         xhr.abort();
     }
+    //ensayo    
+    function cargar_personal_ensayo(i) {
+        if ($("#fecha_ensayo_" + i).val() === "" ||
+                $("#horario_inicial_ensayo_" + i).val() === "" ||
+                $("#horario_final_ensayo_" + i).val() === "") {
+            M.toast({
+                html: 'Debe seleccionar una fecha y horarios válidos para continuar!',
+                classes: 'deep-orange c-blanco',
+            }, 5000);
+            $("#caja_select_" + i).hide();
+            $("#validacion_ensayo_" + i).fadeIn();
+            return;
+        }
+        $("#caja_select_" + i).fadeIn();
+        $("#validacion_ensayo_" + i).hide();
+        var fecha_ensayo = formatear_fecha_calendario_formato_a_m_d_guion($("#fecha_ensayo_" + i).val());
+        var horario_inicial_ensayo = $("#horario_inicial_ensayo_" + i).val();
+        var horario_final_ensayo = $("#horario_final_ensayo_" + i).val();
+
+        $.ajax({
+            url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/get_personal_montaje.php',
+            type: 'GET',
+            beforeSend: () => {
+                $("#loading").fadeIn();
+            },
+            data: {
+                "fecha": fecha_ensayo,
+                "horario_inicial": horario_inicial_ensayo,
+                "horario_final": horario_final_ensayo
+            }
+        }).done((res) => {
+            res = JSON.parse(res);
+            //toma cantidad del personal
+            var personal_montaje = res.personal_montaje.total_disponible;
+            var personal_cabina_auditorio = res.personal_cabina_auditorio.total_disponible;
+            var personal_limpieza = res.personal_limpieza.total_disponible;
+            //llena select con la cantidad disponible de empleados
+            llenar_select_personal($("#select_montaje_ensayo_" + i), personal_montaje);
+            llenar_select_personal($("#select_cabina_auditorio_ensayo_" + i), personal_cabina_auditorio);
+            llenar_select_personal($("#select_limpieza_ensayo_" + i), personal_limpieza);
+        }).always(() => {
+            $("#loading").fadeOut();
+        });
+    }
+
+    function validar_horario_final_ensayo(el, id_hora_inicial) {
+        var hora_inicial = $("#" + id_hora_inicial).val();
+        var hora_final = el.value;
+
+        hora_inicial = hora_inicial.split(":");
+        hora_final = hora_final.split(":");
+
+        hora_inicial = (parseInt(hora_inicial[0]) * 60 * 60) + parseInt(hora_inicial[1] * 60);
+        hora_final = (parseInt(hora_final[0]) * 60 * 60) + parseInt(hora_final[1] * 60);
+
+        if (hora_inicial >= hora_final || $("#" + id_hora_inicial).val() ==="") {
+            $("#" + el.id).timepicker('remove');
+            el.value = '';
+            $("#" + el.id).timepicker({
+                'step': 15,
+                'minTime': '08:00',
+                'maxTime': '18:00',
+                'timeFormat': 'H:i:s'
+            });
+            M.toast({
+                html: 'Debe elegir una hora final posterior a la hora inicial!',
+                classes: 'deep-orange c-blanco',
+            }, 5000);
+            return;
+        }
+    }
+
+    function llenar_select_personal(el, cantidad_disponible) {
+        var options = "<option value='0' disabled selected>Cantidad de personal</option>";
+        if (parseInt(cantidad_disponible) === 0)
+            return;
+        for (var i = 1, max = cantidad_disponible; i <= max; i++) {
+            options += `<option value="${i}">${i}</option>`;
+        }
+        el.html(options);
+        $('select').formSelect();
+    }
 </script>
+
+<?php include "$root_icloud/componeAnts/layout_bottom.php"; ?>

@@ -48,9 +48,9 @@ if (isset($authUrl)) {
                     <div class="col s12 l6">
                         <div class="card" style="box-shadow: none"> 
                             <div class="card-image waves-effect waves-block waves-light">     
-                                <a href='#!'>
-                                    <img src="../pics/activos/small-calendar.svg" style="padding:3rem;width: 100%;">  
-                                </a>
+                                <center><a href="#!">
+                                    <img src="../pics/activos/small-calendar.svg" style="padding:3rem;width: 82%;">  
+                                </a></center>
                             </div>
                             <div class="card-content text-center" style="padding:0px;margin-top: -15px">
                                 <span class="activator waves-effect waves-light btn b-azul c-blanco">

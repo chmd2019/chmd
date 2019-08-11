@@ -71,6 +71,12 @@ body{
 .c-gris{
     color: #787878 !important;
 }
+c-azul-cielo{
+    color: #00C2EE !important;
+}
+b-azul-cielo{
+    background-color: #00C2EE !important;
+}
 .b-gris{
     background-color: #787878 !important;
 }
@@ -184,7 +190,20 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
 .select-wrapper input.select-dropdown:focus {
     border-bottom: 1px solid #00C4F0;
 }
-
+/*indicador del tab*/
+.tabs .indicator {
+    background-color: #0d47a1;
+}
+.tabs .tab a {
+    color:white;
+}
+.tabs .tab a:hover {
+    color:#e0e0e0;
+}
+.tabs .tab a.active{
+    color:white;
+    background-color: #2962ff;
+}
 @media screen and (min-width: 280px) and (max-width:960px){
     .caja-login{
         width:90%;

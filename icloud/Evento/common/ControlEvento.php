@@ -19,21 +19,37 @@ class ControlEvento {
         }
     }
 
-    public function obtener_inventarios_montaje($lugar) {
+    public function obtener_capacidad_montaje($lugar) {
         $connection = $this->con->conectar1();
         if ($connection) {
-            $sql = "SELECT id, lugar, articulo, inventario, (inventario - asignado) AS disponible "
-                    . "FROM Inventario_montajes WHERE lugar ='$lugar'";
+            $sql = "SELECT a.id_articulo, a.lugar, b.articulo, a.capacidad, (b.inventario - b.asignado) AS disponible, b.ruta_img "
+                    . "FROM Inventario_capacidad_mobiliario a "
+                    . "INNER JOIN Inventario_mobiliario b ON a.id_articulo = b.id "
+                    . "WHERE a.lugar = $lugar";
             mysqli_set_charset($connection, "utf8");
             return mysqli_query($connection, $sql);
         }
     }
 
-    public function obtener_equipo_tecnico() {
+    public function obtener_capacidad_equipo_tecnico($lugar) {
         $connection = $this->con->conectar1();
         if ($connection) {
-            $sql = "SELECT id, articulo, inventario, asignado, (inventario - asignado) AS disponible "
-                    . "FROM Inventario_equipo_tecnico";
+            $sql = "SELECT a.id_articulo, b.articulo, a.capacidad, b.asignado, (b.inventario - b.asignado) AS disponible, b.ruta_img "
+                    . "FROM Inventario_capacidad_equipo_tecnico a "
+                    . "INNER JOIN Inventario_equipo_tecnico b ON a.id_articulo = b.id "
+                    . "WHERE a.lugar = $lugar";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function obtener_capacidad_manteles($lugar) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT a.id_articulo, b.articulo, a.capacidad, b.asignado, (b.inventario - b.asignado) AS disponible, b.ruta_img "
+                    . "FROM Inventario_capacidad_manteles a "
+                    . "INNER JOIN Inventario_manteles b ON a.id_articulo = b.id "
+                    . "WHERE a.lugar = $lugar";
             mysqli_set_charset($connection, "utf8");
             return mysqli_query($connection, $sql);
         }
@@ -119,6 +135,39 @@ class ControlEvento {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "SELECT TIMESTAMP FROM Inventario_montajes WHERE lugar = $id_lugar ORDER BY id ASC LIMIT 1";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+    
+    public function obtener_personal_ocupado($fecha_montaje, $id_personal_montajes, $hora_inicial, $horario_final){        
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql_1 = "SET @hora_inicial = '$hora_inicial';";
+            $sql_2 = "SET @hora_final = '$horario_final';";
+            $sql_3 = "SELECT COUNT(*) FROM Personal_ocupado_montaje "
+                    . "WHERE id_tipo_personal = $id_personal_montajes AND fecha ='$fecha_montaje' "
+                    . "AND (@hora_inicial >= hora_min AND @hora_inicial <= hora_max "
+                    . "OR @hora_final >= hora_min AND @hora_final <= hora_max)";
+            mysqli_set_charset($connection, "utf8");
+            mysqli_query($connection, $sql_1);
+            mysqli_query($connection, $sql_2);
+            return mysqli_query($connection, $sql_3);
+        }
+    }    
+    
+    public function obtener_personal_total($tipo_personal){        
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT personal_total FROM Personal_montajes WHERE tipo_personal = '$tipo_personal'";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+    public function obtener_lugares_evento(){        
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT * FROM Lugares_eventos ORDER BY patio";
             mysqli_set_charset($connection, "utf8");
             return mysqli_query($connection, $sql);
         }
