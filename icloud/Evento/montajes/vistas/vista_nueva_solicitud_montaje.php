@@ -141,7 +141,7 @@ if (isset($authUrl)) {
                         <label  style="margin-left: 1rem">Tipo de evento</label>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">room_service</i>
-                            <select onchange="mostrar_caja_fecha(this.value);reset_check_requiero_personal()" id="tipo_evento">
+                            <select onchange="mostrar_caja_fecha(this.value); reset_check_requiero_personal()" id="tipo_evento">
                                 <option value="0" disabled selected>Selelccione una opción</option>
                                 <option value="1">Servicio de café</option>
                                 <option value="2">Montaje de evento interno</option>
@@ -161,7 +161,7 @@ if (isset($authUrl)) {
                                 id="fecha_permiso_cafe" 
                                 autocomplete="off"
                                 placeholder="Para el día"
-                                onchange="fecha_minusculas(this.value, 'fecha_permiso_cafe');reset_check_requiero_personal()">            
+                                onchange="fecha_minusculas(this.value, 'fecha_permiso_cafe'); reset_check_requiero_personal()">            
                         </div>
                         <script>
                             //obtiene el calendario escolar en db
@@ -202,7 +202,8 @@ if (isset($authUrl)) {
                                 id="fecha_evento_interno" 
                                 autocomplete="off"
                                 placeholder="Para el día"
-                                onchange="fecha_minusculas(this.value, 'fecha_evento_interno');reset_check_requiero_personal()">            
+                                onchange="fecha_minusculas(this.value, 'fecha_evento_interno');
+                                        reset_check_requiero_personal()">            
                         </div>
                         <script>
                             //obtiene el calendario escolar en db
@@ -243,7 +244,8 @@ if (isset($authUrl)) {
                                 id="fecha_evento_combinado_externo" 
                                 autocomplete="off"
                                 placeholder="Para el día"
-                                onchange="fecha_minusculas(this.value, 'fecha_evento_combinado_externo');reset_check_requiero_personal()">            
+                                onchange="fecha_minusculas(this.value, 'fecha_evento_combinado_externo');
+                                        reset_check_requiero_personal()">            
                         </div>
                         <script>
                             //obtiene el calendario escolar en db
@@ -284,7 +286,8 @@ if (isset($authUrl)) {
                                 id="fecha_servicio_especial" 
                                 autocomplete="off"
                                 placeholder="Para el día"
-                                onchange="fecha_minusculas(this.value, 'fecha_servicio_especial');reset_check_requiero_personal()">            
+                                onchange="fecha_minusculas(this.value, 'fecha_servicio_especial');
+                                        reset_check_requiero_personal()">            
                         </div>
                         <script>
                             //obtiene el calendario escolar en db
@@ -347,7 +350,7 @@ if (isset($authUrl)) {
                             id="horario_final_evento"
                             class="timepicker"
                             onkeypress="return validar_solo_numeros(event, this.id, 1)"
-                            onchange="validar_horario_final_ensayo(this,'horario_evento')"
+                            onchange="validar_horario_final_ensayo(this, 'horario_evento')"
                             autocomplete="off"
                             onfocus="blur();"
                             placeholder="Seleccione horario">  
@@ -490,6 +493,14 @@ if (isset($authUrl)) {
                             <select id="select_personal_vigilancia"></select>
                             <label style="margin-left: 1rem">Personal de vigilancia</label>
                         </div>
+                        <div class="input-field col s12" style="text-align: center">
+                            <button class="waves-effect waves-light btn col l4" 
+                                    onclick="actualizar_personal('select_personal_montaje', 'select_personal_cabina_auditorio', 'select_personal_limpieza', 'select_personal_vigilancia')"
+                                    type="button" 
+                                    style="background-color: #00C2EE;float: none">Reservar personal
+                                <i class="material-icons right">save</i>
+                            </button>
+                        </div>
                     </div>
                     <div class="input-field col s12 l6">
                         <i class="material-icons prefix c-azul">donut_large</i>
@@ -552,7 +563,7 @@ if (isset($authUrl)) {
                         <div style="text-align: center">
                             <button class="waves-effect waves-light btn col s12 l4" 
                                     type="button" 
-                                    style="background-color: #00C2EE;float: none">Previsualizar
+                                    style="background-color: #00C2EE;float: none">PREVISUALIZAR
                                 <i class="material-icons right">search</i>
                             </button>
                             <span class="col s12 hide-on-med-and-up"><br></span>
@@ -575,6 +586,11 @@ if (isset($authUrl)) {
 ?>
 
 <div class="fixed-action-btn">
+    <a class="btn-floating btn-large waves-effect waves-light light-blue">
+        <i class="large material-icons">save</i>
+    </a>
+    <br>
+    <br>
     <a class="btn-floating btn-large waves-effect waves-light b-azul" href="<?php echo $redirect_uri ?>Evento/montajes/PMontajes.php?idseccion=<?php echo $idseccion; ?>">
         <i class="large material-icons">keyboard_backspace</i>
     </a>
@@ -611,6 +627,10 @@ if (isset($authUrl)) {
     var id_lugar = 0;
     var archivo_cargado = null;
     var nfamilia = '<?php echo $nfamilia; ?>';
+    //push
+    var pusher = null;
+    var channel = null;
+    var token = '<?php echo uniqid(); ?>';
 
     $(document).ready(function () {
         $("#loading").fadeOut("slow");
@@ -629,8 +649,21 @@ if (isset($authUrl)) {
             reset_check_requiero_personal();
         });
         cargar_lugares();
+        //pusher        
+        pusher = new Pusher('d71baadb1789d7f0cd64', {
+            cluster: 'us3',
+            forceTLS: true
+        });
+        channel = pusher.subscribe('canal_personal');
+        channel.bind('actualiza_personal', function (res) {
+            if (res.actualizar_personal.push && res.actualizar_personal.token !== token) {
+                M.toast({
+                    html: 'El personal disponible ha sido modificado por otro usuario',
+                    classes: 'blue c-blanco',
+                });
+            }
+        });
     });
-
     //checks
 
     function reset_check_requiero_personal() {
@@ -705,7 +738,7 @@ if (isset($authUrl)) {
     function mostrar_caja_ensayos(el) {
         var codigo_ensayo = "";
         for (var i = 0; i < el.value; i++) {
-            var codigo = `<div class="col s12 card"> <div class="card-content" style="color:#00C2EE;"> <h5>Ensayo N° ${i+1}</h5> </div><div class="card-tabs"> <ul class="tabs tabs-fixed-width"> <li class="tab blue white-text active"><a href="#tab_1_${i+1}">Información de ensayo</a> </li><li class="tab blue white-text" onclick="cargar_personal_ensayo(${i})"><a href="#tab_2_${i+1}">Personal</a> </li></ul> </div><div class="card-content"> <div id="tab_1_${i+1}"> <div class="col s12 l6"> <label style="margin-left: 1rem;color:#00C2EE">Fecha del ensayo</label> <div class="input-field"> <i class="material-icons prefix c-azul">calendar_today</i> <input type="text" class="datepicker" id="fecha_ensayo_${i}" autocomplete="off" placeholder="Escoja fecha" onchange="fecha_minusculas(this.value, 'fecha_permiso')" style="font-size: 1rem"> </div></div><div class="col s12 l6"> <label style="margin-left: 1rem;color:#00C2EE">Horario inicial</label> <div class="input-field"> <i class="material-icons prefix c-azul">access_time</i> <input type="text" id="horario_inicial_ensayo_${i}" class="timepicker" onkeypress="return validar_solo_numeros(event, this.id, 1)" autocomplete="off" onfocus="blur();" placeholder="Seleccione horario"> </div></div><div class="col s12 l6"> <label style="margin-left: 1rem;color:#00C2EE">Horario final</label> <div class="input-field"> <i class="material-icons prefix c-azul">access_time</i> <input type="text" id="horario_final_ensayo_${i}" class="timepicker" onkeypress="return validar_solo_numeros(event, this.id, 1)" onchange="validar_horario_final_ensayo(this,'horario_inicial_ensayo_${i}')" autocomplete="off" onfocus="blur();" placeholder="Seleccione horario"> </div></div><div class="input-field col s12"> <i class="material-icons prefix c-azul">list_alt</i> <textarea class="materialize-textarea" id="requerimientos_especiales_ensayo_${i}" placeholder="Requerimientos especiales"></textarea> </div></div><div id="tab_2_${i+1}"> <div id="caja_select_${i}"> <div class="input-field col s12 l6"> <i class="material-icons prefix c-azul">build</i> <select id="select_montaje_ensayo_${i}"></select> <label style="margin-left: 1rem;color:#00C2EE">Personal de montaje</label> </div><div class="input-field col s12 l6"> <i class="material-icons prefix c-azul">build</i> <select id="select_cabina_auditorio_ensayo_${i}"></select> <label style="margin-left: 1rem;color:#00C2EE">Personal de cabina de auditorio</label> </div><div class="input-field col s12 l6"> <i class="material-icons prefix c-azul">build</i> <select id="select_limpieza_ensayo_${i}"></select> <label style="margin-left: 1rem;color:#00C2EE">Personal de limpieza</label> </div></div><span class="col s12"><br></span> <div class="chip orange col s12 white-text" style="text-align: center" id="validacion_ensayo_${i}"> <span>Debe seleccionar una fecha y horarios válidos para continuar!</span> </div><span class="col s12 hide-on-med-and-down"><br><br><br><br><br></span> </div></div></div>`;
+            var codigo = `<div class="col s12 card"> <div class="card-content" style="color:#00C2EE;"> <h5>Ensayo N° ${i + 1}</h5> </div><div class="card-tabs"> <ul class="tabs tabs-fixed-width"> <li class="tab blue white-text active"><a href="#tab_1_${i + 1}">Información de ensayo</a> </li><li class="tab blue white-text" onclick="cargar_personal_ensayo(${i})"><a href="#tab_2_${i + 1}">Personal</a> </li></ul> </div><div class="card-content"> <div id="tab_1_${i + 1}"> <div class="col s12 l6"> <label style="margin-left: 1rem;color:#00C2EE">Fecha del ensayo</label> <div class="input-field"> <i class="material-icons prefix c-azul">calendar_today</i> <input type="text" class="datepicker" id="fecha_ensayo_${i}" autocomplete="off" placeholder="Escoja fecha" onchange="fecha_minusculas(this.value, 'fecha_permiso')" style="font-size: 1rem"> </div></div><div class="col s12 l6"> <label style="margin-left: 1rem;color:#00C2EE">Horario inicial</label> <div class="input-field"> <i class="material-icons prefix c-azul">access_time</i> <input type="text" id="horario_inicial_ensayo_${i}" class="timepicker" onkeypress="return validar_solo_numeros(event, this.id, 1)" autocomplete="off" onfocus="blur();" placeholder="Seleccione horario"> </div></div><div class="col s12 l6"> <label style="margin-left: 1rem;color:#00C2EE">Horario final</label> <div class="input-field"> <i class="material-icons prefix c-azul">access_time</i> <input type="text" id="horario_final_ensayo_${i}" class="timepicker" onkeypress="return validar_solo_numeros(event, this.id, 1)" onchange="validar_horario_final_ensayo(this,'horario_inicial_ensayo_${i}')" autocomplete="off" onfocus="blur();" placeholder="Seleccione horario"> </div></div><div class="input-field col s12"> <i class="material-icons prefix c-azul">list_alt</i> <textarea class="materialize-textarea" id="requerimientos_especiales_ensayo_${i}" placeholder="Requerimientos especiales"></textarea> </div></div><div id="tab_2_${i + 1}"> <div id="caja_select_${i}"> <div class="input-field col s12 l6"> <i class="material-icons prefix c-azul">build</i> <select id="select_montaje_ensayo_${i}"></select> <label style="margin-left: 1rem;color:#00C2EE">Personal de montaje</label> </div><div class="input-field col s12 l6"> <i class="material-icons prefix c-azul">build</i> <select id="select_cabina_auditorio_ensayo_${i}"></select> <label style="margin-left: 1rem;color:#00C2EE">Personal de cabina de auditorio</label> </div><div class="input-field col s12 l6"> <i class="material-icons prefix c-azul">build</i> <select id="select_limpieza_ensayo_${i}"></select> <label style="margin-left: 1rem;color:#00C2EE">Personal de limpieza</label> </div></div><span class="col s12"><br></span> <div class="chip orange col s12 white-text" style="text-align: center" id="validacion_ensayo_${i}"> <span>Debe seleccionar una fecha y horarios válidos para continuar!</span> </div><span class="col s12 hide-on-med-and-down"><br><br><br><br><br></span> </div></div></div>`;
             codigo_ensayo += `${codigo}`;
         }
 
@@ -945,33 +978,16 @@ if (isset($authUrl)) {
         }).always(() => {
             $("#loading").fadeOut("slow");
         });
-
     }
 
     function cargar_personal_montaje(el) {
 
-        var fecha_formateada = null;
-        var fecha_permiso_cafe = $("#fecha_permiso_cafe").val();
-        var fecha_evento_interno = $("#fecha_evento_interno").val();
-        var fecha_evento_combinado_externo = $("#fecha_evento_combinado_externo").val();
-        var fecha_servicio_especial = $("#fecha_servicio_especial").val();
-
-        if (fecha_permiso_cafe !== "") {
-            fecha_formateada = formatear_fecha_calendario_formato_a_m_d_guion(fecha_permiso_cafe);
-        } else if (fecha_evento_interno !== "") {
-            fecha_formateada = formatear_fecha_calendario_formato_a_m_d_guion(fecha_evento_interno);
-        } else if (fecha_evento_combinado_externo !== "") {
-            fecha_formateada = formatear_fecha_calendario_formato_a_m_d_guion(fecha_evento_combinado_externo);
-        } else if (fecha_servicio_especial !== "") {
-            fecha_formateada = formatear_fecha_calendario_formato_a_m_d_guion(fecha_servicio_especial);
-        }
-
+        var fecha_formateada = obtener_fecha();
         var horario_evento = $("#horario_evento").val();
         var horario_final_evento = $("#horario_final_evento").val();
-
         if (fecha_formateada === null) {
             M.toast({
-                html: 'Debe seleccionar un lugar de evento y una fecha válida para continuar!',
+                html: 'Debe seleccionar el tipo de evento y una fecha válida para continuar!',
                 classes: 'deep-orange c-blanco',
             }, 5000);
             el.checked = false;
@@ -990,7 +1006,6 @@ if (isset($authUrl)) {
         if ($("#caja_personal_evento").prop('hidden')) {
             $("#caja_personal_evento").fadeIn();
             $("#caja_personal_evento").prop('hidden', false);
-
             $.ajax({
                 url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/get_personal_montaje.php',
                 type: 'GET',
@@ -1004,7 +1019,6 @@ if (isset($authUrl)) {
                 }
             }).done((res) => {
                 res = JSON.parse(res);
-                console.log(res);
                 //toma cantidad del personal
                 var personal_montaje = res.personal_montaje.total_disponible;
                 var personal_cabina_auditorio = res.personal_cabina_auditorio.total_disponible;
@@ -1015,7 +1029,6 @@ if (isset($authUrl)) {
                 llenar_select_personal($("#select_personal_cabina_auditorio"), personal_cabina_auditorio);
                 llenar_select_personal($("#select_personal_limpieza"), personal_limpieza);
                 llenar_select_personal($("#select_personal_vigilancia"), personal_vigilancia);
-            
             }).always(() => {
                 $("#loading").fadeOut();
             });
@@ -1116,7 +1129,6 @@ if (isset($authUrl)) {
             res = JSON.parse(res);
             timestamp = res.timestamp;
             var inventario = res.inventario_disponible;
-
             if (res.timestamp === timestamp) {
                 if (inventario.length > 0) {
                     mostrar_inventario(inventario);
@@ -1152,7 +1164,6 @@ if (isset($authUrl)) {
         var fecha_ensayo = formatear_fecha_calendario_formato_a_m_d_guion($("#fecha_ensayo_" + i).val());
         var horario_inicial_ensayo = $("#horario_inicial_ensayo_" + i).val();
         var horario_final_ensayo = $("#horario_final_ensayo_" + i).val();
-
         $.ajax({
             url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/get_personal_montaje.php',
             type: 'GET',
@@ -1182,14 +1193,11 @@ if (isset($authUrl)) {
     function validar_horario_final_ensayo(el, id_hora_inicial) {
         var hora_inicial = $("#" + id_hora_inicial).val();
         var hora_final = el.value;
-
         hora_inicial = hora_inicial.split(":");
         hora_final = hora_final.split(":");
-
         hora_inicial = (parseInt(hora_inicial[0]) * 60 * 60) + parseInt(hora_inicial[1] * 60);
         hora_final = (parseInt(hora_final[0]) * 60 * 60) + parseInt(hora_final[1] * 60);
-
-        if (hora_inicial >= hora_final || $("#" + id_hora_inicial).val() ==="") {
+        if (hora_inicial >= hora_final || $("#" + id_hora_inicial).val() === "") {
             $("#" + el.id).timepicker('remove');
             el.value = '';
             $("#" + el.id).timepicker({
@@ -1209,13 +1217,91 @@ if (isset($authUrl)) {
     function llenar_select_personal(el, cantidad_disponible) {
         var options = "<option value='0' disabled selected>Cantidad de personal</option>";
         if (parseInt(cantidad_disponible) === 0)
-            return;
-        for (var i = 1, max = cantidad_disponible; i <= max; i++) {
-            options += `<option value="${i}">${i}</option>`;
-        }
+            options += `<option value="0">0</option>`;
+        else
+            for (var i = 1, max = cantidad_disponible; i <= max; i++) {
+                options += `<option value="${i}">${i}</option>`;
+            }
         el.html(options);
         $('select').formSelect();
     }
+
+    function actualizar_personal(select_personal_montaje, select_personal_cabina_auditorio,
+            select_personal_limpieza, select_personal_vigilancia) {
+
+        if ($("#" + select_personal_montaje).val() === null &&
+                $("#" + select_personal_cabina_auditorio).val() === null &&
+                $("#" + select_personal_limpieza).val() === null &&
+                $("#" + select_personal_vigilancia).val() === null) {
+            M.toast({
+                html: 'La selección de personal es requerida para continuar!',
+                classes: 'blue c-blanco',
+            });
+            return;
+        }
+
+        var fecha_formateada = obtener_fecha();
+        var horario_inicial_evento = $("#horario_evento").val();
+        var horario_final_evento = $("#horario_final_evento").val();
+        //personal
+        var personal_montaje = {"tipo": 1, cantidad: $("#" + select_personal_montaje).val()};
+        var personal_cabina_auditorio = {"tipo": 2, cantidad: $("#" + select_personal_cabina_auditorio).val()};
+        var personal_limpieza = {"tipo": 3, cantidad: $("#" + select_personal_limpieza).val()};
+        var personal_vigilancia = {"tipo": 4, cantidad: $("#" + select_personal_vigilancia).val()};
+        var personal = {
+            "personal_montaje": personal_montaje,
+            "personal_cabina_auditorio": personal_cabina_auditorio,
+            "personal_limpieza": personal_limpieza,
+            "personal_vigilancia": personal_vigilancia
+        };
+        $.ajax({
+            url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/post_actualiza_personal.php',
+            type: 'POST',
+            dataType: 'json',
+            beforeSend: () => {
+                $("#loading").fadeIn();
+            },
+            data: {
+                personal,
+                fecha_montaje: fecha_formateada,
+                horario_inicial_evento,
+                horario_final_evento,
+                token: token,
+                socket_id: pusher.connection.socket_id
+            }
+        }).done((res) => {
+            console.log(res);
+        }).always(() => {
+            $("#loading").fadeOut();
+        });
+    }
+
+    function obtener_fecha() {
+        var fecha_formateada = null;
+        var fecha_permiso_cafe = $("#fecha_permiso_cafe").val();
+        var fecha_evento_interno = $("#fecha_evento_interno").val();
+        var fecha_evento_combinado_externo = $("#fecha_evento_combinado_externo").val();
+        var fecha_servicio_especial = $("#fecha_servicio_especial").val();
+        if (fecha_permiso_cafe !== "") {
+            fecha_formateada = formatear_fecha_calendario_formato_a_m_d_guion(fecha_permiso_cafe);
+        } else if (fecha_evento_interno !== "") {
+            fecha_formateada = formatear_fecha_calendario_formato_a_m_d_guion(fecha_evento_interno);
+        } else if (fecha_evento_combinado_externo !== "") {
+            fecha_formateada = formatear_fecha_calendario_formato_a_m_d_guion(fecha_evento_combinado_externo);
+        } else if (fecha_servicio_especial !== "") {
+            fecha_formateada = formatear_fecha_calendario_formato_a_m_d_guion(fecha_servicio_especial);
+        }
+        return fecha_formateada;
+    }
+
+    function hash(str) {
+        var hash = 0;
+        for (var i = 0; i < str.length; i++) {
+            hash = ~~(((hash << 5) - hash) + str.charCodeAt(i));
+        }
+        return hash;
+    }
+
 </script>
 
 <?php include "$root_icloud/componeAnts/layout_bottom.php"; ?>

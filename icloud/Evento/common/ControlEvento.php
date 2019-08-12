@@ -121,7 +121,7 @@ class ControlEvento {
         }
     }
 
-    public function obtener_inventario_disponible($id_lugar){        
+    public function obtener_inventario_disponible($id_lugar) {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "SELECT id, articulo, inventario, asignado, (inventario - asignado) AS disponible "
@@ -130,8 +130,8 @@ class ControlEvento {
             return mysqli_query($connection, $sql);
         }
     }
-    
-    public function obtener_timestamp($id_lugar){        
+
+    public function obtener_timestamp($id_lugar) {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "SELECT TIMESTAMP FROM Inventario_montajes WHERE lugar = $id_lugar ORDER BY id ASC LIMIT 1";
@@ -139,8 +139,8 @@ class ControlEvento {
             return mysqli_query($connection, $sql);
         }
     }
-    
-    public function obtener_personal_ocupado($fecha_montaje, $id_personal_montajes, $hora_inicial, $horario_final){        
+
+    public function obtener_personal_ocupado($fecha_montaje, $id_personal_montajes, $hora_inicial, $horario_final) {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql_1 = "SET @hora_inicial = '$hora_inicial';";
@@ -154,9 +154,9 @@ class ControlEvento {
             mysqli_query($connection, $sql_2);
             return mysqli_query($connection, $sql_3);
         }
-    }    
-    
-    public function obtener_personal_total($tipo_personal){        
+    }
+
+    public function obtener_personal_total($tipo_personal) {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "SELECT personal_total FROM Personal_montajes WHERE tipo_personal = '$tipo_personal'";
@@ -164,7 +164,8 @@ class ControlEvento {
             return mysqli_query($connection, $sql);
         }
     }
-    public function obtener_lugares_evento(){        
+
+    public function obtener_lugares_evento() {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "SELECT * FROM Lugares_eventos ORDER BY patio";
@@ -172,8 +173,34 @@ class ControlEvento {
             return mysqli_query($connection, $sql);
         }
     }
-    
-    public function obtener_conexion(){
+
+    public function actualizar_personal_tmp($id_tipo_personal, $fecha, $horario, $horario_final, $hora_min, $hora_max, $es_temporal) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "INSERT INTO `chmd_sistemas`.`Personal_ocupado_montaje` ("
+                    . "`id_tipo_personal`, "
+                    . "`fecha`, "
+                    . "`horario`, "
+                    . "`horario_final`, "
+                    . "`hora_min`, "
+                    . "`hora_max`, "
+                    . "`temporal`) VALUES ("
+                    . "'$id_tipo_personal', "
+                    . "'$fecha', "
+                    . "'$horario', "
+                    . "'$horario_final', "
+                    . "'$hora_min', "
+                    . "'$hora_max', "
+                    . "'$es_temporal');";
+            mysqli_set_charset($connection, "utf8");
+            $insert = mysqli_query($connection, $sql);
+            if (!$insert) return false;
+            return true;
+        }
+    }
+
+    public function obtener_conexion() {
         return $this->con->conectar1();
     }
+
 }
