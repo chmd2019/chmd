@@ -195,12 +195,29 @@ class ControlEvento {
             mysqli_set_charset($connection, "utf8");
             $insert = mysqli_query($connection, $sql);
             if (!$insert) return false;
-            return true;
+            return mysqli_insert_id($connection);
         }
     }
 
     public function obtener_conexion() {
         return $this->con->conectar1();
     }
-
+    
+    public function obtener_ultimo_timestamp($id){
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT TIMESTAMP FROM Personal_ocupado_montaje WHERE id = '$id'";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+    
+    public function anular_personal_asignado($timestamp){
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "DELETE FROM `chmd_sistemas`.`Personal_ocupado_montaje` WHERE  TIMESTAMP = '$timestamp' AND temporal = 1";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
 }

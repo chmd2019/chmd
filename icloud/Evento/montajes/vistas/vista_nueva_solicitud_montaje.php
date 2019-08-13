@@ -493,12 +493,19 @@ if (isset($authUrl)) {
                             <select id="select_personal_vigilancia"></select>
                             <label style="margin-left: 1rem">Personal de vigilancia</label>
                         </div>
-                        <div class="input-field col s12" style="text-align: center">
-                            <button class="waves-effect waves-light btn col l4" 
+                        <div class="input-field col s12" style="text-align: center" id="reserva_personal">
+                            <button class="waves-effect waves-light btn col l3"                                     
                                     onclick="actualizar_personal('select_personal_montaje', 'select_personal_cabina_auditorio', 'select_personal_limpieza', 'select_personal_vigilancia')"
                                     type="button" 
                                     style="background-color: #00C2EE;float: none">Reservar personal
                                 <i class="material-icons right">save</i>
+                            </button>
+                        </div>
+                        <div class="input-field col s12" style="text-align: center;" hidden id="anular_reserva_personal">
+                            <button class="waves-effect waves-light btn red col l3" style="float: none"                                 
+                                    type="button"
+                                    onclick="anular_reserva_personal('#select_personal_montaje', '#select_personal_cabina_auditorio', '#select_personal_limpieza', '#select_personal_vigilancia')">Anular reserva
+                                <i class="material-icons right">delete</i>
                             </button>
                         </div>
                     </div>
@@ -527,7 +534,10 @@ if (isset($authUrl)) {
                     <div class="input-field col s12 l6">
                         <i class="material-icons prefix c-azul">compare_arrows</i>
                         <label>
-                            <input type="checkbox" class="filled-in" onchange="check_requiero_ensayo(this)"/>
+                            <input type="checkbox"
+                                   id="requiero_ensayo"
+                                   class="filled-in" 
+                                   onchange="check_requiero_ensayo(this)"/>
                             <span>Requiero de ensayo</span>
                         </label>
                         <br>
@@ -631,6 +641,8 @@ if (isset($authUrl)) {
     var pusher = null;
     var channel = null;
     var token = '<?php echo uniqid(); ?>';
+    var timestamp_personal_montaje = null;
+    var timestamp_personal_montaje_ensayos = [];
 
     $(document).ready(function () {
         $("#loading").fadeOut("slow");
@@ -738,7 +750,7 @@ if (isset($authUrl)) {
     function mostrar_caja_ensayos(el) {
         var codigo_ensayo = "";
         for (var i = 0; i < el.value; i++) {
-            var codigo = `<div class="col s12 card"> <div class="card-content" style="color:#00C2EE;"> <h5>Ensayo N° ${i + 1}</h5> </div><div class="card-tabs"> <ul class="tabs tabs-fixed-width"> <li class="tab blue white-text active"><a href="#tab_1_${i + 1}">Información de ensayo</a> </li><li class="tab blue white-text" onclick="cargar_personal_ensayo(${i})"><a href="#tab_2_${i + 1}">Personal</a> </li></ul> </div><div class="card-content"> <div id="tab_1_${i + 1}"> <div class="col s12 l6"> <label style="margin-left: 1rem;color:#00C2EE">Fecha del ensayo</label> <div class="input-field"> <i class="material-icons prefix c-azul">calendar_today</i> <input type="text" class="datepicker" id="fecha_ensayo_${i}" autocomplete="off" placeholder="Escoja fecha" onchange="fecha_minusculas(this.value, 'fecha_permiso')" style="font-size: 1rem"> </div></div><div class="col s12 l6"> <label style="margin-left: 1rem;color:#00C2EE">Horario inicial</label> <div class="input-field"> <i class="material-icons prefix c-azul">access_time</i> <input type="text" id="horario_inicial_ensayo_${i}" class="timepicker" onkeypress="return validar_solo_numeros(event, this.id, 1)" autocomplete="off" onfocus="blur();" placeholder="Seleccione horario"> </div></div><div class="col s12 l6"> <label style="margin-left: 1rem;color:#00C2EE">Horario final</label> <div class="input-field"> <i class="material-icons prefix c-azul">access_time</i> <input type="text" id="horario_final_ensayo_${i}" class="timepicker" onkeypress="return validar_solo_numeros(event, this.id, 1)" onchange="validar_horario_final_ensayo(this,'horario_inicial_ensayo_${i}')" autocomplete="off" onfocus="blur();" placeholder="Seleccione horario"> </div></div><div class="input-field col s12"> <i class="material-icons prefix c-azul">list_alt</i> <textarea class="materialize-textarea" id="requerimientos_especiales_ensayo_${i}" placeholder="Requerimientos especiales"></textarea> </div></div><div id="tab_2_${i + 1}"> <div id="caja_select_${i}"> <div class="input-field col s12 l6"> <i class="material-icons prefix c-azul">build</i> <select id="select_montaje_ensayo_${i}"></select> <label style="margin-left: 1rem;color:#00C2EE">Personal de montaje</label> </div><div class="input-field col s12 l6"> <i class="material-icons prefix c-azul">build</i> <select id="select_cabina_auditorio_ensayo_${i}"></select> <label style="margin-left: 1rem;color:#00C2EE">Personal de cabina de auditorio</label> </div><div class="input-field col s12 l6"> <i class="material-icons prefix c-azul">build</i> <select id="select_limpieza_ensayo_${i}"></select> <label style="margin-left: 1rem;color:#00C2EE">Personal de limpieza</label> </div></div><span class="col s12"><br></span> <div class="chip orange col s12 white-text" style="text-align: center" id="validacion_ensayo_${i}"> <span>Debe seleccionar una fecha y horarios válidos para continuar!</span> </div><span class="col s12 hide-on-med-and-down"><br><br><br><br><br></span> </div></div></div>`;
+            var codigo = `<div class="col s12 card"> <div class="card-content" style="color:#00C2EE;"> <h5>Ensayo N° ${i + 1}</h5> </div><div class="card-tabs"> <ul class="tabs tabs-fixed-width"> <li class="tab blue white-text active"><a href="#tab_1_${i + 1}">Información de ensayo</a> </li><li class="tab blue white-text" onclick="cargar_personal_ensayo(${i})"><a href="#tab_2_${i + 1}">Personal</a> </li></ul> </div><div class="card-content"> <div id="tab_1_${i + 1}"> <div class="col s12 l6"> <label style="margin-left: 1rem;color:#00C2EE">Fecha del ensayo</label> <div class="input-field"> <i class="material-icons prefix c-azul">calendar_today</i> <input type="text" class="datepicker" id="fecha_ensayo_${i}" autocomplete="off" placeholder="Escoja fecha" onchange="fecha_minusculas(this.value, 'fecha_permiso')" style="font-size: 1rem"> </div></div><div class="col s12 l6"> <label style="margin-left: 1rem;color:#00C2EE">Horario inicial</label> <div class="input-field"> <i class="material-icons prefix c-azul">access_time</i> <input type="text" id="horario_inicial_ensayo_${i}" class="timepicker" onkeypress="return validar_solo_numeros(event, this.id, 1)" autocomplete="off" onfocus="blur();" placeholder="Seleccione horario"> </div></div><div class="col s12 l6"> <label style="margin-left: 1rem;color:#00C2EE">Horario final</label> <div class="input-field"> <i class="material-icons prefix c-azul">access_time</i> <input type="text" id="horario_final_ensayo_${i}" class="timepicker" onkeypress="return validar_solo_numeros(event, this.id, 1)" onchange="validar_horario_final_ensayo(this,'horario_inicial_ensayo_${i}')" autocomplete="off" onfocus="blur();" placeholder="Seleccione horario"> </div></div><div class="input-field col s12"> <i class="material-icons prefix c-azul">list_alt</i> <textarea class="materialize-textarea" id="requerimientos_especiales_ensayo_${i}" placeholder="Requerimientos especiales"></textarea> </div></div><div id="tab_2_${i + 1}"> <div id="caja_select_${i}"> <div class="input-field col s12 l6"> <i class="material-icons prefix c-azul">build</i> <select id="select_montaje_ensayo_${i}"></select> <label style="margin-left: 1rem;color:#00C2EE">Personal de montaje</label> </div><div class="input-field col s12 l6"> <i class="material-icons prefix c-azul">build</i> <select id="select_cabina_auditorio_ensayo_${i}"></select> <label style="margin-left: 1rem;color:#00C2EE">Personal de cabina de auditorio</label> </div><div class="input-field col s12 l6"> <i class="material-icons prefix c-azul">build</i> <select id="select_limpieza_ensayo_${i}"></select> <label style="margin-left: 1rem;color:#00C2EE">Personal de limpieza</label> </div><div class="input-field col s12" style="text-align: center" id="reserva_personal_${i}"> <button class="waves-effect waves-light btn col l4" onclick="actualizar_personal_ensayo('select_montaje_ensayo_${i}', 'select_cabina_auditorio_ensayo_${i}', 'select_limpieza_ensayo_${i}', 'fecha_ensayo_${i}','horario_inicial_ensayo_${i}','horario_final_ensayo_${i}', '#reserva_personal_${i}', '#anular_reserva_personal_${i}',${i})" type="button" style="background-color: #00C2EE;float: none">Reservar personal <i class="material-icons right">save</i> </button> </div><div class="input-field col s12" style="text-align: center;" hidden id="anular_reserva_personal_${i}"> <button class="waves-effect waves-light btn red col l3" style="float: none" type="button" onclick="anular_reserva_personal_ensayo('#select_montaje_ensayo_${i}','#select_cabina_auditorio_ensayo_${i}','#select_limpieza_ensayo_${i}','#anular_reserva_personal_${i}','#reserva_personal_${i}',${i})">Anular reserva <i class="material-icons right">delete</i> </button> </div></div><span class="col s12"><br></span> <div class="chip orange col s12 white-text" style="text-align: center" id="validacion_ensayo_${i}"> <span>Debe seleccionar una fecha y horarios válidos para continuar!</span> </div><span class="col s12 hide-on-med-and-down"><br><br></span> </div></div></div>`;
             codigo_ensayo += `${codigo}`;
         }
 
@@ -1270,10 +1282,155 @@ if (isset($authUrl)) {
                 socket_id: pusher.connection.socket_id
             }
         }).done((res) => {
-            console.log(res);
+            if (res.respuesta) {
+                M.toast({
+                    html: 'El personal seleccionado ha sido asignado correctamente',
+                    classes: 'green c-blanco',
+                });
+                $("#" + select_personal_montaje).prop("disabled", true);
+                $("#" + select_personal_cabina_auditorio).prop("disabled", true);
+                $("#" + select_personal_limpieza).prop("disabled", true);
+                $("#" + select_personal_vigilancia).prop("disabled", true);
+                $("#check_requiero_personal").prop("disabled", true);
+                $('select').formSelect();
+                $("#anular_reserva_personal").prop("hidden", false);
+                $("#reserva_personal").prop("hidden", true);
+                timestamp_personal_montaje = res.timestamp;
+            }
         }).always(() => {
             $("#loading").fadeOut();
         });
+    }
+
+    function anular_reserva_personal(select_personal_montaje, select_personal_cabina_auditorio,
+            select_personal_limpieza, select_personal_vigilancia) {
+        $.ajax({
+            url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/post_anula_personal_asignado.php',
+            type: 'POST',
+            dataType: 'json',
+            beforeSend: () => {
+                $("#loading").fadeIn();
+            },
+            data: {timestamp: timestamp_personal_montaje}
+        }).done((res) => {
+            if (res) {
+                M.toast({
+                    html: 'Ha sido anulada la selección del personal!',
+                    classes: 'blue c-blanco',
+                });
+                $(select_personal_montaje).prop("disabled", false);
+                $(select_personal_cabina_auditorio).prop("disabled", false);
+                $(select_personal_limpieza).prop("disabled", false);
+                $(select_personal_vigilancia).prop("disabled", false);
+                $('select').formSelect();
+                $("#check_requiero_personal").prop("disabled", false);
+                timestamp_personal_montaje = null;
+            }
+        }).always(() => {
+            $("#loading").fadeOut();
+        });
+    }
+    //añadir fecha, y horarios
+    function actualizar_personal_ensayo(select_montaje_ensayo, select_cabina_auditorio_ensayo,
+            select_limpieza_ensayo, fecha, hora_inicial, hora_final, reserva_personal, anular_personal_ensayo, i) {
+
+        if ($("#" + select_montaje_ensayo).val() === null &&
+                $("#" + select_cabina_auditorio_ensayo).val() === null &&
+                $("#" + select_limpieza_ensayo).val() === null) {
+            M.toast({
+                html: 'La selección de personal es requerida para continuar!',
+                classes: 'blue c-blanco',
+            });
+            return;
+        }
+
+        var fecha_formateada = formatear_fecha_calendario_formato_a_m_d_guion($("#" + fecha).val());
+        var horario_inicial_evento = $("#" + hora_inicial).val();
+        var horario_final_evento = $("#" + hora_final).val();
+        //personal
+        var personal_montaje = {"tipo": 1, cantidad: $("#" + select_montaje_ensayo).val()};
+        var personal_cabina_auditorio = {"tipo": 2, cantidad: $("#" + select_cabina_auditorio_ensayo).val()};
+        var personal_limpieza = {"tipo": 3, cantidad: $("#" + select_limpieza_ensayo).val()};
+        var personal = {
+            "personal_montaje": personal_montaje,
+            "personal_cabina_auditorio": personal_cabina_auditorio,
+            "personal_limpieza": personal_limpieza,
+        };
+
+        $.ajax({
+            url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/post_actualiza_personal.php',
+            type: 'POST',
+            dataType: 'json',
+            beforeSend: () => {
+                $("#loading").fadeIn();
+            },
+            data: {
+                personal,
+                fecha_montaje: fecha_formateada,
+                horario_inicial_evento,
+                horario_final_evento,
+                token: token,
+                socket_id: pusher.connection.socket_id
+            }
+        }).done((res) => {
+            if (res.respuesta) {
+                M.toast({
+                    html: 'El personal seleccionado ha sido asignado correctamente',
+                    classes: 'green c-blanco',
+                });
+                $("#" + select_montaje_ensayo).prop("disabled", true);
+                $("#" + select_cabina_auditorio_ensayo).prop("disabled", true);
+                $("#" + select_limpieza_ensayo).prop("disabled", true);
+                $("#select_ensayos").prop("disabled", true);
+                $('select').formSelect();
+                $("#requiero_ensayo").prop("disabled", true);
+                $(reserva_personal).prop("hidden", true);
+                $(anular_personal_ensayo).prop("hidden", false);
+                timestamp_personal_montaje_ensayos.push({timestamp: res.timestamp, i: i});
+                console.log(timestamp_personal_montaje_ensayos);
+            }
+        }).always(() => {
+            $("#loading").fadeOut();
+        });
+    }
+
+    function anular_reserva_personal_ensayo(select_personal_montaje, select_personal_cabina_auditorio,
+            select_personal_limpieza, btn_anular, btn_asignar, i) {
+        for (var item in timestamp_personal_montaje_ensayos) {
+            if (timestamp_personal_montaje_ensayos[item].i === i) {
+                $.ajax({
+                    url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/post_anula_personal_asignado.php',
+                    type: 'POST',
+                    dataType: 'json',
+                    beforeSend: () => {
+                        $("#loading").fadeIn();
+                    },
+                    data: {timestamp: timestamp_personal_montaje_ensayos[item].timestamp}
+                }).done((res) => {
+                    if (res) {
+                        M.toast({
+                            html: 'Ha sido anulada la selección del personal!',
+                            classes: 'blue c-blanco',
+                        });
+                        $(select_personal_montaje).prop("disabled", false);
+                        $(select_personal_cabina_auditorio).prop("disabled", false);
+                        $(select_personal_limpieza).prop("disabled", false);
+                        $('select').formSelect();
+                        $(btn_anular).prop("hidden", true);
+                        $(btn_asignar).prop("hidden", false);
+                        var index = timestamp_personal_montaje_ensayos.indexOf(timestamp_personal_montaje_ensayos[item]);
+                        var borrado = null;
+                        if (index > -1) {
+                            borrado=timestamp_personal_montaje_ensayos.splice(index-1, 1);
+                        }
+                        console.log(borrado);
+                    }
+                }).always(() => {
+                    $("#loading").fadeOut();
+                    console.log(timestamp_personal_montaje_ensayos);
+                });
+            }
+        }
     }
 
     function obtener_fecha() {
@@ -1292,14 +1449,6 @@ if (isset($authUrl)) {
             fecha_formateada = formatear_fecha_calendario_formato_a_m_d_guion(fecha_servicio_especial);
         }
         return fecha_formateada;
-    }
-
-    function hash(str) {
-        var hash = 0;
-        for (var i = 0; i < str.length; i++) {
-            hash = ~~(((hash << 5) - hash) + str.charCodeAt(i));
-        }
-        return hash;
     }
 
 </script>

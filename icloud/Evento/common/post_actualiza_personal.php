@@ -78,6 +78,10 @@ foreach ($personal_vigilancia as $key => $value) {
         }
     }
 }
-
-echo json_encode($confirm);
+$timestamp = $control->obtener_ultimo_timestamp($insert);
+$timestamp = mysqli_fetch_array($timestamp);
+echo json_encode(
+    array("respuesta" => $confirm != false ? true : false,
+        "timestamp" => $timestamp[0]
+));
 ?>
