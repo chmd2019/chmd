@@ -205,7 +205,7 @@ if (isset($authUrl)) {
                                 $idcursar = $alumno['idcursar'];
                                 ?>
                                 <input hidden value="<?php echo $idcursar; ?>" id="idcursar_alumno_<?php echo $counter; ?>">
-                                <div class="input-field">
+                                <div class="input-field col s12">
                                     <i class="material-icons prefix c-azul">school</i>
                                     <textarea class="materialize-textarea"
                                               readonly  
@@ -220,11 +220,11 @@ if (isset($authUrl)) {
                                                onchange="mostrar_ocultar_caja_horarios('caja_horarios_<?php echo $counter; ?>', '<?php echo $id_alumno; ?>', '<?php echo $idcursar; ?>')"/>
                                         <span class="lever"></span>
                                     </label>
+                                    <br>                           
+                                    <br>          
                                 </div>
-                                <div id="caja_horarios_<?php echo $counter; ?>" hidden>    
-                                <br>                          
-                                <br>                        
-                                    <div class="col s6" style="margin-top: -25px;">                        
+                                <div id="caja_horarios_<?php echo $counter; ?>" hidden>                  
+                                    <div class="col s12 l5" style="margin-top: -25px;">                        
                                         <div class="input-field">
                                             <i class="material-icons prefix c-azul">access_time</i>
                                             <input 
@@ -239,8 +239,15 @@ if (isset($authUrl)) {
                                     </div>
 
                                     <?php if ($grado_escolaridad >= 11 && $grado_escolaridad <= 17) : ?>
-                                        <div class="col s6" style="margin-top: -25px;">                        
-                                            <div class="input-field">
+                                        <div class="col s12 l7" style="margin-top: -25px;">  
+                                            <label class="input-field col s12 l3" style="margin-top: 2rem">
+                                                <input type="checkbox" 
+                                                       class="filled-in" 
+                                                       id="check_regreso_<?php echo $counter; ?>"
+                                                       onchange="check_regresa('hora_regreso_<?php echo $counter; ?>','caja_regresa_<?php echo $counter; ?>')" />
+                                                <span>Regresa</span>
+                                            </label>                      
+                                            <div class="input-field col s12 l9" id="caja_regresa_<?php echo $counter; ?>" hidden>
                                                 <i class="material-icons prefix c-azul">access_time</i>
                                                 <input 
                                                     type="text" 
@@ -269,16 +276,7 @@ if (isset($authUrl)) {
                     </div>
                     <div>
                         <h5 class="c-azul text-center col s12">Información adicional</h5>
-                        <br>
-                        <div class="col s12 l6">
-                            <div class="input-field">
-                                <i class="material-icons prefix c-azul">person</i>
-                                <select id="select_responsable" onchange="seleccion_responsable(this.value)">                          
-                                </select>
-                                <label>Responsable</label>
-                            </div>
-                        </div>
-                        <br>
+                        <br>                        
                         <div class="col s12">
                             <label>
                                 <input 
@@ -289,21 +287,26 @@ if (isset($authUrl)) {
                                 <span>Agregar un responsable</span>
                             </label>
                         </div>
+                        <span class="col s12"><br></span>
+                        <div class="col s12 l6">
+                            <div class="input-field">
+                                <i class="material-icons prefix c-azul">person</i>
+                                <select id="select_responsable" onchange="seleccion_responsable(this.value)">                          
+                                </select>
+                                <label>Responsable</label>
+                            </div>
+                        </div>
                         <div id="nuevo_responsable" hidden>
-                            <div class="col s12 l6">
-                                <label style="margin-left: 3rem">Nombre del responsable</label>
-                                <div class="input-field">
-                                    <i class="material-icons prefix c-azul">person</i>
-                                    <input type="text" id="responsable" autocomplete="off"> 
-                                </div>
-                            </div>
-                            <div class="col s12 l6">
-                                <label style="margin-left: 3rem">Parentesco del responsable</label>
-                                <div class="input-field">
-                                    <i class="material-icons prefix c-azul">person</i>
-                                    <input type="text" id="parentesco_responsable" autocomplete="off"> 
-                                </div>
-                            </div>
+                            <div class="input-field col s12 l6" id="nuevo_responsable_nombre">
+                                <i class="material-icons prefix c-azul">person</i>
+                                <input id="responsable" type="text" autocomplete="off">
+                                <label for="responsable">Nombre del responsable</label>
+                            </div> 
+                            <div class="input-field col s12 l6">
+                                <i class="material-icons prefix c-azul">person</i>
+                                <input id="parentesco_responsable" type="text" autocomplete="off">
+                                <label for="parentesco_responsable">Parentesco del responsable</label>
+                            </div> 
                             <a class="waves-effect waves-light btn col s12 b-azul c-blanco" 
                                onclick="post_nuevo_responsable()"
                                id="btn_agregar_nuevo_responsable"> 
@@ -493,6 +496,9 @@ if (isset($authUrl)) {
             });
             $('#hora_salida_' + counter).timepicker('show');
         }
+        if($("#check_regreso_"+counter).prop('checked')){
+            $("#check_regreso_"+counter).click();
+        }
         ids.push(el.id);
     }
 
@@ -510,7 +516,8 @@ if (isset($authUrl)) {
             $('.timepicker_' + counter).val("");
             return;
         }
-
+        
+        $('#hora_regreso_' + counter).timepicker('remove');
         var hora_maxima_del_dia = '';
         var fecha_permiso = $("#fecha_permiso").val();
         //BACHILLERATO Y KINDER
@@ -518,10 +525,11 @@ if (isset($authUrl)) {
         //BACHILLERATO Y KINDER
         // de lunes a jueves
         if (fecha_permiso[0] !== "Viernes" && horario_permitido === "1") {
+            var hora_minima_respecto_salida = `${parseInt($("#hora_salida_" + counter).val().split(":")[0])+1}:${$("#hora_salida_" + counter).val().split(":")[1]}`;
             hora_maxima_del_dia = '14:50';
             $('#hora_regreso_' + counter).timepicker({
                 'step': 5,
-                'minTime': '07:40',
+                'minTime': $("#hora_salida_" + counter).val().split(":")[0] === hora_maxima_del_dia.split(":")[0] ? $("#hora_salida_" + counter).val() : hora_minima_respecto_salida,
                 'maxTime': hora_maxima_del_dia,
                 'timeFormat': 'H:i'
             });
@@ -529,10 +537,11 @@ if (isset($authUrl)) {
         }
         // los viernes
         else if (fecha_permiso[0] === "Viernes" && horario_permitido === "1") {
+            var hora_minima_respecto_salida = `${parseInt($("#hora_salida_" + counter).val().split(":")[0])+1}:${$("#hora_salida_" + counter).val().split(":")[1]}`;
             hora_maxima_del_dia = '14:00';
             $('#hora_regreso_' + counter).timepicker({
                 'step': 5,
-                'minTime': '07:40',
+                'minTime': $("#hora_salida_" + counter).val().split(":")[0] === hora_maxima_del_dia.split(":")[0] ? $("#hora_salida_" + counter).val() : hora_minima_respecto_salida,
                 'maxTime': hora_maxima_del_dia,
                 'timeFormat': 'H:i'
             });
@@ -556,6 +565,7 @@ if (isset($authUrl)) {
         } else {
             coleccion_ids = [];
             $("#" + id).prop("hidden", true);
+            $('#hora_regreso_' + counter).timepicker('remove');
         }
     }
 
@@ -593,6 +603,8 @@ if (isset($authUrl)) {
             $("#nuevo_responsable").prop("hidden", false);
             $("#nuevo_responsable").val("");
             $("#select_responsable").val("0");
+            $("#nuevo_responsable_nombre").show();
+            $("#parentesco_responsable").focusout();
             $("#select_responsable").change();
         } else {
             $("#nuevo_responsable").prop("hidden", true);
@@ -612,7 +624,7 @@ if (isset($authUrl)) {
     }
 
     function seleccion_responsable(val) {
-        if(val === "0"){
+        if (val === "0") {
             $("#parentesco_responsable").val("");
             $("#responsable").val("");
             $("#btn_agregar_nuevo_responsable").show();
@@ -620,8 +632,10 @@ if (isset($authUrl)) {
             return;
         }
         $("#nuevo_responsable").prop("hidden", false);
+        $("#nuevo_responsable_nombre").hide();
+        $("#parentesco_responsable").focus();
         $("#btn_agregar_nuevo_responsable").hide();
-        $("#check_nuevo_responsable").prop("checked",true);
+        $("#check_nuevo_responsable").prop("checked", true);
         for (var item in responsables) {
             if (responsables[item].id === val) {
                 //$("#nuevo_responsable").prop("hidden", false);
@@ -683,7 +697,7 @@ if (isset($authUrl)) {
             if (!validar_responsable())
                 return;
         }
-        
+
         if ($("#motivos").val() === "") {
             M.toast({
                 html: 'Debe ingresar un motivo válido!',
@@ -773,6 +787,15 @@ if (isset($authUrl)) {
             if (ids[item] !== "") {
                 coleccion_ids.push(ids[item]);
             }
+        }
+    }
+    
+    function check_regresa(id_hora_regreso, id_caja_regresa){
+        if($("#"+id_caja_regresa).prop('hidden')){
+            $("#"+id_caja_regresa).prop('hidden', false);
+        }else{
+            $("#"+id_caja_regresa).prop('hidden', true);
+            $("#"+id_hora_regreso).val('')
         }
     }
 </script>

@@ -1,5 +1,4 @@
 <?php
-
 $root_icloud = $_SERVER['DOCUMENT_ROOT'] . "/pruebascd/icloud";
 
 include_once "$root_icloud/components/sesion.php";
@@ -9,7 +8,6 @@ include_once "$root_icloud/components/layout_top.php";
 if (isset($authUrl)) {
 
     //show login url
-
     ?>    
 
     <style>
@@ -48,59 +46,56 @@ if (isset($authUrl)) {
 
             <br>
 
-            <?php echo '<a  href="' . $authUrl . '"><img src="images/google.png" alt="login" height="240px" width="250px"></a>' ?>
+    <?php echo '<a  href="' . $authUrl . '"><img src="images/google.png" alt="login" height="240px" width="240px"></a>' ?>
 
         </div>
 
-        <?php
+    <?php
+} else {
 
-    } else {
+    $user = $service->userinfo->get();
 
-        $user = $service->userinfo->get(); 
+    $correo = $user->email;
 
-        $correo = $user->email;
+    require_once './Model/Login.php';
 
-        require_once './Model/Login.php';
+    $objCliente = new Login();
 
-        $objCliente = new Login();
+    $consulta = $objCliente->acceso_login($correo);
 
-        $consulta = $objCliente->acceso_login($correo);
+    include_once "$root_icloud/components/navbar.php";
 
-        include_once "$root_icloud/components/navbar.php";
+    if ($consulta) { //if user already exist change greeting text to "Welcome Back"
+        if ($cliente = mysqli_fetch_array($consulta)) {
 
-        if ($consulta) { //if user already exist change greeting text to "Welcome Back"
-
-            if ($cliente = mysqli_fetch_array($consulta)) {
-
-                $tipo = $cliente[12];
+            $tipo = $cliente[12];
 
 
 
-                if ($tipo == 3 || $tipo == 4) {//pendiente por asignar a tipo de usuario correspondiente
+            if ($tipo == 3 || $tipo == 4) {//pendiente por asignar a tipo de usuario correspondiente
+                ?>
 
-                    ?>
+                    <script>
 
-        <script>            
+                        M.toast({html: 'Bienvenido!', classes: 'green accent-4'});
 
-            M.toast({html: 'Bienvenido!'});
-
-        </script>
+                    </script>
 
                     <div class="row">     
 
-                    <div style="text-align: right;margin:1rem 1rem 0 0">                   
+                        <div style="text-align: right;margin:1rem 1rem 0 0">                   
 
-                        <a class="waves-effect waves-light btn red" href="#!" onclick="logout()">
+                            <a class="waves-effect waves-light btn red" href="#!" onclick="logout()">
 
-                            <i class="material-icons left">lock</i>Salir
+                                <i class="material-icons left">lock</i>Salir
 
-                        </a>                            
+                            </a>                            
 
-                    </div>
+                        </div>
 
-                    <!--MENU PERFIL DE PADRES-->
+                        <!--MENU PERFIL DE PADRES-->
 
-                    <div class="container b-blanco">
+                        <div class="container b-blanco">
 
                             <div class="row">
 
@@ -242,7 +237,7 @@ if (isset($authUrl)) {
 
                                                 <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
 
-                                                <p>Podrás ver las imágenes de eventos del colegio.</p>
+                                                <p>Podrás ver las imágenes de eventos del Colegio.</p>
 
                                             </div>
 
@@ -278,7 +273,7 @@ if (isset($authUrl)) {
 
                                                 <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
 
-                                                <p>Generar permisos extraordinarios, Cumpleaños, bar mitzvah.</p>
+                                                <p>Generar permisos extraordinarios, cumpleaños y Bar Mitzvá.</p>
 
                                             </div>
 
@@ -322,43 +317,43 @@ if (isset($authUrl)) {
 
                                     </div>
 
-                                <div class="col s12 m6 l4">
+                                    <div class="col s12 m6 l4">
 
-                                    <div class="card" style="box-shadow: none">
+                                        <div class="card" style="box-shadow: none">
 
-                                        <div class="card-image waves-effect waves-block waves-light">
+                                            <div class="card-image waves-effect waves-block waves-light">
 
-                                            <a href='Evento/menu.php'>
+                                                <a href='Evento/menu.php'>
 
-                                                <img src="https://www.chmd.edu.mx/pruebascd/icloud/pics/activos/party.svg" 
+                                                    <img src="https://www.chmd.edu.mx/pruebascd/icloud/pics/activos/party.svg" 
 
-                                                     style="padding:3rem;width: 80%;margin: auto">
+                                                         style="padding:3rem;width: 80%;margin: auto">
 
-                                            </a>
+                                                </a>
 
-                                        </div>
+                                            </div>
 
-                                        <div class="card-content text-center" style="padding:0px;margin-top: -15px">
+                                            <div class="card-content text-center" style="padding:0px;margin-top: -15px">
 
-                                            <span class="activator waves-effect waves-light btn b-azul c-blanco">
+                                                <span class="activator waves-effect waves-light btn b-azul c-blanco">
 
-                                                INFO
+                                                    INFO
 
-                                            </span>      
+                                                </span>      
 
-                                        </div>
+                                            </div>
 
-                                        <div class="card-reveal b-azul white-text">
+                                            <div class="card-reveal b-azul white-text">
 
-                                            <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
+                                                <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
 
-                                            <p>INFO pendiente.</p>
+                                                <p>INFO pendiente.</p>
+
+                                            </div>
 
                                         </div>
 
                                     </div>
-
-                                </div>
 
                                 </div>
 
@@ -368,21 +363,16 @@ if (isset($authUrl)) {
 
                     </div>   
 
-                    <?php
-
-                } elseif ($tipo == 5) {
-
-                    ?>  
+                <?php
+            } elseif ($tipo == 5) {
+                ?>  
 
                     <div class="fixed-action-btn">
 
-                        <?php
-
-                        echo '<a href="' . $redirect_uri . '?logout=1" class="btn-floating btn-large red" >'
-
-                        . "<i class='material-icons'>exit_to_app</i>Salir</a>";
-
-                        ?>
+                    <?php
+                    echo '<a href="' . $redirect_uri . '?logout=1" class="btn-floating btn-large red" >'
+                    . "<i class='material-icons'>exit_to_app</i>Salir</a>";
+                    ?>
 
                     </div>
 
@@ -532,7 +522,7 @@ if (isset($authUrl)) {
 
                                             <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
 
-                                            <p>Podrás ver las imágenes de eventos del colegio.</p>
+                                            <p>Podrás ver las imágenes de eventos del Colegio.</p>
 
                                         </div>
 
@@ -568,7 +558,7 @@ if (isset($authUrl)) {
 
                                             <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
 
-                                            <p>Generar permisos extraordinarios, Cumpleaños, bar mitzvah.</p>
+                                            <p>Generar permisos extraordinarios, cumpleaños y Bar Mitzvá.</p>
 
                                         </div>
 
@@ -690,21 +680,16 @@ if (isset($authUrl)) {
 
                     </div>
 
-                    <?php
-
-                } else {
-
-                    ?>
+                <?php
+            } else {
+                ?>
 
                     <div class="fixed-action-btn">
 
-                        <?php
-
-                        echo '<a href="' . $redirect_uri . '?logout=1" class="btn-floating btn-large red" >'
-
-                        . "<i class='material-icons'>exit_to_app</i>Salir</a>";
-
-                        ?>
+                <?php
+                echo '<a href="' . $redirect_uri . '?logout=1" class="btn-floating btn-large red" >'
+                . "<i class='material-icons'>exit_to_app</i>Salir</a>";
+                ?>
 
                     </div>
 
@@ -862,29 +847,30 @@ if (isset($authUrl)) {
 
                     </div>
 
-                    <?php
-
-                }
-
-                //fin validacion de alumno o maestro
-
-            }//fin de consulta principal
-
-            else {
-
-                echo 'Este usuario no tiene Acceso:' . $user->email . ',<br> !Favor de comunicarse para validar datos! <br> Salir del sitema [<a href="#!" onclick="logout()"> Cerrar sesión</a>]';
-
+                <?php
             }
 
-        } else {
-
-            echo 'Error';
-
+            //fin validacion de alumno o maestro
+        }//fin de consulta principal
+        else {
+            ?>
+                    <center>   
+                        <span style="margin-top: 3%;margin-bottom: 20%;display: block">
+                            
+                        <?php echo 'Este usuario no tiene acceso: <span style="color:#00C2EE">' . $user->email . 
+                                '</span><br> ¡Favor de comunicarse para validar datos!  '
+                                . '<br><br><a href="#!" onclick="logout()" class="waves-effect waves-light btn red"> '
+                                . '<i class="material-icons left">lock</i>Salir del sistema</a>';?>
+                        </span>
+                    </center>
+        <?php
         }
+    } else {
 
+        echo 'Error';
     }
-
-    ?>
+}
+?>
 
 </div>
 
@@ -902,7 +888,7 @@ if (isset($authUrl)) {
 
 </script>
 
-<?php include_once "$root_icloud/components/layout_bottom.php"; ?>
+    <?php include_once "$root_icloud/components/layout_bottom.php"; ?>
 
 
 

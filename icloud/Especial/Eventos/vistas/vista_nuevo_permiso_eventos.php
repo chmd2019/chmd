@@ -193,6 +193,7 @@ if (isset($authUrl)) {
                             $counter = 0;
                             // $numero = mysql_num_rows($consulta);
                             while ($alumno = mysqli_fetch_array($alumnos)) {
+                                $nivel_escolaridad = $alumno[9];
                                 $counter++;
                                 ?>
                                 <div class="input-field">
@@ -213,7 +214,7 @@ if (isset($authUrl)) {
                                 <br>
                                 <input id="id_alumno_<?php echo $counter; ?>" hidden value="<?php echo $alumno['id']; ?>"/>
                                 <script>
-                                    $('#nombre_alumno_<?php echo $counter; ?>').val('<?php echo $alumno['nombre']; ?>');
+                                    $('#nombre_alumno_<?php echo $counter; ?>').val('<?php echo $alumno['nombre']; ?>\nNivel: <?php echo $nivel_escolaridad; ?>');
                                 </script>
                                 <?php
                                 $talumnos = $counter;
@@ -224,16 +225,15 @@ if (isset($authUrl)) {
                     <div>
                         <h5 class="c-azul text-center col s12">Información adicional</h5>
                         <br>
+                        <span class="col s12">
+                            <div class="badge blue accent-4 c-blanco" style="padding: .5rem;border-radius: 1rem">
+                            Responsable del evento: Persona designada por la familia para verificar que todos
+                            los asistentes del evento están presentes y acompañarlos hasta que aborden el
+                            transporte designado para el evento.
+                            </div>                                
+                        </span>
+                        <span class="col s12"><br></span>
                         <div class="col s12 l6">
-                            <div class="input-field">
-                                <i class="material-icons prefix c-azul">person</i>
-                                <select id="select_responsable" onchange="seleccion_responsable(this.value)">                          
-                                </select>
-                                <label>Responsable</label>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="col s12">
                             <label>
                                 <input 
                                     type="checkbox" 
@@ -243,21 +243,26 @@ if (isset($authUrl)) {
                                 <span>Agregar un responsable</span>
                             </label>
                         </div>
+                        <span class="col s12"><br></span>
+                        <div class="col s12 l6">
+                            <div class="input-field">
+                                <i class="material-icons prefix c-azul">person</i>
+                                <select id="select_responsable" onchange="seleccion_responsable(this.value)">                          
+                                </select>
+                                <label>Responsable</label>
+                            </div>
+                        </div>
                         <div id="nuevo_responsable" hidden>
-                            <div class="col s12 l6">
-                                <label style="margin-left: 3rem">Nombre del responsable</label>
-                                <div class="input-field">
-                                    <i class="material-icons prefix c-azul">person</i>
-                                    <input type="text" id="responsable" autocomplete="off"> 
-                                </div>
-                            </div>
-                            <div class="col s12 l6">
-                                <label style="margin-left: 3rem">Parentesco del responsable</label>
-                                <div class="input-field">
-                                    <i class="material-icons prefix c-azul">person</i>
-                                    <input type="text" id="parentesco_responsable" autocomplete="off"> 
-                                </div>
-                            </div>
+                            <div class="input-field col s12 l6" id="nuevo_responsable_nombre">
+                                <i class="material-icons prefix c-azul">person</i>
+                                <input id="responsable" type="text" autocomplete="off">
+                                <label for="responsable">Nombre del responsable</label>
+                            </div> 
+                            <div class="input-field col s12 l6">
+                                <i class="material-icons prefix c-azul">person</i>
+                                <input id="parentesco_responsable" type="text" autocomplete="off">
+                                <label for="parentesco_responsable">Parentesco del responsable</label>
+                            </div> 
                             <a class="waves-effect waves-light btn col s12 b-azul c-blanco" 
                                onclick="post_nuevo_responsable()"
                                id="btn_agregar_nuevo_responsable"> 
@@ -333,12 +338,11 @@ if (isset($authUrl)) {
 <div id="modal_codigo_invitacion" class="modal bottom-sheet">
     <div class="modal-content">
         <h4 class="c-azul">Código de invitación</h4>
-        <p>Su código de invitación al evento es: <br>
-            <span id="span_codigo_verificacion" class="c-azul" style="font-size: 1.8rem"></span>
+            <span id="span_codigo_verificacion" class="c-azul" style="font-size: 1rem"></span>
         </p>
     </div>
     <div class="modal-footer">
-        <a href="<?php echo $redirect_uri ?>Especial/Eventos/PEventos.php?idseccion=<?php echo $idseccion; ?>" class="modal-close waves-effect waves-green btn-flat">Aceptar</a>
+        <a href="<?php echo $redirect_uri ?>Especial/Eventos/PEventos.php?idseccion=<?php echo $idseccion; ?>" class="modal-close waves-effect waves-light btn-flat green accent-4 c-blanco">Aceptar</a>
     </div>
 </div>
 
@@ -354,6 +358,7 @@ if (isset($authUrl)) {
         $('.modal').modal();
         cargar_responsables();
         //M.textareaAutoResize($('#motivos'));
+        M.updateTextFields();
     });
 
     function mostrar_fecha_para() {
@@ -386,6 +391,8 @@ if (isset($authUrl)) {
             $("#nuevo_responsable").prop("hidden", false);
             $("#nuevo_responsable").val("");
             $("#select_responsable").val("0");
+            $("#nuevo_responsable_nombre").show();
+            $("#parentesco_responsable").focusout();
             $("#select_responsable").change();
         } else {
             $("#nuevo_responsable").prop("hidden", true);
@@ -413,6 +420,8 @@ if (isset($authUrl)) {
             return;
         }
         $("#nuevo_responsable").prop("hidden", false);
+        $("#nuevo_responsable_nombre").hide();
+        $("#parentesco_responsable").focus();
         $("#btn_agregar_nuevo_responsable").hide();
         $("#check_nuevo_responsable").prop("checked", true);
         for (var item in responsables) {
@@ -426,20 +435,6 @@ if (isset($authUrl)) {
                 $("#responsable").val(responsables[item].nombre);
                 //$("#check_nuevo_responsable").prop('checked', true);
             }
-        }
-    }
-
-    function mostrar_nuevo_responsable() {
-        if ($("#nuevo_responsable").prop("hidden")) {
-            $("#nuevo_responsable").prop("hidden", false);
-            $("#nuevo_responsable").val("");
-            $("#select_responsable").val("0");
-            $("#select_responsable").change();
-        } else {
-            $("#nuevo_responsable").prop("hidden", true);
-            $("#responsable").val("");
-            $("#parentesco_responsable").val("");
-            cargar_responsables();
         }
     }
 
@@ -642,9 +637,8 @@ if (isset($authUrl)) {
         }).done((res) => {
             res = JSON.parse(res);
             var modal_codigo_invitacion = M.Modal.getInstance($("#modal_codigo_invitacion"));
+            $("#span_codigo_verificacion").append(`Tu código de invitación al evento es: <span style='color:#00C2EE'>${res}</span>. Te recordamos que deberás compartir el código de tu evento con los padres de familia para que puedan gestionar el permiso de sus hijos.`);            
             modal_codigo_invitacion.open();
-            $("#span_codigo_verificacion").text(res);
-
         }).always(() => {
             $("#loading").fadeOut("slow");
         });

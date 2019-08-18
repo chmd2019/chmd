@@ -62,25 +62,27 @@ $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
                     $nfamilia = $permiso[4];
                     if ($estatus == 1) {
                         $status_detalle = "Pendiente";
-                        $badge = "badge blue c-blanco";
+                        $badge = "badge amber accent-4 c-blanco";
                     }
                     if ($estatus == 2) {
                         $status_detalle = "Autorizado";
-                        $badge = "badge green c-blanco";
+                        $badge = "badge green accent-4 c-blanco";
                     }
                     if ($estatus == 3) {
                         $status_detalle = "Declinado";
-                        $badge = "badge orange c-blanco";
+                        $badge = "badge red lighten-1 c-blanco";
                     }
                     if ($estatus == 4) {
                         $status_detalle = "Cancelado por usuario";
-                        $badge = "badge red c-blanco";
+                        $badge = "badge red accent-4 c-blanco";
                     }
                     //formatea fecha LUNES, dd De mmmm Del YYYY a dd-mm-yyyy
                     $fecha_destino = $objDateHelper->formatear_fecha_calendario($fecha_cambio);
                     //oculta boton de cancelar de acuerdi a condiciones de hora limite, status
                     $ver_btn_cancelar = "";
-                    if ($objDateHelper->obtener_hora_limite() && $objDateHelper->comprobar_fecha_igual($fecha_destino) || $estatus != 1) {
+                    if ($objDateHelper->obtener_hora_limite() && 
+                            $objDateHelper->comprobar_fecha_igual($fecha_destino) || 
+                            $estatus != 1 && $estatus!=2) {
                         $ver_btn_cancelar = "d-none";
                     }
                     $solicitud_vencida = $objDateHelper->comprobar_solicitud_vencida_d_m_y_guion($fecha_destino);
@@ -92,7 +94,7 @@ $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
                             <td>   
                                 <div class="row">
                                     <div class="col s12 l3">  
-                                        <a class="waves-effect waves-light btn green accent-3" 
+                                        <a class="waves-effect waves-light btn blue accent-3" 
                                            href="https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Diario/vistas/vista_consulta_permiso_diario.php?id=<?php echo $id_permiso; ?>&&tipo_permiso=1&&idseccion=<?php echo $idseccion; ?>">
                                             <i class="material-icons">pageview</i>
                                         </a>

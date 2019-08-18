@@ -194,7 +194,8 @@ class ControlEvento {
                     . "'$es_temporal');";
             mysqli_set_charset($connection, "utf8");
             $insert = mysqli_query($connection, $sql);
-            if (!$insert) return false;
+            if (!$insert)
+                return false;
             return mysqli_insert_id($connection);
         }
     }
@@ -202,8 +203,8 @@ class ControlEvento {
     public function obtener_conexion() {
         return $this->con->conectar1();
     }
-    
-    public function obtener_ultimo_timestamp($id){
+
+    public function obtener_ultimo_timestamp($id) {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "SELECT TIMESTAMP FROM Personal_ocupado_montaje WHERE id = '$id'";
@@ -212,7 +213,25 @@ class ControlEvento {
         }
     }
     
-    public function anular_personal_asignado($timestamp){
+    public function obtener_ultimo_timestamp_inventario_manteles($id) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT TIMESTAMP FROM Inventario_ocupado_manteles WHERE id = '$id'";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+    
+    public function obtener_ultimo_timestamp_inventario($id) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT TIMESTAMP FROM Inventario_ocupado_mobiliario WHERE id = '$id'";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function anular_personal_asignado($timestamp) {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "DELETE FROM `chmd_sistemas`.`Personal_ocupado_montaje` WHERE  TIMESTAMP = '$timestamp' AND temporal = 1";
@@ -220,4 +239,113 @@ class ControlEvento {
             return mysqli_query($connection, $sql);
         }
     }
+    
+    public function anular_inventario_manteles_asignado($timestamp) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "DELETE FROM `chmd_sistemas`.`Inventario_ocupado_manteles` WHERE  TIMESTAMP = '$timestamp' AND temporal = 1";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    
+    public function anular_inventario_asignado($timestamp) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "DELETE FROM `chmd_sistemas`.`Inventario_ocupado_mobiliario` WHERE  TIMESTAMP = '$timestamp' AND temporal = 1";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function actualizar_mantel_asignado($id, $fecha_montaje, $hora_inicial, 
+            $hora_final, $hora_min, $hora_max,$es_temporal) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "INSERT INTO `chmd_sistemas`.`Inventario_ocupado_manteles` ("
+                    . "`id_mantel`, "
+                    . "`fecha_montaje`, "
+                    . "`horario_inicial`, "
+                    . "`horario_final`, "
+                    . "`hora_min`, "
+                    . "`hora_max`, "
+                    . "`temporal`) VALUES ("
+                    . "'$id', "
+                    . "'$fecha_montaje', "
+                    . "'$hora_inicial', "
+                    . "'$hora_final', "
+                    . "'$hora_min', "
+                    . "'$hora_max', "
+                    . "'$es_temporal');";
+            mysqli_set_charset($connection, "utf8");
+            $insert = mysqli_query($connection, $sql);
+            if (!$insert)
+                return false;
+            return mysqli_insert_id($connection);
+        }
+    }
+    public function actualizar_inventario_asignado($id, $fecha_montaje, $hora_inicial, 
+            $hora_final, $hora_min, $hora_max,$es_temporal) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "INSERT INTO `chmd_sistemas`.`Inventario_ocupado_mobiliario` ("
+                    . "`id_articulo`, "
+                    . "`fecha_montaje`, "
+                    . "`horario_inicial`, "
+                    . "`horario_final`, "
+                    . "`hora_min`, "
+                    . "`hora_max`, "
+                    . "`temporal`) VALUES ("
+                    . "'$id', "
+                    . "'$fecha_montaje', "
+                    . "'$hora_inicial', "
+                    . "'$hora_final', "
+                    . "'$hora_min', "
+                    . "'$hora_max', "
+                    . "'$es_temporal');";
+            mysqli_set_charset($connection, "utf8");
+            $insert = mysqli_query($connection, $sql);
+            if (!$insert)
+                return false;
+            return mysqli_insert_id($connection);
+        }
+    }
+    
+    public function actualiza_mantel_asignado_suma($id, $cantidad){
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "UPDATE Inventario_manteles SET asignado = asignado + $cantidad WHERE id = $id";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+    
+    public function actualiza_inventario_asignado_suma($id, $cantidad){
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "UPDATE Inventario_mobiliario SET asignado = asignado + $cantidad WHERE id = $id";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+    
+    public function actualiza_mantel_asignado_resta($id, $cantidad){
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "UPDATE Inventario_manteles SET asignado = asignado - $cantidad WHERE id = $id";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+    
+    public function actualiza_inventario_asignado_resta($id, $cantidad){
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "UPDATE Inventario_mobiliario SET asignado = asignado - $cantidad WHERE id = $id";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
 }

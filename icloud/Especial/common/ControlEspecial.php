@@ -110,7 +110,7 @@ class ControlEspecial {
     public function consultar_nombre_alumno($id_alumno) {
         $connection = $this->con->conectar1();
         if ($connection) {
-            $sql = "SELECT nombre FROM alumnoschmd WHERE id  = '$id_alumno'";
+            $sql = "SELECT nombre, nivel FROM alumnoschmd WHERE id = '$id_alumno'";
             mysqli_set_charset($connection, 'utf8');
             return mysqli_query($connection, $sql);
         }

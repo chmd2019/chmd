@@ -98,7 +98,6 @@
     </div>
 </footer>
 <!-- Compiled and minified JavaScript -->
-        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
 </body>
 </html>

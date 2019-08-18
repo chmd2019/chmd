@@ -68,23 +68,23 @@ $dias = array("domingo", "lunes", "martes", "mi&eacute;rcoles", "jueves", "viern
                     $tipo_permiso = 3;
                     if ($estatus == 1) {
                         $status_detalle = "Pendiente";
-                        $badge = "badge blue c-blanco";
+                        $badge = "badge amber accent-4 c-blanco";
                     }
                     if ($estatus == 2) {
                         $status_detalle = "Autorizado";
-                        $badge = "badge green c-blanco";
+                        $badge = "badge green accent-4 c-blanco";
                     }
                     if ($estatus == 3) {
                         $status_detalle = "Declinado";
-                        $badge = "badge orange c-blanco";
+                        $badge = "badge red lighten-1 c-blanco";
                     }
                     if ($estatus == 4) {
                         $status_detalle = "Cancelado por usuario";
-                        $badge = "badge red c-blanco";
+                        $badge = "badge red accent-4 c-blanco";
                     }
                     //oculta boton de cancelar de acuerdi a condiciones de hora limite, status
                     $ver_btn_cancelar = "";
-                    if ($objDateHelper->obtener_hora_limite() || $estatus != 1) {
+                    if ($objDateHelper->obtener_hora_limite() || $estatus != 1 && $estatus != 2) {
                         $ver_btn_cancelar = "d-none";
                     }
                     //formato para mostrar dias del permiso
@@ -100,7 +100,7 @@ $dias = array("domingo", "lunes", "martes", "mi&eacute;rcoles", "jueves", "viern
                         <td>   
                             <div class="row">
                                 <div class="col s12 l3">  
-                                    <a class="waves-effect waves-light btn green accent-3" 
+                                    <a class="waves-effect waves-light btn blue accent-3" 
                                        href="https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Permanente/vistas/vista_consulta_permiso_permanente.php?id=<?php echo $id_permiso; ?>&&tipo_permiso=3&&idseccion=<?php echo $idseccion; ?>">
                                         <i class="material-icons">pageview</i>
                                     </a>

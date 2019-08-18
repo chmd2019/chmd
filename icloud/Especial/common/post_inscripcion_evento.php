@@ -23,7 +23,7 @@ if ($connection) {
         $conteo_bar_mitzva = mysqli_fetch_array($conteo_bar_mitzva);
         $conteo_bar_mitzva = $conteo_bar_mitzva[0];
 
-        if ($conteo_bar_mitzva >= 4 && trim($tipo_evento) == "Bar Mitzvá") {
+        if ($conteo_bar_mitzva >= 10 && trim($tipo_evento) == "Bar Mitzvá") {
             // se envia 4 si ha superado el limite
             echo json_encode(4);
             return;

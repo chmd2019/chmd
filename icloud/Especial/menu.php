@@ -59,7 +59,9 @@ if (isset($authUrl)) {
                             </div>
                             <div class="card-reveal b-azul white-text">
                                 <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
-                                <p>DEMO.</p>
+                                <p>Permisos para salir del Colegio. Deberán solicitarse antes de las 11:30 h. 
+                                    Si bien el sistema no permitirá realizar solicitudes para el mismo día después
+                                    del horario establecido, sí podrá hacer solicitudes para días posteriores.</p>
                             </div>
                         </div>
                     </div>
@@ -77,7 +79,7 @@ if (isset($authUrl)) {
                             </div>
                             <div class="card-reveal b-azul white-text">
                                 <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
-                                <p>DEMO.</p>
+                                <p>Genera tu evento</p>
                             </div>
                         </div>
                     </div>
@@ -95,7 +97,7 @@ if (isset($authUrl)) {
                             </div>
                             <div class="card-reveal b-azul white-text">
                                 <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
-                                <p>DEMO.</p>
+                                <p>Gestiona el permiso de asistencia de tu hijo(a) a algún evento.</p>
                             </div>
                         </div>
                     </div>

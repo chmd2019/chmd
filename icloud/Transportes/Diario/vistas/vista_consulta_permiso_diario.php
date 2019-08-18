@@ -98,7 +98,7 @@ if (isset($authUrl)) {
                         </div>
                     </div>
                     <br>
-                    <div class="col s12 l6">   
+                    <div class="col s12 l6" hidden>   
                         <label for="cp" style="margin-left: 1rem">CP</label>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">person_pin</i>

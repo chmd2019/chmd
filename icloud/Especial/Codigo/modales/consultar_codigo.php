@@ -2,7 +2,7 @@
 <div id="modal_consultar_codigo" class="modal">
     <div class="modal-content">
         <div>
-            <h5 class="c-azul">Ingresa tu código de invitación al evento</h5>
+            <h5 class="c-azul">Debe ingresar un código válido</h5>
             <br>
             <div class="input-field">
                 <input id="codigo" type="text" class="c-azul" onkeypress="return (this.value.length <= 5);">
@@ -107,7 +107,7 @@
             }
             if (!res) {
                 M.toast({
-                    html: 'El código ingresado no ha sido encontrado!',
+                    html: '¡El código ingresado no ha sido encontrado!',
                     classes: 'deep-orange c-blanco'
                 });
                 $("#codigo").focus();

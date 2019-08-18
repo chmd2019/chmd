@@ -145,8 +145,8 @@ if (isset($authUrl)) {
                                       style="font-size: .9rem"></textarea>      
                         </div>
                         <br>
-                        <label for="cp_guardada_permanente" style="margin-left: 1rem">CP</label>
-                        <div class="input-field">
+                        <div class="input-field" hidden>
+                            <label for="cp_guardada_permanente" style="margin-left: 1rem">CP</label>
                             <i class="material-icons prefix c-azul">person_pin</i>
                             <input readonly  
                                    id="cp_guardada_permanente"
@@ -176,7 +176,7 @@ if (isset($authUrl)) {
                                   placeholder="Agrega colonia"></textarea> 
                         <label>Colonia</label>
                     </div>                 
-                    <div class="input-field col s12">
+                    <div class="input-field col s12" hidden>
                         <i class="material-icons c-azul">person_pin_circle</i>
                         <input placeholder="Ingrese CP" 
                                id="cp" 
@@ -256,7 +256,7 @@ if (isset($authUrl)) {
                                 <option value="General 2:50 PM">General 2:50 PM</option>
                                 <option value="Taller 4:30 PM">Taller 4:30 PM</option>
                             </select>
-                        <label>Ruta</label>
+                            <label>Ruta</label>
                         </div>
                     </div>
                     <br>
@@ -285,7 +285,7 @@ if (isset($authUrl)) {
 
 <div class="fixed-action-btn">
     <a class="btn-floating btn-large waves-effect waves-light b-azul"
-        href="<?php echo $redirect_uri?>Transportes/Permanente/PPermanente.php?idseccion=<?php echo $idseccion; ?>">
+       href="<?php echo $redirect_uri ?>Transportes/Permanente/PPermanente.php?idseccion=<?php echo $idseccion; ?>">
         <i class="large material-icons">keyboard_backspace</i>
     </a>
 </div>
@@ -313,8 +313,8 @@ if (isset($authUrl)) {
             hoverEnabled: false
         });
         $('.modal').modal();
-         var instance = M.Modal.getInstance($("#modal_alerta"));
-         instance.open();
+        var instance = M.Modal.getInstance($("#modal_alerta"));
+        instance.open();
         //redimenciona el tamaño y el value de los textareas
         $('#calle_guardada_permanente').val('<?php echo $calle; ?>');
         M.textareaAutoResize($('#calle_guardada_permanente'));
@@ -375,10 +375,10 @@ if (isset($authUrl)) {
                     }
                 }
             }).always(function () {
-                        setInterval(function () {
-                            $("#loading").fadeOut("slow");
-                        }, 1000);
-                    });                    
+                setInterval(function () {
+                    $("#loading").fadeOut("slow");
+                }, 1000);
+            });
             //limpia recordar direccion
             $('#recordar_direccion').prop("checked", false);
             $('#container_descripcion_recordar_direccion').hide();
@@ -401,20 +401,29 @@ if (isset($authUrl)) {
         var calle = $("#calle_nuevo_permiso_permanente");
         var regex_calle = "[A-Za-z ]+[0-9 ][A-Za-z0-9 ]{1,40}";
         if (!validar_regex(regex_calle, calle.val())) {
-            swal("Error en calle", "Agrega calle y número:TECAMACHALCO 370, sin acentos ni signos especiales", "error");
+            M.toast({
+                html: '¡Agrega calle y número:TECAMACHALCO 370, sin acentos ni signos especiales!',
+                classes: 'deep-orange c-blanco'
+            });
             return false;
         }
         //valida colonia*
         var colonia = $("#colonia_nuevo_permiso_permanente");
         var regex_colonia = "[A-Za-z ]{5,30}";
         if (!validar_regex(regex_colonia, colonia.val())) {
-            swal("Error en colonia", "Agrega colonia sin acentos ni signos especiales, mínimo 5 y máximo 30 caracteres", "error");
+            M.toast({
+                html: '¡Agrega colonia sin acentos ni signos especiales, mínimo 5 y máximo 30 caracteres!',
+                classes: 'deep-orange c-blanco'
+            });
             return false;
         }
         //valida DESCRIPCION*
         var descripcion = $("#descripcion_recordar_direccion");
         if (descripcion.val().length === 0) {
-            swal("Error en descripción", "Agrega descripción", "error");
+            M.toast({
+                html: '¡Agrega descripción!',
+                classes: 'deep-orange c-blanco'
+            });
             return false;
         }
         return true;
@@ -434,7 +443,7 @@ if (isset($authUrl)) {
                 "descripcion": descripcion,
                 "cp": cp,
                 "id_usuario":<?php echo $id; ?>,
-                "familia":<?php echo $familia;?>
+                "familia":<?php echo $familia; ?>
             }
             $.ajax({
                 url: "/pruebascd/icloud/Transportes/common/post_nueva_direccion.php",
@@ -444,7 +453,10 @@ if (isset($authUrl)) {
                     $("#loading").fadeIn("slow");
                 },
                 success: function () {
-                    swal("Información", `Registro exitoso!, puedes seleccionar tu nueva dirección en la lista desplegable con la descripción ${data.descripcion}`, "success");
+                    M.toast({
+                        html: `Registro exitoso!, puedes seleccionar tu nueva dirección en la lista desplegable con la descripción ${data.descripcion}`,
+                        classes: 'deep-orange c-blanco'
+                    });
                     $('#calle_nuevo_permiso_permanente').val("");
                     $('#colonia_nuevo_permiso_permanente').val("");
                     $('#descripcion_recordar_direccion').val("");
@@ -458,7 +470,10 @@ if (isset($authUrl)) {
             });
             return;
         }
-        swal("Información", "Debe llenar todos los campos!", "error");
+        M.toast({
+            html: '¡Debe llenar todos los campos!',
+            classes: 'deep-orange c-blanco'
+        });
         if (calle.length == 0) {
             $('#calle_nuevo').focus();
         }
@@ -478,7 +493,10 @@ if (isset($authUrl)) {
             }
         });
         if (selected === '') {
-            swal("Información", "Debes seleccionar al menos un alumno para continuar", "error");
+            M.toast({
+                html: '¡Debes seleccionar al menos un alumno para continuar!',
+                classes: 'deep-orange c-blanco'
+            });
             return false;
         }
         //valida calle y colonia
@@ -486,14 +504,20 @@ if (isset($authUrl)) {
         var calle = $("#calle_nuevo_permiso_permanente");
         var regex_calle = "[A-Za-z ]+[0-9 ][A-Za-z0-9 ]{1,40}";
         if (!validar_regex(regex_calle, calle.val())) {
-            swal("Error en calle", "Agrega calle y número:TECAMACHALCO 370, sin acentos ni signos especiales", "error");
+            M.toast({
+                html: '¡Agrega calle y número:TECAMACHALCO 370, sin acentos ni signos especiales!',
+                classes: 'deep-orange c-blanco'
+            });
             return false;
         }
         //valida colonia*
         var colonia = $("#colonia_nuevo_permiso_permanente");
         var regex_colonia = "[A-Za-z ]{5,30}";
         if (!validar_regex(regex_colonia, colonia.val())) {
-            swal("Error en colonia", "Agrega colonia sin acentos ni signos especiales, mínimo 5 y máximo 30 caracteres", "error");
+            M.toast({
+                html: '¡Agrega colonia sin acentos ni signos especiales, mínimo 5 y máximo 30 caracteres!',
+                classes: 'deep-orange c-blanco'
+            });
             return false;
         }
         //valida dias de cambio
@@ -504,12 +528,18 @@ if (isset($authUrl)) {
             }
         });
         if (selected_dias_cambio === '') {
-            swal("Información", "Debes seleccionar al menos un día de cambio para continuar", "error");
+            M.toast({
+                html: '¡Debes seleccionar al menos un día de cambio para continuar!',
+                classes: 'deep-orange c-blanco'
+            });
             return false;
         }
         //valida seleccion de ruta 
         if ($("#ruta_nuevo_permiso_permanente").val() === "") {
-            swal("Información", "Debes seleccionar una ruta", "error");
+            M.toast({
+                html: '¡Debes seleccionar una ruta!',
+                classes: 'deep-orange c-blanco'
+            });
             return false;
         }
         return true;
@@ -519,13 +549,13 @@ if (isset($authUrl)) {
             //fecha solicitud, solicitante, fecha del permiso, nombre del alumno, alumnos, calle, colonia
             var calle_nuevo_permiso_permanente = $("#calle_nuevo_permiso_permanente").val();
             var colonia_nuevo_permiso_permanente = $("#colonia_nuevo_permiso_permanente").val();
-            var cp = $("#cp").val() !==""? $("#cp").val(): "00000";
+            var cp = $("#cp").val() !== "" ? $("#cp").val() : "00000";
             var responsable = $("#solicitante_permiso_permanente").val();
-            var lunes = $("#lunes").prop("checked")? $("#lunes").val():"";
-            var martes = $("#martes").prop("checked")? $("#martes").val():"";
-            var miercoles = $("#miercoles").prop("checked")? $("#miercoles").val():"";
-            var jueves = $("#jueves").prop("checked")? $("#jueves").val():"";
-            var viernes = $("#viernes").prop("checked")? $("#viernes").val():"";
+            var lunes = $("#lunes").prop("checked") ? $("#lunes").val() : "";
+            var martes = $("#martes").prop("checked") ? $("#martes").val() : "";
+            var miercoles = $("#miercoles").prop("checked") ? $("#miercoles").val() : "";
+            var jueves = $("#jueves").prop("checked") ? $("#jueves").val() : "";
+            var viernes = $("#viernes").prop("checked") ? $("#viernes").val() : "";
             var ruta = $("#ruta_nuevo_permiso_permanente").val();
             var comentarios = $("#comentarios_nuevo_permiso_permanente").val();
             var fecha_creacion = $("#fecha_solicitud_permiso_permanente").val();
@@ -544,21 +574,21 @@ if (isset($authUrl)) {
             }
             console.log(coleccion_ids);
             var model = {
-                idusuario:id,
-                calle_numero:calle_nuevo_permiso_permanente,
-                colonia:colonia_nuevo_permiso_permanente,
-                cp:cp,
-                lunes:lunes,
-                martes:martes,
-                miercoles:miercoles,
-                jueves:jueves,
-                viernes:viernes,
-                ruta:ruta,
-                comentarios:comentarios,
-                nfamilia:familia,
-                fecha_creacion:fecha_creacion,
-                tipo_permiso:tipo_permiso,
-                responsable:responsable,
+                idusuario: id,
+                calle_numero: calle_nuevo_permiso_permanente,
+                colonia: colonia_nuevo_permiso_permanente,
+                cp: cp,
+                lunes: lunes,
+                martes: martes,
+                miercoles: miercoles,
+                jueves: jueves,
+                viernes: viernes,
+                ruta: ruta,
+                comentarios: comentarios,
+                nfamilia: familia,
+                fecha_creacion: fecha_creacion,
+                tipo_permiso: tipo_permiso,
+                responsable: responsable,
                 coleccion_ids: coleccion_ids,
             };
             $.ajax({
@@ -566,17 +596,23 @@ if (isset($authUrl)) {
                 type: "POST",
                 data: model,
                 beforeSend: function () {
-                    $("#btn_enviar_formulario").prop("disabled",true);
+                    $("#btn_enviar_formulario").prop("disabled", true);
                     $("#loading").fadeIn("slow");
                 },
                 success: function (res) {
                     if (res == 1) {
-                        swal("Información", "Registro exitoso!", "success");
+                        M.toast({
+                            html: '¡Registro exitoso!',
+                            classes: 'green accent-4 c-blanco'
+                        });
                         setInterval(() => {
-                            window.location = "https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Permanente/PPermanente.php?idseccion=<?php echo $idseccion;?>";
+                            window.location = "https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Permanente/PPermanente.php?idseccion=<?php echo $idseccion; ?>";
                         }, 1500);
                     } else {
-                        swal("Información", res, "error");
+                        M.toast({
+                            html: `¡${res}!`,
+                            classes: 'deep-orange c-blanco'
+                        });
                         setInterval(() => {
                             location.reload();
                         }, 10000);
@@ -585,11 +621,13 @@ if (isset($authUrl)) {
             }).always(function () {
                 setInterval(function () {
                     $("#loading").fadeOut("slow");
-                    $("#btn_enviar_formulario").prop("disabled",false);
+                    $("#btn_enviar_formulario").prop("disabled", false);
                 }, 1000);
-            });;
+            });
+            ;
             coleccion_ids = [];
-        }}
+        }
+    }
 </script>
 
 <?php include "$root_icloud/Transportes/Permanente/modales/modal_informacion_importante_hora_limite.php"; ?>

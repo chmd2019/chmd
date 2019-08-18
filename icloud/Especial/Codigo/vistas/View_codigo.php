@@ -64,6 +64,10 @@ $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
                     $alumnos_permiso = $control->obtener_alumnos_permiso($id_permiso);
                     $todos_cancelados = true;
                     $todos_declinados = true;
+                    $indica_autorizado = "";
+                    $indica_no_autorizado = "";
+                    $i = 0;
+                    $total_en_evento = mysqli_num_rows($alumnos_permiso);
                     while ($alumno = mysqli_fetch_array($alumnos_permiso)) {
                         if ($alumno[6] !== "2") {
                             $autorizado = false;
@@ -74,22 +78,29 @@ $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
                         if ($alumno[6] !== "3") {
                             $todos_declinados = false;
                         }
+                        if ($alumno[6] !== "2") {
+                            $autorizado = false;
+                            $indica_no_autorizado = "$indica_no_autorizado <i class='material-icons red-text'>face</i>";
+                        } else {
+                            $indica_autorizado = "$indica_autorizado <i class='material-icons green-text accent-4'>face</i>";
+                            $i = $i + 1;
+                        }
                     }
                     if ($estatus == 1) {
                         $status_detalle = "Pendiente";
-                        $badge = "badge blue c-blanco";
+                        $badge = "badge amber accent-4 c-blanco";
                     }
                     if ($estatus == 2 || $autorizado) {
                         $status_detalle = "Autorizado";
-                        $badge = "badge green c-blanco";
+                        $badge = "badge green accent-4 c-blanco";
                     }
                     if ($estatus == 3 || $todos_declinados) {
                         $status_detalle = "Declinado";
-                        $badge = "badge orange c-blanco";
+                        $badge = "badge red lighten-1 c-blanco";
                     }
                     if ($estatus == 4 || $todos_cancelados) {
                         $status_detalle = "Cancelado por usuario";
-                        $badge = "badge red c-blanco";
+                        $badge = "badge red accent-4 c-blanco";
                     }
 
                     $fecha_destino = $objDateHelper->formatear_fecha_calendario($fecha_evento);
@@ -101,11 +112,11 @@ $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
                         ?>
                         <tr style="cursor:pointer;">
                             <th scope="row"><?php echo $fecha_evento; ?></th>
-                            <td><span class="<?php echo $badge; ?>"><?php echo $status_detalle; ?></span></td>
+                            <td><span class="<?php echo $badge; ?>"><?php echo $status_detalle; ?></span><?php echo " <div class='chip green accent-4 c-blanco' style='margin-top:.5rem'><span><i class='material-icons' style='margin-top:.2rem'>face</i> $i de $total_en_evento</span></div>"; ?></td>
                             <td>   
                                 <div class="row">
                                     <div class="col s12 l3">  
-                                        <a class="waves-effect waves-light btn green accent-3" 
+                                        <a class="waves-effect waves-light btn blue accent-3" 
                                            href="https://www.chmd.edu.mx/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php?familia=<?php echo $familia; ?>&&codigo_evento=<?php echo $codigo_invitacion; ?>&&volver_listado=true">
                                             <i class="material-icons">pageview</i>
                                         </a>

@@ -21,7 +21,7 @@ $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
         <br>
         <div style="text-align: right">   
             <a class="waves-effect waves-light btn b-azul c-blanco" 
-		href="https://www.chmd.edu.mx/pruebascd/icloud/Especial/menu.php?idseccion=<?php echo $idseccion; ?>">
+               href="https://www.chmd.edu.mx/pruebascd/icloud/Especial/menu.php?idseccion=<?php echo $idseccion; ?>">
                 <i class="material-icons left">keyboard_backspace</i>Atrás
             </a>                
             <a class="waves-effect waves-light btn red" href="#!" onclick="logout()">
@@ -54,34 +54,42 @@ $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
             <tbody> 
                 <?php
                 while ($permiso = mysqli_fetch_array($listado_permisos_especiales)) {
-                    $id_permiso = $permiso[0] ; 
+                    $id_permiso = $permiso[0];
                     $fecha_cambio = $permiso[2];
                     $tipo_permiso = $permiso[3];
-                    $idusuario= $permiso[4];
-                    $estatus = $permiso[5]; 
+                    $idusuario = $permiso[4];
+                    $estatus = $permiso[5];
                     $autorizado = true;
                     $alumnos_permiso = $control_especial->obtener_alumnos_permiso($id_permiso);
-                    
-                    while ($alumno = mysqli_fetch_array($alumnos_permiso)){
-                        if($alumno[6] !== "2"){
+                    $indica_autorizado = "";
+                    $indica_no_autorizado = "";
+                    $i=0;
+                    $total_en_evento = mysqli_num_rows($alumnos_permiso);
+
+                    while ($alumno = mysqli_fetch_array($alumnos_permiso)) {
+                        if ($alumno[6] !== "2") {
                             $autorizado = false;
+                            $indica_no_autorizado = "$indica_no_autorizado <i class='material-icons red-text'>face</i>";
+                        } else {
+                            $indica_autorizado = "$indica_autorizado <i class='material-icons green-text accent-4'>face</i>";
+                            $i = $i+1;
                         }
                     }
                     if ($estatus == 1) {
                         $status_detalle = "Pendiente";
-                        $badge = "badge blue c-blanco";
+                        $badge = "badge amber accent-4 c-blanco";
                     }
-                    if ($estatus == 2 || $autorizado) {
+                    if ($estatus == 2) {
                         $status_detalle = "Autorizado";
-                        $badge = "badge green c-blanco";
+                        $badge = "badge green accent-4 c-blanco";
                     }
                     if ($estatus == 3) {
                         $status_detalle = "Declinado";
-                        $badge = "badge orange c-blanco";
+                        $badge = "badge red lighten-1 c-blanco";
                     }
                     if ($estatus == 4) {
                         $status_detalle = "Cancelado por usuario";
-                        $badge = "badge red c-blanco";
+                        $badge = "badge red accent-4 c-blanco";
                     }
                     //formatea fecha LUNES, dd De mmmm Del YYYY a dd-mm-yyyy
                     $fecha_destino = $objDateHelper->formatear_fecha_calendario($fecha_cambio);
@@ -95,12 +103,12 @@ $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
                         ?>
                         <tr style="cursor:pointer;">
                             <th scope="row"><?php echo $fecha_cambio; ?></th>
-                            <td><span class="<?php echo $badge; ?>"><?php echo $status_detalle; ?></span></td>
+                            <td><span class="<?php echo $badge; ?> text-center"><?php echo $status_detalle; ?></span> <?php echo "<div class='chip green accent-4 c-blanco' style='margin-top:.5rem'><span><i class='material-icons' style='margin-top:.2rem'>face</i> $i de $total_en_evento</span></div>"; ?></td>
                             <td>   
                                 <div class="row">
                                     <div class="col s12 l3">  
-                                        <a class="waves-effect waves-light btn green accent-3" 
-                                           href="https://www.chmd.edu.mx/pruebascd/icloud/Especial/Extraordinario/vistas/vista_consulta_permiso_extraordinario.php?id=<?php echo $id_permiso; ?>&&tipo_permiso=<?php echo $tipo_permiso;?>&&idseccion=<?php echo $idseccion; ?>">
+                                        <a class="waves-effect waves-light btn blue accent-3" 
+                                           href="https://www.chmd.edu.mx/pruebascd/icloud/Especial/Extraordinario/vistas/vista_consulta_permiso_extraordinario.php?id=<?php echo $id_permiso; ?>&&tipo_permiso=<?php echo $tipo_permiso; ?>&&idseccion=<?php echo $idseccion; ?>">
                                             <i class="material-icons">pageview</i>
                                         </a>
                                     </div>

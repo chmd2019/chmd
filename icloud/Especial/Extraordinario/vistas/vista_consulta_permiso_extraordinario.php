@@ -85,28 +85,29 @@ if (isset($authUrl)) {
                         $estatus = $alumno[6];
                         $nombre_alumno = $control->consultar_nombre_alumno($id_alumno);
                         $nombre = mysqli_fetch_array($nombre_alumno);
+                        $nivel_escolaridad = $nombre[1];
                         $nombre = $nombre[0];
                         switch ($estatus) {
                             case "1":
                                 $estatus = "Pendiente";
-                                $badge = "blue";
+                                $badge = "amber accent-4 c-blanco";
                                 $todos_autorizados = false;
                                 break;
 
                             case "2":
                                 $estatus = "Autorizado";
-                                $badge = "green";
+                                $badge = "green accent-4 c-blanco";
                                 break;
 
                             case "3":
                                 $estatus = "Declinado";
-                                $badge = "orange";
+                                $badge = "red lighten-1 c-blanco";
                                 $todos_autorizados = false;
                                 break;
 
                             case "4":
                                 $estatus = "Cancelado por el usuario";
-                                $badge = "red";
+                                $badge = "red accent-4 c-blanco";
                                 $todos_autorizados = false;
                                 break;
 
@@ -132,7 +133,7 @@ if (isset($authUrl)) {
                                           id="alumno_<?php echo $id_alumno; ?>"
                                           style="font-size: 1rem"></textarea>
                                 <script>
-                                    var texto = '<?php echo $nombre; ?>\nRegresa: <?php echo $regresa; ?>\nHora de salida: <?php echo $hora_salida; ?>\n<?php echo $regresa == "SI" ? "Hora de regreso: $hora_regreso" : ""; ?>'
+                                    var texto = '<?php echo $nombre; ?>\nNivel: <?php echo $nivel_escolaridad; ?>\nRegresa: <?php echo $regresa; ?>\nHora de salida: <?php echo $hora_salida; ?>\n<?php echo $regresa == "SI" ? "Hora de regreso: $hora_regreso" : ""; ?>'
                                         $('#alumno_<?php echo $id_alumno; ?>').val(texto);
                                         M.textareaAutoResize($('#alumno_<?php echo $id_alumno; ?>'));
                                 </script>

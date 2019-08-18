@@ -91,8 +91,8 @@ if (isset($authUrl)) {
                                       style="font-size: .9rem"></textarea>      
                         </div>
                         <br>
-                        <label for="cp_guardada" style="margin-left: 1rem">CP</label>
-                        <div class="input-field">
+                        <div class="input-field" hidden>
+                            <label for="cp_guardada" style="margin-left: 1rem">CP</label>
                             <i class="material-icons prefix c-azul">person_pin</i>
                             <input readonly  
                                    id="cp_guardada"
@@ -122,8 +122,8 @@ if (isset($authUrl)) {
                                       style="font-size: .9rem"></textarea>      
                         </div>
                         <br>
+                        <div class="input-field" hidden>
                         <label for="cp_cambio" style="margin-left: 1rem">CP</label>
-                        <div class="input-field">
                             <i class="material-icons prefix c-azul">person_pin</i>
                             <input readonly  
                                    id="cp_cambio"

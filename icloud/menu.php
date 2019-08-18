@@ -54,6 +54,7 @@ if (isset($authUrl)) {
                         $idusuario = $cliente1[5];
                         $idmodulo = $cliente1[6];
                         $nfamilia = $cliente1[7];
+                        $info = $cliente1[8];
                         $contador++;
                         if ($estatus == 1) {
                             $estatuis1 = "activos";
@@ -75,7 +76,7 @@ if (isset($authUrl)) {
                                 </div>
                                 <div class="card-reveal b-azul white-text">
                                     <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
-                                    <p>Pedidos de paquete de uniformes incluido en la canasta básica y de uniformes adicionales.</p>
+                                    <p><?php echo $info;?></p>
                                 </div>
                             </div>
                         </div>                     

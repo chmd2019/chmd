@@ -103,14 +103,14 @@ if (isset($authUrl)) {
                                       style="font-size: .9rem"></textarea> 
                         </div>
                     </div>
-                    <div class="col s12 l6">
+                    <div class="col s12 l6" hidden>
                         <label for="cp" style="margin-left: 2rem;">CP</label>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">person_pin</i>
                             <input id="cp" type="text" readonly style="font-size: .9rem">
                         </div>
                     </div>
-                        <div class="col s12 l6">
+                    <div class="col s12 l6">
                         <label for="ruta" style="margin-left: 2rem;">Ruta</label>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">departure_board</i>
@@ -149,7 +149,7 @@ if (isset($authUrl)) {
 
 <div class="fixed-action-btn">
     <a class="btn-floating btn-large waves-effect waves-light b-azul"
-        href="<?php echo $redirect_uri?>Transportes/Permanente/PPermanente.php?idseccion=<?php echo $idseccion; ?>">
+       href="<?php echo $redirect_uri ?>Transportes/Permanente/PPermanente.php?idseccion=<?php echo $idseccion; ?>">
         <i class="large material-icons">keyboard_backspace</i>
     </a>
 </div>
@@ -168,8 +168,8 @@ if (isset($authUrl)) {
     </div>
 </div>
 <script>
-    $(document).ready(function(){
-        
+    $(document).ready(function () {
+
         $('.fixed-action-btn').floatingActionButton({
             hoverEnabled: false
         });
@@ -186,26 +186,26 @@ if (isset($authUrl)) {
         var mensaje = $("#mensaje");
 
         $.ajax({
-            url:'https://www.chmd.edu.mx/pruebascd/icloud/Transportes/common/get_consulta_permiso.php',
-            type:'GET',
-            data:{
-                id:'<?php echo $id_permiso;?>',
-                tipo_permiso:'<?php echo $tipo_permiso;?>'
+            url: 'https://www.chmd.edu.mx/pruebascd/icloud/Transportes/common/get_consulta_permiso.php',
+            type: 'GET',
+            data: {
+                id: '<?php echo $id_permiso; ?>',
+                tipo_permiso: '<?php echo $tipo_permiso; ?>'
             },
             beforeSend: function () {
                 $("#loading").fadeIn("slow");
             },
-            success:function(res){   
+            success: function (res) {
                 res = JSON.parse(res);
                 console.log(res);
                 fecha_solicitud.val(res.fecha_creacion);
                 solicitante.val(res.responsable);
                 var dias_permiso_res = "";
-                res.lunes = res.lunes !=="" && res.lunes !=="0" ? dias_permiso_res += `${res.lunes}\n`:"";
-                res.martes = res.martes !=="" && res.martes !=="0" ? dias_permiso_res += `${res.martes}\n`:"";
-                res.miercoles = res.miercoles !=="" && res.miercoles !=="0" ? dias_permiso_res += `${res.miercoles}\n`:"";
-                res.jueves = res.jueves !=="" && res.jueves !=="0" ? dias_permiso_res += `${res.jueves}\n`:"";
-                res.viernes = res.viernes !=="" && res.viernes !=="0" ? dias_permiso_res += `${res.viernes}\n`:"";
+                res.lunes = res.lunes !== "" && res.lunes !== "0" ? dias_permiso_res += `${res.lunes}\n` : "";
+                res.martes = res.martes !== "" && res.martes !== "0" ? dias_permiso_res += `${res.martes}\n` : "";
+                res.miercoles = res.miercoles !== "" && res.miercoles !== "0" ? dias_permiso_res += `${res.miercoles}\n` : "";
+                res.jueves = res.jueves !== "" && res.jueves !== "0" ? dias_permiso_res += `${res.jueves}\n` : "";
+                res.viernes = res.viernes !== "" && res.viernes !== "0" ? dias_permiso_res += `${res.viernes}\n` : "";
                 dias_permiso.val(dias_permiso_res);
                 M.textareaAutoResize($('#dias_permiso'));
                 var alumnos_res = "";
@@ -221,12 +221,12 @@ if (isset($authUrl)) {
                 comentarios.val(res.comentarios);
                 mensaje.val(res.mensaje);
             }
-        })
-        .always(function () {
+        }).always(function () {
             setInterval(function () {
                 $("#loading").fadeOut("slow");
             }, 1000);
         });
+
     });
 </script>
 <?php include "$root_icloud/components/layout_bottom.php"; ?>

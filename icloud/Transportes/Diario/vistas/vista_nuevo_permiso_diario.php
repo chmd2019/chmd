@@ -222,8 +222,8 @@ if (isset($authUrl)) {
                                       style="font-size: .9rem"></textarea>      
                         </div>
                         <br>
+                        <div class="input-field" hidden>
                         <label for="cp_guardada" style="margin-left: 1rem">CP</label>
-                        <div class="input-field">
                             <i class="material-icons prefix c-azul">person_pin</i>
                             <input readonly  
                                    id="cp_guardada"
@@ -252,7 +252,7 @@ if (isset($authUrl)) {
                                       id="colonia_nuevo_permiso" 
                                       placeholder="INGRESE COLONIA"></textarea> 
                         </div>                    
-                        <div class="input-field col s12">
+                        <div class="input-field col s12" hidden>
                             <label for="cp " style="margin-left: 1rem">CP</label>
                             <i class="material-icons c-azul">person_pin_circle</i>
                             <input placeholder="INGRESE CP" 
@@ -317,7 +317,7 @@ if (isset($authUrl)) {
 ?>
 
 <div class="fixed-action-btn">
-    <a class="btn-floating btn-large waves-effect waves-light b-azul" href="<?php echo $redirect_uri?>Transportes/Diario/PDiario.php?idseccion=<?php echo $idseccion; ?>">
+    <a class="btn-floating btn-large waves-effect waves-light b-azul" href="<?php echo $redirect_uri ?>Transportes/Diario/PDiario.php?idseccion=<?php echo $idseccion; ?>">
         <i class="large material-icons">keyboard_backspace</i>
     </a>
 </div>
@@ -336,15 +336,15 @@ if (isset($authUrl)) {
     </div>
 </div>
 <script>
-    var coleccion_ids =[];
+    var coleccion_ids = [];
     $(document).ready(function () {
         $("#loading").hide();
         $('.fixed-action-btn').floatingActionButton({
             hoverEnabled: false
         });
         $('.modal').modal();
-         var instance = M.Modal.getInstance($("#modal_alerta"));
-         instance.open();
+        var instance = M.Modal.getInstance($("#modal_alerta"));
+        instance.open();
         //inicia select
         $('select').formSelect();
         //consulta de direcciones
@@ -363,7 +363,8 @@ if (isset($authUrl)) {
         } else {
             $("#fecha_para").prop("hidden", true);
             $("#fecha_solicitud_nuevo").val("<?php echo $arrayDias[date('w')] . ", " . date('d') .
-                            " de " . $arrayMeses[date('m') - 1] . " de " . date('Y'); ?>");
+ " de " . $arrayMeses[date('m') - 1] . " de " . date('Y');
+?>");
         }
     }
     function cambiar_direccion(id) {
@@ -413,10 +414,10 @@ if (isset($authUrl)) {
                     }
                 }
             }).always(function () {
-                        setInterval(function () {
-                            $("#loading").fadeOut("slow");
-                        }, 1000);
-                    });                    
+                setInterval(function () {
+                    $("#loading").fadeOut("slow");
+                }, 1000);
+            });
             //limpia recordar direccion
             $('#recordar_direccion').prop("checked", false);
             $('#container_descripcion_recordar_direccion').hide();
@@ -432,26 +433,35 @@ if (isset($authUrl)) {
         $('#container_descripcion_recordar_direccion').hide();
         $('#descripcion_recordar_direccion').val("");
         $('#calle_nuevo_permiso').focus();
-    }    
+    }
     function validar_recordar_direccion() {
         //valida calle
         var calle = $("#calle_nuevo_permiso");
         var regex_calle = "[A-Za-z ]+[0-9 ][A-Za-z0-9 ]{1,40}";
         if (!validar_regex(regex_calle, calle.val())) {
-            swal("Error en calle", "Agrega calle y número:TECAMACHALCO 370, sin acentos ni signos especiales", "error");
+            M.toast({
+                html: 'Agrega calle y número:TECAMACHALCO 370, sin acentos ni signos especiales',
+                classes: 'deep-orange c-blanco'
+            });
             return false;
         }
         //valida colonia*
         var colonia = $("#colonia_nuevo_permiso");
         var regex_colonia = "[A-Za-z ]{5,30}";
         if (!validar_regex(regex_colonia, colonia.val())) {
-            swal("Error en colonia", "Agrega colonia sin acentos ni signos especiales, mínimo 5 y máximo 30 caracteres", "error");
+            M.toast({
+                html: 'Agrega colonia sin acentos ni signos especiales, mínimo 5 y máximo 30 caracteres',
+                classes: 'deep-orange c-blanco'
+            });
             return false;
         }
         //valida DESCRIPCION*
         var descripcion = $("#descripcion_recordar_direccion");
         if (descripcion.val().length === 0) {
-            swal("Error en descripción", "Agrega descripción", "error");
+            M.toast({
+                html: 'Agrega descripción',
+                classes: 'deep-orange c-blanco'
+            });
             return false;
         }
         return true;
@@ -471,7 +481,7 @@ if (isset($authUrl)) {
                 "descripcion": descripcion,
                 "cp": cp,
                 "id_usuario":<?php echo $id; ?>,
-                "familia":<?php echo $familia;?>
+                "familia":<?php echo $familia; ?>
             }
             $.ajax({
                 url: "/pruebascd/icloud/Transportes/common/post_nueva_direccion.php",
@@ -481,7 +491,10 @@ if (isset($authUrl)) {
                     $("#loading").fadeIn("slow");
                 },
                 success: function () {
-                    swal("Información", `Registro exitoso!, puedes seleccionar tu nueva dirección en la lista desplegable con la descripción ${data.descripcion}`, "success");
+                    M.toast({
+                        html: `Registro exitoso!, puedes seleccionar tu nueva dirección en la lista desplegable con la descripción ${data.descripcion}`,
+                        classes: 'green accent-4 c-blanco'
+                    });
                     $('#calle_nuevo_permiso').val("");
                     $('#colonia_nuevo_permiso').val("");
                     $('#descripcion_recordar_direccion').val("");
@@ -489,14 +502,17 @@ if (isset($authUrl)) {
                     cambiar_direccion(data.id_usuario);
                 }
             }).always(function () {
-                        setInterval(function () {
-                            $("#loading").fadeOut("slow");
-                        }, 1000);
-                    });
-                    
+                setInterval(function () {
+                    $("#loading").fadeOut("slow");
+                }, 1000);
+            });
+
             return;
         }
-        swal("Información", "Debe llenar todos los campos!", "error");
+        M.toast({
+            html: '¡Debe llenar todos los campos!',
+            classes: 'deep-orange c-blanco'
+        });
         if (calle.length == 0) {
             $('#calle_nuevo').focus();
         }
@@ -511,7 +527,10 @@ if (isset($authUrl)) {
         //valida callefecha_solicitud_nuevo
         var fecha_solicitud_nuevo = $("#fecha_solicitud_nuevo");
         if (fecha_solicitud_nuevo.val() === "") {
-            swal("Error en fecha del permiso", "Debe seleccionar una fecha válida", "error");
+            M.toast({
+                html: '¡Debe seleccionar una fecha válida!',
+                classes: 'deep-orange c-blanco'
+            });
             return false;
         }
         //valida checks de alumnos
@@ -522,7 +541,10 @@ if (isset($authUrl)) {
             }
         });
         if (selected === '') {
-            swal("Información", "Debes seleccionar al menos un alumno para continuar", "error");
+            M.toast({
+                html: '¡Debes seleccionar al menos un alumno para continuar!',
+                classes: 'deep-orange c-blanco'
+            });
             return false;
         }
         //valida calle y colonia
@@ -530,26 +552,38 @@ if (isset($authUrl)) {
         var calle = $("#calle_nuevo_permiso");
         var regex_calle = "[A-Za-z ]+[0-9 ][A-Za-z0-9 ]{1,40}";
         if (!validar_regex(regex_calle, calle.val())) {
-            swal("Error en calle", "Agrega calle y número:TECAMACHALCO 370, sin acentos ni signos especiales", "error");
+            M.toast({
+                html: '¡Agrega calle y número:TECAMACHALCO 370, sin acentos ni signos especiales!',
+                classes: 'deep-orange c-blanco'
+            });
             return false;
         }
         //valida colonia*
         var colonia = $("#colonia_nuevo_permiso");
         var regex_colonia = "[A-Za-z ]{5,30}";
         if (!validar_regex(regex_colonia, colonia.val())) {
-            swal("Error en colonia", "Agrega colonia sin acentos ni signos especiales, mínimo 5 y máximo 30 caracteres", "error");
+            M.toast({
+                html: '¡Agrega colonia sin acentos ni signos especiales, mínimo 5 y máximo 30 caracteres!',
+                classes: 'deep-orange c-blanco'
+            });
             return false;
         }
         //valida nombre*
         var nombre_nuevo_permiso_temporal = $("#nombre_nuevo_permiso");
         var regex_nombre_nuevo_permiso_temporal = "[A-Za-z ]{1,256}";
         if (!validar_regex(regex_nombre_nuevo_permiso_temporal, nombre_nuevo_permiso_temporal.val())) {
-            swal("Error en nombre", "Agregue nombre sin acentos ni signos especiales", "error");
+            M.toast({
+                html: '¡Agregue nombre sin acentos ni signos especiales!',
+                classes: 'deep-orange c-blanco'
+            });
             return false;
         }
         //valida seleccion de ruta 
         if ($("#ruta").val() === "") {
-            swal("Información", "Debes seleccionar una ruta", "error");
+            M.toast({
+                html: '¡Debes seleccionar una ruta!',
+                classes: 'deep-orange c-blanco'
+            });
             return false;
         }
         return true;
@@ -559,7 +593,7 @@ if (isset($authUrl)) {
             //fecha solicitud, solicitante, fecha del permiso, nombre del alumno, alumnos, calle, colonia
             var calle = $("#calle_nuevo_permiso").val();
             var colonia = $("#colonia_nuevo_permiso").val();
-            var cp = $("#cp").val() !==""? $("#cp").val(): "00000";
+            var cp = $("#cp").val() !== "" ? $("#cp").val() : "00000";
             var responsable = $("#responsable").val();
             var ruta = $("#ruta").val();
             var comentarios = $("#comentarios_nuevo_permiso").val();
@@ -578,7 +612,7 @@ if (isset($authUrl)) {
                     coleccion_ids.push(ids[item]);
                 }
             }
-            
+
             console.log(coleccion_ids);
             var model = {
                 idusuario: id,
@@ -592,7 +626,7 @@ if (isset($authUrl)) {
                 tipo_permiso: tipo_permiso,
                 coleccion_ids: coleccion_ids,
                 fecha_creacion: fecha_creacion,
-                fecha_permiso:fecha_permiso
+                fecha_permiso: fecha_permiso
             };
             $.ajax({
                 url: "/pruebascd/icloud/Transportes/common/post_nuevo_permiso.php",
@@ -604,24 +638,30 @@ if (isset($authUrl)) {
                 },
                 success: function (res) {
                     if (res == 1) {
-                        swal("Información", "Registro exitoso!", "success");
+                        M.toast({
+                            html: '¡Solicitud realizada con éxito!',
+                            classes: 'green accent-4 c-blanco'
+                        });
                         setInterval(() => {
-                            window.location = "https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Diario/PDiario.php?idseccion=<?php echo $idseccion;?>";
+                            window.location = "https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Diario/PDiario.php?idseccion=<?php echo $idseccion; ?>";
                         }, 1500);
                     } else {
-                        swal("Información", res, "error");
+                        M.toast({
+                            html: res,
+                            classes: 'red c-blanco'
+                        });
                         setInterval(() => {
                             location.reload();
                         }, 10000);
                     }
                 }
             }).always(function () {
-                        $("#btn_enviar_formulario").prop("disabled", false);
-                        setInterval(function () {
-                            $("#loading").fadeOut("slow");
-                        }, 1000);
-                    });
-                    
+                $("#btn_enviar_formulario").prop("disabled", false);
+                setInterval(function () {
+                    $("#loading").fadeOut("slow");
+                }, 1000);
+            });
+
             coleccion_ids = [];
         }
     }
