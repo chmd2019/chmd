@@ -10,4 +10,7 @@ if ($anulado) {
         $control->actualiza_mantel_asignado_resta($value['id'], $value['cantidad']);
     }
     echo json_encode(true);
+    return;
 }
+echo json_encode(false);
+return;

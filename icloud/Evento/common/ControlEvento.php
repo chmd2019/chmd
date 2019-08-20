@@ -174,7 +174,7 @@ class ControlEvento {
         }
     }
 
-    public function actualizar_personal_tmp($id_tipo_personal, $fecha, $horario, $horario_final, $hora_min, $hora_max, $es_temporal) {
+    public function actualizar_personal_tmp($id_tipo_personal, $fecha, $horario, $horario_final, $hora_min, $hora_max, $es_temporal, $ensayo) {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "INSERT INTO `chmd_sistemas`.`Personal_ocupado_montaje` ("
@@ -184,14 +184,16 @@ class ControlEvento {
                     . "`horario_final`, "
                     . "`hora_min`, "
                     . "`hora_max`, "
-                    . "`temporal`) VALUES ("
+                    . "`temporal`, "
+                    . "`ensayo`) VALUES ("
                     . "'$id_tipo_personal', "
                     . "'$fecha', "
                     . "'$horario', "
                     . "'$horario_final', "
                     . "'$hora_min', "
                     . "'$hora_max', "
-                    . "'$es_temporal');";
+                    . "'$es_temporal', "
+                    . "$ensayo);";
             mysqli_set_charset($connection, "utf8");
             $insert = mysqli_query($connection, $sql);
             if (!$insert)
@@ -212,7 +214,7 @@ class ControlEvento {
             return mysqli_query($connection, $sql);
         }
     }
-    
+
     public function obtener_ultimo_timestamp_inventario_manteles($id) {
         $connection = $this->con->conectar1();
         if ($connection) {
@@ -221,7 +223,16 @@ class ControlEvento {
             return mysqli_query($connection, $sql);
         }
     }
-    
+
+    public function obtener_ultimo_timestamp_tecnico_asignado($id) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT TIMESTAMP FROM Inventario_ocupado_equipo_tecnico WHERE id = '$id'";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
     public function obtener_ultimo_timestamp_inventario($id) {
         $connection = $this->con->conectar1();
         if ($connection) {
@@ -239,7 +250,7 @@ class ControlEvento {
             return mysqli_query($connection, $sql);
         }
     }
-    
+
     public function anular_inventario_manteles_asignado($timestamp) {
         $connection = $this->con->conectar1();
         if ($connection) {
@@ -249,7 +260,6 @@ class ControlEvento {
         }
     }
 
-    
     public function anular_inventario_asignado($timestamp) {
         $connection = $this->con->conectar1();
         if ($connection) {
@@ -259,8 +269,16 @@ class ControlEvento {
         }
     }
 
-    public function actualizar_mantel_asignado($id, $fecha_montaje, $hora_inicial, 
-            $hora_final, $hora_min, $hora_max,$es_temporal) {
+    public function anular_equipo_tecnico_asignado($timestamp) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "DELETE FROM `chmd_sistemas`.`Inventario_ocupado_equipo_tecnico` WHERE  TIMESTAMP = '$timestamp' AND temporal = 1";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function actualizar_mantel_asignado($id, $fecha_montaje, $hora_inicial, $hora_final, $hora_min, $hora_max, $es_temporal) {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "INSERT INTO `chmd_sistemas`.`Inventario_ocupado_manteles` ("
@@ -285,8 +303,8 @@ class ControlEvento {
             return mysqli_insert_id($connection);
         }
     }
-    public function actualizar_inventario_asignado($id, $fecha_montaje, $hora_inicial, 
-            $hora_final, $hora_min, $hora_max,$es_temporal) {
+
+    public function actualizar_inventario_asignado($id, $fecha_montaje, $hora_inicial, $hora_final, $hora_min, $hora_max, $es_temporal) {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "INSERT INTO `chmd_sistemas`.`Inventario_ocupado_mobiliario` ("
@@ -311,8 +329,34 @@ class ControlEvento {
             return mysqli_insert_id($connection);
         }
     }
-    
-    public function actualiza_mantel_asignado_suma($id, $cantidad){
+
+    public function actualizar_equipo_tecnico_asignado($id, $fecha_montaje, $hora_inicial, $hora_final, $hora_min, $hora_max, $es_temporal) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "INSERT INTO `chmd_sistemas`.`Inventario_ocupado_equipo_tecnico` ("
+                    . "`id_articulo`, "
+                    . "`fecha_montaje`, "
+                    . "`horario_inicial`, "
+                    . "`horario_final`, "
+                    . "`hora_min`, "
+                    . "`hora_max`, "
+                    . "`temporal`) VALUES ("
+                    . "'$id', "
+                    . "'$fecha_montaje', "
+                    . "'$hora_inicial', "
+                    . "'$hora_final', "
+                    . "'$hora_min', "
+                    . "'$hora_max', "
+                    . "'$es_temporal');";
+            mysqli_set_charset($connection, "utf8");
+            $insert = mysqli_query($connection, $sql);
+            if (!$insert)
+                return false;
+            return mysqli_insert_id($connection);
+        }
+    }
+
+    public function actualiza_mantel_asignado_suma($id, $cantidad) {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "UPDATE Inventario_manteles SET asignado = asignado + $cantidad WHERE id = $id";
@@ -320,8 +364,8 @@ class ControlEvento {
             return mysqli_query($connection, $sql);
         }
     }
-    
-    public function actualiza_inventario_asignado_suma($id, $cantidad){
+
+    public function actualiza_inventario_asignado_suma($id, $cantidad) {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "UPDATE Inventario_mobiliario SET asignado = asignado + $cantidad WHERE id = $id";
@@ -329,8 +373,17 @@ class ControlEvento {
             return mysqli_query($connection, $sql);
         }
     }
-    
-    public function actualiza_mantel_asignado_resta($id, $cantidad){
+
+    public function actualiza_equipo_tecnico_asignado_suma($id, $cantidad) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "UPDATE Inventario_equipo_tecnico SET asignado = asignado + $cantidad WHERE id = $id";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function actualiza_mantel_asignado_resta($id, $cantidad) {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "UPDATE Inventario_manteles SET asignado = asignado - $cantidad WHERE id = $id";
@@ -338,11 +391,206 @@ class ControlEvento {
             return mysqli_query($connection, $sql);
         }
     }
-    
-    public function actualiza_inventario_asignado_resta($id, $cantidad){
+
+    public function actualiza_inventario_asignado_resta($id, $cantidad) {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "UPDATE Inventario_mobiliario SET asignado = asignado - $cantidad WHERE id = $id";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function actualiza_equipo_tecnico_asignado_resta($id, $cantidad) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "UPDATE Inventario_equipo_tecnico SET asignado = asignado - $cantidad WHERE id = $id";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function nuevo_montaje($fecha_solicitud, $solicitante, $tipo_evento, $fecha_montaje, $fecha_montaje_simple, $horario_evento, $horario_final_evento, $nombre_evento, $responsable_evento, $cantidad_invitados, $valet_parking, $anexa_programa, $tipo_repliegue, $requiere_ensayo, $cantidad_ensayos, $requerimientos_especiales, $check_equipo_tecnico, $id_lugar_evento) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "INSERT INTO `chmd_sistemas`.`Evento_montaje` ("
+                    . "`fecha_solicitud`, "
+                    . "`solicitante`, "
+                    . "`tipo_evento`, "
+                    . "`fecha_montaje`, "
+                    . "`fecha_montaje_simple`, "
+                    . "`horario_evento`, "
+                    . "`horario_final_evento`, "
+                    . "`nombre_evento`, "
+                    . "`responsable_evento`, "
+                    . "`cantidad_invitados`, "
+                    . "`valet_parking`, "
+                    . "`anexa_programa`, "
+                    . "`tipo_repliegue`, "
+                    . "`requiere_ensayo`, "
+                    . "`cantidad_ensayos`, "
+                    . "`requerimientos_especiales`, "
+                    . "`check_equipo_tecnico`, `id_lugar_evento`) VALUES ("
+                    . "'$fecha_solicitud', "
+                    . "'$solicitante', "
+                    . "'$tipo_evento', "
+                    . "'$fecha_montaje', "
+                    . "'$fecha_montaje_simple', "
+                    . "'$horario_evento', "
+                    . "'$horario_final_evento', "
+                    . "'$nombre_evento', "
+                    . "'$responsable_evento', "
+                    . "'$cantidad_invitados', "
+                    . "'$valet_parking', "
+                    . "$anexa_programa, "
+                    . "'$tipo_repliegue', "
+                    . "$requiere_ensayo, "
+                    . "'$cantidad_ensayos', "
+                    . "'$requerimientos_especiales', "
+                    . "$check_equipo_tecnico, "
+                    . "$id_lugar_evento)";
+            mysqli_set_charset($connection, "utf8");
+            mysqli_query($connection, $sql);
+            return mysqli_insert_id($connection);
+        }
+    }
+
+    public function nuevo_archivo_montaje($id_motaje, $name_file, $name_no_encripted, $path, $size, $timestamp_file, $url) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "INSERT INTO `chmd_sistemas`.`Archivos_montaje` ("
+                    . "`id_motaje`, "
+                    . "`name_file`, "
+                    . "`name_no_encripted`, "
+                    . "`path`, "
+                    . "`size`, "
+                    . "`timestamp_file`, "
+                    . "`url`) VALUES ("
+                    . "$id_motaje, "
+                    . "'$name_file', "
+                    . "'$name_no_encripted', "
+                    . "'$path', "
+                    . "'$size', "
+                    . "'$timestamp_file', "
+                    . "'$url');";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function finalizar_mobiliario_asignado($id_montaje, $timestamp) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "UPDATE Inventario_ocupado_mobiliario "
+                    . "SET id_evento_montaje = $id_montaje, "
+                    . "temporal = false WHERE TIMESTAMP = '$timestamp'";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function finalizar_manteles_asignados($id_montaje, $timestamp) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "UPDATE Inventario_ocupado_manteles "
+                    . "SET id_evento_montaje = $id_montaje, "
+                    . "temporal = false WHERE TIMESTAMP = '$timestamp'";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function finalizar_equipo_tecnico_asignado($id_montaje, $timestamp) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "UPDATE Inventario_ocupado_equipo_tecnico "
+                    . "SET id_evento_montaje = $id_montaje, "
+                    . "temporal = false WHERE TIMESTAMP = '$timestamp'";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function finalizar_personal_montaje_asignado($id_montaje, $timestamp) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "UPDATE Personal_ocupado_montaje "
+                    . "SET id_evento_montaje = $id_montaje, "
+                    . "temporal = false WHERE TIMESTAMP = '$timestamp'";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function listar_montajes() {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT id, fecha_montaje, solicitante, nombre_evento FROM Evento_montaje";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function consulta_montaje($id_montaje) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT a.id,a.fecha_solicitud,a.solicitante,a.tipo_evento,a.fecha_montaje,"
+                    . "a.fecha_montaje_simple, a.horario_evento, a.horario_final_evento, "
+                    . "a.nombre_evento, a.responsable_evento,a.cantidad_invitados, "
+                    . "a.valet_parking, b.url,a.anexa_programa,a.tipo_repliegue,a.requiere_ensayo,"
+                    . "a.cantidad_ensayos, a.requerimientos_especiales, b.name_no_encripted,"
+                    . " c.descripcion AS lugar_evento FROM Evento_montaje a LEFT OUTER JOIN Archivos_montaje b "
+                    . "ON b.id_motaje = a.id INNER JOIN Lugares_eventos c ON c.id = a.id_lugar_evento "
+                    . "WHERE a.id = $id_montaje";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function consulta_mobiliario_montaje($id_montaje) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT DISTINCT b.articulo,(SELECT COUNT(*) FROM Inventario_ocupado_mobiliario a "
+                    . "WHERE a.id_articulo=b.id AND a.id_evento_montaje=$id_montaje) AS cantidad,b.ruta_img "
+                    . "FROM Inventario_ocupado_mobiliario a "
+                    . "INNER JOIN Inventario_mobiliario b ON b.id = a.id_articulo "
+                    . "WHERE a.id_evento_montaje = $id_montaje";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function consulta_manteles_montaje($id_montaje) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT DISTINCT b.articulo,(SELECT COUNT(*) FROM Inventario_ocupado_manteles a "
+                    . "WHERE a.id_mantel=b.id AND a.id_evento_montaje=$id_montaje) AS cantidad, b.ruta_img "
+                    . "FROM Inventario_ocupado_manteles a INNER JOIN Inventario_manteles b "
+                    . "ON b.id = a.id_mantel WHERE a.id_evento_montaje = $id_montaje";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function consulta_equipo_tecnico_montaje($id_montaje) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT DISTINCT b.articulo,(SELECT COUNT(*) FROM Inventario_ocupado_equipo_tecnico a "
+                    . "WHERE a.id_articulo=b.id AND a.id_evento_montaje=$id_montaje) AS cantidad, b.ruta_img "
+                    . "FROM Inventario_ocupado_equipo_tecnico a INNER JOIN Inventario_equipo_tecnico b "
+                    . "ON b.id = a.id_articulo WHERE a.id_evento_montaje = $id_montaje";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function consulta_personal_montaje($id_montaje) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT DISTINCT b.descripcion,(SELECT COUNT(*) FROM Personal_ocupado_montaje a "
+                    . "WHERE a.id_tipo_personal=b.id AND a.id_evento_montaje=$id_montaje) AS cantidad "
+                    . "FROM Personal_ocupado_montaje a INNER JOIN Personal_montajes b "
+                    . "ON b.id = a.id_tipo_personal WHERE a.id_evento_montaje = $id_montaje";
             mysqli_set_charset($connection, "utf8");
             return mysqli_query($connection, $sql);
         }

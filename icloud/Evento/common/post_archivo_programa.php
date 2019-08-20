@@ -4,11 +4,12 @@ $root_icloud = $_SERVER['DOCUMENT_ROOT'] . "/pruebascd/icloud";
 require "$root_icloud/Evento/common/ControlEvento.php";
 require "$root_icloud/Helpers/DateHelper.php";
 
+$control = new ControlEvento();
 $date_helper = new DateHelper();
 $date_helper->set_timezone();
 
 $archivo = $_FILES['archivo'];
-$nfamilia = $_POST['nfamilia'];
+$id_montaje = $_POST['id_montaje'];
 $name_no_encripted = null;
 $extension = null;
 $success = false;
@@ -59,15 +60,10 @@ if ($archivo['type'] == 'text/plain' or
 }
 
 if ($success) {
-    $info_file = array(
-        "name_file" => $name,
-        "path" => $path,
-        "url" => $_SERVER["HTTP_HOST"] . dirname(dirname($_SERVER["REQUEST_URI"])) . "/archivos/$name",
-        "size" => intval($archivo['size']),
-        "name_no_encripted" => "$name_no_encripted" . "$extension",
-        "timestamp" => $timestamp
-    );
-    echo json_encode($info_file);
+    $url =  "https://".$_SERVER["HTTP_HOST"] . dirname(dirname($_SERVER["REQUEST_URI"])) . "/archivos/$name";
+    $control->nuevo_archivo_montaje($id_montaje, $name, $name_no_encripted, $path, 
+                                        substr(intval($archivo['size'])/1048576, 0, 4)." mb", $timestamp, $url);
+    echo json_encode(true);
     return;
 }
 echo json_encode(false);

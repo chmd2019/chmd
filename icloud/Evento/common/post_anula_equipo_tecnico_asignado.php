@@ -3,11 +3,11 @@ $root_icloud = $_SERVER['DOCUMENT_ROOT'] . "/pruebascd/icloud";
 require "$root_icloud/Evento/common/ControlEvento.php";
 $control = new ControlEvento();
 $timestamp = $_POST['timestamp'];
-$coleccion_inventario = $_POST['coleccion_inventario'];
-$anulado = $control->anular_inventario_asignado($timestamp);
+$coleccion_equipo_tecnico = $_POST['coleccion_equipo_tecnico'];
+$anulado = $control->anular_equipo_tecnico_asignado($timestamp);
 if ($anulado) {
-    foreach ($coleccion_inventario as $value) {
-        $control->actualiza_inventario_asignado_resta($value['id'], $value['cantidad']);
+    foreach ($coleccion_equipo_tecnico as $value) {
+        $control->actualiza_equipo_tecnico_asignado_resta($value['id'], $value['cantidad']);
     }
     echo json_encode(true);
     return;

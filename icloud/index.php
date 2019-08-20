@@ -46,34 +46,34 @@ if (isset($authUrl)) {
 
             <br>
 
-    <?php echo '<a  href="' . $authUrl . '"><img src="images/google.png" alt="login" height="240px" width="240px"></a>' ?>
+            <?php echo '<a  href="' . $authUrl . '"><img src="images/google.png" alt="login" height="240px" width="240px"></a>' ?>
 
         </div>
 
-    <?php
-} else {
+        <?php
+    } else {
 
-    $user = $service->userinfo->get();
+        $user = $service->userinfo->get();
 
-    $correo = $user->email;
+        $correo = $user->email;
 
-    require_once './Model/Login.php';
+        require_once './Model/Login.php';
 
-    $objCliente = new Login();
+        $objCliente = new Login();
 
-    $consulta = $objCliente->acceso_login($correo);
+        $consulta = $objCliente->acceso_login($correo);
 
-    include_once "$root_icloud/components/navbar.php";
+        include_once "$root_icloud/components/navbar.php";
 
-    if ($consulta) { //if user already exist change greeting text to "Welcome Back"
-        if ($cliente = mysqli_fetch_array($consulta)) {
+        if ($consulta) { //if user already exist change greeting text to "Welcome Back"
+            if ($cliente = mysqli_fetch_array($consulta)) {
 
-            $tipo = $cliente[12];
+                $tipo = $cliente[12];
 
 
 
-            if ($tipo == 3 || $tipo == 4) {//pendiente por asignar a tipo de usuario correspondiente
-                ?>
+                if ($tipo == 3 || $tipo == 4) {//pendiente por asignar a tipo de usuario correspondiente
+                    ?>
 
                     <script>
 
@@ -318,41 +318,23 @@ if (isset($authUrl)) {
                                     </div>
 
                                     <div class="col s12 m6 l4">
-
                                         <div class="card" style="box-shadow: none">
-
                                             <div class="card-image waves-effect waves-block waves-light">
-
                                                 <a href='Evento/menu.php'>
-
                                                     <img src="https://www.chmd.edu.mx/pruebascd/icloud/pics/activos/party.svg" 
-
                                                          style="padding:3rem;width: 80%;margin: auto">
-
                                                 </a>
-
                                             </div>
-
                                             <div class="card-content text-center" style="padding:0px;margin-top: -15px">
-
                                                 <span class="activator waves-effect waves-light btn b-azul c-blanco">
-
                                                     INFO
-
                                                 </span>      
-
                                             </div>
-
                                             <div class="card-reveal b-azul white-text">
-
                                                 <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
-
                                                 <p>INFO pendiente.</p>
-
                                             </div>
-
                                         </div>
-
                                     </div>
 
                                 </div>
@@ -363,16 +345,16 @@ if (isset($authUrl)) {
 
                     </div>   
 
-                <?php
-            } elseif ($tipo == 5) {
-                ?>  
+                    <?php
+                } elseif ($tipo == 5) {
+                    ?>  
 
                     <div class="fixed-action-btn">
 
-                    <?php
-                    echo '<a href="' . $redirect_uri . '?logout=1" class="btn-floating btn-large red" >'
-                    . "<i class='material-icons'>exit_to_app</i>Salir</a>";
-                    ?>
+                        <?php
+                        echo '<a href="' . $redirect_uri . '?logout=1" class="btn-floating btn-large red" >'
+                        . "<i class='material-icons'>exit_to_app</i>Salir</a>";
+                        ?>
 
                     </div>
 
@@ -680,16 +662,42 @@ if (isset($authUrl)) {
 
                     </div>
 
-                <?php
-            } else {
-                ?>
+                    <?php
+                } elseif ($tipo == 6) {
+                    ?>     
+                    <div class="row">    
+                        <div class="col s12 m3 l4"><br></div>
+                        <div class="col s12 m6 l4">
+                            <div class="card" style="box-shadow: none;">
+                                <div class="card-image waves-effect waves-block waves-light">
+                                    <a href='Evento/menu.php'>
+                                        <img src="https://www.chmd.edu.mx/pruebascd/icloud/pics/activos/party.svg" 
+                                             style="padding:3rem;width: 70%;margin: auto">
+                                    </a>
+                                </div>
+                                <div class="card-content text-center" style="padding:0px;margin-top: -15px">
+                                    <span class="activator waves-effect waves-light btn b-azul c-blanco">
+                                        INFO
+                                    </span>      
+                                </div>
+                                <div class="card-reveal b-azul white-text">
+                                    <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
+                                    <p>INFO pendiente.</p>
+                                </div>
+                            </div>
+                        </div>  
+                        <div class="col s12 m3 l4"><br></div>                      
+                    </div>
+                    <?php
+                } else {
+                    ?>
 
                     <div class="fixed-action-btn">
 
-                <?php
-                echo '<a href="' . $redirect_uri . '?logout=1" class="btn-floating btn-large red" >'
-                . "<i class='material-icons'>exit_to_app</i>Salir</a>";
-                ?>
+                    <?php
+                    echo '<a href="' . $redirect_uri . '?logout=1" class="btn-floating btn-large red" >'
+                    . "<i class='material-icons'>exit_to_app</i>Salir</a>";
+                    ?>
 
                     </div>
 
@@ -854,16 +862,18 @@ if (isset($authUrl)) {
         }//fin de consulta principal
         else {
             ?>
-                    <center>   
-                        <span style="margin-top: 3%;margin-bottom: 20%;display: block">
-                            
-                        <?php echo 'Este usuario no tiene acceso: <span style="color:#00C2EE">' . $user->email . 
-                                '</span><br> ¡Favor de comunicarse para validar datos!  '
-                                . '<br><br><a href="#!" onclick="logout()" class="waves-effect waves-light btn red"> '
-                                . '<i class="material-icons left">lock</i>Salir del sistema</a>';?>
-                        </span>
-                    </center>
-        <?php
+                <center>   
+                    <span style="margin-top: 3%;margin-bottom: 20%;display: block">
+
+                <?php
+                echo 'Este usuario no tiene acceso: <span style="color:#00C2EE">' . $user->email .
+                '</span><br> ¡Favor de comunicarse para validar datos!  '
+                . '<br><br><a href="#!" onclick="logout()" class="waves-effect waves-light btn red"> '
+                . '<i class="material-icons left">lock</i>Salir del sistema</a>';
+                ?>
+                    </span>
+                </center>
+            <?php
         }
     } else {
 
@@ -888,7 +898,7 @@ if (isset($authUrl)) {
 
 </script>
 
-    <?php include_once "$root_icloud/components/layout_bottom.php"; ?>
+<?php include_once "$root_icloud/components/layout_bottom.php"; ?>
 
 
 

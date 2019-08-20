@@ -44,7 +44,6 @@ if (isset($authUrl)) {
         //campos necesarios en tabla Ventana_permisos
         $idusuario = $consulta[0];
         $nombre = $consulta[1];
-        $nfamilia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
         //se estableció 4 para permisos extraordinarios
         $tipo_permiso = 4;
         $fecha_creacion = $dias[date("w")]
@@ -373,6 +372,7 @@ if (isset($authUrl)) {
                         <div class="waves-effect waves-light btn b-azul" style="margin-top: 1.5rem">
                             <span><i class="material-icons c-blanco">attach_file</i></span>
                             <input type="file" 
+                                   id="anexa_programa"
                                    onchange ="return validar_file(this)" >
                         </div>
                         <div class="file-path-wrapper">
@@ -496,11 +496,11 @@ if (isset($authUrl)) {
                     </div> 
                     <div class="input-field col s12 l6" hidden id="caja_tipo_repliegue">
                         <i class="material-icons prefix c-azul">donut_small</i>
-                        <select>
+                        <select id="select_tipo_repliegue">
                             <option value="0" disabled selected>Seleccione una opción</option>
-                            <option value="1">Estacionamiento maestros</option>
-                            <option value="2">Patio de camiones 1/2</option>
-                            <option value="3">Patio de completo</option>
+                            <option value="Estacionamiento maestros">Estacionamiento maestros</option>
+                            <option value="Patio de camiones 1/2">Patio de camiones 1/2</option>
+                            <option value="Patio de completo">Patio de completo</option>
                         </select>
                         <label style="margin-left: 1rem">Tipo de repliegue</label>
                     </div>  
@@ -572,11 +572,6 @@ if (isset($authUrl)) {
 ?>
 
 <div class="fixed-action-btn">
-    <a class="btn-floating btn-large waves-effect waves-light light-blue">
-        <i class="large material-icons">save</i>
-    </a>
-    <br>
-    <br>
     <a class="btn-floating btn-large waves-effect waves-light b-azul" href="<?php echo $redirect_uri ?>Evento/montajes/PMontajes.php?idseccion=<?php echo $idseccion; ?>">
         <i class="large material-icons">keyboard_backspace</i>
     </a>
@@ -610,23 +605,28 @@ if (isset($authUrl)) {
     var codigo_ensayo = "";
     var id_lugar = 0;
     var archivo_cargado = null;
-    var nfamilia = '<?php echo $nfamilia; ?>';
     //push
     var pusher = null;
     var channel_inventario = null;
     var channel_personal = null;
     var channel_manteles = null;
-    
+    var channel_equipo_tecnico = null;
+
     var token = '<?php echo uniqid(); ?>';
     var timestamp_personal_montaje = null;
     var timestamp_personal_montaje_ensayos = [];
     var timestamp_inventario = null;
     var timestamp_inventario_manteles = null;
+    var timestamp_equipo_tecnico = null;
     //lugar seleccionado
     var lugar_id_lugar_evento = null;
     var lugar_inventario = [];
     var coleccion_manteles = [];
     var coleccion_inventario = [];
+    var coleccion_equipo_tecnico = [];
+    //manejo de ensayos
+    var lista_ensayos = [];
+
     $(document).ready(function () {
         $("#loading").fadeOut("slow");
         $('select').formSelect();
@@ -652,9 +652,10 @@ if (isset($authUrl)) {
         channel_inventario = pusher.subscribe('canal_inventario');
         channel_personal = pusher.subscribe('canal_personal');
         channel_manteles = pusher.subscribe('canal_manteles');
+        channel_equipo_tecnico = pusher.subscribe('canal_equipo_tecnico');
         channel_inventario.bind('actualiza_inventarios', function (res) {
             if (res.actualiza_inventarios.push && res.actualiza_inventarios.token !== token) {
-                if (lugar_id_lugar_evento !== null) {                
+                if (lugar_id_lugar_evento !== null) {
                     //cargar_inventario_manteles(lugar_id_lugar_evento, lugar_inventario);
                 }
                 M.toast({
@@ -673,8 +674,19 @@ if (isset($authUrl)) {
         });
         channel_manteles.bind('actualiza_manteles', function (res) {
             if (res.actualizar_manteles.push && res.actualizar_manteles.token !== token) {
-                if (lugar_id_lugar_evento !== null) {                
+                if (lugar_id_lugar_evento !== null) {
                     cargar_inventario_manteles(lugar_id_lugar_evento, lugar_inventario);
+                }
+                M.toast({
+                    html: 'El inventario de manteles disponibles ha sido modificado por otro usuario',
+                    classes: 'red accent-3 c-blanco',
+                });
+            }
+        });
+        channel_equipo_tecnico.bind('actualiza_equipo_tecnico', function (res) {
+            if (res.actualiza_equipo_tecnico.push && res.actualiza_equipo_tecnico.token !== token) {
+                if (lugar_id_lugar_evento !== null) {
+                    //cargar_inventario_manteles(lugar_id_lugar_evento, lugar_inventario);
                 }
                 M.toast({
                     html: 'El inventario de manteles disponibles ha sido modificado por otro usuario',
@@ -755,6 +767,7 @@ if (isset($authUrl)) {
         for (var i = 0; i < el.value; i++) {
             var codigo = `<div class="col s12 card"> <div class="card-content" style="color:#00C2EE;"> <h5>Ensayo N° ${i + 1}</h5> </div><div class="card-tabs"> <ul class="tabs tabs-fixed-width"> <li class="tab blue white-text active"><a href="#tab_1_${i + 1}">Información de ensayo</a> </li><li class="tab blue white-text" onclick="cargar_personal_ensayo(${i})"><a href="#tab_2_${i + 1}">Personal</a> </li></ul> </div><div class="card-content"> <div id="tab_1_${i + 1}"> <div class="col s12 l6"> <label style="margin-left: 1rem;color:#00C2EE">Fecha del ensayo</label> <div class="input-field"> <i class="material-icons prefix c-azul">calendar_today</i> <input type="text" class="datepicker" id="fecha_ensayo_${i}" autocomplete="off" placeholder="Escoja fecha" onchange="fecha_minusculas(this.value, 'fecha_permiso')" style="font-size: 1rem"> </div></div><div class="col s12 l6"> <label style="margin-left: 1rem;color:#00C2EE">Horario inicial</label> <div class="input-field"> <i class="material-icons prefix c-azul">access_time</i> <input type="text" id="horario_inicial_ensayo_${i}" class="timepicker" onkeypress="return validar_solo_numeros(event, this.id, 1)" autocomplete="off" onfocus="blur();" placeholder="Seleccione horario"> </div></div><div class="col s12 l6"> <label style="margin-left: 1rem;color:#00C2EE">Horario final</label> <div class="input-field"> <i class="material-icons prefix c-azul">access_time</i> <input type="text" id="horario_final_ensayo_${i}" class="timepicker" onkeypress="return validar_solo_numeros(event, this.id, 1)" onchange="validar_horario_final_ensayo(this,'horario_inicial_ensayo_${i}')" autocomplete="off" onfocus="blur();" placeholder="Seleccione horario"> </div></div><div class="input-field col s12"> <i class="material-icons prefix c-azul">list_alt</i> <textarea class="materialize-textarea" id="requerimientos_especiales_ensayo_${i}" placeholder="Requerimientos especiales"></textarea> </div></div><div id="tab_2_${i + 1}"> <div id="caja_select_${i}"> <div class="input-field col s12 l6"> <i class="material-icons prefix c-azul">build</i> <select id="select_montaje_ensayo_${i}"></select> <label style="margin-left: 1rem;color:#00C2EE">Personal de montaje</label> </div><div class="input-field col s12 l6"> <i class="material-icons prefix c-azul">build</i> <select id="select_cabina_auditorio_ensayo_${i}"></select> <label style="margin-left: 1rem;color:#00C2EE">Personal de cabina de auditorio</label> </div><div class="input-field col s12 l6"> <i class="material-icons prefix c-azul">build</i> <select id="select_limpieza_ensayo_${i}"></select> <label style="margin-left: 1rem;color:#00C2EE">Personal de limpieza</label> </div><div class="input-field col s12" style="text-align: center" id="reserva_personal_${i}"> <button class="waves-effect waves-light btn col l4" onclick="actualizar_personal_ensayo('select_montaje_ensayo_${i}', 'select_cabina_auditorio_ensayo_${i}', 'select_limpieza_ensayo_${i}', 'fecha_ensayo_${i}','horario_inicial_ensayo_${i}','horario_final_ensayo_${i}', '#reserva_personal_${i}', '#anular_reserva_personal_${i}',${i})" type="button" style="background-color: #00C2EE;float: none">Reservar personal <i class="material-icons right">save</i> </button> </div><div class="input-field col s12" style="text-align: center;" hidden id="anular_reserva_personal_${i}"> <button class="waves-effect waves-light btn red col l3" style="float: none" type="button" onclick="anular_reserva_personal_ensayo('#select_montaje_ensayo_${i}','#select_cabina_auditorio_ensayo_${i}','#select_limpieza_ensayo_${i}','#anular_reserva_personal_${i}','#reserva_personal_${i}',${i})">Anular reserva <i class="material-icons right">delete</i> </button> </div></div><span class="col s12"><br></span> <div class="chip orange col s12 white-text" style="text-align: center" id="validacion_ensayo_${i}"> <span>Debe seleccionar una fecha y horarios válidos para continuar!</span> </div><span class="col s12 hide-on-med-and-down"><br><br></span> </div></div></div>`;
             codigo_ensayo += `${codigo}`;
+            lista_ensayos.push(i + 1);
         }
         $("#caja_ensayos").html(codigo_ensayo);
         $('.tabs').tabs();
@@ -788,6 +801,7 @@ if (isset($authUrl)) {
             'maxTime': '18:00',
             'timeFormat': 'H:i:s'
         });
+        console.log(lista_ensayos);
     }
     function mostrar_caja_personal_ensayo(el, i) {
         if ($("#caja_personal_evento_" + i).prop("hidden")) {
@@ -844,13 +858,13 @@ if (isset($authUrl)) {
         archivo_cargado = el;
         return true;
     }
-    function cargar_archivo_programa(archivo) {
+    function cargar_archivo_programa(archivo, id_montaje) {
         if (!validar_file(archivo))
             return;
         archivo = archivo.files[0];
         var datos = new FormData();
         datos.append('archivo', archivo);
-        datos.append('nfamilia', nfamilia);
+        datos.append('id_montaje', id_montaje);
         $.ajax({
             url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/post_archivo_programa.php',
             data: datos,
@@ -871,7 +885,6 @@ if (isset($authUrl)) {
                 archivo.value = "";
                 return;
             }
-            console.log(res);
         }).always(() => {
             $("#loading").fadeOut();
         });
@@ -1052,9 +1065,9 @@ if (isset($authUrl)) {
         $("#caja_equipo_tecnico").show();
         var tr = "";
         for (var item in equipo_tecnico) {
-            tr += ` <li class="collection-item avatar col s12" style="justify-content: space-around"> <div class="col s12 l6"> <br><i class="material-icons circle" style="background-color: #00C2EE">done</i> <span class="title"><b>Artículo: </b> ${equipo_tecnico[item].articulo}</span> <p> <b>Capacidad del lugar: </b> ${equipo_tecnico[item].capacidad}<br><b>Disponible para el evento: </b>${equipo_tecnico[item].disponible}</p><b>Cantidad para el evento: </b> <div class="input-field"><i class="material-icons prefix c-azul">plus_one</i><input placeholder="Ingrese cantidad deseada" class="cantidad_mobiliario" id="cantidad_equipo_tecnico_${equipo_tecnico[item].id}" autocomplete="off" onkeypress="return validar_solo_numeros(event, this.id, 2)" type="tel"></div> </div><div class="col s12 l6 text-center"> <a href="${equipo_tecnico[item].ruta_img}" data-fancybox data-caption="${equipo_tecnico[item].articulo}"><br> <img src="${equipo_tecnico[item].ruta_img}" width="150"/> </a> </div></li>`;
+            tr += `<li class="collection-item avatar col s12" style="justify-content: space-around"> <div class="col s12 l6"> <br><i class="material-icons circle" style="background-color: #00C2EE">done</i> <span class="title"><b>Artículo: </b> ${equipo_tecnico[item].articulo}</span> <p> <b>Capacidad del lugar: </b> ${equipo_tecnico[item].capacidad}<br><b>Disponible para el evento: </b>${equipo_tecnico[item].disponible}</p><b>Cantidad para el evento: </b> <div class="input-field"><i class="material-icons prefix c-azul">plus_one</i><input placeholder="Ingrese cantidad deseada" class="cantidad_mobiliario" onblur="add_equipo_tecnico('${equipo_tecnico[item].id}', this.value)" id="cantidad_equipo_tecnico_${equipo_tecnico[item].id}" autocomplete="off" onkeypress="return validar_solo_numeros(event, this.id, 2)" type="tel"></div></div><div class="col s12 l6 text-center"> <a href="${equipo_tecnico[item].ruta_img}" data-fancybox data-caption="${equipo_tecnico[item].articulo}"><br><img src="${equipo_tecnico[item].ruta_img}" width="150"/> </a> </div></li>`;
         }
-        $("#tabla_equipo_tecnico").html(`<ul class="collection row">${tr}</ul>`);
+        $("#tabla_equipo_tecnico").html(`<ul class="collection row">${tr}<div style="text-align: center" id="caja_btn_actualiza_equipo_tecnico"> <button class="waves-effect waves-light btn col l4" id="btn_actualizar_equipo_tecnico" onclick="actualizar_equipo_tecnico()" type="button" style="background-color: #00C2EE;float: none">Reservar equipo técnico <i class="material-icons right">save</i> </button></div><div style="text-align: center" hidden id="caja_btn_anular_equipo_tecnico"> <button class="waves-effect waves-light btn col l4 red" id="btn_anular_equipo_tecnico" onclick="anular_equipo_tecnico()" type="button" style="float: none">Anular reserva equipo técnico <i class="material-icons right">delete</i> </button></div></ul>`);
     }
     function mostrar_manteles(manteles) {
         coleccion_ids_manteles = [];
@@ -1109,9 +1122,6 @@ if (isset($authUrl)) {
             inventario_cantidad_equipo_tecnico.push(data);
         });
         return inventario_cantidad_equipo_tecnico;
-    }
-    function enviar_formulario() {
-        cargar_archivo_programa(archivo_cargado);
     }
     //ensayo    
     function cargar_personal_ensayo(i) {
@@ -1229,7 +1239,8 @@ if (isset($authUrl)) {
                 horario_inicial_evento,
                 horario_final_evento,
                 token: token,
-                socket_id: pusher.connection.socket_id
+                socket_id: pusher.connection.socket_id,
+                ensayo: false
             }
         }).done((res) => {
             if (res.respuesta) {
@@ -1316,7 +1327,8 @@ if (isset($authUrl)) {
                 horario_inicial_evento,
                 horario_final_evento,
                 token: token,
-                socket_id: pusher.connection.socket_id
+                socket_id: pusher.connection.socket_id,
+                ensayo: true
             }
         }).done((res) => {
             if (res.respuesta) {
@@ -1333,7 +1345,6 @@ if (isset($authUrl)) {
                 $(reserva_personal).prop("hidden", true);
                 $(anular_personal_ensayo).prop("hidden", false);
                 timestamp_personal_montaje_ensayos.push({timestamp: res.timestamp, i: i});
-                console.log(timestamp_personal_montaje_ensayos);
             }
         }).always(() => {
             $("#loading").fadeOut();
@@ -1368,7 +1379,6 @@ if (isset($authUrl)) {
                         if (index > -1) {
                             borrado = timestamp_personal_montaje_ensayos.splice(index - 1, 1);
                         }
-                        console.log(borrado);
                     }
                 }).always(() => {
                     $("#loading").fadeOut();
@@ -1377,26 +1387,9 @@ if (isset($authUrl)) {
             }
         }
     }
-    function obtener_fecha() {
-        var fecha_formateada = null;
-        var fecha_permiso_cafe = $("#fecha_permiso_cafe").val();
-        var fecha_evento_interno = $("#fecha_evento_interno").val();
-        var fecha_evento_combinado_externo = $("#fecha_evento_combinado_externo").val();
-        var fecha_servicio_especial = $("#fecha_servicio_especial").val();
-        if (fecha_permiso_cafe !== "") {
-            fecha_formateada = formatear_fecha_calendario_formato_a_m_d_guion(fecha_permiso_cafe);
-        } else if (fecha_evento_interno !== "") {
-            fecha_formateada = formatear_fecha_calendario_formato_a_m_d_guion(fecha_evento_interno);
-        } else if (fecha_evento_combinado_externo !== "") {
-            fecha_formateada = formatear_fecha_calendario_formato_a_m_d_guion(fecha_evento_combinado_externo);
-        } else if (fecha_servicio_especial !== "") {
-            fecha_formateada = formatear_fecha_calendario_formato_a_m_d_guion(fecha_servicio_especial);
-        }
-        return fecha_formateada;
-    }    
+    //Actualizacion de inventarios y notificaciones en tiempo real con pusher websockets
     function add_mantel(id, value) {
-        console.log(coleccion_manteles);
-        if (coleccion_manteles.length !== 0) {            
+        if (coleccion_manteles.length !== 0) {
             for (var item in coleccion_manteles) {
                 if (coleccion_manteles[item].id === id) {
                     coleccion_manteles[item] = {id: id, cantidad: value};
@@ -1405,31 +1398,19 @@ if (isset($authUrl)) {
             }
         }
         coleccion_manteles.push({id: id, cantidad: value});
-    }    
+    }
     function actualizar_inventario_manteles() {
+        if (!validar_fecha_horario())
+            return;
         var fecha_formateada = obtener_fecha();
         var horario_inicial_evento = $("#horario_evento").val();
         var horario_final_evento = $("#horario_final_evento").val();
-        if (fecha_formateada === null) {            
+        if (coleccion_manteles.length === 0) {
             M.toast({
-                html: '¡Debe seleccionar una fecha válida!',
+                html: 'Debe asignar la cantidad del artículo',
                 classes: 'deep-orange c-blanco',
             });
-            return;
-        }
-        if (horario_inicial_evento === "" || horario_final_evento === "") {            
-            M.toast({
-                html: '¡Debe seleccionar un horario válido!',
-                classes: 'deep-orange c-blanco',
-            });
-            return;
-        }
-        if (coleccion_manteles.length === 0) {            
-            M.toast({
-                html: 'Debe asignar la cantidad de manteles ',
-                classes: 'deep-orange c-blanco',
-            });
-            return;
+            return false;
         }
         $.ajax({
             url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/post_actualiza_inventario_manteles.php',
@@ -1449,7 +1430,7 @@ if (isset($authUrl)) {
             if (res.respuesta) {
                 timestamp_inventario_manteles = res.timestamp;
                 for (var item in coleccion_manteles) {
-                    $("#cantidad_manteles_"+coleccion_manteles[item].id).prop('disabled', true);
+                    $("#cantidad_manteles_" + coleccion_manteles[item].id).prop('disabled', true);
                 }
                 $("#caja_btn_actualiza_inventario_manteles").prop('hidden', true);
                 $("#caja_btn_anular_inventario_manteles").prop('hidden', false);
@@ -1457,8 +1438,8 @@ if (isset($authUrl)) {
         }).always(() => {
             $("#loading").fadeOut();
         });
-    }    
-    function anular_inventario_manteles(){
+    }
+    function anular_inventario_manteles() {
         $.ajax({
             url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/post_anula_inventario_manteles.php',
             type: 'POST',
@@ -1468,16 +1449,16 @@ if (isset($authUrl)) {
             dataType: 'json',
             data: {
                 coleccion_manteles: coleccion_manteles,
-                timestamp:timestamp_inventario_manteles
+                timestamp: timestamp_inventario_manteles
             }
         }).done((res) => {
-            if (res) {  
+            if (res) {
                 M.toast({
                     html: '¡Ha sido anulada la selección de manteles!',
                     classes: 'blue c-blanco',
                 });
                 for (var item in coleccion_manteles) {
-                    $("#cantidad_manteles_"+coleccion_manteles[item].id).prop('disabled', false);
+                    $("#cantidad_manteles_" + coleccion_manteles[item].id).prop('disabled', false);
                 }
                 $("#caja_btn_actualiza_inventario_manteles").prop('hidden', false);
                 $("#caja_btn_anular_inventario_manteles").prop('hidden', true);
@@ -1485,10 +1466,10 @@ if (isset($authUrl)) {
         }).always(() => {
             $("#loading").fadeOut();
         });
-                
+
     }
     function add_inventario(id, value) {
-        if (coleccion_inventario.length !== 0) {            
+        if (coleccion_inventario.length !== 0) {
             for (var item in coleccion_inventario) {
                 if (coleccion_inventario[item].id === id) {
                     coleccion_inventario[item] = {id: id, cantidad: value};
@@ -1497,31 +1478,19 @@ if (isset($authUrl)) {
             }
         }
         coleccion_inventario.push({id: id, cantidad: value});
-    }    
+    }
     function actualizar_inventario() {
+        if (!validar_fecha_horario())
+            return;
         var fecha_formateada = obtener_fecha();
         var horario_inicial_evento = $("#horario_evento").val();
         var horario_final_evento = $("#horario_final_evento").val();
-        if (fecha_formateada === null) {            
+        if (coleccion_inventario.length === 0) {
             M.toast({
-                html: '¡Debe seleccionar una fecha válida!',
+                html: 'Debe asignar la cantidad del artículo',
                 classes: 'deep-orange c-blanco',
             });
-            return;
-        }
-        if (horario_inicial_evento === "" || horario_final_evento === "") {            
-            M.toast({
-                html: '¡Debe seleccionar un horario válido!',
-                classes: 'deep-orange c-blanco',
-            });
-            return;
-        }
-        if (coleccion_inventario.length === 0) {            
-            M.toast({
-                html: 'Debe asignar la cantidad de mobiliario',
-                classes: 'deep-orange c-blanco',
-            });
-            return;
+            return false;
         }
         $.ajax({
             url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/post_actualiza_inventario.php',
@@ -1541,7 +1510,7 @@ if (isset($authUrl)) {
             if (res.respuesta) {
                 timestamp_inventario = res.timestamp;
                 for (var item in coleccion_inventario) {
-                    $("#cantidad_mobiliario_"+coleccion_inventario[item].id).prop('disabled', true);
+                    $("#cantidad_mobiliario_" + coleccion_inventario[item].id).prop('disabled', true);
                 }
                 $("#caja_btn_actualiza_inventario").prop('hidden', true);
                 $("#caja_btn_anular_inventario").prop('hidden', false);
@@ -1549,8 +1518,8 @@ if (isset($authUrl)) {
         }).always(() => {
             $("#loading").fadeOut();
         });
-    }    
-    function anular_inventario(){
+    }
+    function anular_inventario() {
         $.ajax({
             url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/post_anula_inventario_asignado.php',
             type: 'POST',
@@ -1560,16 +1529,16 @@ if (isset($authUrl)) {
             dataType: 'json',
             data: {
                 coleccion_inventario: coleccion_inventario,
-                timestamp:timestamp_inventario
+                timestamp: timestamp_inventario
             }
         }).done((res) => {
-            if (res) {  
+            if (res) {
                 M.toast({
                     html: '¡Ha sido anulada la selección de mobiliario!',
                     classes: 'blue c-blanco',
                 });
                 for (var item in coleccion_inventario) {
-                    $("#cantidad_mobiliario_"+coleccion_inventario[item].id).prop('disabled', false);
+                    $("#cantidad_mobiliario_" + coleccion_inventario[item].id).prop('disabled', false);
                 }
                 $("#caja_btn_actualiza_inventario").prop('hidden', false);
                 $("#caja_btn_anular_inventario").prop('hidden', true);
@@ -1577,7 +1546,301 @@ if (isset($authUrl)) {
         }).always(() => {
             $("#loading").fadeOut();
         });
-                
+
+    }
+    function add_equipo_tecnico(id, value) {
+        if (coleccion_equipo_tecnico.length !== 0) {
+            for (var item in coleccion_equipo_tecnico) {
+                if (coleccion_equipo_tecnico[item].id === id) {
+                    coleccion_equipo_tecnico[item] = {id: id, cantidad: value};
+                    return;
+                }
+            }
+        }
+        coleccion_equipo_tecnico.push({id: id, cantidad: value});
+    }
+    function actualizar_equipo_tecnico() {
+        if (!validar_fecha_horario())
+            return;
+        var fecha_formateada = obtener_fecha();
+        var horario_inicial_evento = $("#horario_evento").val();
+        var horario_final_evento = $("#horario_final_evento").val();
+        if (coleccion_equipo_tecnico.length === 0) {
+            M.toast({
+                html: 'Debe asignar la cantidad del artículo',
+                classes: 'deep-orange c-blanco',
+            });
+            return false;
+        }
+        $.ajax({
+            url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/post_actualiza_equipo_tecnico.php',
+            type: 'POST',
+            beforeSend: () => {
+                $("#loading").fadeIn();
+            },
+            dataType: 'json',
+            data: {
+                fecha_montaje: fecha_formateada,
+                hora_inicial: horario_inicial_evento,
+                hora_final: horario_final_evento,
+                coleccion_equipo_tecnico: coleccion_equipo_tecnico,
+                token: token
+            }
+        }).done((res) => {
+            if (res.respuesta) {
+                timestamp_equipo_tecnico = res.timestamp;
+                for (var item in coleccion_equipo_tecnico) {
+                    $("#cantidad_equipo_tecnico_" + coleccion_equipo_tecnico[item].id).prop('disabled', true);
+                }
+                $("#caja_btn_actualiza_equipo_tecnico").prop('hidden', true);
+                $("#caja_btn_anular_equipo_tecnico").prop('hidden', false);
+            }
+        }).always(() => {
+            $("#loading").fadeOut();
+        });
+    }
+    function anular_equipo_tecnico() {
+        $.ajax({
+            url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/post_anula_equipo_tecnico_asignado.php',
+            type: 'POST',
+            beforeSend: () => {
+                $("#loading").fadeIn();
+            },
+            dataType: 'json',
+            data: {
+                coleccion_equipo_tecnico: coleccion_equipo_tecnico,
+                timestamp: timestamp_equipo_tecnico
+            }
+        }).done((res) => {
+            if (res) {
+                M.toast({
+                    html: '¡Ha sido anulada la selección de equipo técnico!',
+                    classes: 'blue c-blanco',
+                });
+                for (var item in coleccion_equipo_tecnico) {
+                    $("#cantidad_equipo_tecnico_" + coleccion_equipo_tecnico[item].id).prop('disabled', false);
+                }
+                $("#caja_btn_actualiza_equipo_tecnico").prop('hidden', false);
+                $("#caja_btn_anular_equipo_tecnico").prop('hidden', true);
+            }
+        }).always(() => {
+            $("#loading").fadeOut();
+        });
+
+    }
+    function validar_fecha_horario() {
+        var fecha_formateada = obtener_fecha();
+        var horario_inicial_evento = $("#horario_evento").val();
+        var horario_final_evento = $("#horario_final_evento").val();
+        if (fecha_formateada === null) {
+            M.toast({
+                html: '¡Debe seleccionar una fecha válida!',
+                classes: 'deep-orange c-blanco',
+            });
+            return false;
+        }
+        if (horario_inicial_evento === "" || horario_final_evento === "") {
+            M.toast({
+                html: '¡Debe seleccionar un horario válido!',
+                classes: 'deep-orange c-blanco',
+            });
+            return false;
+        }
+        return true;
+    }
+    function obtener_fecha() {
+        var fecha_formateada = null;
+        var fecha_permiso_cafe = $("#fecha_permiso_cafe").val();
+        var fecha_evento_interno = $("#fecha_evento_interno").val();
+        var fecha_evento_combinado_externo = $("#fecha_evento_combinado_externo").val();
+        var fecha_servicio_especial = $("#fecha_servicio_especial").val();
+        if (fecha_permiso_cafe !== "") {
+            fecha_formateada = formatear_fecha_calendario_formato_a_m_d_guion(fecha_permiso_cafe);
+        } else if (fecha_evento_interno !== "") {
+            fecha_formateada = formatear_fecha_calendario_formato_a_m_d_guion(fecha_evento_interno);
+        } else if (fecha_evento_combinado_externo !== "") {
+            fecha_formateada = formatear_fecha_calendario_formato_a_m_d_guion(fecha_evento_combinado_externo);
+        } else if (fecha_servicio_especial !== "") {
+            fecha_formateada = formatear_fecha_calendario_formato_a_m_d_guion(fecha_servicio_especial);
+        }
+        return fecha_formateada;
+    }
+    function obtener_fecha_asignada() {
+        var fecha = null;
+        var fecha_permiso_cafe = $("#fecha_permiso_cafe").val();
+        var fecha_evento_interno = $("#fecha_evento_interno").val();
+        var fecha_evento_combinado_externo = $("#fecha_evento_combinado_externo").val();
+        var fecha_servicio_especial = $("#fecha_servicio_especial").val();
+        if (fecha_permiso_cafe !== "") {
+            fecha = fecha_permiso_cafe;
+        } else if (fecha_evento_interno !== "") {
+            fecha = fecha_evento_interno;
+        } else if (fecha_evento_combinado_externo !== "") {
+            fecha = fecha_evento_combinado_externo;
+        } else if (fecha_servicio_especial !== "") {
+            fecha = fecha_servicio_especial;
+        }
+        return fecha;
+    }
+    //salvar formulario
+    function enviar_formulario() {
+        //validaciones
+        if (!validar_tipo_evento())
+            return;
+        if (obtener_fecha() === null) {
+            M.toast({
+                html: '¡Debe seleccionar una fecha válida para continuar!',
+                classes: 'deep-orange c-blanco'
+            });
+            return false;
+        }
+        if (!validar_horario_evento())
+            return;
+        if (!validar_horario_final())
+            return;
+        if (!validar_nombre_evento())
+            return;
+        if (!validar_responsable_evento())
+            return;
+        if (!validar_numero_invitados())
+            return;
+        if (!validar_lugar_evento())
+            return;
+
+
+        var fecha_solicitud = $("#fecha_solicitud").val();
+        var solicitante = $("#solicitante").val();
+        var tipo_evento = $("#tipo_evento").val();
+        var fecha_montaje = obtener_fecha_asignada();
+        var fecha_montaje_simple = obtener_fecha();
+        var horario_evento = $("#horario_evento").val();
+        var horario_final_evento = $("#horario_final_evento").val();
+        var nombre_evento = $("#nombre_evento").val();
+        var responsable_evento = $("#responsable_evento").val();
+        var cantidad_invitados = $("#cantidad_invitados").val();
+        var valet_parking = $("#valet_parking").val();
+        var anexa_programa = $("#anexa_programa").val().length > 0 ? true : false;
+        var lugar_evento = $("#lugar_evento").val();
+        var select_tipo_repliegue = $("#select_tipo_repliegue").val();
+        var requiero_ensayo = $("#requiero_ensayo").prop('checked');
+        var select_ensayos = $("#select_ensayos").val();
+        var requerimientos_especiales = $("#requerimientos_especiales").val();
+        var check_equipo_tecnico = $("#check_equipo_tecnico").prop('checked');
+
+        var data = {
+            fecha_solicitud: fecha_solicitud,
+            solicitante: solicitante,
+            tipo_evento: tipo_evento,
+            fecha_montaje: fecha_montaje,
+            fecha_montaje_simple: fecha_montaje_simple,
+            horario_evento: horario_evento,
+            horario_final_evento: horario_final_evento,
+            nombre_evento: nombre_evento,
+            responsable_evento: responsable_evento,
+            cantidad_invitados: cantidad_invitados,
+            valet_parking: valet_parking,
+            anexa_programa: anexa_programa,
+            tipo_repliegue: select_tipo_repliegue,
+            lugar_evento: lugar_evento,
+            requiero_ensayo: requiero_ensayo,
+            select_ensayos: select_ensayos,
+            requerimientos_especiales: requerimientos_especiales,
+            timestamp_inventario: timestamp_inventario,
+            timestamp_inventario_manteles: timestamp_inventario_manteles,
+            timestamp_equipo_tecnico: timestamp_equipo_tecnico,
+            timestamp_personal_montaje: timestamp_personal_montaje,
+            timestamp_personal_montaje_ensayos: timestamp_personal_montaje_ensayos
+        };
+        $.ajax({
+            url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/post_nuevo_montaje.php',
+            type: 'POST',
+            dataType: 'json',
+            beforeSend: () => {
+                $("#loading").fadeIn("slow");
+            },
+            data: data
+        }).done((res) => {
+            if ($("#anexa_programa").val().length > 0) {
+                cargar_archivo_programa(archivo_cargado, res);
+            }
+        }).always(() => {
+            $("#loading").fadeOut("slow");
+        });
+    }
+    function validar_tipo_evento() {
+        if ($("#tipo_evento").val() === "" || $("#tipo_evento").val() === "0" || $("#tipo_evento").val() === null) {
+            M.toast({
+                html: '¡Debe seleccionar un tipo de evento para continuar!',
+                classes: 'deep-orange c-blanco'
+            });
+            return false;
+        }
+        return true;
+    }
+    function validar_horario_evento() {
+        var horario_evento = $("#horario_evento");
+        if (horario_evento.val() === "") {
+            M.toast({
+                html: 'Debe seleccionar un horario inicial válido para continuar!',
+                classes: 'deep-orange c-blanco',
+            }, 5000);
+            return false;
+        }
+        return true;
+    }
+    function validar_horario_final() {
+        var horario_final_evento = $("#horario_final_evento");
+        if (horario_final_evento.val() === "") {
+            M.toast({
+                html: 'Debe seleccionar un horario final válido para continuar!',
+                classes: 'deep-orange c-blanco',
+            });
+            return false;
+        }
+        return true;
+    }
+    function validar_nombre_evento() {
+        var nombre_evento = $("#nombre_evento");
+        if (nombre_evento.val() === "") {
+            M.toast({
+                html: 'Debe ingresar un nombre del evento válido para continuar!',
+                classes: 'deep-orange c-blanco',
+            }, 5000);
+            return false;
+        }
+        return true;
+    }
+    function validar_responsable_evento() {
+        var responsable_evento = $("#responsable_evento");
+        if (responsable_evento.val() === "") {
+            M.toast({
+                html: '¡Debe ingresar un responsable del evento válido para continuar!',
+                classes: 'deep-orange c-blanco',
+            });
+            return false;
+        }
+        return true;
+    }
+    function validar_numero_invitados() {
+        var cantidad_invitados = $("#cantidad_invitados");
+        if (cantidad_invitados.val() === "") {
+            M.toast({
+                html: '¡Debe ingresar la cantidad de invitados al evento para continuar!',
+                classes: 'deep-orange c-blanco',
+            });
+            return false;
+        }
+        return true;
+    }
+    function validar_lugar_evento() {
+        if ($("#lugar_evento").val() === "" || $("#lugar_evento").val() === "0" || $("#lugar_evento").val() === null) {
+            M.toast({
+                html: '¡Debe seleccionar el lugar del evento para continuar!',
+                classes: 'deep-orange c-blanco'
+            });
+            return false;
+        }
+        return true;
     }
 </script>
 
