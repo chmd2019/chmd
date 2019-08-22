@@ -5,8 +5,12 @@ require "$root_icloud/Evento/common/ControlEvento.php";
 
 $control = new ControlEvento();
 $id_lugar_evento = $_GET['id_lugar'];
+$fecha_evento = $_GET['id_lugar'];
+$horario_evento = $_GET['horario_evento'];
+$horario_final_evento = $_GET['horario_final_evento']; 
 
-$equipo_tecnico = $control->obtener_capacidad_equipo_tecnico($id_lugar_evento);
+$equipo_tecnico = $control->obtener_capacidad_equipo_tecnico_2($id_lugar_evento,
+        $horario_evento,$horario_final_evento,$fecha_evento);
 $respuesta = array();
 
 while ($row = mysqli_fetch_array($equipo_tecnico)) {

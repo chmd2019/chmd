@@ -186,7 +186,7 @@ if (isset($authUrl)) {
                                 autocomplete="off"
                                 placeholder="Para el día"
                                 onchange="fecha_minusculas(this.value, 'fecha_evento_interno');
-                                        reset_check_requiero_personal()">            
+                                                reset_check_requiero_personal()">            
                         </div>
                         <script>
                             //obtiene el calendario escolar en db
@@ -226,7 +226,7 @@ if (isset($authUrl)) {
                                 autocomplete="off"
                                 placeholder="Para el día"
                                 onchange="fecha_minusculas(this.value, 'fecha_evento_combinado_externo');
-                                        reset_check_requiero_personal()">            
+                                                reset_check_requiero_personal()">            
                         </div>
                         <script>
                             //obtiene el calendario escolar en db
@@ -266,7 +266,7 @@ if (isset($authUrl)) {
                                 autocomplete="off"
                                 placeholder="Para el día"
                                 onchange="fecha_minusculas(this.value, 'fecha_servicio_especial');
-                                        reset_check_requiero_personal()">            
+                                                reset_check_requiero_personal()">            
                         </div>
                         <script>
                             //obtiene el calendario escolar en db
@@ -952,6 +952,10 @@ if (isset($authUrl)) {
         });
     }
     function cargar_equipo_tecnico(el) {
+
+        var fecha_montaje = obtener_fecha();
+        var horario_evento = $("#horario_evento").val();
+        var horario_final_evento = $("#horario_final_evento").val();
         if (id_lugar === 0) {
             el.checked = false;
             M.toast({
@@ -967,7 +971,12 @@ if (isset($authUrl)) {
                 beforeSend: () => {
                     $("#loading").fadeIn("slow");
                 },
-                data: {"id_lugar": id_lugar}
+                data: {
+                    id_lugar: id_lugar,
+                    fecha_montaje:fecha_montaje,
+                    horario_evento: horario_evento,
+                    horario_final_evento: horario_final_evento
+                }
             }).done((res) => {
                 res = JSON.parse(res);
                 mostrar_equipo_tecnico(res);
@@ -979,13 +988,19 @@ if (isset($authUrl)) {
         }
     }
     function cargar_inventario_manteles(id_lugar_evento, inventario) {
+        var horario_evento = $("#horario_evento").val();
+        var horario_final_evento = $("#horario_final_evento").val();
         $.ajax({
             url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/get_capacidad_manteles.php',
             type: 'GET',
             beforeSend: () => {
                 $("#loading").fadeIn("slow");
             },
-            data: {"id_lugar": id_lugar_evento}
+            data: {
+                id_lugar: id_lugar_evento,
+                horario_evento: horario_evento,
+                horario_final_evento: horario_final_evento
+            }
         }).done((res) => {
             $("#tabla_manteles").html("");
             res = JSON.parse(res);
@@ -1329,7 +1344,7 @@ if (isset($authUrl)) {
                 token: token,
                 socket_id: pusher.connection.socket_id,
                 ensayo: true,
-                n_ensayo:i
+                n_ensayo: i
             }
         }).done((res) => {
             if (res.respuesta) {
@@ -1345,7 +1360,7 @@ if (isset($authUrl)) {
                 $("#requiero_ensayo").prop("disabled", true);
                 $(reserva_personal).prop("hidden", true);
                 $(anular_personal_ensayo).prop("hidden", false);
-                timestamp_personal_montaje_ensayos.push({timestamp: res.timestamp, i: i+1});
+                timestamp_personal_montaje_ensayos.push({timestamp: res.timestamp, i: i + 1});
             }
         }).always(() => {
             $("#loading").fadeOut();
@@ -1354,7 +1369,7 @@ if (isset($authUrl)) {
     function anular_reserva_personal_ensayo(select_personal_montaje, select_personal_cabina_auditorio,
             select_personal_limpieza, btn_anular, btn_asignar, i) {
         for (var item in timestamp_personal_montaje_ensayos) {
-            if (timestamp_personal_montaje_ensayos[item].i === i+1) {
+            if (timestamp_personal_montaje_ensayos[item].i === i + 1) {
                 $.ajax({
                     url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/post_anula_personal_asignado.php',
                     type: 'POST',
@@ -1364,7 +1379,7 @@ if (isset($authUrl)) {
                     },
                     data: {timestamp: timestamp_personal_montaje_ensayos[item].timestamp}
                 }).done((res) => {
-                    if (res) {
+                    if (res.response) {
                         M.toast({
                             html: 'Ha sido anulada la selección del personal!',
                             classes: 'blue c-blanco',
@@ -1375,15 +1390,21 @@ if (isset($authUrl)) {
                         $('select').formSelect();
                         $(btn_anular).prop("hidden", true);
                         $(btn_asignar).prop("hidden", false);
-                        var index = timestamp_personal_montaje_ensayos.indexOf(timestamp_personal_montaje_ensayos[item]);
-                        var borrado = null;
-                        if (index > -1) {
-                            borrado = timestamp_personal_montaje_ensayos.splice(index - 1, 1);
+
+                        for (var item in timestamp_personal_montaje_ensayos) {
+                            if (timestamp_personal_montaje_ensayos[item].timestamp === res.timestamp) {
+                                delete timestamp_personal_montaje_ensayos[item];
+                            }
+                        }
+                        if ($.isEmptyObject(timestamp_personal_montaje_ensayos)) {
+                            $("#requiero_ensayo").prop("disabled", false);
+                            $("#select_ensayos").prop("disabled", false);
+                            $('#select_ensayos option[value=0]').prop("selected", "selected").change();
+                            $('select').formSelect();
                         }
                     }
                 }).always(() => {
                     $("#loading").fadeOut();
-                    console.log(timestamp_personal_montaje_ensayos);
                 });
             }
         }
@@ -1683,106 +1704,7 @@ if (isset($authUrl)) {
         }
         return fecha;
     }
-    //salvar formulario
-    function enviar_formulario() {
-        //asignacion de esanyos
-        ensayos = [];
-        if (lista_ensayos > 0) {
-            for (var i = 0, max = lista_ensayos; i < max; i++) {
-                ensayos.push({
-                    fecha_ensayo: $("#fecha_ensayo_" + i).val(),
-                    hora_inicial: $("#horario_inicial_ensayo_" + i).val(),
-                    hora_final: $("#horario_final_ensayo_" + i).val(),
-                    requerimientos_especiales: $("#requerimientos_especiales_ensayo_" + i).val(),
-                    index:i+1
-                });
-            }
-        }
-        //validaciones
-        if (!validar_tipo_evento())
-            return;
-        if (obtener_fecha() === null) {
-            M.toast({
-                html: '¡Debe seleccionar una fecha válida para continuar!',
-                classes: 'deep-orange c-blanco'
-            });
-            return false;
-        }
-        if (!validar_horario_evento())
-            return;
-        if (!validar_horario_final())
-            return;
-        if (!validar_nombre_evento())
-            return;
-        if (!validar_responsable_evento())
-            return;
-        if (!validar_numero_invitados())
-            return;
-        if (!validar_lugar_evento())
-            return;
-
-        //data del formulario
-        var fecha_solicitud = $("#fecha_solicitud").val();
-        var solicitante = $("#solicitante").val();
-        var tipo_evento = $("#tipo_evento").val();
-        var fecha_montaje = obtener_fecha_asignada();
-        var fecha_montaje_simple = obtener_fecha();
-        var horario_evento = $("#horario_evento").val();
-        var horario_final_evento = $("#horario_final_evento").val();
-        var nombre_evento = $("#nombre_evento").val();
-        var responsable_evento = $("#responsable_evento").val();
-        var cantidad_invitados = $("#cantidad_invitados").val();
-        var valet_parking = $("#valet_parking").val();
-        var anexa_programa = $("#anexa_programa").val().length > 0 ? true : false;
-        var lugar_evento = $("#lugar_evento").val();
-        var select_tipo_repliegue = $("#select_tipo_repliegue").val();
-        var requiero_ensayo = $("#requiero_ensayo").prop('checked');
-        var select_ensayos = $("#select_ensayos").val();
-        var requerimientos_especiales = $("#requerimientos_especiales").val();
-        var check_equipo_tecnico = $("#check_equipo_tecnico").prop('checked');
-
-        var data = {
-            fecha_solicitud: fecha_solicitud,
-            solicitante: solicitante,
-            tipo_evento: tipo_evento,
-            fecha_montaje: fecha_montaje,
-            fecha_montaje_simple: fecha_montaje_simple,
-            horario_evento: horario_evento,
-            horario_final_evento: horario_final_evento,
-            nombre_evento: nombre_evento,
-            responsable_evento: responsable_evento,
-            cantidad_invitados: cantidad_invitados,
-            valet_parking: valet_parking,
-            anexa_programa: anexa_programa,
-            tipo_repliegue: select_tipo_repliegue,
-            lugar_evento: lugar_evento,
-            requiero_ensayo: requiero_ensayo,
-            select_ensayos: select_ensayos,
-            requerimientos_especiales: requerimientos_especiales,
-            timestamp_inventario: timestamp_inventario,
-            timestamp_inventario_manteles: timestamp_inventario_manteles,
-            timestamp_equipo_tecnico: timestamp_equipo_tecnico,
-            timestamp_personal_montaje: timestamp_personal_montaje,
-            timestamp_personal_montaje_ensayos: timestamp_personal_montaje_ensayos,
-            ensayos:ensayos
-        };
-        $.ajax({
-            url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/post_nuevo_montaje.php',
-            type: 'POST',
-            dataType: 'json',
-            beforeSend: () => {
-                $("#loading").fadeIn("slow");
-            },
-            data: data
-        }).done((res) => {
-            if ($("#anexa_programa").val().length > 0) {
-                cargar_archivo_programa(archivo_cargado, res);
-            }
-            ensayos = [];
-        }).always(() => {
-            $("#loading").fadeOut("slow");
-        });
-    }
+    //validaciones
     function validar_tipo_evento() {
         if ($("#tipo_evento").val() === "" || $("#tipo_evento").val() === "0" || $("#tipo_evento").val() === null) {
             M.toast({
@@ -1857,6 +1779,106 @@ if (isset($authUrl)) {
             return false;
         }
         return true;
+    }
+    //salvar formulario
+    function enviar_formulario() {
+        //asignacion de esanyos
+        ensayos = [];
+        if (lista_ensayos > 0) {
+            for (var i = 0, max = lista_ensayos; i < max; i++) {
+                ensayos.push({
+                    fecha_ensayo: $("#fecha_ensayo_" + i).val(),
+                    hora_inicial: $("#horario_inicial_ensayo_" + i).val(),
+                    hora_final: $("#horario_final_ensayo_" + i).val(),
+                    requerimientos_especiales: $("#requerimientos_especiales_ensayo_" + i).val(),
+                    index: i + 1
+                });
+            }
+        }
+        //validaciones
+        if (!validar_tipo_evento())
+            return;
+        if (obtener_fecha() === null) {
+            M.toast({
+                html: '¡Debe seleccionar una fecha válida para continuar!',
+                classes: 'deep-orange c-blanco'
+            });
+            return false;
+        }
+        if (!validar_horario_evento())
+            return;
+        if (!validar_horario_final())
+            return;
+        if (!validar_nombre_evento())
+            return;
+        if (!validar_responsable_evento())
+            return;
+        if (!validar_numero_invitados())
+            return;
+        if (!validar_lugar_evento())
+            return;
+
+        //data del formulario
+        var fecha_solicitud = $("#fecha_solicitud").val();
+        var solicitante = $("#solicitante").val();
+        var tipo_evento = $("#tipo_evento").val();
+        var fecha_montaje = obtener_fecha_asignada();
+        var fecha_montaje_simple = obtener_fecha();
+        var horario_evento = $("#horario_evento").val();
+        var horario_final_evento = $("#horario_final_evento").val();
+        var nombre_evento = $("#nombre_evento").val();
+        var responsable_evento = $("#responsable_evento").val();
+        var cantidad_invitados = $("#cantidad_invitados").val();
+        var valet_parking = $("#valet_parking").val();
+        var anexa_programa = $("#anexa_programa").val().length > 0 ? true : false;
+        var lugar_evento = $("#lugar_evento").val();
+        var select_tipo_repliegue = $("#select_tipo_repliegue").val();
+        var requiero_ensayo = $("#requiero_ensayo").prop('checked');
+        var select_ensayos = $("#select_ensayos").val();
+        var requerimientos_especiales = $("#requerimientos_especiales").val();
+        var check_equipo_tecnico = $("#check_equipo_tecnico").prop('checked');
+
+        var data = {
+            fecha_solicitud: fecha_solicitud,
+            solicitante: solicitante,
+            tipo_evento: tipo_evento,
+            fecha_montaje: fecha_montaje,
+            fecha_montaje_simple: fecha_montaje_simple,
+            horario_evento: horario_evento,
+            horario_final_evento: horario_final_evento,
+            nombre_evento: nombre_evento,
+            responsable_evento: responsable_evento,
+            cantidad_invitados: cantidad_invitados,
+            valet_parking: valet_parking,
+            anexa_programa: anexa_programa,
+            tipo_repliegue: select_tipo_repliegue,
+            lugar_evento: lugar_evento,
+            requiero_ensayo: requiero_ensayo,
+            select_ensayos: select_ensayos,
+            requerimientos_especiales: requerimientos_especiales,
+            timestamp_inventario: timestamp_inventario,
+            timestamp_inventario_manteles: timestamp_inventario_manteles,
+            timestamp_equipo_tecnico: timestamp_equipo_tecnico,
+            timestamp_personal_montaje: timestamp_personal_montaje,
+            timestamp_personal_montaje_ensayos: timestamp_personal_montaje_ensayos,
+            ensayos: ensayos
+        };
+        $.ajax({
+            url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/post_nuevo_montaje.php',
+            type: 'POST',
+            dataType: 'json',
+            beforeSend: () => {
+                $("#loading").fadeIn("slow");
+            },
+            data: data
+        }).done((res) => {
+            if ($("#anexa_programa").val().length > 0) {
+                cargar_archivo_programa(archivo_cargado, res);
+            }
+            ensayos = [];
+        }).always(() => {
+            $("#loading").fadeOut("slow");
+        });
     }
 </script>
 

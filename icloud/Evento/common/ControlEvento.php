@@ -43,6 +43,28 @@ class ControlEvento {
         }
     }
 
+    public function obtener_capacidad_equipo_tecnico_2($id_lugar_evento,$horario_evento,$horario_final_evento,$fecha_evento) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql_1 = "SET @hora_inicial = '$horario_evento';";
+            $sql_2 = "SET @hora_final = '$horario_final_evento';";
+            $sql_3 = "SELECT DISTINCT a.id_articulo, b.articulo, c.capacidad,"
+                    . "(SELECT COUNT(a.id_articulo) FROM Inventario_ocupado_equipo_tecnico a "
+                    . "WHERE a.id_articulo = b.id) AS asignado, (b.inventario - (SELECT COUNT(a.id_articulo) "
+                    . "FROM Inventario_ocupado_equipo_tecnico a WHERE a.id_articulo = b.id)) AS disponible, "
+                    . "b.ruta_img FROM Inventario_ocupado_equipo_tecnico a "
+                    . "INNER JOIN Inventario_equipo_tecnico b ON b.id = a.id_articulo "
+                    . "INNER JOIN Inventario_capacidad_equipo_tecnico c ON c.id_articulo = b.id "
+                    . "WHERE c.lugar = $id_lugar_evento AND (@hora_inicial >= hora_min AND fecha_montaje ='$fecha_evento' "
+                    . "AND @hora_inicial <= hora_max OR @hora_final >= hora_min "
+                    . "AND @hora_final <= hora_max)";
+            mysqli_set_charset($connection, "utf8");
+            mysqli_query($connection, $sql_1);
+            mysqli_query($connection, $sql_2);
+            return mysqli_query($connection, $sql_3);
+        }
+    }
+
     public function obtener_capacidad_manteles($lugar) {
         $connection = $this->con->conectar1();
         if ($connection) {
