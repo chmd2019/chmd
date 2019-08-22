@@ -173,7 +173,7 @@ if (isset($authUrl)) {
 
                                     </div>
 
-                                    <div class="col s12 m6 l4">
+                                    <!--<div class="col s12 m6 l4">
 
                                         <div class="card" style="box-shadow: none">
 
@@ -207,7 +207,7 @@ if (isset($authUrl)) {
 
                                         </div>
 
-                                    </div>                                        
+                                    </div>      -->                                  
 
                                     <div class="col s12 m6 l4">
 
@@ -244,6 +244,7 @@ if (isset($authUrl)) {
                                         </div>
 
                                     </div>
+                                    <!--
 
                                     <div class="col s12 m6 l4">
 
@@ -280,6 +281,7 @@ if (isset($authUrl)) {
                                         </div>
 
                                     </div>
+-->
 
                                     <div class="col s12 m6 l4">
 
@@ -316,26 +318,28 @@ if (isset($authUrl)) {
                                         </div>
 
                                     </div>
+                                    <!--
 
-                                    <div class="col s12 m6 l4">
-                                        <div class="card" style="box-shadow: none">
-                                            <div class="card-image waves-effect waves-block waves-light">
-                                                <a href='Evento/menu.php'>
-                                                    <img src="https://www.chmd.edu.mx/pruebascd/icloud/pics/activos/party.svg" 
-                                                         style="padding:3rem;width: 80%;margin: auto">
-                                                </a>
-                                            </div>
-                                            <div class="card-content text-center" style="padding:0px;margin-top: -15px">
-                                                <span class="activator waves-effect waves-light btn b-azul c-blanco">
-                                                    INFO
-                                                </span>      
-                                            </div>
-                                            <div class="card-reveal b-azul white-text">
-                                                <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
-                                                <p>INFO pendiente.</p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                                                        <div class="col s12 m6 l4">
+                                                                            <div class="card" style="box-shadow: none">
+                                                                                <div class="card-image waves-effect waves-block waves-light">
+                                                                                    <a href='Evento/menu.php'>
+                                                                                        <img src="https://www.chmd.edu.mx/pruebascd/icloud/pics/activos/party.svg" 
+                                                                                             style="padding:3rem;width: 80%;margin: auto">
+                                                                                    </a>
+                                                                                </div>
+                                                                                <div class="card-content text-center" style="padding:0px;margin-top: -15px">
+                                                                                    <span class="activator waves-effect waves-light btn b-azul c-blanco">
+                                                                                        INFO
+                                                                                    </span>      
+                                                                                </div>
+                                                                                <div class="card-reveal b-azul white-text">
+                                                                                    <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
+                                                                                    <p>INFO pendiente.</p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                    -->
 
                                 </div>
 

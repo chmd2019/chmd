@@ -9,10 +9,10 @@ class DBManager
     
     public function __construct()
     {
-        $this->BaseDatos = "chmd_sistemas";
+        $this->BaseDatos = "icloud";
         $this->Servidor = "132.148.43.14";
-        $this->Usuario = "sistemas";
-        $this->Clave = "S4st3m4s2019.";
+        $this->Usuario = "icloud";
+        $this->Clave = "Icloud2019.";
     }
 
     public function conectar1()

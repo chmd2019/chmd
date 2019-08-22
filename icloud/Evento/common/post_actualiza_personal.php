@@ -15,6 +15,7 @@ $hora_min = date("H:i:s", strtotime($horario_inicial_evento . "-7200 seconds"));
 //final
 $hora_max = date("H:i:s", strtotime($horario_final_evento . "+7199 seconds"));
 $ensayo = $_POST['ensayo'];
+$n_ensayo = intval($_POST['n_ensayo'])+1;
 //pusher (websockets)
 $options = array(
     'cluster' => 'us3',
@@ -37,7 +38,7 @@ $confirm = true;
 foreach ($personal_montaje as $key => $value) {
     if ($value['cantidad'] > 0) {
         for ($index = 0; $index < $value['cantidad']; $index++) {
-            $insert = $control->actualizar_personal_tmp($value['tipo'], $fecha_montaje, $horario_inicial_evento, $horario_final_evento, $hora_min, $hora_max, 1, $ensayo);
+            $insert = $control->actualizar_personal_tmp($value['tipo'], $fecha_montaje, $horario_inicial_evento, $horario_final_evento, $hora_min, $hora_max, 1, $ensayo, $n_ensayo);
             if (!$insert)
                 $confirm = false;
         }
@@ -46,7 +47,7 @@ foreach ($personal_montaje as $key => $value) {
 foreach ($personal_cabina_auditorio as $key => $value) {
     if ($value['cantidad'] > 0) {
         for ($index = 0; $index < $value['cantidad']; $index++) {
-            $insert = $control->actualizar_personal_tmp($value['tipo'], $fecha_montaje, $horario_inicial_evento, $horario_final_evento, $hora_min, $hora_max, 1, $ensayo);
+            $insert = $control->actualizar_personal_tmp($value['tipo'], $fecha_montaje, $horario_inicial_evento, $horario_final_evento, $hora_min, $hora_max, 1, $ensayo, $n_ensayo);
             if (!$insert)
                 $confirm = false;
         }
@@ -55,7 +56,7 @@ foreach ($personal_cabina_auditorio as $key => $value) {
 foreach ($personal_limpieza as $key => $value) {
     if ($value['cantidad'] > 0) {
         for ($index = 0; $index < $value['cantidad']; $index++) {
-            $insert = $control->actualizar_personal_tmp($value['tipo'], $fecha_montaje, $horario_inicial_evento, $horario_final_evento, $hora_min, $hora_max, 1, $ensayo);
+            $insert = $control->actualizar_personal_tmp($value['tipo'], $fecha_montaje, $horario_inicial_evento, $horario_final_evento, $hora_min, $hora_max, 1, $ensayo, $n_ensayo);
             if (!$insert)
                 $confirm = false;
         }
@@ -64,7 +65,7 @@ foreach ($personal_limpieza as $key => $value) {
 foreach ($personal_vigilancia as $key => $value) {
     if ($value['cantidad'] > 0) {
         for ($index = 0; $index < $value['cantidad']; $index++) {
-            $insert = $control->actualizar_personal_tmp($value['tipo'], $fecha_montaje, $horario_inicial_evento, $horario_final_evento, $hora_min, $hora_max, 1, $ensayo);
+            $insert = $control->actualizar_personal_tmp($value['tipo'], $fecha_montaje, $horario_inicial_evento, $horario_final_evento, $hora_min, $hora_max, 1, $ensayo, $n_ensayo);
             if (!$insert)
                 $confirm = false;
         }

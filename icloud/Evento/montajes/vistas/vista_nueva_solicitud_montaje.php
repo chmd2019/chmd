@@ -625,8 +625,8 @@ if (isset($authUrl)) {
     var coleccion_inventario = [];
     var coleccion_equipo_tecnico = [];
     //manejo de ensayos
-    var lista_ensayos = [];
-
+    var lista_ensayos = 0;
+    var ensayos = [];
     $(document).ready(function () {
         $("#loading").fadeOut("slow");
         $('select').formSelect();
@@ -763,12 +763,13 @@ if (isset($authUrl)) {
         }
     }
     function mostrar_caja_ensayos(el) {
+        lista_ensayos = el.value;
         var codigo_ensayo = "";
         for (var i = 0; i < el.value; i++) {
             var codigo = `<div class="col s12 card"> <div class="card-content" style="color:#00C2EE;"> <h5>Ensayo N° ${i + 1}</h5> </div><div class="card-tabs"> <ul class="tabs tabs-fixed-width"> <li class="tab blue white-text active"><a href="#tab_1_${i + 1}">Información de ensayo</a> </li><li class="tab blue white-text" onclick="cargar_personal_ensayo(${i})"><a href="#tab_2_${i + 1}">Personal</a> </li></ul> </div><div class="card-content"> <div id="tab_1_${i + 1}"> <div class="col s12 l6"> <label style="margin-left: 1rem;color:#00C2EE">Fecha del ensayo</label> <div class="input-field"> <i class="material-icons prefix c-azul">calendar_today</i> <input type="text" class="datepicker" id="fecha_ensayo_${i}" autocomplete="off" placeholder="Escoja fecha" onchange="fecha_minusculas(this.value, 'fecha_permiso')" style="font-size: 1rem"> </div></div><div class="col s12 l6"> <label style="margin-left: 1rem;color:#00C2EE">Horario inicial</label> <div class="input-field"> <i class="material-icons prefix c-azul">access_time</i> <input type="text" id="horario_inicial_ensayo_${i}" class="timepicker" onkeypress="return validar_solo_numeros(event, this.id, 1)" autocomplete="off" onfocus="blur();" placeholder="Seleccione horario"> </div></div><div class="col s12 l6"> <label style="margin-left: 1rem;color:#00C2EE">Horario final</label> <div class="input-field"> <i class="material-icons prefix c-azul">access_time</i> <input type="text" id="horario_final_ensayo_${i}" class="timepicker" onkeypress="return validar_solo_numeros(event, this.id, 1)" onchange="validar_horario_final_ensayo(this,'horario_inicial_ensayo_${i}')" autocomplete="off" onfocus="blur();" placeholder="Seleccione horario"> </div></div><div class="input-field col s12"> <i class="material-icons prefix c-azul">list_alt</i> <textarea class="materialize-textarea" id="requerimientos_especiales_ensayo_${i}" placeholder="Requerimientos especiales"></textarea> </div></div><div id="tab_2_${i + 1}"> <div id="caja_select_${i}"> <div class="input-field col s12 l6"> <i class="material-icons prefix c-azul">build</i> <select id="select_montaje_ensayo_${i}"></select> <label style="margin-left: 1rem;color:#00C2EE">Personal de montaje</label> </div><div class="input-field col s12 l6"> <i class="material-icons prefix c-azul">build</i> <select id="select_cabina_auditorio_ensayo_${i}"></select> <label style="margin-left: 1rem;color:#00C2EE">Personal de cabina de auditorio</label> </div><div class="input-field col s12 l6"> <i class="material-icons prefix c-azul">build</i> <select id="select_limpieza_ensayo_${i}"></select> <label style="margin-left: 1rem;color:#00C2EE">Personal de limpieza</label> </div><div class="input-field col s12" style="text-align: center" id="reserva_personal_${i}"> <button class="waves-effect waves-light btn col l4" onclick="actualizar_personal_ensayo('select_montaje_ensayo_${i}', 'select_cabina_auditorio_ensayo_${i}', 'select_limpieza_ensayo_${i}', 'fecha_ensayo_${i}','horario_inicial_ensayo_${i}','horario_final_ensayo_${i}', '#reserva_personal_${i}', '#anular_reserva_personal_${i}',${i})" type="button" style="background-color: #00C2EE;float: none">Reservar personal <i class="material-icons right">save</i> </button> </div><div class="input-field col s12" style="text-align: center;" hidden id="anular_reserva_personal_${i}"> <button class="waves-effect waves-light btn red col l3" style="float: none" type="button" onclick="anular_reserva_personal_ensayo('#select_montaje_ensayo_${i}','#select_cabina_auditorio_ensayo_${i}','#select_limpieza_ensayo_${i}','#anular_reserva_personal_${i}','#reserva_personal_${i}',${i})">Anular reserva <i class="material-icons right">delete</i> </button> </div></div><span class="col s12"><br></span> <div class="chip orange col s12 white-text" style="text-align: center" id="validacion_ensayo_${i}"> <span>Debe seleccionar una fecha y horarios válidos para continuar!</span> </div><span class="col s12 hide-on-med-and-down"><br><br></span> </div></div></div>`;
             codigo_ensayo += `${codigo}`;
-            lista_ensayos.push(i + 1);
         }
+
         $("#caja_ensayos").html(codigo_ensayo);
         $('.tabs').tabs();
         $('select').formSelect();
@@ -801,7 +802,6 @@ if (isset($authUrl)) {
             'maxTime': '18:00',
             'timeFormat': 'H:i:s'
         });
-        console.log(lista_ensayos);
     }
     function mostrar_caja_personal_ensayo(el, i) {
         if ($("#caja_personal_evento_" + i).prop("hidden")) {
@@ -1328,7 +1328,8 @@ if (isset($authUrl)) {
                 horario_final_evento,
                 token: token,
                 socket_id: pusher.connection.socket_id,
-                ensayo: true
+                ensayo: true,
+                n_ensayo:i
             }
         }).done((res) => {
             if (res.respuesta) {
@@ -1344,7 +1345,7 @@ if (isset($authUrl)) {
                 $("#requiero_ensayo").prop("disabled", true);
                 $(reserva_personal).prop("hidden", true);
                 $(anular_personal_ensayo).prop("hidden", false);
-                timestamp_personal_montaje_ensayos.push({timestamp: res.timestamp, i: i});
+                timestamp_personal_montaje_ensayos.push({timestamp: res.timestamp, i: i+1});
             }
         }).always(() => {
             $("#loading").fadeOut();
@@ -1353,7 +1354,7 @@ if (isset($authUrl)) {
     function anular_reserva_personal_ensayo(select_personal_montaje, select_personal_cabina_auditorio,
             select_personal_limpieza, btn_anular, btn_asignar, i) {
         for (var item in timestamp_personal_montaje_ensayos) {
-            if (timestamp_personal_montaje_ensayos[item].i === i) {
+            if (timestamp_personal_montaje_ensayos[item].i === i+1) {
                 $.ajax({
                     url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/post_anula_personal_asignado.php',
                     type: 'POST',
@@ -1684,6 +1685,19 @@ if (isset($authUrl)) {
     }
     //salvar formulario
     function enviar_formulario() {
+        //asignacion de esanyos
+        ensayos = [];
+        if (lista_ensayos > 0) {
+            for (var i = 0, max = lista_ensayos; i < max; i++) {
+                ensayos.push({
+                    fecha_ensayo: $("#fecha_ensayo_" + i).val(),
+                    hora_inicial: $("#horario_inicial_ensayo_" + i).val(),
+                    hora_final: $("#horario_final_ensayo_" + i).val(),
+                    requerimientos_especiales: $("#requerimientos_especiales_ensayo_" + i).val(),
+                    index:i+1
+                });
+            }
+        }
         //validaciones
         if (!validar_tipo_evento())
             return;
@@ -1707,7 +1721,7 @@ if (isset($authUrl)) {
         if (!validar_lugar_evento())
             return;
 
-
+        //data del formulario
         var fecha_solicitud = $("#fecha_solicitud").val();
         var solicitante = $("#solicitante").val();
         var tipo_evento = $("#tipo_evento").val();
@@ -1749,7 +1763,8 @@ if (isset($authUrl)) {
             timestamp_inventario_manteles: timestamp_inventario_manteles,
             timestamp_equipo_tecnico: timestamp_equipo_tecnico,
             timestamp_personal_montaje: timestamp_personal_montaje,
-            timestamp_personal_montaje_ensayos: timestamp_personal_montaje_ensayos
+            timestamp_personal_montaje_ensayos: timestamp_personal_montaje_ensayos,
+            ensayos:ensayos
         };
         $.ajax({
             url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/post_nuevo_montaje.php',
@@ -1763,6 +1778,7 @@ if (isset($authUrl)) {
             if ($("#anexa_programa").val().length > 0) {
                 cargar_archivo_programa(archivo_cargado, res);
             }
+            ensayos = [];
         }).always(() => {
             $("#loading").fadeOut("slow");
         });
