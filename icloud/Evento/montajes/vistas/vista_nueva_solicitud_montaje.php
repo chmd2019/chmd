@@ -933,13 +933,22 @@ if (isset($authUrl)) {
             $("#check_equipo_tecnico").click();
         }
         id_lugar = id_lugar_evento;
+        var fecha_montaje_simple        = obtener_fecha();
+        var horario_evento              = $("#horario_evento").val();
+        var horario_final_evento        = $("#horario_final_evento").val();
+        
         $.ajax({
             url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/get_capacidad_mobiliario.php',
             type: 'GET',
             beforeSend: () => {
                 $("#loading").fadeIn("slow");
             },
-            data: {"id_lugar_evento": id_lugar_evento}
+            data: {
+                id_lugar_evento: id_lugar_evento,
+                fecha_montaje_simple:fecha_montaje_simple,
+                horario_evento:horario_evento,
+                horario_final_evento:horario_final_evento
+            }
         }).done((res) => {
             res = JSON.parse(res);
             cargar_inventario_manteles(id_lugar_evento, res);
@@ -973,7 +982,7 @@ if (isset($authUrl)) {
                 },
                 data: {
                     id_lugar: id_lugar,
-                    fecha_montaje:fecha_montaje,
+                    fecha_montaje: fecha_montaje,
                     horario_evento: horario_evento,
                     horario_final_evento: horario_final_evento
                 }
@@ -988,6 +997,7 @@ if (isset($authUrl)) {
         }
     }
     function cargar_inventario_manteles(id_lugar_evento, inventario) {
+        var fecha_montaje_simple = obtener_fecha();
         var horario_evento = $("#horario_evento").val();
         var horario_final_evento = $("#horario_final_evento").val();
         $.ajax({
@@ -999,7 +1009,8 @@ if (isset($authUrl)) {
             data: {
                 id_lugar: id_lugar_evento,
                 horario_evento: horario_evento,
-                horario_final_evento: horario_final_evento
+                horario_final_evento: horario_final_evento,
+                fecha_montaje_simple: fecha_montaje_simple
             }
         }).done((res) => {
             $("#tabla_manteles").html("");
