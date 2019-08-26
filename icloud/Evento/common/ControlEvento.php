@@ -445,7 +445,7 @@ class ControlEvento {
         }
     }
 
-    public function nuevo_montaje($fecha_solicitud, $solicitante, $tipo_evento, $fecha_montaje, $fecha_montaje_simple, $horario_evento, $horario_final_evento, $nombre_evento, $responsable_evento, $cantidad_invitados, $valet_parking, $anexa_programa, $tipo_repliegue, $requiere_ensayo, $cantidad_ensayos, $requerimientos_especiales, $check_equipo_tecnico, $id_lugar_evento) {
+    public function nuevo_montaje($fecha_solicitud, $solicitante, $tipo_evento, $fecha_montaje, $fecha_montaje_simple, $horario_evento, $horario_final_evento, $nombre_evento, $responsable_evento, $cantidad_invitados, $valet_parking, $anexa_programa, $tipo_repliegue, $requiere_ensayo, $cantidad_ensayos, $requerimientos_especiales, $check_equipo_tecnico, $id_lugar_evento, $evento_con_cafe) {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "INSERT INTO `icloud`.`Evento_montaje` ("
@@ -465,7 +465,9 @@ class ControlEvento {
                     . "`requiere_ensayo`, "
                     . "`cantidad_ensayos`, "
                     . "`requerimientos_especiales`, "
-                    . "`check_equipo_tecnico`, `id_lugar_evento`) VALUES ("
+                    . "`check_equipo_tecnico`, "
+                    . "`id_lugar_evento`, "
+                    . "`evento_con_cafe`) VALUES ("
                     . "'$fecha_solicitud', "
                     . "'$solicitante', "
                     . "'$tipo_evento', "
@@ -483,7 +485,8 @@ class ControlEvento {
                     . "'$cantidad_ensayos', "
                     . "'$requerimientos_especiales', "
                     . "$check_equipo_tecnico, "
-                    . "$id_lugar_evento)";
+                    . "$id_lugar_evento, "
+                    . "1)";
             mysqli_set_charset($connection, "utf8");
             mysqli_query($connection, $sql);
             return mysqli_insert_id($connection);
@@ -574,7 +577,7 @@ class ControlEvento {
                     . "a.nombre_evento, a.responsable_evento,a.cantidad_invitados, "
                     . "a.valet_parking, b.url,a.anexa_programa,a.tipo_repliegue,a.requiere_ensayo,"
                     . "a.cantidad_ensayos, a.requerimientos_especiales, b.name_no_encripted,"
-                    . " c.descripcion AS lugar_evento FROM Evento_montaje a LEFT OUTER JOIN Archivos_montaje b "
+                    . " c.descripcion AS lugar_evento, a.solo_cafe, a.evento_con_cafe FROM Evento_montaje a LEFT OUTER JOIN Archivos_montaje b "
                     . "ON b.id_motaje = a.id INNER JOIN Lugares_eventos c ON c.id = a.id_lugar_evento "
                     . "WHERE a.id = $id_montaje";
             mysqli_set_charset($connection, "utf8");
@@ -683,6 +686,64 @@ class ControlEvento {
                     . "WHERE a.id_evento_montaje = $id_montaje and a.id_tipo_personal = b.tipo_personal ORDER BY b.tipo_personal";
             mysqli_set_charset($connection, "utf8");
             return mysqli_query($connection, $sql);
+        }
+    }
+    
+    public function consulta_servicio_cafe($catindad_invitados){
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT b.ingrediente, (a.cantidad_x_invitado*$catindad_invitados.1) AS cantidad_servicio, b.ruta_img  "
+                    . "FROM Inventario_capacidad_cafe a INNER JOIN Inventario_cafe b ON b.id = a.id_ingrediente "
+                    . "WHERE $catindad_invitados >= a.n_invitados_min AND $catindad_invitados <= a.n_invitados_max;";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+    
+    public function nuevo_montaje_cafe($fecha_solicitud,$solicitante,$tipo_evento,$fecha_montaje,
+            $fecha_montaje_simple, $horario_evento, $horario_final_evento,$nombre_evento, 
+            $responsable_evento, $cantidad_invitados,$valet_parking,$id_lugar_evento,
+            $evento_con_cafe,$anexa_programa,$solo_cafe, $tipo_repliegue, $requerimientos_especiales){
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "INSERT INTO `icloud`.`Evento_montaje` ("
+                    . "`fecha_solicitud`, "
+                    . "`solicitante`, "
+                    . "`tipo_evento`, "
+                    . "`fecha_montaje`, "
+                    . "`fecha_montaje_simple`, "
+                    . "`horario_evento`, "
+                    . "`horario_final_evento`, "
+                    . "`nombre_evento`, "
+                    . "`responsable_evento`, "
+                    . "`cantidad_invitados`, "
+                    . "`valet_parking`, "
+                    . "`id_lugar_evento`, "
+                    . "`evento_con_cafe`, "
+                    . "`anexa_programa`, "
+                    . "`solo_cafe`, "
+                    . "`tipo_repliegue`, "
+                    . "`requerimientos_especiales`) VALUES("
+                    . "'$fecha_solicitud', "
+                    . "'$solicitante', "
+                    . "'$tipo_evento', "
+                    . "'$fecha_montaje', "
+                    . "'$fecha_montaje_simple', "
+                    . "'$horario_evento', "
+                    . "'$horario_final_evento',"
+                    . "'$nombre_evento', "
+                    . "'$responsable_evento', "
+                    . "$cantidad_invitados, "
+                    . "$valet_parking, "
+                    . "$id_lugar_evento, "
+                    . "$evento_con_cafe, "
+                    . "$anexa_programa, "
+                    . "$solo_cafe, "
+                    . "'$tipo_repliegue', "
+                    . "'$requerimientos_especiales')";
+            mysqli_set_charset($connection, "utf8");
+            mysqli_query($connection, $sql);
+            return mysqli_insert_id($connection);
         }
     }
 

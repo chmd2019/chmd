@@ -121,12 +121,32 @@ if (isset($authUrl)) {
                                    style="font-size: 1rem" 
                                    type="text" />               
                         </div>
-                    </div>   
+                    </div>                     
+                    <div class="input-field col s12 l6">
+                        <i class="material-icons prefix c-azul">sentiment_very_satisfied</i>
+                        <label for="cantidad_invitados" style="margin-left: 1rem">Cantidad de invitados</label>
+                        <input placeholder="Cantidad de invitados" 
+                               autocomplete="off"
+                               id="cantidad_invitados" 
+                               type="tel"
+                               onblur="maxima_cantidad(this.id, 2000)"
+                               onkeyup="calcular_parking(this)"
+                               onkeypress="return validar_solo_numeros(event, this.id, 3)">
+                    </div>           
+                    <div class="input-field col s12 l6">
+                        <i class="material-icons prefix c-azul">drive_eta</i>
+                        <label style="margin-left: 1rem">Valet Parking</label>
+                        <input id="valet_parking"
+                               placeholder="Valet Parking" 
+                               autocomplete="off"
+                               type="text"
+                               disabled>
+                    </div>       
                     <div class="col s12 l6">
                         <label  style="margin-left: 1rem">Tipo de evento</label>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">room_service</i>
-                            <select onchange="mostrar_caja_fecha(this.value); reset_check_requiero_personal()" id="tipo_evento">
+                            <select onchange="reset_check_requiero_personal();mostrar_caja_fecha(this.value)" id="tipo_evento">
                                 <option value="0" disabled selected>Selelccione una opción</option>
                                 <option value="1">Servicio de café</option>
                                 <option value="2">Montaje de evento interno</option>
@@ -146,7 +166,7 @@ if (isset($authUrl)) {
                                 id="fecha_permiso_cafe" 
                                 autocomplete="off"
                                 placeholder="Para el día"
-                                onchange="fecha_minusculas(this.value, 'fecha_permiso_cafe'); reset_check_requiero_personal()">            
+                                onchange="reset_check_requiero_personal();fecha_minusculas(this.value, 'fecha_permiso_cafe')">            
                         </div>
                         <script>
                             //obtiene el calendario escolar en db
@@ -185,8 +205,7 @@ if (isset($authUrl)) {
                                 id="fecha_evento_interno" 
                                 autocomplete="off"
                                 placeholder="Para el día"
-                                onchange="fecha_minusculas(this.value, 'fecha_evento_interno');
-                                                reset_check_requiero_personal()">            
+                                onchange="reset_check_requiero_personal();fecha_minusculas(this.value, 'fecha_evento_interno')">            
                         </div>
                         <script>
                             //obtiene el calendario escolar en db
@@ -225,8 +244,7 @@ if (isset($authUrl)) {
                                 id="fecha_evento_combinado_externo" 
                                 autocomplete="off"
                                 placeholder="Para el día"
-                                onchange="fecha_minusculas(this.value, 'fecha_evento_combinado_externo');
-                                                reset_check_requiero_personal()">            
+                                onchange="reset_check_requiero_personal();fecha_minusculas(this.value, 'fecha_evento_combinado_externo')">            
                         </div>
                         <script>
                             //obtiene el calendario escolar en db
@@ -295,17 +313,29 @@ if (isset($authUrl)) {
                             });
                         </script>  
                     </div>
-                    <input readonly id="fecha_evento_hidden" hidden>
                     <div class="input-field col s12 l6" hidden id="check_servicio_cafe">
                         <i class="material-icons prefix c-azul">free_breakfast</i>
                         <label>
-                            <input type="checkbox" class="filled-in" />
+                            <input type="checkbox" 
+                                   class="filled-in" 
+                                   id="check_evento_con_cafe"
+                                   onchange="evento_con_cafe = this.checked;cargar_evento_con_cafe(this.checked)"/>
                             <span>Servicio de café</span>
                         </label>
                         <br>
                         <br>
                     </div>  
-
+                    <div class="input-field col s12" hidden id="caja_cafe">
+                        <div class="input-field col s12 l6" id="select_lugar_evento_solo_cafe">
+                            <i class="material-icons prefix c-azul">place</i>
+                            <select id="lugar_evento_solo_cafe" onchange="lugar_evento_solo_cafe = this.value;">
+                            </select>
+                            <label style="margin-left: 1rem">Lugar del evento</label>
+                        </div> 
+                        <h5 class="col s12 c-azul text-center">Servicio de café</h5>
+                        <br>    
+                        <ul class="collection row" id="ul_servicio_cafe"></ul>
+                    </div>
                     <span class="col s12"><br></span>              
                     <div class="input-field col s12 l6">
                         <i class="material-icons prefix c-azul">access_time</i>
@@ -347,27 +377,27 @@ if (isset($authUrl)) {
                                placeholder="Responsable" 
                                autocomplete="off"
                                type="text">
-                    </div>  
+                    </div>         
                     <div class="input-field col s12 l6">
-                        <i class="material-icons prefix c-azul">sentiment_very_satisfied</i>
-                        <label for="cantidad_invitados" style="margin-left: 1rem">Cantidad de invitados</label>
-                        <input placeholder="Cantidad de invitados" 
-                               autocomplete="off"
-                               id="cantidad_invitados" 
-                               type="tel"
-                               onblur="maxima_cantidad(this.id, 2000)"
-                               onkeyup="calcular_parking(this)"
-                               onkeypress="return validar_solo_numeros(event, this.id, 3)">
-                    </div>           
-                    <div class="input-field col s12 l6">
-                        <i class="material-icons prefix c-azul">drive_eta</i>
-                        <label style="margin-left: 1rem">Valet Parking</label>
-                        <input id="valet_parking"
-                               placeholder="Valet Parking" 
-                               autocomplete="off"
-                               type="text"
-                               disabled>
-                    </div>                      
+                        <i class="material-icons prefix c-azul">donut_large</i>
+                        <label>
+                            <input type="checkbox" class="filled-in" onchange="mostrar_tipo_repliegue()"/>
+                            <span>Requiero repliegue</span>
+                        </label>
+                        <br>
+                        <br>
+                    </div> 
+                    <div class="input-field col s12 l6" hidden id="caja_tipo_repliegue">
+                        <i class="material-icons prefix c-azul">donut_small</i>
+                        <select id="select_tipo_repliegue">
+                            <option value="0" disabled selected>Seleccione una opción</option>
+                            <option value="Estacionamiento maestros">Estacionamiento maestros</option>
+                            <option value="Patio de camiones 1/2">Patio de camiones 1/2</option>
+                            <option value="Patio de completo">Patio de completo</option>
+                        </select>
+                        <label style="margin-left: 1rem">Tipo de repliegue</label>
+                    </div>
+                    <span class="col s12"></span>
                     <div class="file-field input-field col s12 l6">
                         <div class="waves-effect waves-light btn b-azul" style="margin-top: 1.5rem">
                             <span><i class="material-icons c-blanco">attach_file</i></span>
@@ -389,153 +419,138 @@ if (isset($authUrl)) {
                             <span>Tamaño máx:3mb</span>
                         </div>
                     </div>
-                    <br><h5 class="col s12 c-azul text-center">Lugar y mobiliario del evento</h5>
-                    <br>    
-                    <div class="input-field col s12 l6">
-                        <i class="material-icons prefix c-azul">place</i>
-                        <select onchange="cargar_inventarios_montaje(this.value)" id="lugar_evento">
-                        </select>
-                        <label style="margin-left: 1rem">Lugar del evento</label>
-                    </div> 
-                    <div class="input-field col s12" hidden id="mobiliario">
-                        <h5 class="col s12 c-azul text-center">Mobiliario</h5>
-                        <div id="tabla_inventario"></div>         
-                        <div class="input-field col s12" id="caja_asignacion_manteles" hidden>  
-                            <h5 class="col s12 c-azul text-center">Asignación de manteles</h5>
-                            <br>
-                            <div style="text-align: center" id="badge_mantel_seleccion">               
-                                <span class="new badge blue" 
-                                      data-badge-caption="Debe seleccionar el lugar del evento para asignar manteles"
-                                      style="float:none;padding:.3rem">
-                                </span>
-                            </div>
-                            <div style="text-align: center" id="badge_mantel_no_asignacion" hidden>               
-                                <div class="chip red white-text">
-                                    No es posible asignación de manteles para el lugar del evento seleccionado
-                                </div>
-                            </div>
-                            <div class="input-field col s12" hidden id="manteles">
-                                <div id="tabla_manteles"></div>
-                            </div>
-                        </div>  
-                    </div>    
-                    <h5 class="col s12 c-azul text-center">Asignación de equipo personal y técnico</h5>
-                    <br>                
-                    <div class="input-field col s12 l6">
-                        <i class="material-icons prefix c-azul">settings_input_composite</i>
-                        <label>
-                            <input type="checkbox" id="check_equipo_tecnico" class="filled-in" onchange="cargar_equipo_tecnico(this)"/>
-                            <span>Requiero equipo técnico</span>
-                        </label>
-                        <br>
-                    </div>   
-                    <div class="input-field col s12" id="caja_equipo_tecnico" hidden>   
-                        <br>
-                        <h5 class="col s12 c-azul text-center">Equipo técnico</h5>
-                        <div id="tabla_equipo_tecnico"></div>
-                    </div>  
-                    <div class="input-field col s12 l6">
-                        <i class="material-icons prefix c-azul">group_add</i>
-                        <label>
-                            <input id="check_requiero_personal" 
-                                   type="checkbox" 
-                                   class="filled-in" 
-                                   onchange="cargar_personal_montaje(this)"/>
-                            <span>Requiero personal</span>
-                        </label>
-                    </div>   
-                    <span class="col s12"><br></span>   
-                    <div id="caja_personal_evento" hidden>
-                        <br>
-                        <h5 class="col s12 c-azul text-center">Selección de personal para el evento</h5>
-                        <br>
+                    <div id="no_cafe">
+                        <br><h5 class="col s12 c-azul text-center">Lugar y mobiliario del evento</h5>
+                        <br>    
                         <div class="input-field col s12 l6">
-                            <i class="material-icons prefix c-azul">build</i>
-                            <select id="select_personal_montaje"></select>
-                            <label style="margin-left: 1rem">Personal de montaje</label>
-                        </div>
-                        <div class="input-field col s12 l6">
-                            <i class="material-icons prefix c-azul">build</i>
-                            <select id="select_personal_cabina_auditorio"></select>
-                            <label style="margin-left: 1rem">Personal de cabina de auditorio</label>
-                        </div>
-                        <div class="input-field col s12 l6">
-                            <i class="material-icons prefix c-azul">build</i>
-                            <select id="select_personal_limpieza"></select>
-                            <label style="margin-left: 1rem">Personal de limpieza</label>
-                        </div>
-                        <div class="input-field col s12 l6">
-                            <i class="material-icons prefix c-azul">build</i>
-                            <select id="select_personal_vigilancia"></select>
-                            <label style="margin-left: 1rem">Personal de vigilancia</label>
-                        </div>
-                        <div class="input-field col s12" style="text-align: center" id="reserva_personal">
-                            <button class="waves-effect waves-light btn col l3"                                     
-                                    onclick="actualizar_personal('select_personal_montaje', 'select_personal_cabina_auditorio', 'select_personal_limpieza', 'select_personal_vigilancia')"
-                                    type="button" 
-                                    style="background-color: #00C2EE;float: none">Reservar personal
-                                <i class="material-icons right">save</i>
-                            </button>
-                        </div>
-                        <div class="input-field col s12" style="text-align: center;" hidden id="anular_reserva_personal">
-                            <button class="waves-effect waves-light btn red col l3" style="float: none"                                 
-                                    type="button"
-                                    onclick="anular_reserva_personal('#select_personal_montaje', '#select_personal_cabina_auditorio', '#select_personal_limpieza', '#select_personal_vigilancia')">Anular reserva
-                                <i class="material-icons right">delete</i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="input-field col s12 l6">
-                        <i class="material-icons prefix c-azul">donut_large</i>
-                        <label>
-                            <input type="checkbox" class="filled-in" onchange="mostrar_tipo_repliegue()"/>
-                            <span>Requiero repliegue</span>
-                        </label>
-                        <br>
-                        <br>
-                    </div> 
-                    <div class="input-field col s12 l6" hidden id="caja_tipo_repliegue">
-                        <i class="material-icons prefix c-azul">donut_small</i>
-                        <select id="select_tipo_repliegue">
-                            <option value="0" disabled selected>Seleccione una opción</option>
-                            <option value="Estacionamiento maestros">Estacionamiento maestros</option>
-                            <option value="Patio de camiones 1/2">Patio de camiones 1/2</option>
-                            <option value="Patio de completo">Patio de completo</option>
-                        </select>
-                        <label style="margin-left: 1rem">Tipo de repliegue</label>
-                    </div>  
-                    <br>
-                    <h5 class="col s12 c-azul text-center">Solicitud de ensayo</h5>
-                    <br>   
-                    <div class="input-field col s12 l6">
-                        <i class="material-icons prefix c-azul">compare_arrows</i>
-                        <label>
-                            <input type="checkbox"
-                                   id="requiero_ensayo"
-                                   class="filled-in" 
-                                   onchange="check_requiero_ensayo(this)"/>
-                            <span>Requiero de ensayo</span>
-                        </label>
-                        <br>
-                        <br>
-                        <br>
-                    </div>  
-                    <div hidden id="caja_select_ensayo">
-                        <div class="input-field col s12 l6">
-                            <i class="material-icons prefix c-azul">looks_6</i>
-                            <select onchange="mostrar_caja_ensayos(this)" id="select_ensayos">
-                                <option value="0" disabled selected>Selelccione una opción</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
+                            <i class="material-icons prefix c-azul">place</i>
+                            <select onchange="cargar_inventarios_montaje(this.value)" id="lugar_evento">
                             </select>
-                            <label style="margin-left: 1rem">Cantidad de ensayos</label>
+                            <label style="margin-left: 1rem">Lugar del evento</label>
+                        </div> 
+                        <div class="input-field col s12" hidden id="mobiliario">
+                            <h5 class="col s12 c-azul text-center">Mobiliario</h5>
+                            <div id="tabla_inventario"></div>         
+                            <div class="input-field col s12" id="caja_asignacion_manteles" hidden>  
+                                <h5 class="col s12 c-azul text-center">Asignación de manteles</h5>
+                                <br>
+                                <div style="text-align: center" id="badge_mantel_seleccion">               
+                                    <span class="new badge blue" 
+                                          data-badge-caption="Debe seleccionar el lugar del evento para asignar manteles"
+                                          style="float:none;padding:.3rem">
+                                    </span>
+                                </div>
+                                <div style="text-align: center" id="badge_mantel_no_asignacion" hidden>               
+                                    <div class="chip red white-text">
+                                        No es posible asignación de manteles para el lugar del evento seleccionado
+                                    </div>
+                                </div>
+                                <div class="input-field col s12" hidden id="manteles">
+                                    <div id="tabla_manteles"></div>
+                                </div>
+                            </div>  
+                        </div>    
+                        <h5 class="col s12 c-azul text-center">Asignación de equipo personal y técnico</h5>
+                        <br>                
+                        <div class="input-field col s12 l6">
+                            <i class="material-icons prefix c-azul">settings_input_composite</i>
+                            <label>
+                                <input type="checkbox" id="check_equipo_tecnico" class="filled-in" onchange="cargar_equipo_tecnico(this)"/>
+                                <span>Requiero equipo técnico</span>
+                            </label>
+                            <br>
+                        </div>   
+                        <div class="input-field col s12" id="caja_equipo_tecnico" hidden>   
+                            <br>
+                            <h5 class="col s12 c-azul text-center">Equipo técnico</h5>
+                            <div id="tabla_equipo_tecnico"></div>
+                        </div>  
+                        <div class="input-field col s12 l6">
+                            <i class="material-icons prefix c-azul">group_add</i>
+                            <label>
+                                <input id="check_requiero_personal" 
+                                       type="checkbox" 
+                                       class="filled-in" 
+                                       onchange="cargar_personal_montaje(this)"/>
+                                <span>Requiero personal</span>
+                            </label>
+                        </div>   
+                        <span class="col s12"><br></span>   
+                        <div id="caja_personal_evento" hidden>
+                            <br>
+                            <h5 class="col s12 c-azul text-center">Selección de personal para el evento</h5>
+                            <br>
+                            <div class="input-field col s12 l6">
+                                <i class="material-icons prefix c-azul">build</i>
+                                <select id="select_personal_montaje"></select>
+                                <label style="margin-left: 1rem">Personal de montaje</label>
+                            </div>
+                            <div class="input-field col s12 l6">
+                                <i class="material-icons prefix c-azul">build</i>
+                                <select id="select_personal_cabina_auditorio"></select>
+                                <label style="margin-left: 1rem">Personal de cabina de auditorio</label>
+                            </div>
+                            <div class="input-field col s12 l6">
+                                <i class="material-icons prefix c-azul">build</i>
+                                <select id="select_personal_limpieza"></select>
+                                <label style="margin-left: 1rem">Personal de limpieza</label>
+                            </div>
+                            <div class="input-field col s12 l6">
+                                <i class="material-icons prefix c-azul">build</i>
+                                <select id="select_personal_vigilancia"></select>
+                                <label style="margin-left: 1rem">Personal de vigilancia</label>
+                            </div>
+                            <div class="input-field col s12" style="text-align: center" id="reserva_personal">
+                                <button class="waves-effect waves-light btn col l3"                                     
+                                        onclick="actualizar_personal('select_personal_montaje', 'select_personal_cabina_auditorio', 'select_personal_limpieza', 'select_personal_vigilancia')"
+                                        type="button" 
+                                        style="background-color: #00C2EE;float: none">Reservar personal
+                                    <i class="material-icons right">save</i>
+                                </button>
+                            </div>
+                            <div class="input-field col s12" style="text-align: center;" hidden id="anular_reserva_personal">
+                                <button class="waves-effect waves-light btn red col l3" 
+                                        id="btn_anular_reserva_personal"
+                                        style="float: none"                                 
+                                        type="button"
+                                        onclick="anular_reserva_personal('#select_personal_montaje', '#select_personal_cabina_auditorio', '#select_personal_limpieza', '#select_personal_vigilancia')">Anular reserva
+                                    <i class="material-icons right">delete</i>
+                                </button>
+                            </div>
+                        </div> 
+                        <br>
+                        <h5 class="col s12 c-azul text-center">Solicitud de ensayo</h5>
+                        <br>   
+                        <div class="input-field col s12 l6">
+                            <i class="material-icons prefix c-azul">compare_arrows</i>
+                            <label>
+                                <input type="checkbox"
+                                       id="requiero_ensayo"
+                                       class="filled-in" 
+                                       onchange="check_requiero_ensayo(this)"/>
+                                <span>Requiero de ensayo</span>
+                            </label>
+                            <br>
+                            <br>
+                            <br>
+                        </div>  
+                        <div hidden id="caja_select_ensayo">
+                            <div class="input-field col s12 l6">
+                                <i class="material-icons prefix c-azul">looks_6</i>
+                                <select onchange="mostrar_caja_ensayos(this)" id="select_ensayos">
+                                    <option value="0" disabled selected>Selelccione una opción</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                </select>
+                                <label style="margin-left: 1rem">Cantidad de ensayos</label>
+                            </div>
+                            <span class="col s12"></span>
+                            <div id="caja_ensayos"></div>                        
                         </div>
-                        <span class="col s12"></span>
-                        <div id="caja_ensayos"></div>                        
                     </div>
                     <h5 class="col s12 c-azul text-center">Adicionales</h5>
                     <div class="input-field col s12">
@@ -547,12 +562,12 @@ if (isset($authUrl)) {
                     <span class="col s12"><br></span>
                     <div class="input-field col s12">
                         <div style="text-align: center">
-                            <button class="waves-effect waves-light btn col s12 l4" 
+                            <!--<button class="waves-effect waves-light btn col s12 l4" 
                                     type="button" 
                                     style="background-color: #00C2EE;float: none">PREVISUALIZAR
                                 <i class="material-icons right">search</i>
                             </button>
-                            <span class="col s12 hide-on-med-and-up"><br></span>
+                            <span class="col s12 hide-on-med-and-up"><br></span>-->
                             <button class="waves-effect waves-light btn b-azul white-text col s12 l4" 
                                     id="btn_enviar_formulario"
                                     type="button" 
@@ -605,6 +620,10 @@ if (isset($authUrl)) {
     var codigo_ensayo = "";
     var id_lugar = 0;
     var archivo_cargado = null;
+    //servicio de cafe
+    var solo_cafe = false;
+    var lugar_evento_solo_cafe = "";
+    var evento_con_cafe = false;
     //push
     var pusher = null;
     var channel_inventario = null;
@@ -627,6 +646,7 @@ if (isset($authUrl)) {
     //manejo de ensayos
     var lista_ensayos = 0;
     var ensayos = [];
+    var botones_anulacion = [];
     $(document).ready(function () {
         $("#loading").fadeOut("slow");
         $('select').formSelect();
@@ -700,6 +720,11 @@ if (isset($authUrl)) {
         var check_requiero_personal = $("#check_requiero_personal");
         if (check_requiero_personal.prop("checked")) {
             check_requiero_personal.click();
+
+            if (!$("#anular_reserva_personal").prop("hidden")) {
+                $("#btn_anular_reserva_personal").click();
+            }
+
             M.toast({
                 html: 'Debe asignar el personal requerido nuevamente',
                 classes: 'blue c-blanco',
@@ -718,7 +743,13 @@ if (isset($authUrl)) {
         $("#caja_ensayos").html(codigo_ensayo);
     }
     function mostrar_caja_fecha(value) {
-        reset_check_requiero_personal();
+        if (!validar_numero_invitados()) {
+            $("#tipo_evento option[value=0]").prop("selected", "selected");
+            $("select").formSelect();
+            return;
+        }
+        $("#check_evento_con_cafe").prop("checked", false);
+        evento_con_cafe = false;
         switch (value) {
             case "1":
                 $("#caja_servicio_cafe").prop("hidden", false);
@@ -729,6 +760,9 @@ if (isset($authUrl)) {
                 $("#fecha_evento_interno").val("");
                 $("#fecha_evento_combinado_externo").val("");
                 $("#fecha_servicio_especial").val("");
+                solo_cafe = true;
+                $("#no_cafe").fadeOut();
+                cargar_servicio_cafe();
                 break;
             case "2":
                 $("#caja_evento_interno").prop("hidden", false);
@@ -739,6 +773,12 @@ if (isset($authUrl)) {
                 $("#fecha_permiso_cafe").val("");
                 $("#fecha_evento_combinado_externo").val("");
                 $("#fecha_servicio_especial").val("");
+                $("#no_cafe").fadeIn();
+                $("#ul_servicio_cafe").html("");
+                $("#caja_cafe").fadeOut();
+                reset_check_requiero_personal();
+                solo_cafe = false;
+                lugar_evento_solo_cafe = "";
                 break;
             case "3":
                 $("#caja_evento_combinado_externo").prop("hidden", false);
@@ -749,6 +789,12 @@ if (isset($authUrl)) {
                 $("#fecha_permiso_cafe").val("");
                 $("#fecha_evento_interno").val("");
                 $("#fecha_servicio_especial").val("");
+                $("#no_cafe").fadeIn();
+                $("#ul_servicio_cafe").html("");
+                $("#caja_cafe").fadeOut();
+                reset_check_requiero_personal();
+                solo_cafe = false;
+                lugar_evento_solo_cafe = "";
                 break;
             case "4":
                 $("#caja_servicio_especial").prop("hidden", false);
@@ -759,6 +805,12 @@ if (isset($authUrl)) {
                 $("#fecha_permiso_cafe").val("");
                 $("#fecha_evento_interno").val("");
                 $("#fecha_evento_combinado_externo").val("");
+                $("#no_cafe").fadeIn();
+                $("#ul_servicio_cafe").html("");
+                $("#caja_cafe").fadeOut();
+                reset_check_requiero_personal();
+                solo_cafe = false;
+                lugar_evento_solo_cafe = "";
                 break;
         }
     }
@@ -766,10 +818,10 @@ if (isset($authUrl)) {
         lista_ensayos = el.value;
         var codigo_ensayo = "";
         for (var i = 0; i < el.value; i++) {
-            var codigo = `<div class="col s12 card"> <div class="card-content" style="color:#00C2EE;"> <h5>Ensayo N° ${i + 1}</h5> </div><div class="card-tabs"> <ul class="tabs tabs-fixed-width"> <li class="tab blue white-text active"><a href="#tab_1_${i + 1}">Información de ensayo</a> </li><li class="tab blue white-text" onclick="cargar_personal_ensayo(${i})"><a href="#tab_2_${i + 1}">Personal</a> </li></ul> </div><div class="card-content"> <div id="tab_1_${i + 1}"> <div class="col s12 l6"> <label style="margin-left: 1rem;color:#00C2EE">Fecha del ensayo</label> <div class="input-field"> <i class="material-icons prefix c-azul">calendar_today</i> <input type="text" class="datepicker" id="fecha_ensayo_${i}" autocomplete="off" placeholder="Escoja fecha" onchange="fecha_minusculas(this.value, 'fecha_permiso')" style="font-size: 1rem"> </div></div><div class="col s12 l6"> <label style="margin-left: 1rem;color:#00C2EE">Horario inicial</label> <div class="input-field"> <i class="material-icons prefix c-azul">access_time</i> <input type="text" id="horario_inicial_ensayo_${i}" class="timepicker" onkeypress="return validar_solo_numeros(event, this.id, 1)" autocomplete="off" onfocus="blur();" placeholder="Seleccione horario"> </div></div><div class="col s12 l6"> <label style="margin-left: 1rem;color:#00C2EE">Horario final</label> <div class="input-field"> <i class="material-icons prefix c-azul">access_time</i> <input type="text" id="horario_final_ensayo_${i}" class="timepicker" onkeypress="return validar_solo_numeros(event, this.id, 1)" onchange="validar_horario_final_ensayo(this,'horario_inicial_ensayo_${i}')" autocomplete="off" onfocus="blur();" placeholder="Seleccione horario"> </div></div><div class="input-field col s12"> <i class="material-icons prefix c-azul">list_alt</i> <textarea class="materialize-textarea" id="requerimientos_especiales_ensayo_${i}" placeholder="Requerimientos especiales"></textarea> </div></div><div id="tab_2_${i + 1}"> <div id="caja_select_${i}"> <div class="input-field col s12 l6"> <i class="material-icons prefix c-azul">build</i> <select id="select_montaje_ensayo_${i}"></select> <label style="margin-left: 1rem;color:#00C2EE">Personal de montaje</label> </div><div class="input-field col s12 l6"> <i class="material-icons prefix c-azul">build</i> <select id="select_cabina_auditorio_ensayo_${i}"></select> <label style="margin-left: 1rem;color:#00C2EE">Personal de cabina de auditorio</label> </div><div class="input-field col s12 l6"> <i class="material-icons prefix c-azul">build</i> <select id="select_limpieza_ensayo_${i}"></select> <label style="margin-left: 1rem;color:#00C2EE">Personal de limpieza</label> </div><div class="input-field col s12" style="text-align: center" id="reserva_personal_${i}"> <button class="waves-effect waves-light btn col l4" onclick="actualizar_personal_ensayo('select_montaje_ensayo_${i}', 'select_cabina_auditorio_ensayo_${i}', 'select_limpieza_ensayo_${i}', 'fecha_ensayo_${i}','horario_inicial_ensayo_${i}','horario_final_ensayo_${i}', '#reserva_personal_${i}', '#anular_reserva_personal_${i}',${i})" type="button" style="background-color: #00C2EE;float: none">Reservar personal <i class="material-icons right">save</i> </button> </div><div class="input-field col s12" style="text-align: center;" hidden id="anular_reserva_personal_${i}"> <button class="waves-effect waves-light btn red col l3" style="float: none" type="button" onclick="anular_reserva_personal_ensayo('#select_montaje_ensayo_${i}','#select_cabina_auditorio_ensayo_${i}','#select_limpieza_ensayo_${i}','#anular_reserva_personal_${i}','#reserva_personal_${i}',${i})">Anular reserva <i class="material-icons right">delete</i> </button> </div></div><span class="col s12"><br></span> <div class="chip orange col s12 white-text" style="text-align: center" id="validacion_ensayo_${i}"> <span>Debe seleccionar una fecha y horarios válidos para continuar!</span> </div><span class="col s12 hide-on-med-and-down"><br><br></span> </div></div></div>`;
+            var codigo = `<div class="col s12 card"> <div class="card-content" style="color:#00C2EE;"> <h5>Ensayo N° ${i + 1}</h5> </div><div class="card-tabs"> <ul class="tabs tabs-fixed-width"> <li class="tab blue white-text active"><a href="#tab_1_${i + 1}">Información de ensayo</a> </li><li class="tab blue white-text" onclick="cargar_personal_ensayo(${i})"><a href="#tab_2_${i + 1}">Personal</a> </li></ul> </div><div class="card-content"> <div id="tab_1_${i + 1}"> <div class="col s12 l6"> <label style="margin-left: 1rem;color:#00C2EE">Fecha del ensayo</label> <div class="input-field"> <i class="material-icons prefix c-azul">calendar_today</i> <input type="text" class="datepicker" id="fecha_ensayo_${i}" autocomplete="off" placeholder="Escoja fecha" onchange="fecha_minusculas(this.value, 'fecha_permiso')" style="font-size: 1rem"> </div></div><div class="col s12 l6"> <label style="margin-left: 1rem;color:#00C2EE">Horario inicial</label> <div class="input-field"> <i class="material-icons prefix c-azul">access_time</i> <input type="text" id="horario_inicial_ensayo_${i}" class="timepicker" onkeypress="return validar_solo_numeros(event, this.id, 1)" autocomplete="off" onfocus="blur();" placeholder="Seleccione horario"> </div></div><div class="col s12 l6"> <label style="margin-left: 1rem;color:#00C2EE">Horario final</label> <div class="input-field"> <i class="material-icons prefix c-azul">access_time</i> <input type="text" id="horario_final_ensayo_${i}" class="timepicker" onkeypress="return validar_solo_numeros(event, this.id, 1)" onchange="validar_horario_final_ensayo(this,'horario_inicial_ensayo_${i}')" autocomplete="off" onfocus="blur();" placeholder="Seleccione horario"> </div></div><div class="input-field col s12"> <i class="material-icons prefix c-azul">list_alt</i> <textarea class="materialize-textarea" id="requerimientos_especiales_ensayo_${i}" placeholder="Requerimientos especiales"></textarea> </div></div><div id="tab_2_${i + 1}"> <div id="caja_select_${i}"> <div class="input-field col s12 l6"> <i class="material-icons prefix c-azul">build</i> <select id="select_montaje_ensayo_${i}"></select> <label style="margin-left: 1rem;color:#00C2EE">Personal de montaje</label> </div><div class="input-field col s12 l6"> <i class="material-icons prefix c-azul">build</i> <select id="select_cabina_auditorio_ensayo_${i}"></select> <label style="margin-left: 1rem;color:#00C2EE">Personal de cabina de auditorio</label> </div><div class="input-field col s12 l6"> <i class="material-icons prefix c-azul">build</i> <select id="select_limpieza_ensayo_${i}"></select> <label style="margin-left: 1rem;color:#00C2EE">Personal de limpieza</label> </div><div class="input-field col s12" style="text-align: center" id="reserva_personal_${i}"> <button class="waves-effect waves-light btn col l4" onclick="actualizar_personal_ensayo('select_montaje_ensayo_${i}', 'select_cabina_auditorio_ensayo_${i}', 'select_limpieza_ensayo_${i}', 'fecha_ensayo_${i}','horario_inicial_ensayo_${i}','horario_final_ensayo_${i}', '#reserva_personal_${i}', '#caja_reserva_personal_${i}',${i})" type="button" style="background-color: #00C2EE;float: none">Reservar personal <i class="material-icons right">save</i> </button> </div><div class="input-field col s12" style="text-align: center;" hidden id="caja_reserva_personal_${i}"> <button id="btn_anular_reserva_personal_${i}" class="waves-effect waves-light btn red col l3" style="float: none" type="button" onclick="anular_reserva_personal_ensayo('#select_montaje_ensayo_${i}', '#select_cabina_auditorio_ensayo_${i}','#select_limpieza_ensayo_${i}', '#caja_reserva_personal_${i}','#reserva_personal_${i}',${i})">Anular reserva <i class="material-icons right">delete</i> </button> </div></div><span class="col s12"><br></span> <div class="chip orange col s12 white-text" style="text-align: center" id="validacion_ensayo_${i}"> <span>Debe seleccionar una fecha y horarios válidos para continuar!</span> </div><span class="col s12 hide-on-med-and-down"><br><br></span> </div></div></div>`;
             codigo_ensayo += `${codigo}`;
+            botones_anulacion.push({caja: `caja_reserva_personal_${i}`, btn: `btn_anular_reserva_personal_${i}`});
         }
-
         $("#caja_ensayos").html(codigo_ensayo);
         $('.tabs').tabs();
         $('select').formSelect();
@@ -923,20 +975,39 @@ if (isset($authUrl)) {
                 options = "";
             }
             $("#lugar_evento").html(`<option value="0" disabled selected>Seleccione lugar del evento</option>${optgroup}`);
-            $("#lugar_evento").formSelect();
+            $("#lugar_evento_solo_cafe").html(`<option value="0" disabled selected>Seleccione lugar del evento</option>${optgroup}`);
+            $("select").formSelect();
         }).always(() => {
             $("#loading").fadeOut();
         });
     }
     function cargar_inventarios_montaje(id_lugar_evento) {
+        solo_cafe = false;
+        lugar_evento_solo_cafe = "";
+        // mobiliario
         if ($("#check_equipo_tecnico").prop("checked")) {
             $("#check_equipo_tecnico").click();
         }
         id_lugar = id_lugar_evento;
-        var fecha_montaje_simple        = obtener_fecha();
-        var horario_evento              = $("#horario_evento").val();
-        var horario_final_evento        = $("#horario_final_evento").val();
-        
+        var fecha_montaje_simple = obtener_fecha();
+        var horario_evento = $("#horario_evento").val();
+        var horario_final_evento = $("#horario_final_evento").val();
+
+        if (fecha_montaje_simple === "" || horario_evento === "" || horario_final_evento === "") {
+            $("#lugar_evento option[value=0]").prop("selected", "selected");
+            $('select').formSelect();
+            M.toast({
+                html: '¡Debe seleccionar un horario y fecha del evento válido!',
+                classes: 'deep-orange c-blanco',
+            });
+            return;
+        }
+
+        if ($("#tipo_evento").val("1")) {
+            solo_cafe = false;
+            lugar_evento_solo_cafe = "";
+        }
+
         $.ajax({
             url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/get_capacidad_mobiliario.php',
             type: 'GET',
@@ -945,9 +1016,9 @@ if (isset($authUrl)) {
             },
             data: {
                 id_lugar_evento: id_lugar_evento,
-                fecha_montaje_simple:fecha_montaje_simple,
-                horario_evento:horario_evento,
-                horario_final_evento:horario_final_evento
+                fecha_montaje_simple: fecha_montaje_simple,
+                horario_evento: horario_evento,
+                horario_final_evento: horario_final_evento
             }
         }).done((res) => {
             res = JSON.parse(res);
@@ -961,7 +1032,6 @@ if (isset($authUrl)) {
         });
     }
     function cargar_equipo_tecnico(el) {
-
         var fecha_montaje = obtener_fecha();
         var horario_evento = $("#horario_evento").val();
         var horario_final_evento = $("#horario_final_evento").val();
@@ -1289,7 +1359,7 @@ if (isset($authUrl)) {
         });
     }
     function anular_reserva_personal(select_personal_montaje, select_personal_cabina_auditorio,
-            select_personal_limpieza, select_personal_vigilancia) {
+            select_personal_limpieza, select_personal_vigilancia, el) {
         $.ajax({
             url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/post_anula_personal_asignado.php',
             type: 'POST',
@@ -1311,6 +1381,8 @@ if (isset($authUrl)) {
                 $('select').formSelect();
                 $("#check_requiero_personal").prop("disabled", false);
                 timestamp_personal_montaje = null;
+                $("#anular_reserva_personal").hide();
+                $("#reserva_personal").show();
             }
         }).always(() => {
             $("#loading").fadeOut();
@@ -1782,12 +1854,26 @@ if (isset($authUrl)) {
         return true;
     }
     function validar_lugar_evento() {
-        if ($("#lugar_evento").val() === "" || $("#lugar_evento").val() === "0" || $("#lugar_evento").val() === null) {
-            M.toast({
-                html: '¡Debe seleccionar el lugar del evento para continuar!',
-                classes: 'deep-orange c-blanco'
-            });
-            return false;
+        switch (solo_cafe) {
+            case true:
+                if (lugar_evento_solo_cafe === "") {
+                    M.toast({
+                        html: '¡Debe seleccionar el lugar del evento para continuar!',
+                        classes: 'deep-orange c-blanco'
+                    });
+                    return false;
+                }
+                break;
+
+            case false:
+                if ($("#lugar_evento").val() === "" || $("#lugar_evento").val() === "0" || $("#lugar_evento").val() === null) {
+                    M.toast({
+                        html: '¡Debe seleccionar el lugar del evento para continuar!',
+                        classes: 'deep-orange c-blanco'
+                    });
+                    return false;
+                }
+                break;
         }
         return true;
     }
@@ -1847,7 +1933,7 @@ if (isset($authUrl)) {
         var requiero_ensayo = $("#requiero_ensayo").prop('checked');
         var select_ensayos = $("#select_ensayos").val();
         var requerimientos_especiales = $("#requerimientos_especiales").val();
-        var check_equipo_tecnico = $("#check_equipo_tecnico").prop('checked');
+        //var check_equipo_tecnico = $("#check_equipo_tecnico").prop('checked');
 
         var data = {
             fecha_solicitud: fecha_solicitud,
@@ -1872,7 +1958,10 @@ if (isset($authUrl)) {
             timestamp_equipo_tecnico: timestamp_equipo_tecnico,
             timestamp_personal_montaje: timestamp_personal_montaje,
             timestamp_personal_montaje_ensayos: timestamp_personal_montaje_ensayos,
-            ensayos: ensayos
+            ensayos: ensayos,
+            solo_cafe: solo_cafe,
+            lugar_evento_solo_cafe: lugar_evento_solo_cafe,
+            evento_con_cafe: evento_con_cafe
         };
         $.ajax({
             url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/post_nuevo_montaje.php',
@@ -1880,16 +1969,62 @@ if (isset($authUrl)) {
             dataType: 'json',
             beforeSend: () => {
                 $("#loading").fadeIn("slow");
+                $("#btn_enviar_formulario").prop("disabled", true);
             },
             data: data
         }).done((res) => {
             if ($("#anexa_programa").val().length > 0) {
                 cargar_archivo_programa(archivo_cargado, res);
             }
+            if (parseInt(res) > 0) {
+                M.toast({
+                    html: 'Solicitud realizada con éxito',
+                    classes: 'green accent-4 c-blanco'
+                });
+                setInterval(() => {
+                    window.location.href = `https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=${res}&&idseccion=`
+                }, 2000);
+            }
             ensayos = [];
         }).always(() => {
             $("#loading").fadeOut("slow");
         });
+    }
+    function cargar_servicio_cafe() {
+        var cantidad_invitados = $("#cantidad_invitados").val();
+        $.ajax({
+            url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/get_carga_servicio_cafe.php',
+            type: 'GET',
+            dataType: 'json',
+            beforeSend: () => {
+                $("#loading").fadeIn();
+            },
+            data: {
+                cantidad_invitados: cantidad_invitados
+            }
+        }).done((res) => {
+            $("#caja_cafe").fadeIn();
+            if (evento_con_cafe) {
+                $("#select_lugar_evento_solo_cafe").prop("hidden", true);
+            } else {
+                $("#select_lugar_evento_solo_cafe").prop("hidden", false);
+            }
+            var li = "";
+            for (var item in res) {
+                li += `<li class="collection-item avatar col s12" style="justify-content: space-around"> <div class="col s12 l6"> <br><i class="material-icons circle" style="background-color: #00C2EE">free_breakfast</i> <span class="title"> <b>Ingrediente:</b> ${res[item].ingrediente}</span> <p> <b>Cantidad para el evento: </b> ${res[item].cantidad_servicio}</div><div class="col s12 l6 text-center"> <a href="${res[item].ruta_img}" data-fancybox data-caption="${res[item].ingrediente}"> <br><img src="${res[item].ruta_img}" width="100"/> </a> </div></li>`;
+            }
+            $("#ul_servicio_cafe").html(li);
+        }).always(() => {
+            $("#loading").fadeOut();
+        });
+
+    }
+    function cargar_evento_con_cafe(checked) {
+        if (checked) {
+            cargar_servicio_cafe();
+        } else {
+            $("#caja_cafe").fadeOut();
+        }
     }
 </script>
 

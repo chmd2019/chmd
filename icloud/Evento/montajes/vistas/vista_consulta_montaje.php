@@ -58,6 +58,8 @@ else:
     $requerimientos_especiales = $montaje[17];
     $nombre_pdf = $montaje[18];
     $lugar_evento = $montaje[19];
+    $solo_cafe = $montaje[20];
+    $cafe_con_evento = $montaje[21];
     ?>
     <div class="row">
         <div class="col s12 l8 border-azul b-blanco" style="float: none;margin: 0 auto;padding:1rem">
@@ -145,6 +147,30 @@ else:
                                type="text" 
                                value="<?php echo $valet_parking; ?>">      
                     </div>
+                    <?php if ($solo_cafe || $cafe_con_evento): ?>        
+                        <div class="input-field col s12">
+                            <h5 class="col s12 c-azul text-center">Servicio de café</h5>
+                            <br>  
+                            <ul class="collection row">
+                                <?php
+                                $servicio_cafe = $control->consulta_servicio_cafe($cantidad_invitados);
+                                while ($row_cafe = mysqli_fetch_array($servicio_cafe)):
+                                    ?>
+                                    <li class="collection-item avatar col s12" style="justify-content: space-around">
+                                        <div class="col s12 l6">
+                                            <br><i class="material-icons circle" style="background-color: #00C2EE">free_breakfast</i> <span class="title">
+                                                <b>Ingrediente:</b> <?php echo $row_cafe[0]; ?></span>
+                                            <p> <b>Cantidad para el evento: </b> <?php echo bcdiv($row_cafe[1], 1, 2) < 1 ? bcdiv($row_cafe[1], 1, 2) : intval($row_cafe[1]); ?>
+                                        </div>
+                                        <div class="col s12 l6 text-center">
+                                            <a href="<?php echo $row_cafe[2]; ?>" data-fancybox data-caption="<?php echo $row_cafe[0]; ?>">
+                                                <br><img src="<?php echo $row_cafe[2]; ?>" width="100" /> </a>
+                                        </div>
+                                    </li>
+                                <?php endwhile; ?>
+                            </ul>
+                        </div>  
+                    <?php endif; ?>
                     <?php if ($anexa_programa) : ?>
                         <div class="input-field col s12 l6" style="text-align: center;margin-top: -1rem">
                             <label style="font-size: .9rem">Programación</label>
@@ -354,8 +380,8 @@ else:
                                         ?>
                                         <div class="input-field col s12 l6">
                                             <i class="material-icons prefix c-azul">build</i>
-                                            <label style="margin-left: 1rem;color:#00C2EE"><?php echo $row_personal[0];?></label>
-                                            <input type="text" style="font-size: 1rem" value="<?php echo $row_personal[1];?>" readonly>
+                                            <label style="margin-left: 1rem;color:#00C2EE"><?php echo $row_personal[0]; ?></label>
+                                            <input type="text" style="font-size: 1rem" value="<?php echo $row_personal[1]; ?>" readonly>
                                         </div>
                                     <?php endwhile; ?>
                                 </div>
@@ -378,7 +404,7 @@ else:
                 </div>
             </div>
 
-<?php endif; ?>
+        <?php endif; ?>
     </div>
 </div>
 

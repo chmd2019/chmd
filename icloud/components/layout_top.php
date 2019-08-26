@@ -12,7 +12,7 @@
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">        
         <!-- JS Dependencies -->    
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="/pruebascd/icloud/materialkit/js/materialize.js"></script>       
         <!-- JS GLOBAL -->    
         <script src="/pruebascd/icloud/Transportes/common/js/common.js"></script>
