@@ -37,7 +37,7 @@ $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
     if ($contador == 0) {
         ?>
         <br>
-        <span class="badge blue c-blanco col s12">Sin permisos para mostrar</span>
+        <span class="chip blue c-blanco col s12 text-center">Sin permisos para mostrar</span>
         <?php
     } else {
         ?>

@@ -251,22 +251,22 @@ if (isset($authUrl)) {
                                     array_push($id_todos_alumnos, $cliente1['id']);
                                     ?> 
                                     <div <?php echo $hidden; ?>>
-                                        <div class="input-field col s12">
-                                            <i class="material-icons prefix c-azul">school</i>
-                                            <textarea class="materialize-textarea"
-                                                      readonly  
-                                                      id="nombre_<?php echo $counter; ?>"
-                                                      style="font-size: 1rem"></textarea>
-                                        </div>
-                                        <div class="switch col s12">
+                                        
+                                        <div class="switch col s1">
                                             <label class="checks-alumnos">
                                                 <input type="checkbox" 
                                                        id="alumno_<?php echo $counter; ?>" 
                                                        value="<?php echo $cliente1['id']; ?>"/>
-                                                <span class="lever"></span>
+                                                <span class="lever" style="margin-top:1rem"></span>
                                             </label>
                                         </div>
-                                        <br>
+                                        <div class="col s10 l11" style="float: right;">
+                                            <textarea class="materialize-textarea"
+                                                      readonly  
+                                                      id="nombre_<?php echo $counter; ?>"
+                                                      style="font-size: 1rem;"></textarea>
+                                        </div>
+                                        <br style="clear:both">
                                         <input id="id_alumno_permiso_temporal_<?php echo $counter; ?>" hidden value="<?php echo $cliente1['id']; ?>"/>
                                         <script>
                                             $('#nombre_<?php echo $counter; ?>').val('<?php echo $cliente1['nombre']; ?>');

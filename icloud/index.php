@@ -5,7 +5,7 @@ include_once "$root_icloud/components/sesion.php";
 include_once "$root_icloud/components/layout_top.php";
 
 if (isset($authUrl)) {
-    ?>   
+    ?>
     <style>
         body{
             background-image: url('/pruebascd/icloud/pics/body_bg.jpg');
@@ -24,7 +24,7 @@ if (isset($authUrl)) {
         <div class="caja-login" align="center">
             <h3 class="text-center c-azul" style="margin:-10px">
                 Mi Maguen
-            </h3> 
+            </h3>
             <br>
             <?php echo '<a  href="' . $authUrl . '"><img src="images/google.png" alt="login" height="240px" width="240px"></a>' ?>
         </div>
@@ -49,11 +49,11 @@ if (isset($authUrl)) {
                         M.toast({html: 'Bienvenido!', classes: 'green accent-4'});
                     </script>
 
-                    <div class="row">     
-                        <div style="text-align: right;margin:1rem 1rem 0 0">                   
+                    <div class="row">
+                        <div style="text-align: right;margin:1rem 1rem 0 0">
                             <a class="waves-effect waves-light btn red" href="#!" onclick="logout()">
                                 <i class="material-icons left">lock</i>Salir
-                            </a>                            
+                            </a>
                         </div>
 
                         <!--MENU PERFIL DE PADRES-->
@@ -62,16 +62,16 @@ if (isset($authUrl)) {
                             <div class="row">
                                 <div class="row">
                                     <div class="col s12 m6 l4">
-                                        <div class="card" style="box-shadow: none"> 
-                                            <div class="card-image waves-effect waves-block waves-light">  
+                                        <div class="card" style="box-shadow: none">
+                                            <div class="card-image waves-effect waves-block waves-light">
                                                 <a href='menu.php?idseccion=1'>
-                                                    <img src="pics/activos/transportes.png" style="padding:3rem;">  
+                                                    <img src="pics/activos/transportes.png" style="padding:3rem;">
                                                 </a>
                                             </div>
                                             <div class="card-content text-center" style="padding:0px;margin-top: -15px">
                                                 <span class="activator waves-effect waves-light btn b-azul c-blanco">
                                                     INFO
-                                                </span>      
+                                                </span>
                                             </div>
                                             <div class="card-reveal b-azul white-text">
                                                 <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
@@ -81,15 +81,15 @@ if (isset($authUrl)) {
                                     </div>
                                     <div class="col s12 m6 l4">
                                         <div class="card" style="box-shadow: none">
-                                            <div class="card-image waves-effect waves-block waves-light">   
+                                            <div class="card-image waves-effect waves-block waves-light">
                                                 <a href='https://users.schoolcloud.net/campus/chmd'>
-                                                    <img src="pics/activos/schoolcloud.png" style="padding:3rem;">  
+                                                    <img src="pics/activos/schoolcloud.png" style="padding:3rem;">
                                                 </a>
                                             </div>
                                             <div class="card-content text-center" style="padding:0px;margin-top: -15px">
                                                 <span class="activator waves-effect waves-light btn b-azul c-blanco">
                                                     INFO
-                                                </span>      
+                                                </span>
                                             </div>
                                             <div class="card-reveal b-azul white-text">
                                                 <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
@@ -108,14 +108,14 @@ if (isset($authUrl)) {
                                             <div class="card-content text-center" style="padding:0px;margin-top: -15px">
                                                 <span class="activator waves-effect waves-light btn b-azul c-blanco">
                                                     INFO
-                                                </span>      
+                                                </span>
                                             </div>
                                             <div class="card-reveal b-azul white-text">
                                                 <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
                                                 <p>Pedidos de paquete de uniformes incluido en la canasta básica y de uniformes adicionales.</p>
                                             </div>
                                         </div>
-                                    </div>      -->                                  
+                                    </div>      -->
 
                                     <div class="col s12 m6 l4">
                                         <div class="card" style="box-shadow: none">
@@ -127,7 +127,7 @@ if (isset($authUrl)) {
                                             <div class="card-content text-center" style="padding:0px;margin-top: -15px">
                                                 <span class="activator waves-effect waves-light btn b-azul c-blanco">
                                                     INFO
-                                                </span>      
+                                                </span>
                                             </div>
                                             <div class="card-reveal b-azul white-text">
                                                 <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
@@ -147,7 +147,7 @@ if (isset($authUrl)) {
                                             <div class="card-content text-center" style="padding:0px;margin-top: -15px">
                                                 <span class="activator waves-effect waves-light btn b-azul c-blanco">
                                                     INFO
-                                                </span>      
+                                                </span>
                                             </div>
                                             <div class="card-reveal b-azul white-text">
                                                 <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
@@ -165,7 +165,7 @@ if (isset($authUrl)) {
                                             <div class="card-content text-center" style="padding:0px;margin-top: -15px">
                                                 <span class="activator waves-effect waves-light btn b-azul c-blanco">
                                                     INFO
-                                                </span>      
+                                                </span>
                                             </div>
                                             <div class="card-reveal b-azul white-text">
                                                 <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
@@ -178,14 +178,14 @@ if (isset($authUrl)) {
                                                                             <div class="card" style="box-shadow: none">
                                                                                 <div class="card-image waves-effect waves-block waves-light">
                                                                                     <a href='Evento/menu.php'>
-                                                                                        <img src="https://www.chmd.edu.mx/pruebascd/icloud/pics/activos/party.svg" 
+                                                                                        <img src="https://www.chmd.edu.mx/pruebascd/icloud/pics/activos/party.svg"
                                                                                              style="padding:3rem;width: 80%;margin: auto">
                                                                                     </a>
                                                                                 </div>
                                                                                 <div class="card-content text-center" style="padding:0px;margin-top: -15px">
                                                                                     <span class="activator waves-effect waves-light btn b-azul c-blanco">
                                                                                         INFO
-                                                                                    </span>      
+                                                                                    </span>
                                                                                 </div>
                                                                                 <div class="card-reveal b-azul white-text">
                                                                                     <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
@@ -194,18 +194,21 @@ if (isset($authUrl)) {
                                                                             </div>
                                                                         </div>
                                     -->
+
+
+
                                 </div>
                             </div>
                         </div>
-                    </div>   
+                    </div>
 
                     <?php
                 } elseif ($tipo == 5) {
-                    ?>    
-                    <div style="text-align: right;margin:1rem 1rem 0 0">                   
+                    ?>
+                    <div style="text-align: right;margin:1rem 1rem 0 0">
                         <a class="waves-effect waves-light btn red" href="#!" onclick="logout()">
                             <i class="material-icons left">lock</i>Salir
-                        </a>                            
+                        </a>
                     </div>
                     <!--MENU PERFIL4-->
 
@@ -214,8 +217,8 @@ if (isset($authUrl)) {
                         <div class="row">
                             <div class="row">
                                 <div class="col s12 m6 l4">
-                                    <div class="card" style="box-shadow: none"> 
-                                        <div class="card-image waves-effect waves-block waves-light"> 
+                                    <div class="card" style="box-shadow: none">
+                                        <div class="card-image waves-effect waves-block waves-light">
                                             <a href='menu.php?idseccion=1'>
                                                 <img src="pics/activos/transportes.png" style="padding:3rem;">
                                             </a>
@@ -223,7 +226,7 @@ if (isset($authUrl)) {
                                         <div class="card-content text-center" style="padding:0px;margin-top: -15px">
                                             <span class="activator waves-effect waves-light btn b-azul c-blanco">
                                                 INFO
-                                            </span>      
+                                            </span>
                                         </div>
                                         <div class="card-reveal b-azul white-text">
                                             <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
@@ -234,15 +237,15 @@ if (isset($authUrl)) {
 
                                 <div class="col s12 m6 l4">
                                     <div class="card" style="box-shadow: none">
-                                        <div class="card-image waves-effect waves-block waves-light">  
+                                        <div class="card-image waves-effect waves-block waves-light">
                                             <a href='https://users.schoolcloud.net/campus/chmd'>
-                                                <img src="pics/activos/schoolcloud.png" style="padding:3rem;">  
+                                                <img src="pics/activos/schoolcloud.png" style="padding:3rem;">
                                             </a>
                                         </div>
                                         <div class="card-content text-center" style="padding:0px;margin-top: -15px">
                                             <span class="activator waves-effect waves-light btn b-azul c-blanco">
                                                 INFO
-                                            </span>      
+                                            </span>
                                         </div>
                                         <div class="card-reveal b-azul white-text">
                                             <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
@@ -259,7 +262,7 @@ if (isset($authUrl)) {
                                         </div>
                                         <div class="card-content text-center" style="padding:0px;margin-top: -15px">                                            <span class="activator waves-effect waves-light btn b-azul c-blanco">
                                                 INFO
-                                            </span>    
+                                            </span>
                                         </div>
                                         <div class="card-reveal b-azul white-text">
                                             <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
@@ -279,7 +282,7 @@ if (isset($authUrl)) {
                                         <div class="card-content text-center" style="padding:0px;margin-top: -15px">
                                             <span class="activator waves-effect waves-light btn b-azul c-blanco">
                                                 INFO
-                                            </span>    
+                                            </span>
                                         </div>
                                         <div class="card-reveal">
                                             <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
@@ -290,14 +293,14 @@ if (isset($authUrl)) {
                                 <div class="col s12 m6 l4">
                                     <div class="card" style="box-shadow: none">
                                         <div class="card-image waves-effect waves-block waves-light">
-                                            <a href='Eventos/menu.php '>
+                                            <a href='http://chmd.chmd.edu.mx:65083/demo/Eventos/menu.php'>
                                                 <img src="pics/activos/minuta.png" style="padding:3rem;">
                                             </a>
                                         </div>
                                         <div class="card-content text-center" style="padding:0px;margin-top: -15px">
                                             <span class="activator waves-effect waves-light btn b-azul c-blanco">
                                                 INFO
-                                            </span>      
+                                            </span>
                                         </div>
                                         <div class="card-reveal b-azul white-text">
                                             <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
@@ -305,57 +308,57 @@ if (isset($authUrl)) {
                                         </div>
                                     </div>
                                 </div>
-                            </div>    
-                        </div>  
+                            </div>
+                        </div>
                     </div>
 
                 <?php
             } elseif ($tipo == 6) {
-                ?>     
-                    <div class="row">   
-                        <div style="text-align: right;margin:1rem 1rem 0 0">                   
+                ?>
+                    <div class="row">
+                        <div style="text-align: right;margin:1rem 1rem 0 0">
                             <a class="waves-effect waves-light btn red" href="#!" onclick="logout()">
                                 <i class="material-icons left">lock</i>Salir
-                            </a>                            
-                        </div>   
+                            </a>
+                        </div>
                         <div class="col s12 m3 l4"><br></div>
                         <div class="col s12 m6 l4">
                             <div class="card" style="box-shadow: none;">
                                 <div class="card-image waves-effect waves-block waves-light">
                                     <a href='Evento/menu.php'>
-                                        <img src="https://www.chmd.edu.mx/pruebascd/icloud/pics/activos/party.svg" 
+                                        <img src="https://www.chmd.edu.mx/pruebascd/icloud/pics/activos/party.svg"
                                              style="padding:3rem;width: 70%;margin: auto">
                                     </a>
                                 </div>
                                 <div class="card-content text-center" style="padding:0px;margin-top: -15px">
                                     <span class="activator waves-effect waves-light btn b-azul c-blanco">
                                         INFO
-                                    </span>      
+                                    </span>
                                 </div>
                                 <div class="card-reveal b-azul white-text">
                                     <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
                                     <p>INFO pendiente.</p>
                                 </div>
                             </div>
-                        </div>  
-                        <div class="col s12 m3 l4"><br></div>                      
+                        </div>
+                        <div class="col s12 m3 l4"><br></div>
                     </div>
                 <?php
             } elseif ($tipo == 8) {
                 ?>
 
-                    <div style="text-align: right;margin:1rem 1rem 0 0">                   
+                    <div style="text-align: right;margin:1rem 1rem 0 0">
                         <a class="waves-effect waves-light btn red" href="#!" onclick="logout()">
                             <i class="material-icons left">lock</i>Salir
-                        </a>                            
+                        </a>
                     </div>
 
                     <div class="container b-blanco">
                         <div class="row">
                             <div class="row">
-                                <div class="col s12 m6 l4">                                    
-                                    <div class="card" style="box-shadow: none"> 
-                                        <div class="card-image waves-effect waves-block waves-light"> 
+                                <div class="col s12 m6 l4">
+                                    <div class="card" style="box-shadow: none">
+                                        <div class="card-image waves-effect waves-block waves-light">
                                             <a href='menu.php?idseccion=1'>
                                                 <img src="pics/activos/transportes.png" style="padding:3rem;">
                                             </a>
@@ -363,25 +366,25 @@ if (isset($authUrl)) {
                                         <div class="card-content text-center" style="padding:0px;margin-top: -15px">
                                             <span class="activator waves-effect waves-light btn b-azul c-blanco">
                                                 INFO
-                                            </span>      
+                                            </span>
                                         </div>
                                         <div class="card-reveal b-azul white-text">
                                             <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
                                             <p>Solicitudes de cambio Permanente, Temporal, Del día.</p>
                                         </div>
                                     </div>
-                                </div>   
+                                </div>
                                 <div class="col s12 m6 l4">
                                     <div class="card" style="box-shadow: none">
-                                        <div class="card-image waves-effect waves-block waves-light">  
+                                        <div class="card-image waves-effect waves-block waves-light">
                                             <a href='https://users.schoolcloud.net/campus/chmd'>
-                                                <img src="pics/activos/schoolcloud.png" style="padding:3rem;">  
+                                                <img src="pics/activos/schoolcloud.png" style="padding:3rem;">
                                             </a>
                                         </div>
                                         <div class="card-content text-center" style="padding:0px;margin-top: -15px">
                                             <span class="activator waves-effect waves-light btn b-azul c-blanco">
                                                 INFO
-                                            </span>      
+                                            </span>
                                         </div>
                                         <div class="card-reveal b-azul white-text">
                                             <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
@@ -398,7 +401,7 @@ if (isset($authUrl)) {
                                         </div>
                                         <div class="card-content text-center" style="padding:0px;margin-top: -15px">                                            <span class="activator waves-effect waves-light btn b-azul c-blanco">
                                                 INFO
-                                            </span> 
+                                            </span>
                                         </div>
                                         <div class="card-reveal b-azul white-text">
                                             <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
@@ -417,7 +420,7 @@ if (isset($authUrl)) {
                                         <div class="card-content text-center" style="padding:0px;margin-top: -15px">
                                             <span class="activator waves-effect waves-light btn b-azul c-blanco">
                                                 INFO
-                                            </span>    
+                                            </span>
                                         </div>
                                         <div class="card-reveal">
                                             <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
@@ -435,14 +438,14 @@ if (isset($authUrl)) {
                                         <div class="card-content text-center" style="padding:0px;margin-top: -15px">
                                             <span class="activator waves-effect waves-light btn b-azul c-blanco">
                                                 INFO
-                                            </span>      
+                                            </span>
                                         </div>
                                         <div class="card-reveal b-azul white-text">
                                             <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
                                             <p>Pedidos de paquete de uniformes incluido en la canasta básica y de uniformes adicionales.</p>
                                         </div>
                                     </div>
-                                </div>  
+                                </div>
                                 <div class="col s12 m6 l4">
                                     <div class="card" style="box-shadow: none">
                                         <div class="card-image waves-effect waves-block waves-light">
@@ -453,7 +456,7 @@ if (isset($authUrl)) {
                                         <div class="card-content text-center" style="padding:0px;margin-top: -15px">
                                             <span class="activator waves-effect waves-light btn b-azul c-blanco">
                                                 INFO
-                                            </span>      
+                                            </span>
                                         </div>
                                         <div class="card-reveal b-azul white-text">
                                             <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
@@ -481,8 +484,45 @@ if (isset($authUrl)) {
                                         </div>
                                     </div>
                                 </div>
-                            </div>                                
-                        </div>                            
+                                <div class="col s12 m6 l4">
+                                    <div class="card" style="box-shadow: none">
+                                        <div class="card-image waves-effect waves-block waves-light">
+                                            <a href='Especial/menu.php?idseccion=1'>
+                                                <img src="pics/activos/permisos.png" style="padding:3rem;">
+                                            </a>
+                                        </div>
+                                        <div class="card-content text-center" style="padding:0px;margin-top: -15px">
+                                            <span class="activator waves-effect waves-light btn b-azul c-blanco">
+                                                INFO
+                                            </span>
+                                        </div>
+                                        <div class="card-reveal b-azul white-text">
+                                            <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
+                                            <p>Generar permisos extraordinarios, cumpleaños y Bar Mitzvá.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col s12 m6 l4">
+                                    <div class="card" style="box-shadow: none">
+                                        <div class="card-image waves-effect waves-block waves-light">
+                                            <a href='misarchivos/misarchivos.php'>
+                                                <img src="pics/activos/misarchivos.png" style="padding:3rem;">
+                                            </a>
+                                        </div>
+                                        <div class="card-content text-center" style="padding:0px;margin-top: -15px">
+                                            <span class="activator waves-effect waves-light btn b-azul c-blanco">
+                                                INFO
+                                            </span>
+                                        </div>
+                                        <div class="card-reveal b-azul white-text">
+                                            <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
+                                            <p>Encontrarás archivos y formatos relevantes para descargar e imprimir.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
                 <?php
             } else {
@@ -599,7 +639,7 @@ if (isset($authUrl)) {
         }//fin de consulta principal
         else {
             ?>
-                <center>   
+                <center>
                     <span style="margin-top: 3%;margin-bottom: 20%;display: block">
 
                 <?php
@@ -628,6 +668,3 @@ if (isset($authUrl)) {
 </script>
 
 <?php include_once "$root_icloud/components/layout_bottom.php"; ?>
-
-
-

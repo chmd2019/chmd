@@ -96,27 +96,26 @@ if (isset($authUrl)) {
                             while ($cliente1 = mysqli_fetch_array($consulta1)) {
                                 $counter++;
                                 ?>
-                                <div class="input-field">
-                                    <i class="material-icons prefix c-azul">school</i>
-                                    <textarea class="materialize-textarea"
+                                <div class="input-field">                                    
+                                    <div class="switch col s1">
+                                        <label class="checks-alumnos">
+                                            <input type="checkbox" 
+                                                   id="alumno_permiso_permanente_<?php echo $counter; ?>" 
+                                                   value="<?php echo $cliente1['id']; ?>"/>
+                                            <span class="lever" style="margin-top: 1rem;"></span>
+                                        </label>
+                                    </div>
+                                    <textarea class="materialize-textarea col s10 l11"
                                               readonly  
                                               id="nombre_nuevo_permiso_permanente_<?php echo $counter; ?>"
-                                              style="font-size: 1rem"></textarea>
+                                              style="font-size: 1rem;float: right;"></textarea>
+                                    <br style="clear: both;">
+                                    <input id="id_alumno_permiso_permanente_<?php echo $counter; ?>" hidden value="<?php echo $cliente1['id']; ?>"/>
+                                    <script>
+                                        $('#nombre_nuevo_permiso_permanente_<?php echo $counter; ?>').val('<?php echo $cliente1['nombre']; ?>');
+                                        M.textareaAutoResize($('#nombre_nuevo_permiso_permanente_<?php echo $counter; ?>'));
+                                    </script>
                                 </div>
-                                <div class="switch col s12">
-                                    <label class="checks-alumnos">
-                                        <input type="checkbox" 
-                                               id="alumno_permiso_permanente_<?php echo $counter; ?>" 
-                                               value="<?php echo $cliente1['id']; ?>"/>
-                                        <span class="lever"></span>
-                                    </label>
-                                </div>
-                                <br>
-                                <input id="id_alumno_permiso_permanente_<?php echo $counter; ?>" hidden value="<?php echo $cliente1['id']; ?>"/>
-                                <script>
-                                    $('#nombre_nuevo_permiso_permanente_<?php echo $counter; ?>').val('<?php echo $cliente1['nombre']; ?>');
-                                    M.textareaAutoResize($('#nombre_nuevo_permiso_permanente_<?php echo $counter; ?>'));
-                                </script>
                                 <?php
                                 $talumnos = $counter;
                             }

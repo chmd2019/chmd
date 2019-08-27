@@ -180,6 +180,7 @@ if (isset($authUrl)) {
                                 <option value="" disabled selected>Seleccione una opción</option>
                                 <option value="Cumpleaños">Cumpleaños</option>
                                 <option value="Bar Mitzvá">Bar Mitzvá</option>
+                                <option value="Otros">Otros</option>
                             </select>
                             <label>Tipo de evento</label>
                         </div>
@@ -197,20 +198,20 @@ if (isset($authUrl)) {
                                 $counter++;
                                 ?>
                                 <div class="input-field">
-                                    <i class="material-icons prefix c-azul">school</i>
-                                    <textarea class="materialize-textarea"
+                                    <div class="switch col s1 l1">
+                                        <label class="checks-alumnos">
+                                            <input type="checkbox" 
+                                                   id="alumno_<?php echo $counter; ?>" 
+                                                   value="<?php echo $alumno['id']; ?>"/>
+                                            <span class="lever" style="margin-top: 1rem"></span>
+                                        </label>
+                                    </div>
+                                    <textarea class="materialize-textarea col s9 l11"
                                               readonly  
                                               id="nombre_alumno_<?php echo $counter; ?>"
-                                              style="font-size: 1rem"></textarea>
+                                              style="font-size: 1rem;float:right"></textarea>
                                 </div>
-                                <div class="switch col s12">
-                                    <label class="checks-alumnos">
-                                        <input type="checkbox" 
-                                               id="alumno_<?php echo $counter; ?>" 
-                                               value="<?php echo $alumno['id']; ?>"/>
-                                        <span class="lever"></span>
-                                    </label>
-                                </div>
+                                <br>
                                 <br>
                                 <input id="id_alumno_<?php echo $counter; ?>" hidden value="<?php echo $alumno['id']; ?>"/>
                                 <script>
@@ -227,9 +228,9 @@ if (isset($authUrl)) {
                         <br>
                         <span class="col s12">
                             <div class="badge blue accent-4 c-blanco" style="padding: .5rem;border-radius: 1rem">
-                            Responsable del evento: Persona designada por la familia para verificar que todos
-                            los asistentes del evento están presentes y acompañarlos hasta que aborden el
-                            transporte designado para el evento.
+                                Responsable del evento: Persona designada por la familia para verificar que todos
+                                los asistentes del evento están presentes y acompañarlos hasta que aborden el
+                                transporte designado para el evento.
                             </div>                                
                         </span>
                         <span class="col s12"><br></span>
@@ -338,7 +339,7 @@ if (isset($authUrl)) {
 <div id="modal_codigo_invitacion" class="modal bottom-sheet">
     <div class="modal-content">
         <h4 class="c-azul">Código de invitación</h4>
-            <span id="span_codigo_verificacion" class="c-azul" style="font-size: 1rem"></span>
+        <span id="span_codigo_verificacion" class="c-azul" style="font-size: 1rem"></span>
         </p>
     </div>
     <div class="modal-footer">
@@ -637,7 +638,7 @@ if (isset($authUrl)) {
         }).done((res) => {
             res = JSON.parse(res);
             var modal_codigo_invitacion = M.Modal.getInstance($("#modal_codigo_invitacion"));
-            $("#span_codigo_verificacion").append(`Tu código de invitación al evento es: <span style='color:#00C2EE'>${res}</span>. Te recordamos que deberás compartir el código de tu evento con los padres de familia para que puedan gestionar el permiso de sus hijos.`);            
+            $("#span_codigo_verificacion").append(`Tu código de invitación al evento es: <span style='color:#00C2EE'>${res}</span>. Te recordamos que deberás compartir el código de tu evento con los padres de familia para que puedan gestionar el permiso de sus hijos.`);
             modal_codigo_invitacion.open();
         }).always(() => {
             $("#loading").fadeOut("slow");

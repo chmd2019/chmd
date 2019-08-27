@@ -174,21 +174,20 @@ if (isset($authUrl)) {
                                 $counter++;
                                 ?>
                                 <div class="input-field">
-                                    <i class="material-icons prefix c-azul">school</i>
-                                    <textarea class="materialize-textarea"
+                                    <div class="switch col s1">
+                                        <label class="checks-alumnos">
+                                            <input type="checkbox" 
+                                                   id="alumno_permiso_temporal_<?php echo $counter; ?>" 
+                                                   value="<?php echo $cliente1['id']; ?>"/>
+                                            <span class="lever" style="margin-top:1rem"></span>
+                                        </label>
+                                    </div>
+                                    <textarea class="materialize-textarea col s10 l11"
                                               readonly  
                                               id="nombre_nuevo_permiso_temporal_<?php echo $counter; ?>"
-                                              style="font-size: 1rem"></textarea>
+                                              style="font-size: 1rem;float: right;"></textarea>
                                 </div>
-                                <div class="switch col s12">
-                                    <label class="checks-alumnos">
-                                        <input type="checkbox" 
-                                               id="alumno_permiso_temporal_<?php echo $counter; ?>" 
-                                               value="<?php echo $cliente1['id']; ?>"/>
-                                        <span class="lever"></span>
-                                    </label>
-                                </div>
-                                <br>
+                                <br style="clear:both">
                                 <input id="id_alumno_permiso_temporal_<?php echo $counter; ?>" hidden value="<?php echo $cliente1['id']; ?>"/>
                                 <script>
                                     $('#nombre_nuevo_permiso_temporal_<?php echo $counter; ?>').val('<?php echo $cliente1['nombre']; ?>');
@@ -223,7 +222,7 @@ if (isset($authUrl)) {
                         </div>
                         <br>
                         <div class="input-field" hidden>
-                        <label for="cp_guardada" style="margin-left: 1rem">CP</label>
+                            <label for="cp_guardada" style="margin-left: 1rem">CP</label>
                             <i class="material-icons prefix c-azul">person_pin</i>
                             <input readonly  
                                    id="cp_guardada"
@@ -362,7 +361,8 @@ if (isset($authUrl)) {
             $("#fecha_solicitud_nuevo").val("");
         } else {
             $("#fecha_para").prop("hidden", true);
-            $("#fecha_solicitud_nuevo").val("<?php echo $arrayDias[date('w')] . ", " . date('d') .
+            $("#fecha_solicitud_nuevo").val("<?php
+echo $arrayDias[date('w')] . ", " . date('d') .
  " de " . $arrayMeses[date('m') - 1] . " de " . date('Y');
 ?>");
         }

@@ -40,7 +40,7 @@ $dias = array("domingo", "lunes", "martes", "mi&eacute;rcoles", "jueves", "viern
     if ($contador == 0) {
         ?>
         <br>
-        <span class="badge blue c-blanco col s12">Sin permisos para mostrar</span>
+        <span class="chip blue c-blanco col s12 text-center">Sin permisos para mostrar</span>
         <?php
     } else {
         ?>

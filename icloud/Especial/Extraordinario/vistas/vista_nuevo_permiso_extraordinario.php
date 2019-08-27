@@ -205,24 +205,22 @@ if (isset($authUrl)) {
                                 $idcursar = $alumno['idcursar'];
                                 ?>
                                 <input hidden value="<?php echo $idcursar; ?>" id="idcursar_alumno_<?php echo $counter; ?>">
-                                <div class="input-field col s12">
-                                    <i class="material-icons prefix c-azul">school</i>
-                                    <textarea class="materialize-textarea"
+                                <div>                                    
+                                    <div class="switch col s1 l1">
+                                        <label class="checks-alumnos">
+                                            <input type="checkbox" 
+                                                   id="alumno_<?php echo $counter; ?>" 
+                                                   value="<?php echo $alumno['id']; ?>"
+                                                   onchange="mostrar_ocultar_caja_horarios('caja_horarios_<?php echo $counter; ?>', '<?php echo $id_alumno; ?>', '<?php echo $idcursar; ?>')"/>
+                                            <span class="lever"></span>
+                                        </label>         
+                                    </div>
+                                    <textarea class="materialize-textarea col s10 l11"
                                               readonly  
                                               id="nombre_alumno_<?php echo $counter; ?>"
-                                              style="font-size: 1rem"></textarea>
+                                              style="font-size: 1rem;float: right;"></textarea>                                    
                                 </div>
-                                <div class="switch col s12">
-                                    <label class="checks-alumnos">
-                                        <input type="checkbox" 
-                                               id="alumno_<?php echo $counter; ?>" 
-                                               value="<?php echo $alumno['id']; ?>"
-                                               onchange="mostrar_ocultar_caja_horarios('caja_horarios_<?php echo $counter; ?>', '<?php echo $id_alumno; ?>', '<?php echo $idcursar; ?>')"/>
-                                        <span class="lever"></span>
-                                    </label>
-                                    <br>                           
-                                    <br>          
-                                </div>
+                                <span class="col s12"><br></span>
                                 <div id="caja_horarios_<?php echo $counter; ?>" hidden>                  
                                     <div class="col s12 l5" style="margin-top: -25px;">                        
                                         <div class="input-field">
@@ -244,7 +242,7 @@ if (isset($authUrl)) {
                                                 <input type="checkbox" 
                                                        class="filled-in" 
                                                        id="check_regreso_<?php echo $counter; ?>"
-                                                       onchange="check_regresa('hora_regreso_<?php echo $counter; ?>','caja_regresa_<?php echo $counter; ?>')" />
+                                                       onchange="check_regresa('hora_regreso_<?php echo $counter; ?>', 'caja_regresa_<?php echo $counter; ?>')" />
                                                 <span>Regresa</span>
                                             </label>                      
                                             <div class="input-field col s12 l9" id="caja_regresa_<?php echo $counter; ?>" hidden>
@@ -496,8 +494,8 @@ if (isset($authUrl)) {
             });
             $('#hora_salida_' + counter).timepicker('show');
         }
-        if($("#check_regreso_"+counter).prop('checked')){
-            $("#check_regreso_"+counter).click();
+        if ($("#check_regreso_" + counter).prop('checked')) {
+            $("#check_regreso_" + counter).click();
         }
         ids.push(el.id);
     }
@@ -516,7 +514,7 @@ if (isset($authUrl)) {
             $('.timepicker_' + counter).val("");
             return;
         }
-        
+
         $('#hora_regreso_' + counter).timepicker('remove');
         var hora_maxima_del_dia = '';
         var fecha_permiso = $("#fecha_permiso").val();
@@ -525,7 +523,7 @@ if (isset($authUrl)) {
         //BACHILLERATO Y KINDER
         // de lunes a jueves
         if (fecha_permiso[0] !== "Viernes" && horario_permitido === "1") {
-            var hora_minima_respecto_salida = `${parseInt($("#hora_salida_" + counter).val().split(":")[0])+1}:${$("#hora_salida_" + counter).val().split(":")[1]}`;
+            var hora_minima_respecto_salida = `${parseInt($("#hora_salida_" + counter).val().split(":")[0]) + 1}:${$("#hora_salida_" + counter).val().split(":")[1]}`;
             hora_maxima_del_dia = '14:50';
             $('#hora_regreso_' + counter).timepicker({
                 'step': 5,
@@ -537,7 +535,7 @@ if (isset($authUrl)) {
         }
         // los viernes
         else if (fecha_permiso[0] === "Viernes" && horario_permitido === "1") {
-            var hora_minima_respecto_salida = `${parseInt($("#hora_salida_" + counter).val().split(":")[0])+1}:${$("#hora_salida_" + counter).val().split(":")[1]}`;
+            var hora_minima_respecto_salida = `${parseInt($("#hora_salida_" + counter).val().split(":")[0]) + 1}:${$("#hora_salida_" + counter).val().split(":")[1]}`;
             hora_maxima_del_dia = '14:00';
             $('#hora_regreso_' + counter).timepicker({
                 'step': 5,
@@ -789,13 +787,13 @@ if (isset($authUrl)) {
             }
         }
     }
-    
-    function check_regresa(id_hora_regreso, id_caja_regresa){
-        if($("#"+id_caja_regresa).prop('hidden')){
-            $("#"+id_caja_regresa).prop('hidden', false);
-        }else{
-            $("#"+id_caja_regresa).prop('hidden', true);
-            $("#"+id_hora_regreso).val('')
+
+    function check_regresa(id_hora_regreso, id_caja_regresa) {
+        if ($("#" + id_caja_regresa).prop('hidden')) {
+            $("#" + id_caja_regresa).prop('hidden', false);
+        } else {
+            $("#" + id_caja_regresa).prop('hidden', true);
+            $("#" + id_hora_regreso).val('')
         }
     }
 </script>

@@ -400,6 +400,7 @@ else:
                                   readonly
                                   id="requerimientos_especiales"
                                   placeholder="Requerimientos especiales"></textarea> 
+                        <label style="margin-left: 1rem">Requerimientos especiales</label>
                     </div>
                 </div>
             </div>
