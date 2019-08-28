@@ -85,19 +85,19 @@ if (isset($authUrl)) {
                 <br>
                 <div class="row" style="padding:0rem .5rem;">
                     <div class="col s12 l6">
-                        <label for="fecha_creacion" style="margin-left: 1rem">Fecha de solicitud</label>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">calendar_today</i>
                             <input value="<?php
                             echo $arrayDias[date('w')] . ", " . date('d') .
                             " de " . $arrayMeses[date('m') - 1] . " de " . date('Y') .
                             ", " . date("h:i a");
-                            ?>" readonly  id="fecha_creacion" style="font-size: 1rem" type="text" >               
+                            ?>" readonly  id="fecha_creacion" style="font-size: 1rem" type="text" >     
+                            <label for="fecha_creacion" style="margin-left: 1rem">Fecha de solicitud</label>          
                         </div>
                     </div>
                     <div class="col s12 l6">
-                        <label for="responsable" style="margin-left: 1rem">Solicitante</label>
                         <div class="input-field">
+                            <label for="responsable" style="margin-left: 1rem">Solicitante</label>
                             <i class="material-icons prefix c-azul">person</i>
                             <input value="<?php echo " $nombre "; ?>" readonly  id="responsable" style="font-size: 1rem" type="text" >               
                         </div>
@@ -123,7 +123,6 @@ if (isset($authUrl)) {
                         <link rel='stylesheet' href='../../common/css/calendario.css'> 
                         <script src='../../common/js/calendario.js'></script>
                         <script src="../../common/js/common.js"></script>
-                        <label for="fecha_solicitud_nuevo" style="margin-left: 1rem">Para el día</label>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">calendar_today</i>
                             <input 
@@ -132,7 +131,8 @@ if (isset($authUrl)) {
                                 class="datepicker" 
                                 id="fecha_solicitud_nuevo" 
                                 placeholder="Para el día"
-                                onchange="fecha_minusculas(this.value, 'fecha_solicitud_nuevo')">            
+                                onchange="fecha_minusculas(this.value, 'fecha_solicitud_nuevo')">   
+                            <label for="fecha_solicitud_nuevo" style="margin-left: 1rem">Para el día</label>         
                         </div>
                     </div>
                     <script>
@@ -203,22 +203,22 @@ if (isset($authUrl)) {
                     <h5 class="center-align c-azul">Dirección de Casa</h5>
                     <br>
                     <div class="col s12">
-                        <label for="calle_guardada" style="margin-left: 1rem">Calle y Número</label>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">person_pin</i>
                             <textarea class="materialize-textarea"
                                       readonly  
                                       id="calle_guardada" 
                                       style="font-size: .9rem"></textarea> 
+                            <label for="calle_guardada" style="margin-left: 1rem">Calle y Número</label>
                         </div>
                         <br>
-                        <label for="colonia_guardada" style="margin-left: 1rem">Colonia</label>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">person_pin</i>
                             <textarea class="materialize-textarea"
                                       readonly  
                                       id="colonia_guardada"
-                                      style="font-size: .9rem"></textarea>      
+                                      style="font-size: .9rem"></textarea> 
+                            <label for="colonia_guardada" style="margin-left: 1rem">Colonia</label>     
                         </div>
                         <br>
                         <div class="input-field" hidden>
@@ -232,28 +232,28 @@ if (isset($authUrl)) {
                         <br>
                         <h5 class="center-align c-azul">Dirección de cambio</h5>
                         <div class="input-field col s12">
-                            <i class="material-icons c-azul">person_pin_circle</i>
+                            <i class="material-icons c-azul prefix">person_pin_circle</i>
                             <select id="reside" class="input-field" onchange="cambiar_direccion('<?php echo $id; ?>')">
                             </select>
                             <label style="margin-left: 1rem">Dirección Guardada</label>
                         </div>
                         <div class="input-field col s12">
                             <label for="calle_nuevo_permiso" style="margin-left: 1rem">Calle y Número</label>
-                            <i class="material-icons c-azul">person_pin_circle</i>
+                            <i class="material-icons c-azul prefix">person_pin_circle</i>
                             <textarea id="calle_nuevo_permiso" 
                                       class="materialize-textarea"                                
                                       placeholder="INGRESE CALLE Y NUMERO"></textarea> 
                         </div>
                         <div class="input-field col s12">
                             <label for="colonia_nuevo_permiso" style="margin-left: 1rem">Colonia</label>
-                            <i class="material-icons c-azul">person_pin_circle</i>
+                            <i class="material-icons c-azul prefix">person_pin_circle</i>
                             <textarea class="materialize-textarea"  
                                       id="colonia_nuevo_permiso" 
                                       placeholder="INGRESE COLONIA"></textarea> 
                         </div>                    
                         <div class="input-field col s12" hidden>
                             <label for="cp " style="margin-left: 1rem">CP</label>
-                            <i class="material-icons c-azul">person_pin_circle</i>
+                            <i class="material-icons c-azul prefix">person_pin_circle</i>
                             <input placeholder="INGRESE CP" 
                                    autocomplete="off"
                                    id="cp" 
@@ -283,7 +283,7 @@ if (isset($authUrl)) {
                     </div>    
                     <br>                 
                     <div class="input-field col s12">
-                        <i class="material-icons c-azul">departure_board</i>
+                        <i class="material-icons c-azul prefix">departure_board</i>
                         <select class="input-field" id="ruta" >
                             <option value="">Selecciona opción</option>
                             <option value="General 2:50 PM">General 2:50 PM</option> 
@@ -293,7 +293,7 @@ if (isset($authUrl)) {
                     </div> 
                     <br>
                     <div class="input-field col s12">
-                        <i class="material-icons c-azul">comment</i>
+                        <i class="material-icons c-azul prefix">comment</i>
                         <textarea id="comentarios_nuevo_permiso" 
                                   class="materialize-textarea"                                
                                   placeholder="Comentarios"></textarea>    

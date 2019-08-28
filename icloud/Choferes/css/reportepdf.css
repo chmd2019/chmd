@@ -1,0 +1,75 @@
+h4 {
+
+    background: none repeat scroll 0 0 #F3F3F3;
+    color: #2D35A9;
+    display: block;
+    font-family: arial;
+    font-size: 20px;
+    padding: 5px;
+    text-align:center;
+    width: 733px;
+}
+
+input:focus
+{
+	background: #fff;
+	border:1px solid #555;
+	box-shadow: 0 0 3px #aaa;
+	padding-right:80px;
+}
+
+
+#gradient-style
+{
+	width: 100%;
+  font-family:arial;
+	font-size: 8px;
+	margin: 5px;
+	text-align: left;
+	border-collapse: collapse;
+}
+#gradient-style th
+{
+  font-family: arial;
+	font-size: 8px;
+	font-weight: normal;
+	padding: 6px;
+	background: #ddd;
+	border-top: 2px solid #eee;
+	border-bottom: 1px solid #999;
+	color: #000;
+  text-align: left;
+
+}
+#gradient-style td
+{
+  font-family: arial;
+	padding: 5px;
+	border-bottom: 1px solid #ccc;
+	color: #000;
+	background: #fff;
+  text-align: left;
+}
+#gradient-style tfoot tr td
+{
+  font-family: arial;
+  background: #e8edff;
+	font-size: 10px;
+	color: #99c;
+}
+#gradient-style tbody tr:hover td
+{
+	background: #d0dafd;
+	color: #339;
+}
+.span{
+color: black;
+font-family: arial;
+font-size: 10px;
+
+ text-align:center;
+}
+
+.mayuscula{
+text-transform: uppercase;
+}

@@ -43,48 +43,57 @@ if (isset($authUrl)) {
         <div class="col s12 l8 border-azul b-blanco" style="float: none;margin: 0 auto;padding:1rem">
             <div>
                 <h5 class="c-azul center-align">Consulta de evento</h5>
-                <br>
-                <br>
                 <div class="row"> 
                     <div class="col s12">
-                        <label for="codigo_evento" style="margin-left: 1rem">Código del evento</label>
                         <div class="input-field">
+                            <label for="codigo_evento" style="margin-left: 1rem">Código del evento</label>
                             <i class="material-icons prefix c-azul">looks_6</i>
-                            <input readonly  id="codigo_evento" style="font-size: 1rem" type="text" >               
+                            <input readonly  
+                                   placeholder="Código del evento"
+                                   id="codigo_evento" 
+                                   style="font-size: 1rem" 
+                                   type="text" >               
                         </div>                        
                     </div>   
                     <div class="col s12 l6">
-                        <label for="fecha_solicitud" style="margin-left: 1rem">Fecha de solicitud</label>
                         <div class="input-field">
+                            <label for="fecha_solicitud" style="margin-left: 1rem">Fecha de solicitud</label>
                             <i class="material-icons prefix c-azul">calendar_today</i>
-                            <input readonly  id="fecha_solicitud" style="font-size: 1rem" type="text" >               
+                            <input readonly  
+                                   placeholder="Fecha de solicitud"
+                                   id="fecha_solicitud" 
+                                   style="font-size: 1rem" 
+                                   type="text" >               
                         </div>                        
                     </div>   
                     <div class="col s12 l6">
-                        <label for="solicitante" style="margin-left: 1rem">Solicitante</label>
                         <div class="input-field">
+                            <label for="solicitante" style="margin-left: 1rem">Solicitante</label>
                             <i class="material-icons prefix c-azul">person</i>
                             <input readonly  
+                                   placeholder="Solicitante"
                                    id="solicitante" 
                                    style="font-size: 1rem" 
                                    type="text" />               
                         </div>
                     </div>   
                     <div class="col s12 l6">
-                        <label for="fecha_evento" style="margin-left: 1rem">Fecha del evento</label>
                         <div class="input-field">
+                            <label for="fecha_evento" style="margin-left: 1rem">Fecha del evento</label>
                             <i class="material-icons prefix c-azul">calendar_today</i>
-                            <input readonly  
+                            <input readonly 
+                                   placeholder="Fecha del evento"
                                    id="fecha_evento" 
                                    style="font-size: 1rem" 
                                    type="text" />               
                         </div>
                     </div>  
                     <div class="col s12 l6">
-                        <label for="tipo_evento" style="margin-left: 1rem">Tipo de evento</label>
                         <div class="input-field">
+                            <label for="tipo_evento" style="margin-left: 1rem">Tipo de evento</label>
                             <i class="material-icons prefix c-azul">cake</i>
                             <input readonly  
+                                   placeholder="Tipo de evento"
                                    id="tipo_evento" 
                                    style="font-size: 1rem" 
                                    type="text" />               
@@ -100,7 +109,7 @@ if (isset($authUrl)) {
                             $nombre = mysqli_fetch_array($nombre_alumno);
                             $nivel_escolaridad = $nombre[1];
                             $nombre = $nombre[0];
-                            
+
                             switch ($estatus) {
                                 case "1":
                                     $estatus = "Pendiente";
@@ -139,28 +148,30 @@ if (isset($authUrl)) {
                                               style="font-size: 1rem"></textarea>
                                     <script>
                                         var texto = '<?php echo $nombre; ?>\nNivel: <?php echo $nivel_escolaridad; ?>';
-                                        $('#alumno_<?php echo $id_alumno; ?>').val(texto);
-                                        M.textareaAutoResize($('#alumno_<?php echo $id_alumno; ?>'));
+                                            $('#alumno_<?php echo $id_alumno; ?>').val(texto);
+                                            M.textareaAutoResize($('#alumno_<?php echo $id_alumno; ?>'));
                                     </script>
                                 </div>
                             </div>
                         <?php endwhile; ?>
                     </div>
                     <div class="col s12 l6">
-                        <label style="margin-left: 3rem">Nombre del responsable</label>
                         <div class="input-field">
+                            <label style="margin-left: 3rem">Nombre del responsable</label>
                             <i class="material-icons prefix c-azul">person</i>
                             <input readonly 
+                                   placeholder="Nombre del responsable"
                                    type="text" 
                                    id="responsable" 
                                    autocomplete="off"> 
                         </div>
                     </div>
                     <div class="col s12 l6">
-                        <label style="margin-left: 3rem">Parentesco del responsable</label>
                         <div class="input-field">
+                            <label style="margin-left: 3rem">Parentesco del responsable</label>
                             <i class="material-icons prefix c-azul">person</i>
                             <input readonly 
+                                   placeholder="Parentesco del responsable"
                                    type="text" 
                                    id="parentesco_responsable" 
                                    autocomplete="off"> 
@@ -168,10 +179,11 @@ if (isset($authUrl)) {
                     </div>               
                     <div id="caja_transporte">    
                         <div class="col s12 l6">
-                            <label style="margin-left: 3rem">Empresa</label>
                             <div class="input-field">
+                                <label style="margin-left: 3rem">Empresa</label>
                                 <i class="material-icons prefix c-azul">time_to_leave</i>
                                 <input readonly
+                                       placeholder="Empresa"
                                        type="text" 
                                        id="empresa" 
                                        autocomplete="off"> 
@@ -179,7 +191,8 @@ if (isset($authUrl)) {
                         </div>
                     </div>
                     <div class="input-field col s12">
-                        <i class="material-icons c-azul">chrome_reader_mode</i>
+                        <label style="margin-left: 3rem">Comentarios</label>
+                        <i class="material-icons c-azul prefix">chrome_reader_mode</i>
                         <textarea id="comentarios" 
                                   class="materialize-textarea"                                
                                   placeholder="Comentarios"></textarea>    

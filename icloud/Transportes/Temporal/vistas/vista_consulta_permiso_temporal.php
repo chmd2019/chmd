@@ -46,22 +46,22 @@ if (isset($authUrl)) {
             <div class="row" style="padding:0rem .5rem;">
                 <div>
                     <div class="col s12 l6">
-                        <label for="fecha_solicitud" style="margin-left: 2rem;">Fecha de solicitud</label>
                         <div class="input-field">
+                            <label for="fecha_solicitud" style="margin-left: 2rem;">Fecha de solicitud</label>
                             <i class="material-icons prefix c-azul">calendar_today</i>
                             <input id="fecha_solicitud" type="text" readonly style="font-size: .9rem">
                         </div>                        
                     </div>
-                    <label for="solicitante" style="margin-left: 2rem;">Solicitante</label>
                     <div class="input-field col s12 l6">
+                        <label for="solicitante" style="margin-left: 2rem;">Solicitante</label>
                         <i class="material-icons prefix c-azul">person</i>
                         <input id="solicitante" type="text" readonly style="font-size: .9rem">
                     </div>
                     <h5 class="center-align c-azul">Alumnos con permiso</h5>
-                    <br>
-                    <label for="alumnos" style="margin-left: 1rem">Alumnos</label>                    
+                    <br>                   
                     <div class="col s12">                    
                         <div class="input-field">
+                            <label for="alumnos" style="margin-left: 1rem">Alumnos</label> 
                             <i class="material-icons prefix c-azul">school</i>
                             <textarea class="materialize-textarea"
                                       readonly  
@@ -71,19 +71,17 @@ if (isset($authUrl)) {
                     </div>
                     <h5 class="center-align c-azul">Dirección de Casa</h5>
                     <br>
-                    <label for="calle_guardada" style="margin-left: 1rem">Calle y número</label>   
-                    <br>
                     <div class="col s12">
                         <div class="input-field">
+                            <label for="calle_guardada" style="margin-left: 1rem">Calle y número</label>   
                             <i class="material-icons prefix c-azul">person_pin</i>
                             <textarea class="materialize-textarea"
                                       readonly  
                                       id="calle_guardada" 
                                       style="font-size: .9rem"></textarea> 
                         </div>
-                        <br>
-                        <label for="colonia_guardada" style="margin-left: 1rem">Colonia</label>
                         <div class="input-field">
+                            <label for="colonia_guardada" style="margin-left: 1rem">Colonia</label>
                             <i class="material-icons prefix c-azul">person_pin</i>
                             <textarea class="materialize-textarea"
                                       readonly  
@@ -103,9 +101,9 @@ if (isset($authUrl)) {
                     <br>
                     <h5 class="center-align c-azul">Dirección de cambio</h5>
                     <br>
-                    <label for="calle_cambio" style="margin-left: 1rem">Calle y número</label>
                     <div class="col s12">
                         <div class="input-field">
+                            <label for="calle_cambio" style="margin-left: 1rem">Calle y número</label>
                             <i class="material-icons prefix c-azul">person_pin</i>
                             <textarea class="materialize-textarea"
                                       readonly  
@@ -113,8 +111,8 @@ if (isset($authUrl)) {
                                       style="font-size: .9rem"></textarea> 
                         </div>
                         <br>
-                        <label for="colonia_cambio" style="margin-left: 1rem">Colonia</label>
                         <div class="input-field">
+                            <label for="colonia_cambio" style="margin-left: 1rem">Colonia</label>
                             <i class="material-icons prefix c-azul">person_pin</i>
                             <textarea class="materialize-textarea"
                                       readonly  
@@ -123,7 +121,7 @@ if (isset($authUrl)) {
                         </div>
                         <br>
                         <div class="input-field" hidden>
-                        <label for="cp_cambio" style="margin-left: 1rem">CP</label>
+                            <label for="cp_cambio" style="margin-left: 1rem">CP</label>
                             <i class="material-icons prefix c-azul">person_pin</i>
                             <input readonly  
                                    id="cp_cambio"
@@ -134,32 +132,33 @@ if (isset($authUrl)) {
                     <br>
                     <h5 class="center-align c-azul">Datos de responsable</h5>
                     <div class="col s12">
-                        <label for="responsable" style="margin-left: 1rem">Responsable</label>
                         <div class="input-field">
+                            <label for="responsable" style="margin-left: 1rem">Responsable</label>
                             <i class="material-icons prefix c-azul">person_pin</i>
                             <input readonly  
+                                   type="text"
                                    id="responsable"
                                    style="font-size: .9rem"/>       
                         </div>
                     </div>
                     <div class="col s12 l6">
-                        <label for="parentesco" style="margin-left: 2rem;">Parentesco</label>
                         <div class="input-field">
+                            <label for="parentesco" style="margin-left: 2rem;">Parentesco</label>
                             <i class="material-icons prefix c-azul">people</i>
                             <input id="parentesco" type="text" readonly style="font-size: .9rem">
                         </div>                        
                     </div>
                     <div class="col s12 l6">
-                        <label for="celular" style="margin-left: 2rem;">Celular</label>
                         <div class="input-field">
+                            <label for="celular" style="margin-left: 2rem;">Celular</label>
                             <i class="material-icons prefix c-azul">smartphone</i>
                             <input id="celular" type="text" readonly style="font-size: .9rem">
                         </div>
 
                     </div>
                     <div class="col s12 l6">
-                        <label for="telefono" style="margin-left: 2rem;">Teléfono</label>
                         <div class="input-field">
+                            <label for="telefono" style="margin-left: 2rem;">Teléfono</label>
                             <i class="material-icons prefix c-azul">phone_in_talk</i>
                             <input id="telefono" type="text" readonly style="font-size: .9rem">
                         </div>
@@ -167,8 +166,8 @@ if (isset($authUrl)) {
                     </div>   
                     <h5 class="center-align c-azul col s12">Fechas de cambio</h5>
                     <div class="col s12 l6">
-                        <label for="fecha_inicial" style="margin-left: 2rem;">Fecha inicial</label>
                         <div class="input-field">
+                            <label for="fecha_inicial" style="margin-left: 2rem;">Fecha inicial</label>
                             <i class="material-icons prefix c-azul">calendar_today</i>
                             <input id="fecha_inicial" type="text" readonly style="font-size: .9rem">
                         </div>
@@ -176,34 +175,36 @@ if (isset($authUrl)) {
                     </div>
 
                     <div class="col s12 l6">      
-                        <label for="fecha_final" style="margin-left: 2rem;">Fecha final</label>
                         <div class="input-field">
+                            <label for="fecha_final" style="margin-left: 2rem;">Fecha final</label>
                             <i class="material-icons prefix c-azul">calendar_today</i>
                             <input id="fecha_final" type="text" readonly style="font-size: .9rem">
                         </div>
                     </div>
 
                     <div class="col s12 l6"> 
-                        <label for="turno" style="margin-left: 2rem;">Turno</label>
                         <div class="input-field">
+                            <label for="turno" style="margin-left: 2rem;">Turno</label>
                             <i class="material-icons prefix c-azul">departure_board</i>
                             <input id="turno" type="text" readonly style="font-size: .9rem">
                         </div>
                     </div>
                     <div class="input-field col s12">
                         <label for="comentarios" style="margin-left: 2rem;">Comentarios</label>
-                        <i class="material-icons c-azul">comment</i>
+                        <i class="material-icons c-azul prefix">comment</i>
                         <textarea class="materialize-textarea"
+                                  placeholder="Comentarios"
                                   readonly  
                                   id="comentarios"
                                   style="font-size: .9rem"></textarea>  
                     </div>
                     <div class="input-field col s12">
                         <label for="respuesta" style="margin-left: 2rem;">Respuesta</label>
-                        <i class="material-icons c-azul">question_answer</i>
+                        <i class="material-icons c-azul prefix">question_answer</i>
                         <textarea class="materialize-textarea"
                                   readonly  
                                   id="respuesta"
+                                  placeholder="Respuesta"
                                   style="font-size: .9rem"></textarea>  
                     </div>
                 </div>
@@ -216,7 +217,7 @@ if (isset($authUrl)) {
 
 <div class="fixed-action-btn">
     <a class="btn-floating btn-large waves-effect waves-light b-azul"
-        href="<?php echo $redirect_uri?>Transportes/Temporal/PTemporal.php?idseccion=<?php echo $idseccion; ?>">
+       href="<?php echo $redirect_uri ?>Transportes/Temporal/PTemporal.php?idseccion=<?php echo $idseccion; ?>">
         <i class="large material-icons">keyboard_backspace</i>
     </a>
 </div>
@@ -314,6 +315,24 @@ if (isset($authUrl)) {
                     M.textareaAutoResize($('#calle_guardada'));
                     M.textareaAutoResize($('#colonia_guardada'));
                     M.textareaAutoResize($('#cp_guardada'));
+                    $("#fecha_solicitud").focus();
+                    $("#solicitante").focus();
+                    $("#alumnos").focus();
+                    $("#calle_guardada").focus();
+                    $("#colonia_guardada").focus();
+                    $("#cp_guardada").focus();
+                    $("#calle_cambio").focus();
+                    $("#colonia_cambio").focus();
+                    $("#cp_cambio").focus();
+                    $("#responsable").focus();
+                    $("#parentesco").focus();
+                    $("#celular").focus();
+                    $("#telefono").focus();
+                    $("#fecha_inicial").focus();
+                    $("#fecha_final").focus();
+                    $("#turno").focus();
+                    $("#comentarios").focus();
+                    $("#respuesta").focus();
                 }
             });
         }).always(function () {

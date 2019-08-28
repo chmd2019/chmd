@@ -50,27 +50,26 @@ if (isset($authUrl)) {
                 <br>
                 <div class="row"> 
                     <div class="col s12 l6">
-                        <label for="fecha_solicitud" style="margin-left: 1rem">Fecha de solicitud</label>
                         <div class="input-field">
+                        <label for="fecha_solicitud" style="margin-left: 1rem">Fecha de solicitud</label>
                             <i class="material-icons prefix c-azul">calendar_today</i>
-                            <input readonly  id="fecha_solicitud" style="font-size: 1rem" type="text" >               
+                            <input readonly placeholder="Fecha de solicitud" id="fecha_solicitud" style="font-size: 1rem" type="text" >               
                         </div>                        
                     </div>
                     <div class="col s12 l6">
-                        <label for="solicitante" style="margin-left: 1rem">Solicitante</label>
                         <div class="input-field">
+                        <label for="solicitante" style="margin-left: 1rem">Solicitante</label>
                             <i class="material-icons prefix c-azul">person</i>
-                            <input readonly  id="solicitante" style="font-size: 1rem" type="text" >               
+                            <input readonly placeholder="Solicitante" id="solicitante" style="font-size: 1rem" type="text" >               
                         </div>                        
                     </div>
                     <br>
                     <h5 class="c-azul text-center">Fecha de salida</h5>
-                    <br>
                     <div class="col s12 l6">
-                        <label for="fecha_permiso" style="margin-left: 1rem">Fecha del permiso</label>
                         <div class="input-field">
+                        <label for="fecha_permiso" style="margin-left: 1rem">Fecha del permiso</label>
                             <i class="material-icons prefix c-azul">calendar_today</i>
-                            <input readonly  id="fecha_permiso" style="font-size: 1rem" type="text" >               
+                            <input readonly placeholder="Fecha del permiso" id="fecha_permiso" style="font-size: 1rem" type="text" >               
                         </div>                        
                     </div>
                     <br>
@@ -144,24 +143,25 @@ if (isset($authUrl)) {
                     <h5 class="c-azul text-center col s12">Información adicional</h5>
                     <br>
                     <div class="col s12 l6">
-                        <label for="responsable" style="margin-left: 1rem">Responsable</label>
                         <div class="input-field">
+                        <label for="responsable" style="margin-left: 1rem">Responsable</label>
                             <i class="material-icons prefix c-azul">person</i>
-                            <input readonly  id="responsable" style="font-size: 1rem" type="text" >               
+                            <input readonly placeholder="Responsable" id="responsable" style="font-size: 1rem" type="text" >               
                         </div>                        
                     </div>
                     <div class="col s12 l6">
-                        <label for="parentesco" style="margin-left: 1rem">Parentesco</label>
                         <div class="input-field">
+                        <label for="parentesco" style="margin-left: 1rem">Parentesco</label>
                             <i class="material-icons prefix c-azul">person</i>
-                            <input readonly  id="parentesco" style="font-size: 1rem" type="text" >               
+                            <input readonly placeholder="Parentesco" id="parentesco" style="font-size: 1rem" type="text" >               
                         </div>                        
                     </div>
                     <div class="col s12">
-                        <label for="motivos" style="margin-left: 1rem">Motivo</label>
                         <div class="input-field">
+                        <label for="motivos" style="margin-left: 1rem">Motivos</label>
                             <i class="material-icons prefix c-azul">chrome_reader_mode</i>
                             <textarea class="materialize-textarea"
+                                      placeholder="Motivos"
                                       readonly  
                                       id="motivos" 
                                       style="font-size: .9rem"></textarea> 

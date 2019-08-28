@@ -22,7 +22,7 @@ if (isset($authUrl)) {
     include_once "$root_icloud/components/navbar.php";
     ?>
     <h4 class="b-azul c-blanco text-center" style="padding:1rem;margin-top:0px">
-        Mi Maguen 
+        Mi Maguen
         <?php
         echo $anio_actual;
         ?>
@@ -43,19 +43,19 @@ if (isset($authUrl)) {
             if ($consulta) {
                 if ($cliente = mysqli_fetch_array($consulta)) {
                     $familia = $cliente[2];
-                    ?>  
+                    ?>
 
                     <div class="col s12 l6">
-                        <div class="card" style="box-shadow: none"> 
-                            <div class="card-image waves-effect waves-block waves-light">     
-                                <center><a href="#!">
-                                    <img src="../pics/activos/small-calendar.svg" style="padding:3rem;width: 82%;">  
+                        <div class="card" style="box-shadow: none">
+                            <div class="card-image waves-effect waves-block waves-light">
+                                <center><a href="calendario/PCalendario.php">
+                                    <img src="../pics/activos/small-calendar.svg" style="padding:3rem;width: 82%;">
                                 </a></center>
                             </div>
                             <div class="card-content text-center" style="padding:0px;margin-top: -15px">
                                 <span class="activator waves-effect waves-light btn b-azul c-blanco">
                                     INFO
-                                </span>      
+                                </span>
                             </div>
                             <div class="card-reveal b-azul white-text">
                                 <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
@@ -64,16 +64,16 @@ if (isset($authUrl)) {
                         </div>
                     </div>
                     <div class="col s12 l6">
-                        <div class="card" style="box-shadow: none"> 
-                            <div class="card-image waves-effect waves-block waves-light">     
+                        <div class="card" style="box-shadow: none">
+                            <div class="card-image waves-effect waves-block waves-light">
                                 <a href="montajes/PMontajes.php">
-                                    <img src="../pics/activos/especial.png" style="padding:3rem;">  
+                                    <img src="../pics/activos/especial.png" style="padding:3rem;">
                                 </a>
                             </div>
                             <div class="card-content text-center" style="padding:0px;margin-top: -15px">
                                 <span class="activator waves-effect waves-light btn b-azul c-blanco">
                                     INFO
-                                </span>      
+                                </span>
                             </div>
                             <div class="card-reveal b-azul white-text">
                                 <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
@@ -85,7 +85,7 @@ if (isset($authUrl)) {
                 } else {
                     echo 'Este usuario no tiene Acceso:' . $user->email . ',<br> !Favor de comunicarse para validar datos! <br> Salir del sitema [<a href="' . $redirect_uri . '?logout=1"> Log Out</a>]';
                 }
-            } 
+            }
             else {
                 echo 'Error en cosulta';
             }
@@ -94,6 +94,6 @@ if (isset($authUrl)) {
         <br>
         <br>
     </div>
-</div> 
-  
+</div>
+
 <?php include "$root_icloud/components/layout_bottom.php"; ?>

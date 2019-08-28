@@ -84,8 +84,8 @@ if (isset($authUrl)) {
                 <br>
                 <div class="row" style="padding:0rem .5rem;">
                     <div class="col s12 l6">
-                        <label for="fecha_solicitud" style="margin-left: 1rem">Fecha de solicitud</label>
                         <div class="input-field">
+                            <label for="fecha_solicitud" style="margin-left: 1rem">Fecha de solicitud</label>
                             <i class="material-icons prefix c-azul">calendar_today</i>
                             <input value="<?php echo $fecha_creacion; ?>" 
                                    readonly  
@@ -95,8 +95,8 @@ if (isset($authUrl)) {
                         </div>
                     </div>  
                     <div class="col s12 l6">
-                        <label for="solicitante" style="margin-left: 1rem">Solicitante</label>
                         <div class="input-field">
+                            <label for="solicitante" style="margin-left: 1rem">Solicitante</label>
                             <i class="material-icons prefix c-azul">person</i>
                             <input value="<?php echo $nombre; ?>" 
                                    readonly  
@@ -126,7 +126,6 @@ if (isset($authUrl)) {
                     <div id="fecha_para" <?php echo $hidden; ?>>
                         <br>
                         <h5 class="c-azul text-center">Fecha de salida</h5>
-                        <br>
                         <div class="col s12 l6">
                             <link rel='stylesheet' href='/pruebascd/icloud/materialkit/css/calendario.css'> 
                             <script src='/pruebascd/icloud/materialkit/js/calendario.js'></script>
@@ -205,14 +204,15 @@ if (isset($authUrl)) {
                                 $idcursar = $alumno['idcursar'];
                                 ?>
                                 <input hidden value="<?php echo $idcursar; ?>" id="idcursar_alumno_<?php echo $counter; ?>">
-                                <div>                                    
+                                <div>
+                                    <span class="col s12"><br></span>                                    
                                     <div class="switch col s1 l1">
                                         <label class="checks-alumnos">
                                             <input type="checkbox" 
                                                    id="alumno_<?php echo $counter; ?>" 
                                                    value="<?php echo $alumno['id']; ?>"
                                                    onchange="mostrar_ocultar_caja_horarios('caja_horarios_<?php echo $counter; ?>', '<?php echo $id_alumno; ?>', '<?php echo $idcursar; ?>')"/>
-                                            <span class="lever"></span>
+                                            <span class="lever" style="margin-top: 1rem"></span>
                                         </label>         
                                     </div>
                                     <textarea class="materialize-textarea col s10 l11"
@@ -220,8 +220,8 @@ if (isset($authUrl)) {
                                               id="nombre_alumno_<?php echo $counter; ?>"
                                               style="font-size: 1rem;float: right;"></textarea>                                    
                                 </div>
-                                <span class="col s12"><br></span>
-                                <div id="caja_horarios_<?php echo $counter; ?>" hidden>                  
+                                <div id="caja_horarios_<?php echo $counter; ?>" hidden>  
+                                    <span class="col s12"><br></span>                
                                     <div class="col s12 l5" style="margin-top: -25px;">                        
                                         <div class="input-field">
                                             <i class="material-icons prefix c-azul">access_time</i>
@@ -237,6 +237,7 @@ if (isset($authUrl)) {
                                     </div>
 
                                     <?php if ($grado_escolaridad >= 11 && $grado_escolaridad <= 17) : ?>
+                                        <span class="col s12"><br></span>          
                                         <div class="col s12 l7" style="margin-top: -25px;">  
                                             <label class="input-field col s12 l3" style="margin-top: 2rem">
                                                 <input type="checkbox" 
@@ -259,7 +260,6 @@ if (isset($authUrl)) {
                                         </div>
                                     <?php endif; ?>
                                 </div>
-                                <br>
                                 <input id="id_alumno_<?php echo $counter; ?>" hidden value="<?php echo $alumno['id']; ?>"/>
                                 <script>
                                     $('#nombre_alumno_<?php echo $counter; ?>')
@@ -313,10 +313,11 @@ if (isset($authUrl)) {
                         </div>
                         <br>
                         <div class="input-field col s12">
-                            <i class="material-icons c-azul">chrome_reader_mode</i>
+                            <label for="motivos">Motivos</label>
+                            <i class="material-icons c-azul prefix">chrome_reader_mode</i>
                             <textarea id="motivos" 
                                       class="materialize-textarea"                                
-                                      placeholder="Motivo"></textarea>    
+                                      placeholder="Motivos"></textarea>    
                         </div>
                     </div>
                 </div>  

@@ -221,7 +221,7 @@ if (isset($authUrl)) {
                                         <div class="card-image waves-effect waves-block waves-light">
                                             <a href='menu.php?idseccion=1'>
                                                 <img src="pics/activos/transportes.png" style="padding:3rem;">
-                                            </a>
+                                           </a>
                                         </div>
                                         <div class="card-content text-center" style="padding:0px;margin-top: -15px">
                                             <span class="activator waves-effect waves-light btn b-azul c-blanco">
@@ -275,7 +275,7 @@ if (isset($authUrl)) {
                                 <div class="col s12 m6 l4">
                                     <div class="card" style="box-shadow: none">
                                         <div class="card-image waves-effect waves-block waves-light">
-                                            <a href='Eventos/menu.php'>
+                                            <a href='Choferes/Choferes.php'>
                                                 <img src="pics/activos/choferes.png" style="padding:3rem;">
                                             </a>
                                         </div>
@@ -344,7 +344,8 @@ if (isset($authUrl)) {
                         <div class="col s12 m3 l4"><br></div>
                     </div>
                 <?php
-            } elseif ($tipo == 8) {
+            } elseif ($tipo == 8) 
+{
                 ?>
 
                     <div style="text-align: right;margin:1rem 1rem 0 0">
@@ -413,7 +414,7 @@ if (isset($authUrl)) {
                                 <div class="col s12 m6 l4">
                                     <div class="card" style="box-shadow: none">
                                         <div class="card-image waves-effect waves-block waves-light">
-                                            <a href='Eventos/menu.php'>
+                                            <a href='Choferes/Choferes.php'>
                                                 <img src="pics/activos/choferes.png" style="padding:3rem;">
                                             </a>
                                         </div>
@@ -449,7 +450,7 @@ if (isset($authUrl)) {
                                 <div class="col s12 m6 l4">
                                     <div class="card" style="box-shadow: none">
                                         <div class="card-image waves-effect waves-block waves-light">
-                                            <a href='Eventos/menu.php '>
+                                            <a href='http://chmd.chmd.edu.mx:65083/demo/Eventos/menu.php'>
                                                 <img src="pics/activos/minuta.png" style="padding:3rem;">
                                             </a>
                                         </div>

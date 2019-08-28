@@ -46,23 +46,23 @@ if (isset($authUrl)) {
             <div class="row" style="padding:0rem .5rem;">
                 <div>
                     <div class="col s12 l6">
-                        <label for="celular" style="margin-left: 2rem;">Fecha de solicitud</label>
                         <div class="input-field">
+                            <label for="celular" style="margin-left: 2rem;">Fecha de solicitud</label>
                             <i class="material-icons prefix c-azul">calendar_today</i>
                             <input id="fecha_solicitud" type="text" readonly style="font-size: .9rem">
                         </div>
                     </div>
                     <div class="col s12 l6">
-                        <label for="solicitante" style="margin-left: 2rem;">Solicitante</label>
                         <div class="input-field">
+                            <label for="solicitante" style="margin-left: 2rem;">Solicitante</label>
                             <i class="material-icons prefix c-azul">person</i>
                             <input id="solicitante" type="text" readonly style="font-size: .9rem">
                         </div>
                     </div>
                     <br>
                     <div class="col s12">
-                        <label for="dias_permiso" style="margin-left: 1rem">Días de permiso</label>
                         <div class="input-field">
+                            <label for="dias_permiso" style="margin-left: 1rem">Días de permiso</label>
                             <i class="material-icons prefix c-azul">today</i>
                             <textarea class="materialize-textarea"
                                       readonly  
@@ -72,8 +72,8 @@ if (isset($authUrl)) {
                     </div>
                     <br>
                     <div class="col s12">
-                        <label for="alumnos" style="margin-left: 1rem">Alumnos del permiso</label>
                         <div class="input-field">
+                            <label for="alumnos" style="margin-left: 1rem">Alumnos del permiso</label>
                             <i class="material-icons prefix c-azul">school</i>
                             <textarea class="materialize-textarea"
                                       readonly  
@@ -84,8 +84,8 @@ if (isset($authUrl)) {
                     <h5 class="center-align c-azul">Dirección de cambio</h5>
                     <br>
                     <div class="col s12 l6">
-                        <label for="calle" style="margin-left: 1rem">Calle y numero</label>
                         <div class="input-field">
+                            <label for="calle" style="margin-left: 1rem">Calle y numero</label>
                             <i class="material-icons prefix c-azul">person_pin</i>
                             <textarea class="materialize-textarea"
                                       readonly  
@@ -94,8 +94,8 @@ if (isset($authUrl)) {
                         </div>
                     </div>
                     <div class="col s12 l6">
-                        <label for="colonia" style="margin-left: 1rem">Colonia</label>
                         <div class="input-field">
+                            <label for="colonia" style="margin-left: 1rem">Colonia</label>
                             <i class="material-icons prefix c-azul">person_pin</i>
                             <textarea class="materialize-textarea"
                                       readonly  
@@ -104,37 +104,38 @@ if (isset($authUrl)) {
                         </div>
                     </div>
                     <div class="col s12 l6" hidden>
-                        <label for="cp" style="margin-left: 2rem;">CP</label>
                         <div class="input-field">
+                            <label for="cp" style="margin-left: 2rem;">CP</label>
                             <i class="material-icons prefix c-azul">person_pin</i>
                             <input id="cp" type="text" readonly style="font-size: .9rem">
                         </div>
                     </div>
                     <div class="col s12 l6">
-                        <label for="ruta" style="margin-left: 2rem;">Ruta</label>
                         <div class="input-field">
+                            <label for="ruta" style="margin-left: 2rem;">Ruta</label>
                             <i class="material-icons prefix c-azul">departure_board</i>
                             <input id="ruta" type="text" readonly style="font-size: .9rem">
                         </div>
                     </div>
                     <br>
                     <div class="col s12">
-                        <label for="comentarios" style="margin-left: 1rem">Comentarios</label>
                         <div class="input-field">
+                            <label for="comentarios">Comentarios</label>
                             <i class="material-icons prefix c-azul">comment</i>
-                            <textarea class="materialize-textarea"
+                            <textarea class="materialize-textarea" placeholder="Comentarios"
                                       readonly  
                                       id="comentarios" 
                                       style="font-size: .9rem"></textarea> 
                         </div>
                     </div>
                     <div class="col s12">
-                        <label for="mensaje" style="margin-left: 1rem">Mensaje</label>
                         <div class="input-field">
+                            <label for="mensaje">Mensaje</label>
                             <i class="material-icons prefix c-azul">mail</i>
                             <textarea class="materialize-textarea"
                                       readonly  
                                       id="mensaje" 
+                                      placeholder="Mensaje"
                                       style="font-size: .9rem"></textarea> 
                         </div>
                     </div>
@@ -220,6 +221,16 @@ if (isset($authUrl)) {
                 ruta.val(res.ruta);
                 comentarios.val(res.comentarios);
                 mensaje.val(res.mensaje);
+                $("#fecha_solicitud").focus();
+                $("#solicitante").focus();
+                $("#dias_permiso").focus();
+                $("#alumnos").focus();
+                $("#calle").focus();
+                $("#colonia").focus();
+                $("#cp").focus();
+                $("#ruta").focus();
+                $("#comentarios").focus();
+                $("#mensaje").focus();
             }
         }).always(function () {
             setInterval(function () {

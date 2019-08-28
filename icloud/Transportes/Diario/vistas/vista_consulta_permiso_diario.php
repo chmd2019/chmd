@@ -43,22 +43,22 @@ if (isset($authUrl)) {
                 <br>
                 <div class="row"> 
                     <div class="col s12 l6">
-                        <label for="fecha_solicitud" style="margin-left: 1rem">Fecha de solicitud</label>
                         <div class="input-field">
+                            <label for="fecha_solicitud" style="margin-left: 1rem">Fecha de solicitud</label>
                             <i class="material-icons prefix c-azul">calendar_today</i>
                             <input readonly  id="fecha_solicitud" style="font-size: 1rem" type="text" >               
                         </div>
                     </div>
                     <div class="col s12 l6">
-                        <label for="fecha_permiso" style="margin-left: 1rem">Fecha programada</label>
                         <div class="input-field">
+                            <label for="fecha_permiso" style="margin-left: 1rem">Fecha programada</label>
                             <i class="material-icons prefix c-azul">calendar_today</i>
                             <input readonly  id="fecha_permiso" type="text" style="font-size: 1rem"  >               
                         </div>
                     </div>
                     <div class="col s12 l6">
-                        <label for="responsable" style="margin-left: 1rem">Solicitante</label>
                         <div class="input-field">
+                            <label for="responsable" style="margin-left: 1rem">Solicitante</label>
                             <i class="material-icons prefix c-azul">person</i>
                             <input readonly  id="responsable" type="text"  style="font-size: 1rem"  >               
                         </div>
@@ -66,8 +66,8 @@ if (isset($authUrl)) {
                     <br>
                     <h5 class="c-azul text-center col s12">Alumnos</h5>
                     <div class="col s12">
-                        <label for="alumnos" style="margin-left: 1rem">Alumnos del permiso</label>
                         <div class="input-field">
+                            <label for="alumnos" style="margin-left: 1rem">Alumnos del permiso</label>
                             <i class="material-icons prefix c-azul">school</i>
                             <textarea class="materialize-textarea"
                                       readonly  
@@ -77,8 +77,8 @@ if (isset($authUrl)) {
                     </div>
                     <h5 class="c-azul text-center col s12">Dirección de cambio</h5>
                     <div class="col s12">                        
-                        <label for="calle" style="margin-left: 1rem">Calle y número</label>
                         <div class="input-field">
+                            <label for="calle" style="margin-left: 1rem">Calle y número</label>
                             <i class="material-icons prefix c-azul">person_pin</i>
                             <textarea readonly  
                                       id="calle" 
@@ -88,8 +88,8 @@ if (isset($authUrl)) {
                     </div>
                     <br>
                     <div class="col s12">                        
-                        <label for="colonia" style="margin-left: 1rem">Colonia</label>
                         <div class="input-field">
+                            <label for="colonia" style="margin-left: 1rem">Colonia</label>
                             <i class="material-icons prefix c-azul">person_pin</i>
                             <textarea readonly  
                                       id="colonia" 
@@ -99,34 +99,36 @@ if (isset($authUrl)) {
                     </div>
                     <br>
                     <div class="col s12 l6" hidden>   
-                        <label for="cp" style="margin-left: 1rem">CP</label>
                         <div class="input-field">
+                            <label for="cp" style="margin-left: 1rem">CP</label>
                             <i class="material-icons prefix c-azul">person_pin</i>
                             <input readonly  id="cp" type="text" style="font-size: 1rem"  >               
                         </div>
                     </div>
                     <div class="col s12 l6">   
-                        <label for="ruta" style="margin-left: 1rem">Ruta</label>
                         <div class="input-field">
+                            <label for="ruta" style="margin-left: 1rem">Ruta</label>
                             <i class="material-icons prefix c-azul">departure_board</i>
                             <input readonly  id="ruta" type="text" >               
                         </div>
                     </div>
                     <div class="col s12">   
-                        <label for="comentarios" style="margin-left: 1rem">Comentarios</label>
                         <div class="input-field">
+                            <label for="comentarios" style="margin-left: 1rem">Comentarios</label>
                             <i class="material-icons prefix c-azul">comment</i>
                             <textarea readonly  
+                                      placeholder="Comentarios"
                                       id="comentarios" 
                                       class="materialize-textarea" 
                                       style="font-size: .9rem"></textarea>            
                         </div>
                     </div>
                     <div class="col s12">   
-                        <label for="respuesta" style="margin-left: 1rem">Respuesta</label>
                         <div class="input-field">
+                            <label for="respuesta" style="margin-left: 1rem">Respuesta</label>
                             <i class="material-icons prefix c-azul">question_answer</i>
                             <textarea readonly  
+                                      placeholder="Respuesta"
                                       id="respuesta" 
                                       class="materialize-textarea" 
                                       style="font-size: .9rem"></textarea>            
@@ -141,7 +143,7 @@ if (isset($authUrl)) {
 ?>
 
 <div class="fixed-action-btn">
-    <a class="btn-floating btn-large b-azul" href="<?php echo $redirect_uri?>Transportes/Diario/PDiario.php?idseccion=<?php echo $idseccion; ?>">
+    <a class="btn-floating btn-large b-azul" href="<?php echo $redirect_uri ?>Transportes/Diario/PDiario.php?idseccion=<?php echo $idseccion; ?>">
         <i class="large material-icons">keyboard_backspace</i>
     </a>
 </div>
@@ -208,6 +210,16 @@ if (isset($authUrl)) {
                 M.textareaAutoResize($('#comentarios'));
                 respuesta.val(res.mensaje);
                 M.textareaAutoResize($('#respuesta'));
+                $("#fecha_solicitud").focus();
+                $("#fecha_permiso").focus();
+                $("#responsable").focus();
+                $("#alumnos").focus();
+                $("#calle").focus();
+                $("#colonia").focus();
+                $("#cp").focus();
+                $("#ruta").focus();
+                $("#comentarios").focus();
+                $("#respuesta").focus();
             }
         }).always(function () {
             setInterval(function () {

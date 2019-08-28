@@ -1,0 +1,2 @@
+[23-Aug-2019 22:53:55 UTC] PHP Notice:  Undefined variable: papa in /home/chmd2016/public_html/pruebascd/icloud/misarchivos/common/pdf_foto_video.php on line 104
+[23-Aug-2019 23:38:14 UTC] PHP Parse error:  syntax error, unexpected ')' in /home/chmd2016/public_html/pruebascd/icloud/misarchivos/common/pdf_foto_video.php on line 91

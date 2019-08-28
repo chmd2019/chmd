@@ -1,0 +1,7 @@
+[25-Aug-2019 17:16:55 UTC] PHP Notice:  Undefined variable: id_chofer in /home/chmd2016/public_html/pruebascd/icloud/Choferes/common/pdf_chofer.php on line 21
+[25-Aug-2019 17:16:55 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/chmd2016/public_html/pruebascd/icloud/Choferes/common/pdf_chofer.php on line 22
+[25-Aug-2019 17:16:55 UTC] PHP Notice:  Undefined variable: nfamilia in /home/chmd2016/public_html/pruebascd/icloud/Choferes/common/pdf_chofer.php on line 27
+[25-Aug-2019 17:16:55 UTC] PHP Notice:  Undefined variable: nfamilia in /home/chmd2016/public_html/pruebascd/icloud/Choferes/common/pdf_chofer.php on line 29
+[25-Aug-2019 17:16:55 UTC] PHP Notice:  Undefined variable: nombre_chofer in /home/chmd2016/public_html/pruebascd/icloud/Choferes/common/pdf_chofer.php on line 45
+[25-Aug-2019 17:16:55 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/chmd2016/public_html/pruebascd/icloud/Choferes/common/pdf_chofer.php on line 55
+[25-Aug-2019 17:16:55 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/chmd2016/public_html/pruebascd/icloud/Choferes/common/pdf_chofer.php on line 82

@@ -28,7 +28,7 @@ include_once "$root_icloud/components/navbar.php";
         <div class="col s12 m12 l9 b-blanco border-azul" style="float: none;margin: 0 auto;"> 
             <div>
                 <br>
-                <h4 class="c-azul" style="text-align: center;">Cambio del dia</h4>
+                <h4 class="c-azul" style="text-align: center;">Cambio del día</h4>
                 <div>
                     <?php include('View_Diario.php');  ?> 
                 </div>

@@ -4,21 +4,38 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit6bd93533bbe2c1ffa1d8a3f936ca1753
+class ComposerStaticInit3ae4bc6ff2f77bfed0cbf5417c0d4270
 {
     public static $files = array (
+        '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         '3109cb1a231dcd04bee1f9f620d46975' => __DIR__ . '/..' . '/paragonie/sodium_compat/autoload.php',
     );
 
     public static $prefixLengthsPsr4 = array (
+        's' => 
+        array (
+            'setasign\\Fpdi\\' => 14,
+        ),
         'P' => 
         array (
             'Pusher\\' => 7,
             'Psr\\Log\\' => 8,
         ),
+        'M' => 
+        array (
+            'Mpdf\\' => 5,
+        ),
+        'D' => 
+        array (
+            'DeepCopy\\' => 9,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
+        'setasign\\Fpdi\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/setasign/fpdi/src',
+        ),
         'Pusher\\' => 
         array (
             0 => __DIR__ . '/..' . '/pusher/pusher-php-server/src',
@@ -27,13 +44,21 @@ class ComposerStaticInit6bd93533bbe2c1ffa1d8a3f936ca1753
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
         ),
+        'Mpdf\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mpdf/mpdf/src',
+        ),
+        'DeepCopy\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy',
+        ),
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit6bd93533bbe2c1ffa1d8a3f936ca1753::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit6bd93533bbe2c1ffa1d8a3f936ca1753::$prefixDirsPsr4;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit3ae4bc6ff2f77bfed0cbf5417c0d4270::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit3ae4bc6ff2f77bfed0cbf5417c0d4270::$prefixDirsPsr4;
 
         }, null, ClassLoader::class);
     }

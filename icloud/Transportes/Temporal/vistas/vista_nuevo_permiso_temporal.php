@@ -74,15 +74,15 @@ if (isset($authUrl)) {
                 <br>
                 <div class="row" style="padding:0rem .5rem;">
                     <div class="col s12 l6">
-                        <label for="fecha_solicitud_permiso_temporal" style="margin-left: 1rem">Fecha de solicitud</label>
                         <div class="input-field">
+                            <label for="fecha_solicitud_permiso_temporal" style="margin-left: 1rem">Fecha de solicitud</label>
                             <i class="material-icons prefix c-azul">calendar_today</i>
                             <input value="<?php echo $arrayDias[date('w')] . ", " . date('d') . " de " . $arrayMeses[date('m') - 1] . " de " . date('Y') . ", " . date("h:i a"); ?>" readonly  id="fecha_solicitud_permiso_temporal" style="font-size: 1rem" type="text" />               
                         </div>
                     </div>  
                     <div class="col s12 l6">
-                        <label for="solicitante_permiso_temporal" style="margin-left: 1rem">Solicitante</label>
                         <div class="input-field">
+                            <label for="solicitante_permiso_temporal" style="margin-left: 1rem">Solicitante</label>
                             <i class="material-icons prefix c-azul">person</i>
                             <input value="<?php echo $nombre; ?>" readonly  id="solicitante_permiso_temporal" style="font-size: 1rem" type="text" />               
                         </div>
@@ -128,8 +128,8 @@ if (isset($authUrl)) {
                     <h5 class="center-align c-azul">Dirección de Casa</h5>
                     <br>
                     <div class="col s12">
-                        <label for="calle_guardada_nuevo" style="margin-left: 1rem">Calle y Número</label>
                         <div class="input-field">
+                            <label for="calle_guardada_nuevo" style="margin-left: 1rem">Calle y Número</label>
                             <i class="material-icons prefix c-azul">person_pin</i>
                             <textarea class="materialize-textarea"
                                       readonly  
@@ -137,8 +137,8 @@ if (isset($authUrl)) {
                                       style="font-size: .9rem"></textarea> 
                         </div>
                         <br>
-                        <label for="colonia_guardada_nuevo" style="margin-left: 1rem">Colonia</label>
                         <div class="input-field">
+                            <label for="colonia_guardada_nuevo" style="margin-left: 1rem">Colonia</label>
                             <i class="material-icons prefix c-azul">person_pin</i>
                             <textarea class="materialize-textarea"
                                       readonly  
@@ -158,21 +158,21 @@ if (isset($authUrl)) {
                     <br>
                     <h5 class="center-align c-azul">Dirección de cambio</h5>
                     <div class="input-field col s12">
-                        <i class="material-icons c-azul">person_pin_circle</i>
+                        <i class="material-icons c-azul prefix">person_pin_circle</i>
                         <select id="reside" class="input-field" onchange="cambiar_direccion('<?php echo $id; ?>')">
                         </select>
                         <label style="margin-left: 1rem">Dirección Guardada</label>
                     </div>
                     <div class="input-field col s12">
                         <label for="calle_nuevo_permiso_temporal" style="margin-left: 1rem">Calle y Número</label>
-                        <i class="material-icons c-azul">person_pin_circle</i>
+                        <i class="material-icons c-azul prefix">person_pin_circle</i>
                         <textarea id="calle_nuevo_permiso_temporal" 
                                   class="materialize-textarea"                                
                                   placeholder="INGRESE CALLE Y NUMERO"></textarea> 
                     </div>
                     <div class="input-field col s12">
                         <label for="colonia_nuevo_permiso_temporal " style="margin-left: 1rem">Colonia</label>
-                        <i class="material-icons c-azul">person_pin_circle</i>
+                        <i class="material-icons c-azul prefix">person_pin_circle</i>
                         <textarea class="materialize-textarea"  
                                   id="colonia_nuevo_permiso_temporal" 
                                   placeholder="INGRESE COLONIA"></textarea> 
@@ -198,7 +198,7 @@ if (isset($authUrl)) {
                     <br>
                     <div id="container_descripcion_recordar_direccion" hidden>
                         <div class="input-field col s12" id="container_descripcion_recordar_direccion">
-                            <i class="material-icons prefix c-azul">store_mall_directory</i>
+                            <i class="material-icons prefix c-azul prefix">store_mall_directory</i>
                             <input id="descripcion_recordar_direccion" 
                                    placeholder="Descripción de la dirección"
                                    autocomplete="off" />
@@ -247,7 +247,7 @@ if (isset($authUrl)) {
                     <div class="col s12">
                         <div class="input-field col s12 l6">
                             <label for="celular_nuevo_permiso_temporal " style="margin-left: 1rem">Celular</label>
-                            <i class="material-icons c-azul">smartphone</i>
+                            <i class="material-icons c-azul prefix">smartphone</i>
                             <input placeholder="Agrega 10 dígitos" 
                                    autocomplete="off"
                                    id="celular_nuevo_permiso_temporal" 
@@ -256,7 +256,7 @@ if (isset($authUrl)) {
                         </div>
                         <div class="input-field col s12 l6">
                             <label for="telefono_nuevo_permiso_temporal " style="margin-left: 1rem">Teléfono</label>
-                            <i class="material-icons c-azul">phone_in_talk</i>
+                            <i class="material-icons c-azul prefix">phone_in_talk</i>
                             <input placeholder="Agrega 8 dígitos" 
                                    autocomplete="off"
                                    id="telefono_nuevo_permiso_temporal" 
@@ -339,7 +339,7 @@ if (isset($authUrl)) {
                     </div>      
                     <br>
                     <div class="input-field col s12">
-                        <i class="material-icons c-azul">departure_board</i>
+                        <i class="material-icons c-azul prefix">departure_board</i>
                         <select class="input-field" id="ruta_nuevo_permiso_temporal" >
                             <option value="">Selecciona opción</option>
                             <option value="Mañana">Mañana</option> 
@@ -350,7 +350,7 @@ if (isset($authUrl)) {
                     </div> 
                     <br>
                     <div class="input-field col s12">
-                        <i class="material-icons c-azul">comment</i>
+                        <i class="material-icons c-azul prefix">comment</i>
                         <textarea id="comentarios_nuevo_permiso_temporal" 
                                   class="materialize-textarea"                                
                                   placeholder="Comentarios"></textarea>    

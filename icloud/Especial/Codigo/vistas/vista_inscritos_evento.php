@@ -87,11 +87,10 @@ if (isset($authUrl)) {
                 <?php endif; ?>
 
                 <h5 class="c-azul center-align">Consulta de invitación a evento</h5>
-                <br>
                 <div class="row"> 
                     <div class="col s12 l6">
-                        <label for="fecha_evento" style="margin-left: 1rem">Fecha del evento</label>
                         <div class="input-field">
+                            <label for="fecha_evento" style="margin-left: 1rem">Fecha del evento</label>
                             <i class="material-icons prefix c-azul">calendar_today</i>
                             <input readonly  
                                    id="fecha_evento" 
@@ -101,8 +100,8 @@ if (isset($authUrl)) {
                         </div>
                     </div>   
                     <div class="col s12 l6">
-                        <label for="codigo_evento" style="margin-left: 1rem">Código de invitación</label>
                         <div class="input-field">
+                            <label for="codigo_evento" style="margin-left: 1rem">Código de invitación</label>
                             <i class="material-icons prefix c-azul">looks_6</i>
                             <input readonly  
                                    id="codigo_evento" 
@@ -112,8 +111,8 @@ if (isset($authUrl)) {
                         </div>                        
                     </div>   
                     <div class="col s12 l6">
-                        <label for="familia_invita" style="margin-left: 1rem">Familia que invita</label>
                         <div class="input-field">
+                            <label for="familia_invita" style="margin-left: 1rem">Familia que invita</label>
                             <i class="material-icons prefix c-azul">nature_people</i>
                             <input readonly  
                                    id="familia_invita" 
@@ -123,8 +122,8 @@ if (isset($authUrl)) {
                         </div>                        
                     </div>   
                     <div class="col s12 l6">
-                        <label for="tipo_evento" style="margin-left: 1rem">Tipo de evento</label>
                         <div class="input-field">
+                            <label for="tipo_evento" style="margin-left: 1rem">Tipo de evento</label>
                             <i class="material-icons prefix c-azul">cake</i>
                             <input readonly  
                                    id="tipo_evento" 
@@ -187,7 +186,6 @@ if (isset($authUrl)) {
                             <div class="col s12">                        
                                 <div class="input-field">
                                     <i class="material-icons prefix c-azul">school</i>
-
                                     <?php if ($date_helper->comprobar_solicitud_vencida_d_m_y_guion($fecha_destino) && $flag_estatus):
                                         ?>
                                         <button 
@@ -207,8 +205,8 @@ if (isset($authUrl)) {
                                               style="font-size: 1rem"></textarea>
                                     <script>
                                         var texto = '<?php echo $nombre; ?>\nNivel: <?php echo $nivel_escolaridad; ?>';
-                                        $('#alumno_<?php echo $identificador; ?>').val(texto);
-                                        M.textareaAutoResize($('#alumno_<?php echo $identificador; ?>'));
+                                            $('#alumno_<?php echo $identificador; ?>').val(texto);
+                                            M.textareaAutoResize($('#alumno_<?php echo $identificador; ?>'));
                                     </script>
                                 </div>
                             </div>
@@ -251,7 +249,7 @@ if (isset($authUrl)) {
                                     array_push($id_todos_alumnos, $cliente1['id']);
                                     ?> 
                                     <div <?php echo $hidden; ?>>
-                                        
+
                                         <div class="switch col s1">
                                             <label class="checks-alumnos">
                                                 <input type="checkbox" 
@@ -296,11 +294,10 @@ if (isset($authUrl)) {
                     <h5 class="c-azul center-align col s12">Información adicional</h5>
                     <span class="col s12">
                         <br>
-                        <br>
                     </span>
                     <div class="col s12 l6">
-                        <label for="solicitante" style="margin-left: 1rem">Solicitante</label>
                         <div class="input-field">
+                            <label for="solicitante" style="margin-left: 1rem">Solicitante</label>
                             <i class="material-icons prefix c-azul">person</i>
                             <input readonly  
                                    id="solicitante" 
@@ -310,9 +307,9 @@ if (isset($authUrl)) {
                         </div>
                     </div>  
                     <div class="col s12 l6">
-                        <label style="margin-left: 3rem">Nombre del responsable</label>
                         <div class="input-field">
-                            <i class="material-icons prefix c-azul">person</i>
+                            <label style="margin-left: 3rem">Nombre del responsable</label>
+                            <i class="material-icons prefix c-azul prefix">person</i>
                             <input readonly 
                                    type="text" 
                                    id="responsable" 
@@ -321,9 +318,9 @@ if (isset($authUrl)) {
                         </div>
                     </div>
                     <div class="col s12 l6">
-                        <label style="margin-left: 3rem">Parentesco del responsable</label>
                         <div class="input-field">
-                            <i class="material-icons prefix c-azul">person</i>
+                            <label style="margin-left: 3rem">Parentesco del responsable</label>
+                            <i class="material-icons prefix c-azul prefix">person</i>
                             <input readonly 
                                    type="text" 
                                    id="parentesco_responsable" 
@@ -333,8 +330,8 @@ if (isset($authUrl)) {
                     </div>               
                     <div id="caja_transporte">    
                         <div class="col s12 l6">
-                            <label style="margin-left: 3rem">Empresa</label>
                             <div class="input-field">
+                                <label style="margin-left: 3rem">Empresa</label>
                                 <i class="material-icons prefix c-azul">time_to_leave</i>
                                 <input readonly
                                        type="text" 
@@ -345,7 +342,8 @@ if (isset($authUrl)) {
                         </div>
                     </div>
                     <div class="input-field col s12">
-                        <i class="material-icons c-azul">chrome_reader_mode</i>
+                        <label style="margin-left: 3rem">Comentarios</label>
+                        <i class="material-icons c-azul prefix">chrome_reader_mode</i>
                         <textarea id="comentarios" 
                                   class="materialize-textarea" 
                                   readonly

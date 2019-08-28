@@ -79,13 +79,11 @@ if (isset($authUrl)) {
         <div class="row">
             <div class="col s12 l8 b-blanco border-azul" style="float: none;margin: 0 auto;">
                 <br>
-                <br>
                 <h5 class="center-align c-azul">Cumpleaños o Bar Mitzvá</h5>
-                <br>
                 <div class="row" style="padding:0rem .5rem;">
                     <div class="col s12 l6">
-                        <label for="fecha_solicitud" style="margin-left: 1rem">Fecha de solicitud</label>
                         <div class="input-field">
+                        <label for="fecha_solicitud" style="margin-left: 1rem">Fecha de solicitud</label>
                             <i class="material-icons prefix c-azul">calendar_today</i>
                             <input value="<?php echo $fecha_creacion; ?>" 
                                    readonly  
@@ -95,8 +93,8 @@ if (isset($authUrl)) {
                         </div>
                     </div> 
                     <div class="col s12 l6">
-                        <label for="solicitante" style="margin-left: 1rem">Solicitante</label>
                         <div class="input-field">
+                        <label for="solicitante" style="margin-left: 1rem">Solicitante</label>
                             <i class="material-icons prefix c-azul">person</i>
                             <input value="<?php echo $nombre; ?>" 
                                    readonly  
@@ -122,11 +120,9 @@ if (isset($authUrl)) {
                         echo "$btn_fecha";
                     }
                     ?> 
-                    <div class="col s12">&nbsp;</div>
+                    <div class="col s12"><br></div>
                     <div id="fecha_para" <?php echo $hidden; ?>>
-                        <br>
                         <h5 class="c-azul text-center">Fecha del evento</h5>
-                        <br>
                         <div class="col s12 l6">
                             <link rel='stylesheet' href='/pruebascd/icloud/materialkit/css/calendario.css'> 
                             <script src='/pruebascd/icloud/materialkit/js/calendario.js'></script>
@@ -170,9 +166,8 @@ if (isset($authUrl)) {
                                 });
                             </script>  
                         </div>
-                        <span class="col s12">&nbsp;</span>
+                        <span class="col s12"><br></span>
                     </div>
-                    <br>
                     <div class="col s12 l6">
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">cake</i>
@@ -284,15 +279,16 @@ if (isset($authUrl)) {
                         </div>                   
                         <div id="caja_transporte" hidden>    
                             <div class="col s12">
-                                <label style="margin-left: 3rem">Empresa</label>
                                 <div class="input-field">
+                                <label style="margin-left: 3rem">Empresa</label>
                                     <i class="material-icons prefix c-azul">time_to_leave</i>
                                     <input type="text" id="empresa" autocomplete="off"> 
                                 </div>
                             </div>
                         </div>
                         <div class="input-field col s12">
-                            <i class="material-icons c-azul">chrome_reader_mode</i>
+                            <label for="comentarios">Comentarios</label>
+                            <i class="material-icons c-azul prefix">chrome_reader_mode</i>
                             <textarea id="comentarios" 
                                       class="materialize-textarea"                                
                                       placeholder="Comentarios"></textarea>    
