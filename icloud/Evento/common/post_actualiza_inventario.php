@@ -24,8 +24,16 @@ $coleccion_inventario = $_POST['coleccion_inventario'];
 $token = $_POST['token'];
 $data = array("actualiza_inventarios" => ["push" => true, "token" => $token]);
 //horarios segun disponibilidad establecida, 2 horas antes de la hora inicial y 2 posterior a la hora final
-$hora_min = date("H:i:s", strtotime($hora_inicial . "-7200 seconds"));
-$hora_max = date("H:i:s", strtotime($hora_final . "+7199 seconds"));
+if ($hora_inicial == "00:00:00" || $hora_inicial == "01:00:00") {
+    $hora_min = $hora_inicial;
+}else{
+    $hora_min = date("H:i:s", strtotime($hora_inicial . "-7200 seconds"));
+}
+if ($hora_final == "22:00:00" || $hora_final == "23:00:00") {
+    $hora_max = $hora_final;
+}else{
+    $hora_max = date("H:i:s", strtotime($hora_final . "+7199 seconds"));
+}
 $ultimo_id_conexion = null;
 
 foreach ($coleccion_inventario as $value) {

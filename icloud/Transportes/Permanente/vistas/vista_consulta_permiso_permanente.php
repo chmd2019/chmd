@@ -40,9 +40,7 @@ if (isset($authUrl)) {
     <div class="row">
         <div class="col s12 l8 b-blanco border-azul" style="float: none;margin: 0 auto;">
             <br>
-            <br>
             <h5 class="center-align c-azul">Consulta de permiso temporal</h5>
-            <br>
             <div class="row" style="padding:0rem .5rem;">
                 <div>
                     <div class="col s12 l6">
@@ -59,7 +57,6 @@ if (isset($authUrl)) {
                             <input id="solicitante" type="text" readonly style="font-size: .9rem">
                         </div>
                     </div>
-                    <br>
                     <div class="col s12">
                         <div class="input-field">
                             <label for="dias_permiso" style="margin-left: 1rem">Días de permiso</label>
@@ -70,7 +67,7 @@ if (isset($authUrl)) {
                                       style="font-size: .9rem"></textarea> 
                         </div>
                     </div>
-                    <br>
+                    <h5 class="center-align c-azul">Alumnos</h5>
                     <div class="col s12">
                         <div class="input-field">
                             <label for="alumnos" style="margin-left: 1rem">Alumnos del permiso</label>
@@ -82,7 +79,6 @@ if (isset($authUrl)) {
                         </div>
                     </div>
                     <h5 class="center-align c-azul">Dirección de cambio</h5>
-                    <br>
                     <div class="col s12 l6">
                         <div class="input-field">
                             <label for="calle" style="margin-left: 1rem">Calle y numero</label>
@@ -117,7 +113,6 @@ if (isset($authUrl)) {
                             <input id="ruta" type="text" readonly style="font-size: .9rem">
                         </div>
                     </div>
-                    <br>
                     <div class="col s12">
                         <div class="input-field">
                             <label for="comentarios">Comentarios</label>

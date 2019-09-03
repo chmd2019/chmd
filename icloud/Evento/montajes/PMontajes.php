@@ -38,12 +38,6 @@ if (isset($authUrl)) {
     </div>
 </div>
 
-<div class="fixed-action-btn">
-    <a class="btn-floating btn-large waves-effect waves-light b-azul"
-       href="vistas/vista_nueva_solicitud_montaje.php?idseccion=<?php echo $idseccion; ?>">
-        <i class="large material-icons">add</i>
-    </a>
-</div>
 <script>
 
     $(document).ready(function () {

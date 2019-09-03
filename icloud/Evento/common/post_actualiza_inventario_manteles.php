@@ -21,8 +21,16 @@ $coleccion_manteles = $_POST['coleccion_manteles'];
 $token = $_POST['token'];
 $data = array("actualizar_manteles" => ["push" => true, "token" => $token, "id_lugar" => $id_lugar]);
 //horarios segun disponibilidad establecida, 2 horas antes de la hora inicial y 2 posterior a la hora final
-$hora_min = date("H:i:s", strtotime($hora_inicial . "-7200 seconds"));
-$hora_max = date("H:i:s", strtotime($hora_final . "+7199 seconds"));
+if ($hora_inicial == "00:00:00" || $hora_inicial == "01:00:00") {
+    $hora_min = $hora_inicial;
+}else{
+    $hora_min = date("H:i:s", strtotime($hora_inicial . "-7200 seconds"));
+}
+if ($hora_final == "22:00:00" || $hora_final == "23:00:00") {
+    $hora_max = $hora_final;
+}else{
+    $hora_max = date("H:i:s", strtotime($hora_final . "+7199 seconds"));
+}
 $ultimo_id_conexion = null;
 
 foreach ($coleccion_manteles as $value) {

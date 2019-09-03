@@ -22,9 +22,17 @@ $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
     <span>
         <h6><?php echo $fecha_actual_impresa_script; ?></h6>
         <br>
-        <div style="text-align: right">   
+        <div style="text-align: right"> 
+            <div>
+                <span class="c-azul" style="font-size: 1.5rem"><b>Alta</b></span>
+                <a class="btn-floating btn-medium waves-effect waves-light b-azul"
+                   href="vistas/vista_nuevo_permiso_temporal.php?idseccion=<?php echo $idseccion; ?>">
+                    <i class="large material-icons">add</i>
+                </a>  
+            </div>
+            <br>
             <a class="waves-effect waves-light btn b-azul c-blanco" 
-		href="https://www.chmd.edu.mx/pruebascd/icloud/menu.php?idseccion=<?php echo $idseccion; ?>">
+               href="https://www.chmd.edu.mx/pruebascd/icloud/menu.php?idseccion=<?php echo $idseccion; ?>">
                 <i class="material-icons left">keyboard_backspace</i>Atrás
             </a>                
             <a class="waves-effect waves-light btn red" href="#!" onclick="logout()">
@@ -84,7 +92,7 @@ $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
                     $fecha_destino = $objDateHelper->formatear_fecha_calendario($fecha_final);
                     //oculta boton de cancelar de acuerdo a condiciones de hora limite, status
                     $ver_btn_cancelar = "";
-                    if ($objDateHelper->obtener_hora_limite() || $estatus != 1 && $estatus!=2 ) {
+                    if ($objDateHelper->obtener_hora_limite() || $estatus != 1 && $estatus != 2) {
                         $ver_btn_cancelar = "d-none";
                     }
                     $solicitud_vencida = $objDateHelper->comprobar_solicitud_vencida_d_m_y_guion($fecha_destino);

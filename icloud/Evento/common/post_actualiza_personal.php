@@ -11,9 +11,17 @@ $horario_inicial_evento = $_POST['horario_inicial_evento'];
 $horario_final_evento = $_POST['horario_final_evento'];
 $personal = array($_POST['personal']);
 //horarios segun disponibilidad establecida, 2 horas antes de la hora inicial y 2 posterior a la hora final
-$hora_min = date("H:i:s", strtotime($horario_inicial_evento . "-7200 seconds"));
+if ($horario_inicial_evento == "00:00:00" || $horario_inicial_evento == "01:00:00") {
+    $hora_min = $horario_inicial_evento;
+}else{
+    $hora_min = date("H:i:s", strtotime($horario_inicial_evento . "-7200 seconds"));
+}
+if ($horario_final_evento == "22:00:00" || $horario_final_evento == "23:00:00") {
+    $hora_max = $horario_final_evento;
+}else{
+    $hora_max = date("H:i:s", strtotime($horario_final_evento . "+7199 seconds"));
+}
 //final
-$hora_max = date("H:i:s", strtotime($horario_final_evento . "+7199 seconds"));
 $ensayo = $_POST['ensayo'];
 $n_ensayo = intval($_POST['n_ensayo'])+1;
 //pusher (websockets)

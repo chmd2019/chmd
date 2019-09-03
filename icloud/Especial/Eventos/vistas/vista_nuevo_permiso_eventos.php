@@ -83,7 +83,7 @@ if (isset($authUrl)) {
                 <div class="row" style="padding:0rem .5rem;">
                     <div class="col s12 l6">
                         <div class="input-field">
-                        <label for="fecha_solicitud" style="margin-left: 1rem">Fecha de solicitud</label>
+                            <label for="fecha_solicitud" style="margin-left: 1rem">Fecha de solicitud</label>
                             <i class="material-icons prefix c-azul">calendar_today</i>
                             <input value="<?php echo $fecha_creacion; ?>" 
                                    readonly  
@@ -94,7 +94,7 @@ if (isset($authUrl)) {
                     </div> 
                     <div class="col s12 l6">
                         <div class="input-field">
-                        <label for="solicitante" style="margin-left: 1rem">Solicitante</label>
+                            <label for="solicitante" style="margin-left: 1rem">Solicitante</label>
                             <i class="material-icons prefix c-azul">person</i>
                             <input value="<?php echo $nombre; ?>" 
                                    readonly  
@@ -168,7 +168,7 @@ if (isset($authUrl)) {
                         </div>
                         <span class="col s12"><br></span>
                     </div>
-                    <div class="col s12 l6">
+                    <div class="col s12 l6" style="margin-top: -1.2rem">
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">cake</i>
                             <select id="tipo_evento"> 
@@ -179,8 +179,7 @@ if (isset($authUrl)) {
                             </select>
                             <label>Tipo de evento</label>
                         </div>
-                    </div>
-                    <br>                    
+                    </div>              
                     <div class="col s12">
                         <h5 class="c-azul text-center">Selecciona Alumnos</h5>
                         <?php
@@ -220,7 +219,6 @@ if (isset($authUrl)) {
                     </div>
                     <div>
                         <h5 class="c-azul text-center col s12">Información adicional</h5>
-                        <br>
                         <span class="col s12">
                             <div class="badge blue accent-4 c-blanco" style="padding: .5rem;border-radius: 1rem">
                                 Responsable del evento: Persona designada por la familia para verificar que todos
@@ -251,12 +249,18 @@ if (isset($authUrl)) {
                         <div id="nuevo_responsable" hidden>
                             <div class="input-field col s12 l6" id="nuevo_responsable_nombre">
                                 <i class="material-icons prefix c-azul">person</i>
-                                <input id="responsable" type="text" autocomplete="off">
+                                <input id="responsable" 
+                                       type="text" 
+                                       onkeyup ="capitaliza_primer_letra(this.id)"
+                                       autocomplete="off">
                                 <label for="responsable">Nombre del responsable</label>
                             </div> 
                             <div class="input-field col s12 l6">
                                 <i class="material-icons prefix c-azul">person</i>
-                                <input id="parentesco_responsable" type="text" autocomplete="off">
+                                <input id="parentesco_responsable" 
+                                       type="text" 
+                                       onkeyup ="capitaliza_primer_letra(this.id)"
+                                       autocomplete="off">
                                 <label for="parentesco_responsable">Parentesco del responsable</label>
                             </div> 
                             <a class="waves-effect waves-light btn col s12 b-azul c-blanco" 
@@ -280,9 +284,12 @@ if (isset($authUrl)) {
                         <div id="caja_transporte" hidden>    
                             <div class="col s12">
                                 <div class="input-field">
-                                <label style="margin-left: 3rem">Empresa</label>
+                                    <label style="margin-left: 3rem">Empresa</label>
                                     <i class="material-icons prefix c-azul">time_to_leave</i>
-                                    <input type="text" id="empresa" autocomplete="off"> 
+                                    <input type="text" 
+                                           id="empresa"
+                                           onkeyup ="capitaliza_primer_letra(this.id)" 
+                                           autocomplete="off"> 
                                 </div>
                             </div>
                         </div>
@@ -290,7 +297,8 @@ if (isset($authUrl)) {
                             <label for="comentarios">Comentarios</label>
                             <i class="material-icons c-azul prefix">chrome_reader_mode</i>
                             <textarea id="comentarios" 
-                                      class="materialize-textarea"                                
+                                      class="materialize-textarea"
+                                      onkeyup ="capitaliza_primer_letra(this.id)"                                
                                       placeholder="Comentarios"></textarea>    
                         </div>     
                     </div> 

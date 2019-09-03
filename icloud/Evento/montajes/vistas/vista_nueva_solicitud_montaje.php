@@ -87,7 +87,7 @@ if (isset($authUrl)) {
         $fecha_evento_interno = $date_helper->suma_dia_habil(date("d-m-Y"), $dias_evento_interno);
         $fecha_evento_combinado_externo = $date_helper->suma_dia_habil(date("d-m-Y"), $dias_evento_combinado_externo);
         $fecha_actual = strtotime(date('d-m-Y'));
-        $fecha_evento_especial = date('Y-m-d', strtotime("+2 month", $fecha_actual));
+        $fecha_evento_especial = date('Y-m-d', strtotime("+1 month", $fecha_actual));
         $fecha_minima_ensayo = $date_helper->suma_dia_habil(date("d-m-Y"), 1);
         ?>
         <link rel='stylesheet' href='/pruebascd/icloud/materialkit/css/calendario.css'> 
@@ -101,30 +101,29 @@ if (isset($authUrl)) {
                 <br>
                 <div class="row" style="padding:0rem .5rem;">
                     <div class="col s12 l6">
-                        <label for="fecha_solicitud" style="margin-left: 1rem">Fecha de solicitud</label>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">calendar_today</i>
                             <input value="<?php echo $fecha_creacion; ?>" 
                                    readonly  
                                    id="fecha_solicitud" 
                                    style="font-size: 1rem" 
-                                   type="text" />               
+                                   type="text" />      
+                            <label for="fecha_solicitud" style="margin-left: 1rem">Fecha de solicitud</label>         
                         </div>
                     </div>  
                     <div class="col s12 l6">
-                        <label for="solicitante" style="margin-left: 1rem">Solicitante</label>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">person</i>
                             <input value="<?php echo $nombre; ?>" 
                                    readonly  
                                    id="solicitante" 
                                    style="font-size: 1rem" 
-                                   type="text" />               
+                                   type="text" />    
+                            <label for="solicitante" style="margin-left: 1rem">Solicitante</label>           
                         </div>
-                    </div>                     
+                    </div>                  
                     <div class="input-field col s12 l6">
                         <i class="material-icons prefix c-azul">sentiment_very_satisfied</i>
-                        <label for="cantidad_invitados" style="margin-left: 1rem">Cantidad de invitados</label>
                         <input placeholder="Cantidad de invitados" 
                                autocomplete="off"
                                id="cantidad_invitados" 
@@ -132,18 +131,9 @@ if (isset($authUrl)) {
                                onblur="maxima_cantidad(this.id, 2000)"
                                onkeyup="calcular_parking(this)"
                                onkeypress="return validar_solo_numeros(event, this.id, 3)">
-                    </div>           
-                    <div class="input-field col s12 l6">
-                        <i class="material-icons prefix c-azul">drive_eta</i>
-                        <label style="margin-left: 1rem">Valet Parking</label>
-                        <input id="valet_parking"
-                               placeholder="Valet Parking" 
-                               autocomplete="off"
-                               type="text"
-                               disabled>
+                        <label for="cantidad_invitados" style="margin-left: 1rem">Cantidad de invitados</label>
                     </div>       
                     <div class="col s12 l6">
-                        <label  style="margin-left: 1rem">Tipo de evento</label>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">room_service</i>
                             <select onchange="reset_check_requiero_personal();mostrar_caja_fecha(this.value)" id="tipo_evento">
@@ -153,11 +143,20 @@ if (isset($authUrl)) {
                                 <option value="3">Montaje de evento combinado o externo</option>
                                 <option value="4">Montaje de evento especial</option>
                             </select>
+                            <label  style="margin-left: 1rem">Tipo de evento</label>
                         </div>
                     </div>
-
+                    <span class="col s12"></span>
+                    <div class="input-field col s12 l6" id="caja_valet_parking" hidden>
+                        <i class="material-icons prefix c-azul">drive_eta</i>
+                        <label style="margin-left: 1rem">Estacionamiento</label>
+                        <input id="valet_parking"
+                               placeholder="Estacionamiento" 
+                               autocomplete="off"
+                               type="text"
+                               disabled>
+                    </div> 
                     <div class="col s12 l6" id="caja_servicio_cafe" hidden>
-                        <label  style="margin-left: 1rem">Fecha del montaje</label>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">calendar_today</i>
                             <input 
@@ -166,7 +165,8 @@ if (isset($authUrl)) {
                                 id="fecha_permiso_cafe" 
                                 autocomplete="off"
                                 placeholder="Para el día"
-                                onchange="reset_check_requiero_personal();fecha_minusculas(this.value, 'fecha_permiso_cafe')">            
+                                onchange="reset_check_requiero_personal();fecha_minusculas(this.value, 'fecha_permiso_cafe')">     
+                            <label  style="margin-left: 1rem">Fecha del montaje</label>       
                         </div>
                         <script>
                             //obtiene el calendario escolar en db
@@ -196,7 +196,6 @@ if (isset($authUrl)) {
                         </script>  
                     </div>
                     <div class="col s12 l6" id="caja_evento_interno" hidden>
-                        <label  style="margin-left: 1rem">Fecha del montaje</label>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">calendar_today</i>
                             <input 
@@ -205,7 +204,8 @@ if (isset($authUrl)) {
                                 id="fecha_evento_interno" 
                                 autocomplete="off"
                                 placeholder="Para el día"
-                                onchange="reset_check_requiero_personal();fecha_minusculas(this.value, 'fecha_evento_interno')">            
+                                onchange="reset_check_requiero_personal();fecha_minusculas(this.value, 'fecha_evento_interno')">  
+                            <label  style="margin-left: 1rem">Fecha del montaje</label>          
                         </div>
                         <script>
                             //obtiene el calendario escolar en db
@@ -235,7 +235,6 @@ if (isset($authUrl)) {
                         </script>  
                     </div>
                     <div class="col s12 l6" id="caja_evento_combinado_externo" hidden>
-                        <label  style="margin-left: 1rem">Fecha del montaje</label>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">calendar_today</i>
                             <input 
@@ -244,7 +243,8 @@ if (isset($authUrl)) {
                                 id="fecha_evento_combinado_externo" 
                                 autocomplete="off"
                                 placeholder="Para el día"
-                                onchange="reset_check_requiero_personal();fecha_minusculas(this.value, 'fecha_evento_combinado_externo')">            
+                                onchange="reset_check_requiero_personal();fecha_minusculas(this.value, 'fecha_evento_combinado_externo')"> 
+                            <label  style="margin-left: 1rem">Fecha del montaje</label>           
                         </div>
                         <script>
                             //obtiene el calendario escolar en db
@@ -274,7 +274,6 @@ if (isset($authUrl)) {
                         </script>  
                     </div>   
                     <div class="col s12 l6" id="caja_servicio_especial" hidden>
-                        <label  style="margin-left: 1rem">Fecha del montaje</label>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">calendar_today</i>
                             <input 
@@ -284,7 +283,8 @@ if (isset($authUrl)) {
                                 autocomplete="off"
                                 placeholder="Para el día"
                                 onchange="fecha_minusculas(this.value, 'fecha_servicio_especial');
-                                                reset_check_requiero_personal()">            
+                                        reset_check_requiero_personal()">  
+                            <label  style="margin-left: 1rem">Fecha del montaje</label>          
                         </div>
                         <script>
                             //obtiene el calendario escolar en db
@@ -312,7 +312,20 @@ if (isset($authUrl)) {
                                 min: fecha_minima
                             });
                         </script>  
-                    </div>
+                    </div>      
+                    <div class="col s12 l6">
+                        <div class="input-field">
+                            <i class="material-icons prefix c-azul">filter_tilt_shift</i>
+                            <select id="tipo_montaje">
+                                <option value="0" disabled selected>Selelccione una opción</option>
+                                <option value="Auditorio">Auditorio</option>
+                                <option value="Escuela &quot;mesa con silla&quot;">Escuela "mesa con silla"</option>
+                                <option value="Herradura &quot;una mesa varias sillas&quot;">Herradura "una mesa varias sillas"</option>
+                                <option value="Otros">Otros</option>
+                            </select>
+                            <label  style="margin-left: 1rem">Tipo de montaje</label>
+                        </div>
+                    </div> 
                     <div class="input-field col s12 l6" hidden id="check_servicio_cafe">
                         <i class="material-icons prefix c-azul">free_breakfast</i>
                         <label>
@@ -325,17 +338,6 @@ if (isset($authUrl)) {
                         <br>
                         <br>
                     </div>  
-                    <div class="input-field col s12" hidden id="caja_cafe">
-                        <div class="input-field col s12 l6" id="select_lugar_evento_solo_cafe">
-                            <i class="material-icons prefix c-azul">place</i>
-                            <select id="lugar_evento_solo_cafe" onchange="lugar_evento_solo_cafe = this.value;">
-                            </select>
-                            <label style="margin-left: 1rem">Lugar del evento</label>
-                        </div> 
-                        <h5 class="col s12 c-azul text-center">Servicio de café</h5>
-                        <br>    
-                        <ul class="collection row" id="ul_servicio_cafe"></ul>
-                    </div>
                     <span class="col s12"><br></span>              
                     <div class="input-field col s12 l6">
                         <i class="material-icons prefix c-azul">access_time</i>
@@ -361,7 +363,7 @@ if (isset($authUrl)) {
                             autocomplete="off"
                             onfocus="blur();"
                             placeholder="Seleccione horario">  
-                    </div>                     
+                    </div> 
                     <div class="input-field col s12 l6">
                         <i class="material-icons prefix c-azul">restaurant_menu</i>
                         <label for="nombre_evento" style="margin-left: 1rem">Nombre del evento</label>
@@ -377,28 +379,14 @@ if (isset($authUrl)) {
                                placeholder="Responsable" 
                                autocomplete="off"
                                type="text">
-                    </div>         
-                    <div class="input-field col s12 l6">
-                        <i class="material-icons prefix c-azul">donut_large</i>
-                        <label>
-                            <input type="checkbox" class="filled-in" onchange="mostrar_tipo_repliegue()"/>
-                            <span>Requiero repliegue</span>
-                        </label>
-                        <br>
-                        <br>
-                    </div> 
-                    <div class="input-field col s12 l6" hidden id="caja_tipo_repliegue">
-                        <i class="material-icons prefix c-azul">donut_small</i>
-                        <select id="select_tipo_repliegue">
-                            <option value="0" disabled selected>Seleccione una opción</option>
-                            <option value="Estacionamiento maestros">Estacionamiento maestros</option>
-                            <option value="Patio de camiones 1/2">Patio de camiones 1/2</option>
-                            <option value="Patio de completo">Patio de completo</option>
+                    </div>                    
+                    <div class="input-field col s12 l6" id="caja_lugar_evento">
+                        <i class="material-icons prefix c-azul">place</i>
+                        <select onchange="id_lugar_evento_function = this.value;consula_disponibilidad_lugar(this.value, this.id);" id="lugar_evento">
                         </select>
-                        <label style="margin-left: 1rem">Tipo de repliegue</label>
+                        <label style="margin-left: 1rem">Lugar del evento</label>
                     </div>
-                    <span class="col s12"></span>
-                    <div class="file-field input-field col s12 l6">
+                    <div class="file-field input-field col s12 l6" style="margin-top: -.8rem">
                         <div class="waves-effect waves-light btn b-azul" style="margin-top: 1.5rem">
                             <span><i class="material-icons c-blanco">attach_file</i></span>
                             <input type="file" 
@@ -418,16 +406,37 @@ if (isset($authUrl)) {
                         <div class="chip blue white-text">
                             <span>Tamaño máx:3mb</span>
                         </div>
+                    </div>                    
+                    <div class="input-field col s12 l6">
+                        <i class="material-icons prefix c-azul">donut_large</i>
+                        <label>
+                            <input type="checkbox" class="filled-in" onchange="mostrar_tipo_repliegue()"/>
+                            <span>Requiero repliegue</span>
+                        </label>
+                        <br>
+                        <br>
+                    </div> 
+                    <div class="input-field col s12 l6" hidden id="caja_tipo_repliegue">
+                        <i class="material-icons prefix c-azul">donut_small</i>
+                        <select id="select_tipo_repliegue">
+                            <option value="0" disabled selected>Seleccione una opción</option>
+                            <option value="Estacionamiento maestros">Estacionamiento maestros</option>
+                            <option value="Patio de camiones 1/2">Patio de camiones 1/2</option>
+                            <option value="Patio de completo">Patio de completo</option>
+                        </select>
+                        <label style="margin-left: 1rem">Tipo de repliegue</label>
                     </div>
+                    <span class="col s12"><br></span>
                     <div id="no_cafe">
-                        <br><h5 class="col s12 c-azul text-center">Lugar y mobiliario del evento</h5>
-                        <br>    
-                        <div class="input-field col s12 l6">
-                            <i class="material-icons prefix c-azul">place</i>
-                            <select onchange="cargar_inventarios_montaje(this.value)" id="lugar_evento">
-                            </select>
-                            <label style="margin-left: 1rem">Lugar del evento</label>
-                        </div> 
+                        <h5 class="col s12 c-azul text-center">Lugar y mobiliario del evento</h5>
+                        <div class="input-field col s12" style="text-align: center;">
+                            <button class="waves-effect waves-light btn b-azul c-blanco col l3"
+                                    style="float: none"                                 
+                                    type="button"
+                                    onclick="cargar_inventarios_montaje(id_lugar_evento_function)">
+                                <i class="material-icons right">dashboard</i>Agregar inventario
+                            </button>
+                        </div>
                         <div class="input-field col s12" hidden id="mobiliario">
                             <h5 class="col s12 c-azul text-center">Mobiliario</h5>
                             <div id="tabla_inventario"></div>         
@@ -531,8 +540,6 @@ if (isset($authUrl)) {
                                 <span>Requiero de ensayo</span>
                             </label>
                             <br>
-                            <br>
-                            <br>
                         </div>  
                         <div hidden id="caja_select_ensayo">
                             <div class="input-field col s12 l6">
@@ -551,6 +558,17 @@ if (isset($authUrl)) {
                             <span class="col s12"></span>
                             <div id="caja_ensayos"></div>                        
                         </div>
+                    </div>                    
+                    <div class="input-field col s12" hidden id="caja_cafe">
+                        <div class="input-field col s12 l6" id="select_lugar_evento_solo_cafe">
+                            <i class="material-icons prefix c-azul">place</i>
+                            <select id="lugar_evento_solo_cafe" 
+                                    onchange="lugar_evento_solo_cafe = this.value;consula_disponibilidad_lugar(this.value, this.id);">
+                            </select>
+                            <label style="margin-left: 1rem">Lugar del evento</label>
+                        </div> 
+                        <h5 class="col s12 c-azul text-center">Servicio de café</h5>
+                        <ul class="collection row" id="ul_servicio_cafe"></ul>
                     </div>
                     <h5 class="col s12 c-azul text-center">Requerimientos especiales</h5>
                     <div class="input-field col s12">
@@ -606,6 +624,18 @@ if (isset($authUrl)) {
         </div>
     </div>
 </div>
+
+<div id="modal_recuerde_rentar" class="modal bottom-sheet">
+    <div class="modal-content">
+        <h4 class="c-azul">Recuerde</h4>
+        <p>El inventario disponible actual ha sido sobrepasado, recuerde rentar el número de artículos faltantes</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!"
+           class="modal-close waves-effect waves-light btn-flat green accent-4 c-blanco">Aceptar</a>
+    </div>
+</div>
+
 <style>
     @media screen and (min-width: 280px) and (max-width:960px){
         #toast-container {
@@ -621,6 +651,7 @@ if (isset($authUrl)) {
     var codigo_ensayo = "";
     var id_lugar = 0;
     var archivo_cargado = null;
+    var id_lugar_evento_function = "";
     //servicio de cafe
     var solo_cafe = false;
     var lugar_evento_solo_cafe = "";
@@ -649,13 +680,14 @@ if (isset($authUrl)) {
     var ensayos = [];
     var botones_anulacion = [];
     $(document).ready(function () {
+        $('.modal').modal();
         $("#loading").fadeOut("slow");
         $('select').formSelect();
         M.textareaAutoResize($('textarea'));
         $('.timepicker').timepicker({
-            'step': 15,
+            'step': 60,
             'minTime': '00:00',
-            'maxTime': '11:59',
+            'maxTime': '23:59',
             'timeFormat': 'H:i:s'
         });
         $("#horario_evento").change(function () {
@@ -763,7 +795,9 @@ if (isset($authUrl)) {
                 $("#fecha_servicio_especial").val("");
                 solo_cafe = true;
                 $("#no_cafe").fadeOut();
+                $("#caja_lugar_evento").fadeOut();
                 cargar_servicio_cafe();
+                $("#caja_valet_parking").hide();
                 break;
             case "2":
                 $("#caja_evento_interno").prop("hidden", false);
@@ -775,11 +809,13 @@ if (isset($authUrl)) {
                 $("#fecha_evento_combinado_externo").val("");
                 $("#fecha_servicio_especial").val("");
                 $("#no_cafe").fadeIn();
+                $("#caja_lugar_evento").fadeIn();
                 $("#ul_servicio_cafe").html("");
                 $("#caja_cafe").fadeOut();
                 reset_check_requiero_personal();
                 solo_cafe = false;
                 lugar_evento_solo_cafe = "";
+                $("#caja_valet_parking").hide();
                 break;
             case "3":
                 $("#caja_evento_combinado_externo").prop("hidden", false);
@@ -791,11 +827,13 @@ if (isset($authUrl)) {
                 $("#fecha_evento_interno").val("");
                 $("#fecha_servicio_especial").val("");
                 $("#no_cafe").fadeIn();
+                $("#caja_lugar_evento").fadeIn();
                 $("#ul_servicio_cafe").html("");
                 $("#caja_cafe").fadeOut();
                 reset_check_requiero_personal();
                 solo_cafe = false;
                 lugar_evento_solo_cafe = "";
+                $("#caja_valet_parking").show();
                 break;
             case "4":
                 $("#caja_servicio_especial").prop("hidden", false);
@@ -807,11 +845,13 @@ if (isset($authUrl)) {
                 $("#fecha_evento_interno").val("");
                 $("#fecha_evento_combinado_externo").val("");
                 $("#no_cafe").fadeIn();
+                $("#caja_lugar_evento").fadeIn();
                 $("#ul_servicio_cafe").html("");
                 $("#caja_cafe").fadeOut();
                 reset_check_requiero_personal();
                 solo_cafe = false;
                 lugar_evento_solo_cafe = "";
+                $("#caja_valet_parking").show();
                 break;
         }
     }
@@ -850,7 +890,7 @@ if (isset($authUrl)) {
             min: fecha_minima
         });
         $('.timepicker').timepicker({
-            'step': 15,
+            'step': 60,
             'minTime': '00:00',
             'maxTime': '23:59',
             'timeFormat': 'H:i:s'
@@ -938,6 +978,10 @@ if (isset($authUrl)) {
                 archivo.value = "";
                 return;
             }
+            console.log(res);
+            if (res) {
+                window.location.href = "https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/PMontajes.php?idseccion=";
+            }
         }).always(() => {
             $("#loading").fadeOut();
         });
@@ -994,17 +1038,41 @@ if (isset($authUrl)) {
         var horario_evento = $("#horario_evento").val();
         var horario_final_evento = $("#horario_final_evento").val();
 
-        if (fecha_montaje_simple === "" || horario_evento === "" || horario_final_evento === "") {
-            $("#lugar_evento option[value=0]").prop("selected", "selected");
-            $('select').formSelect();
+        if ($("#tipo_evento").val() === null) {
             M.toast({
-                html: '¡Debe seleccionar un horario y fecha del evento válido!',
+                html: '¡Debe seleccionar un tipo de evento válido!',
                 classes: 'deep-orange c-blanco',
             });
             return;
         }
 
-        if ($("#tipo_evento").val("1")) {
+        if (fecha_montaje_simple === null) {
+            M.toast({
+                html: '¡Debe seleccionar una fecha para el evento válido!',
+                classes: 'deep-orange c-blanco',
+            });
+            return;
+        }
+
+        if (horario_evento === "" || horario_final_evento === "") {
+            $("#lugar_evento option[value=0]").prop("selected", "selected");
+            $('select').formSelect();
+            M.toast({
+                html: '¡Debe seleccionar el horario del evento!',
+                classes: 'deep-orange c-blanco',
+            });
+            return;
+        }
+
+        if (id_lugar_evento === "") {
+            M.toast({
+                html: '¡Debe seleccionar un lugar válido para el evento!',
+                classes: 'deep-orange c-blanco',
+            });
+            return;
+        }
+
+        if ($("#tipo_evento").val() === "1") {
             solo_cafe = false;
             lugar_evento_solo_cafe = "";
         }
@@ -1154,7 +1222,7 @@ if (isset($authUrl)) {
         var id_lugar = 0;
         for (var item in inventario) {
             id_lugar = inventario[item].lugar;
-            tr += ` <li class="collection-item avatar col s12" style="justify-content: space-around"> <div class="col s12 l6"> <br><i class="material-icons circle" style="background-color: #00C2EE">done</i> <span class="title"><b>Artículo: </b> ${inventario[item].articulo}</span> <p> <b>Capacidad del lugar: </b> ${inventario[item].capacidad}<br><b>Disponible para el evento: </b>${inventario[item].disponible}</p><b>Cantidad para el evento: </b> <div class="input-field"><i class="material-icons prefix c-azul">plus_one</i><input placeholder="Ingrese cantidad deseada" class="cantidad_mobiliario" onblur="add_inventario('${inventario[item].id}', this.value)" id="cantidad_mobiliario_${inventario[item].id}" autocomplete="off" onkeypress="return validar_solo_numeros(event, this.id, 2)" type="tel"></div> </div><div class="col s12 l6 text-center"> <a href="${inventario[item].ruta_img}" data-fancybox data-caption="${inventario[item].articulo}"> <br><img src="${inventario[item].ruta_img}" width="150"/> </a> </div><span class ="col s12"><br></span></li>`;
+            tr += `<li class="collection-item avatar col s12" style="justify-content: space-around"> <div class="col s12 l6"> <br><i class="material-icons circle" style="background-color: #00C2EE">done</i> <span class="title"><b>Artículo: </b> ${inventario[item].articulo}</span> <p> <b>Capacidad del lugar: </b> ${inventario[item].capacidad}<br><b>Disponible para el evento: </b>${inventario[item].disponible}</p><b>Cantidad para el evento: </b> <div class="input-field"><input placeholder="Ingrese cantidad deseada" class="cantidad_mobiliario" onblur="add_inventario('${inventario[item].id}', this, ${inventario[item].capacidad}, ${inventario[item].disponible})" id="cantidad_mobiliario_${inventario[item].id}" autocomplete="off" onkeypress="return validar_solo_numeros(event, this.id, 2)" type="tel"></div></div><div class="col s12 l6 text-center"> <a href="${inventario[item].ruta_img}" data-fancybox data-caption="${inventario[item].articulo}"> <br><img src="${inventario[item].ruta_img}" width="150"/> </a> </div><span class="col s12"><br></span></li>`;
         }
         $("#tabla_inventario").html(`<ul class="collection row">${tr}<div style="text-align: center" id="caja_btn_actualiza_inventario"> <button class="waves-effect waves-light btn col l4" id="btn_actualizar_inventario" onclick="actualizar_inventario()" type="button" style="background-color: #00C2EE;float: none">Reservar inventario <i class="material-icons right">save</i> </button></div><div style="text-align: center" hidden id="caja_btn_anular_inventario"> <button class="waves-effect waves-light btn col l4 red" id="btn_anular_inventario" onclick="anular_inventario()" type="button" style="float: none">Anular reserva inventario <i class="material-icons right">delete</i> </button></div></ul>`);
     }
@@ -1162,7 +1230,7 @@ if (isset($authUrl)) {
         $("#caja_equipo_tecnico").show();
         var tr = "";
         for (var item in equipo_tecnico) {
-            tr += `<li class="collection-item avatar col s12" style="justify-content: space-around"> <div class="col s12 l6"> <br><i class="material-icons circle" style="background-color: #00C2EE">done</i> <span class="title"><b>Artículo: </b> ${equipo_tecnico[item].articulo}</span> <p> <b>Capacidad del lugar: </b> ${equipo_tecnico[item].capacidad}<br><b>Disponible para el evento: </b>${equipo_tecnico[item].disponible}</p><b>Cantidad para el evento: </b> <div class="input-field"><i class="material-icons prefix c-azul">plus_one</i><input placeholder="Ingrese cantidad deseada" class="cantidad_mobiliario" onblur="add_equipo_tecnico('${equipo_tecnico[item].id}', this.value)" id="cantidad_equipo_tecnico_${equipo_tecnico[item].id}" autocomplete="off" onkeypress="return validar_solo_numeros(event, this.id, 2)" type="tel"></div></div><div class="col s12 l6 text-center"> <a href="${equipo_tecnico[item].ruta_img}" data-fancybox data-caption="${equipo_tecnico[item].articulo}"><br><img src="${equipo_tecnico[item].ruta_img}" width="150"/> </a> </div></li>`;
+            tr += `<li class="collection-item avatar col s12" style="justify-content: space-around"> <div class="col s12 l6"> <br><i class="material-icons circle" style="background-color: #00C2EE">done</i> <span class="title"><b>Artículo: </b> ${equipo_tecnico[item].articulo}</span> <p> <b>Capacidad del lugar: </b> ${equipo_tecnico[item].capacidad}<br><b>Disponible para el evento: </b>${equipo_tecnico[item].disponible}</p><b>Cantidad para el evento: </b> <div class="input-field"><input placeholder="Ingrese cantidad deseada" class="cantidad_mobiliario" onblur="add_equipo_tecnico('${equipo_tecnico[item].id}', this, ${equipo_tecnico[item].capacidad},${equipo_tecnico[item].disponible})" id="cantidad_equipo_tecnico_${equipo_tecnico[item].id}" autocomplete="off" onkeypress="return validar_solo_numeros(event, this.id, 2)" type="tel"></div></div><div class="col s12 l6 text-center"> <a href="${equipo_tecnico[item].ruta_img}" data-fancybox data-caption="${equipo_tecnico[item].articulo}"><br><img src="${equipo_tecnico[item].ruta_img}" width="150"/> </a> </div></li>`;
         }
         $("#tabla_equipo_tecnico").html(`<ul class="collection row">${tr}<div style="text-align: center" id="caja_btn_actualiza_equipo_tecnico"> <button class="waves-effect waves-light btn col l4" id="btn_actualizar_equipo_tecnico" onclick="actualizar_equipo_tecnico()" type="button" style="background-color: #00C2EE;float: none">Reservar equipo técnico <i class="material-icons right">save</i> </button></div><div style="text-align: center" hidden id="caja_btn_anular_equipo_tecnico"> <button class="waves-effect waves-light btn col l4 red" id="btn_anular_equipo_tecnico" onclick="anular_equipo_tecnico()" type="button" style="float: none">Anular reserva equipo técnico <i class="material-icons right">delete</i> </button></div></ul>`);
     }
@@ -1178,7 +1246,7 @@ if (isset($authUrl)) {
         for (var item in manteles) {
             i++;
             coleccion_ids_manteles.push(manteles[item].id);
-            tr += `<li class="collection-item avatar col s12" style="justify-content: space-around"> <div class="col s12 l6"> <br><i class="material-icons circle" style="background-color: #00C2EE">done</i> <span class="title"> <b>Artículo:</b> ${manteles[item].articulo}</span> <p> <b>Capacidad del lugar: </b> ${manteles[item].capacidad}<br><b>Disponible para el evento: </b>${manteles[item].disponible}</p><b>Cantidad para el evento: </b> <div class="input-field"><i class="material-icons prefix c-azul">plus_one</i> <input placeholder="Ingrese cantidad deseada" class="cantidad_mobiliario" id="cantidad_manteles_${manteles[item].id}" autocomplete="off" onblur="add_mantel('${manteles[item].id}', this.value)" onkeypress="return validar_solo_numeros(event, this.id, 2)" type="tel"> </div></div><div class="col s12 l6 text-center"> <a href="${manteles[item].ruta_img}" data-fancybox data-caption="${manteles[item].articulo}"> <br><img src="${manteles[item].ruta_img}" width="150"/> </a> </div></li>`;
+            tr += `<li class="collection-item avatar col s12" style="justify-content: space-around"> <div class="col s12 l6"> <br><i class="material-icons circle" style="background-color: #00C2EE">done</i> <span class="title"> <b>Artículo:</b> ${manteles[item].articulo}</span> <p> <b>Capacidad del lugar: </b> ${manteles[item].capacidad}<br><b>Disponible para el evento: </b>${manteles[item].disponible}</p><b>Cantidad para el evento: </b> <div class="input-field"><input placeholder="Ingrese cantidad deseada" class="cantidad_mobiliario" id="cantidad_manteles_${manteles[item].id}" autocomplete="off" onblur="add_mantel('${manteles[item].id}', this, ${manteles[item].capacidad}, ${manteles[item].disponible})" onkeypress="return validar_solo_numeros(event, this.id, 2)" type="tel"> </div></div><div class="col s12 l6 text-center"> <a href="${manteles[item].ruta_img}" data-fancybox data-caption="${manteles[item].articulo}"> <br><img src="${manteles[item].ruta_img}" width="150"/> </a> </div></li>`;
         }
         $("#manteles").show();
         $("#tabla_manteles").html(`<ul class="collection row">${tr}<div style="text-align: center" id="caja_btn_actualiza_inventario_manteles"> <button class="waves-effect waves-light btn col l4" id="btn_actualizar_inventario_manteles" onclick="actualizar_inventario_manteles()" type="button" style="background-color: #00C2EE;float: none">Reservar manteles <i class="material-icons right">save</i> </button></div><div style="text-align: center" hidden id="caja_btn_anular_inventario_manteles"> <button class="waves-effect waves-light btn col l4 red" id="btn_anular_inventario_manteles" onclick="anular_inventario_manteles()" type="button" style="float: none">Anular reserva manteles <i class="material-icons right">delete</i> </button></div></ul>`);
@@ -1274,7 +1342,7 @@ if (isset($authUrl)) {
             $("#" + el.id).timepicker('remove');
             el.value = '';
             $("#" + el.id).timepicker({
-                'step': 15,
+                'step': 60,
                 'minTime': '00:00',
                 'maxTime': '23:59',
                 'timeFormat': 'H:i:s'
@@ -1494,16 +1562,29 @@ if (isset($authUrl)) {
         }
     }
     //Actualizacion de inventarios y notificaciones en tiempo real con pusher websockets
-    function add_mantel(id, value) {
+    function add_mantel(id, el, capacidad, disponible) {
+        if (parseInt(disponible) <= 0) {
+            var modal_recuerde_rentar = M.Modal.getInstance($("#modal_recuerde_rentar"));
+            modal_recuerde_rentar.open();
+        }
+        if (capacidad < el.value) {
+            $("#" + el.id).val("");
+            $("#" + el.id).focus();
+            M.toast({
+                html: 'Debe asignar la cantidad de acuerdo con la capacidad del lugar',
+                classes: 'deep-orange c-blanco'
+            });
+            return;
+        }
         if (coleccion_manteles.length !== 0) {
             for (var item in coleccion_manteles) {
                 if (coleccion_manteles[item].id === id) {
-                    coleccion_manteles[item] = {id: id, cantidad: value};
+                    coleccion_manteles[item] = {id: id, cantidad: el.value};
                     return;
                 }
             }
         }
-        coleccion_manteles.push({id: id, cantidad: value});
+        coleccion_manteles.push({id: id, cantidad: el.value});
     }
     function actualizar_inventario_manteles() {
         if (!validar_fecha_horario())
@@ -1574,16 +1655,29 @@ if (isset($authUrl)) {
         });
 
     }
-    function add_inventario(id, value) {
+    function add_inventario(id, el, capacidad, disponible) {
+        if (parseInt(disponible) <= 0) {
+            var modal_recuerde_rentar = M.Modal.getInstance($("#modal_recuerde_rentar"));
+            modal_recuerde_rentar.open();
+        }
+        if (capacidad < el.value) {
+            $("#" + el.id).val("");
+            $("#" + el.id).focus();
+            M.toast({
+                html: 'Debe asignar la cantidad de acuerdo con la capacidad del lugar',
+                classes: 'deep-orange c-blanco',
+            });
+            return;
+        }
         if (coleccion_inventario.length !== 0) {
             for (var item in coleccion_inventario) {
                 if (coleccion_inventario[item].id === id) {
-                    coleccion_inventario[item] = {id: id, cantidad: value};
+                    coleccion_inventario[item] = {id: id, cantidad: el.value};
                     return;
                 }
             }
         }
-        coleccion_inventario.push({id: id, cantidad: value});
+        coleccion_inventario.push({id: id, cantidad: el.value});
     }
     function actualizar_inventario() {
         if (!validar_fecha_horario())
@@ -1654,16 +1748,29 @@ if (isset($authUrl)) {
         });
 
     }
-    function add_equipo_tecnico(id, value) {
+    function add_equipo_tecnico(id, el, capacidad, disponible) {
+        if (parseInt(disponible) <= 0) {
+            var modal_recuerde_rentar = M.Modal.getInstance($("#modal_recuerde_rentar"));
+            modal_recuerde_rentar.open();
+        }
+        if (capacidad < el.value) {
+            $("#" + el.id).val("");
+            $("#" + el.id).focus();
+            M.toast({
+                html: 'Debe asignar la cantidad de acuerdo con la capacidad del lugar',
+                classes: 'deep-orange c-blanco'
+            });
+            return;
+        }
         if (coleccion_equipo_tecnico.length !== 0) {
             for (var item in coleccion_equipo_tecnico) {
                 if (coleccion_equipo_tecnico[item].id === id) {
-                    coleccion_equipo_tecnico[item] = {id: id, cantidad: value};
+                    coleccion_equipo_tecnico[item] = {id: id, cantidad: el.value};
                     return;
                 }
             }
         }
-        coleccion_equipo_tecnico.push({id: id, cantidad: value});
+        coleccion_equipo_tecnico.push({id: id, cantidad: el.value});
     }
     function actualizar_equipo_tecnico() {
         if (!validar_fecha_horario())
@@ -1878,6 +1985,17 @@ if (isset($authUrl)) {
         }
         return true;
     }
+    function validar_tipo_montaje() {
+        var tipo_montaje = $("#tipo_montaje").val();
+        if (tipo_montaje === null || tipo_montaje === "" || tipo_montaje === "0") {
+            M.toast({
+                html: '¡Debe seleccionar el el tipo del evento para continuar!',
+                classes: 'deep-orange c-blanco'
+            });
+            return false;
+        }
+        return true;
+    }
     //salvar formulario
     function enviar_formulario() {
         //asignacion de esanyos
@@ -1903,6 +2021,7 @@ if (isset($authUrl)) {
             });
             return false;
         }
+        if(!validar_tipo_montaje())return;
         if (!validar_horario_evento())
             return;
         if (!validar_horario_final())
@@ -1928,12 +2047,16 @@ if (isset($authUrl)) {
         var responsable_evento = $("#responsable_evento").val();
         var cantidad_invitados = $("#cantidad_invitados").val();
         var valet_parking = $("#valet_parking").val();
+        if (tipo_evento === "1" || tipo_evento === "2") {
+            valet_parking = 0;
+        }
         var anexa_programa = $("#anexa_programa").val().length > 0 ? true : false;
         var lugar_evento = $("#lugar_evento").val();
         var select_tipo_repliegue = $("#select_tipo_repliegue").val();
         var requiero_ensayo = $("#requiero_ensayo").prop('checked');
         var select_ensayos = $("#select_ensayos").val();
         var requerimientos_especiales = $("#requerimientos_especiales").val();
+        var tipo_montaje = $("#tipo_montaje").val();
         //var check_equipo_tecnico = $("#check_equipo_tecnico").prop('checked');
 
         var data = {
@@ -1962,7 +2085,8 @@ if (isset($authUrl)) {
             ensayos: ensayos,
             solo_cafe: solo_cafe,
             lugar_evento_solo_cafe: lugar_evento_solo_cafe,
-            evento_con_cafe: evento_con_cafe
+            evento_con_cafe: evento_con_cafe,
+            tipo_montaje: tipo_montaje
         };
         $.ajax({
             url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/post_nuevo_montaje.php',
@@ -1974,17 +2098,18 @@ if (isset($authUrl)) {
             },
             data: data
         }).done((res) => {
-            if ($("#anexa_programa").val().length > 0) {
-                cargar_archivo_programa(archivo_cargado, res);
-            }
             if (parseInt(res) > 0) {
                 M.toast({
                     html: 'Solicitud realizada con éxito',
                     classes: 'green accent-4 c-blanco'
                 });
-                setInterval(() => {
-                    window.location.href = `https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=${res}&&idseccion=`
-                }, 2000);
+                if ($("#anexa_programa").val().length > 0) {
+                    cargar_archivo_programa(archivo_cargado, res);
+                } else {
+                    setInterval(() => {
+                        window.location.href = "https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/PMontajes.php?idseccion=";
+                    }, 2000);
+                }
             }
             ensayos = [];
         }).always(() => {
@@ -2027,18 +2152,49 @@ if (isset($authUrl)) {
             $("#caja_cafe").fadeOut();
         }
     }
-    function validar_fecha_no_posterior_ensayo(el){
-        var fecha_asignada = new Date(obtener_fecha().split("-")[0],obtener_fecha().split("-")[1]-1,obtener_fecha().split("-")[2]);
+    function validar_fecha_no_posterior_ensayo(el) {
+        var fecha_asignada = new Date(obtener_fecha().split("-")[0], obtener_fecha().split("-")[1] - 1, obtener_fecha().split("-")[2]);
         var fecha_ensayo = formatear_fecha_calendario_formato_a_m_d_guion(el.value);
-        fecha_ensayo = new Date(fecha_ensayo.split("-")[0],fecha_ensayo.split("-")[1]-1,fecha_ensayo.split("-")[2]);
-        if(fecha_ensayo >= fecha_asignada){            
+        fecha_ensayo = new Date(fecha_ensayo.split("-")[0], fecha_ensayo.split("-")[1] - 1, fecha_ensayo.split("-")[2]);
+        if (fecha_ensayo >= fecha_asignada) {
             M.toast({
                 html: '¡Debe seleccionar una fecha de ensayo anterior a la fecha del evento!',
                 classes: 'deep-orange c-blanco'
             });
-            $("#"+el.id).val("");
+            $("#" + el.id).val("");
             return;
         }
+    }
+    function consula_disponibilidad_lugar(id_lugar, id) {
+        var fecha_montaje = obtener_fecha();
+        var horario_evento = $("#horario_evento").val();
+        var horario_final_evento = $("#horario_final_evento").val();
+        $.ajax({
+            url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/get_consulta_disponibilidad_lugar.php',
+            type: 'GET',
+            dataType: 'json',
+            beforeSend: () => {
+                $("#loading").fadeIn();
+            },
+            data: {
+                id_lugar: id_lugar,
+                fecha_montaje: fecha_montaje,
+                horario_evento: horario_evento,
+                horario_final_evento: horario_final_evento
+            }
+        }).done((res) => {
+            if (parseInt(res) > 0) {
+                M.toast({
+                    html: '¡El lugar seleccionado ha sido ocupado con anterioridad!',
+                    classes: 'deep-orange c-blanco'
+                });
+                $("#" + id + " option[value=0]").prop("selected", "selected");
+                $("#" + id).focus();
+                $('select').formSelect();
+            }
+        }).always(() => {
+            $("#loading").fadeOut();
+        });
     }
 </script>
 

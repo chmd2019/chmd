@@ -19,7 +19,7 @@ class ControlEvento {
         }
     }
 
-    public function obtener_capacidad_montaje($id_lugar_evento,$horario_evento,$horario_final_evento,$fecha_evento) {
+    public function obtener_capacidad_montaje($id_lugar_evento, $horario_evento, $horario_final_evento, $fecha_evento) {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql_1 = "SET @hora_inicial = '$horario_evento';";
@@ -40,7 +40,7 @@ class ControlEvento {
         }
     }
 
-    public function obtener_capacidad_equipo_tecnico($id_lugar_evento,$horario_evento,$horario_final_evento,$fecha_evento) {
+    public function obtener_capacidad_equipo_tecnico($id_lugar_evento, $horario_evento, $horario_final_evento, $fecha_evento) {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql_1 = "SET @hora_inicial = '$horario_evento';";
@@ -65,7 +65,7 @@ class ControlEvento {
         }
     }
 
-    public function obtener_capacidad_manteles($id_lugar_evento,$horario_evento,$horario_final_evento,$fecha_evento) {
+    public function obtener_capacidad_manteles($id_lugar_evento, $horario_evento, $horario_final_evento, $fecha_evento) {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql_1 = "SET @hora_inicial = '$horario_evento';";
@@ -206,8 +206,7 @@ class ControlEvento {
         }
     }
 
-    public function actualizar_personal_tmp($id_tipo_personal, $fecha, $horario, 
-            $horario_final, $hora_min, $hora_max, $es_temporal, $ensayo,$n_ensayo) {
+    public function actualizar_personal_tmp($id_tipo_personal, $fecha, $horario, $horario_final, $hora_min, $hora_max, $es_temporal, $ensayo, $n_ensayo) {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "INSERT INTO `icloud`.`Personal_ocupado_montaje` ("
@@ -445,7 +444,7 @@ class ControlEvento {
         }
     }
 
-    public function nuevo_montaje($fecha_solicitud, $solicitante, $tipo_evento, $fecha_montaje, $fecha_montaje_simple, $horario_evento, $horario_final_evento, $nombre_evento, $responsable_evento, $cantidad_invitados, $valet_parking, $anexa_programa, $tipo_repliegue, $requiere_ensayo, $cantidad_ensayos, $requerimientos_especiales, $check_equipo_tecnico, $id_lugar_evento, $evento_con_cafe) {
+    public function nuevo_montaje($fecha_solicitud, $solicitante, $tipo_evento, $fecha_montaje, $fecha_montaje_simple, $horario_evento, $horario_final_evento, $nombre_evento, $responsable_evento, $cantidad_invitados, $valet_parking, $anexa_programa, $tipo_repliegue, $requiere_ensayo, $cantidad_ensayos, $requerimientos_especiales, $check_equipo_tecnico, $id_lugar_evento, $evento_con_cafe, $tipo_montaje) {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "INSERT INTO `icloud`.`Evento_montaje` ("
@@ -467,7 +466,8 @@ class ControlEvento {
                     . "`requerimientos_especiales`, "
                     . "`check_equipo_tecnico`, "
                     . "`id_lugar_evento`, "
-                    . "`evento_con_cafe`) VALUES ("
+                    . "`evento_con_cafe`, "
+                    . "`tipo_montaje`) VALUES ("
                     . "'$fecha_solicitud', "
                     . "'$solicitante', "
                     . "'$tipo_evento', "
@@ -486,7 +486,8 @@ class ControlEvento {
                     . "'$requerimientos_especiales', "
                     . "$check_equipo_tecnico, "
                     . "$id_lugar_evento, "
-                    . "1)";
+                    . "$evento_con_cafe, "
+                    . "'$tipo_montaje')";
             mysqli_set_charset($connection, "utf8");
             mysqli_query($connection, $sql);
             return mysqli_insert_id($connection);
@@ -563,7 +564,7 @@ class ControlEvento {
     public function listar_montajes() {
         $connection = $this->con->conectar1();
         if ($connection) {
-            $sql = "SELECT id, fecha_montaje, solicitante, nombre_evento FROM Evento_montaje ORDER BY id DESC";
+            $sql = "SELECT a.id, a.fecha_montaje, a.solicitante, a.nombre_evento, b.status, b.color_estatus FROM Evento_montaje a INNER JOIN Catalogo_status_acceso b ON b.id = a.estatus ORDER BY id DESC";
             mysqli_set_charset($connection, "utf8");
             return mysqli_query($connection, $sql);
         }
@@ -572,29 +573,40 @@ class ControlEvento {
     public function consulta_montaje($id_montaje) {
         $connection = $this->con->conectar1();
         if ($connection) {
-            $sql = "SELECT a.id,a.fecha_solicitud,a.solicitante,a.tipo_evento,a.fecha_montaje,"
-                    . "a.fecha_montaje_simple, a.horario_evento, a.horario_final_evento, "
-                    . "a.nombre_evento, a.responsable_evento,a.cantidad_invitados, "
-                    . "a.valet_parking, b.url,a.anexa_programa,a.tipo_repliegue,a.requiere_ensayo,"
-                    . "a.cantidad_ensayos, a.requerimientos_especiales, b.name_no_encripted,"
-                    . " c.descripcion AS lugar_evento, a.solo_cafe, a.evento_con_cafe FROM Evento_montaje a LEFT OUTER JOIN Archivos_montaje b "
-                    . "ON b.id_motaje = a.id INNER JOIN Lugares_eventos c ON c.id = a.id_lugar_evento "
-                    . "WHERE a.id = $id_montaje";
+            $sql = "SELECT a.id,a.fecha_solicitud,a.solicitante,a.tipo_evento,a.fecha_montaje, a.fecha_montaje_simple, "
+                    . "a.horario_evento, a.horario_final_evento, a.nombre_evento, a.responsable_evento,"
+                    . "a.cantidad_invitados, a.valet_parking, b.url,a.anexa_programa,a.tipo_repliegue,"
+                    . "a.requiere_ensayo, a.cantidad_ensayos, a.requerimientos_especiales, b.name_no_encripted, "
+                    . "c.descripcion AS lugar_evento, a.solo_cafe, a.evento_con_cafe, a.tipo_montaje, d.status, "
+                    . "d.color_estatus, d.id, c.id AS id_lugar "
+                    . "FROM Evento_montaje a LEFT OUTER JOIN Archivos_montaje b ON b.id_motaje = a.id "
+                    . "INNER JOIN Lugares_eventos c ON c.id = a.id_lugar_evento "
+                    . "INNER JOIN Catalogo_status_acceso d ON d.id = a.estatus WHERE a.id = $id_montaje";
             mysqli_set_charset($connection, "utf8");
             return mysqli_query($connection, $sql);
         }
     }
 
-    public function consulta_mobiliario_montaje($id_montaje) {
+    public function consulta_mobiliario_montaje($id_montaje, $id_lugar, $hora_inicial, $hora_final, $fecha_consulta) {
         $connection = $this->con->conectar1();
         if ($connection) {
-            $sql = "SELECT DISTINCT b.articulo,(SELECT COUNT(*) FROM Inventario_ocupado_mobiliario a "
-                    . "WHERE a.id_articulo=b.id AND a.id_evento_montaje=$id_montaje) AS cantidad,b.ruta_img "
-                    . "FROM Inventario_ocupado_mobiliario a "
+            $sql_1 = "SET @hora_inicial = '$hora_inicial';";
+            $sql_2 = "SET @hora_final = '$hora_final';";
+            $sql_3 = "SET @fecha_consulta = '$fecha_consulta';";
+            $sql_4 = "SELECT DISTINCT b.articulo,(SELECT COUNT(*) FROM Inventario_ocupado_mobiliario a "
+                    . "WHERE a.id_articulo=b.id AND a.id_evento_montaje=$id_montaje) AS cantidad,b.ruta_img, b.id AS "
+                    . "id_articulo, c.capacidad, b.inventario -(SELECT COUNT(*) FROM Inventario_ocupado_mobiliario a "
+                    . "WHERE a.id_articulo=b.id AND a.fecha_montaje = @fecha_consulta AND "
+                    . "( @hora_inicial >= a.hora_min AND @hora_inicial <= a.hora_max OR @hora_final >= a.hora_min AND "
+                    . "@hora_final <= a.hora_max)) AS disponibilidad FROM Inventario_ocupado_mobiliario a "
                     . "INNER JOIN Inventario_mobiliario b ON b.id = a.id_articulo "
-                    . "WHERE a.id_evento_montaje = $id_montaje ORDER BY a.id ASC";
+                    . "INNER JOIN Inventario_capacidad_mobiliario c ON c.id_articulo = a.id_articulo "
+                    . "WHERE a.id_evento_montaje = $id_montaje AND c.lugar = $id_lugar ORDER BY a.id ASC";
             mysqli_set_charset($connection, "utf8");
-            return mysqli_query($connection, $sql);
+            mysqli_query($connection, $sql_1);
+            mysqli_query($connection, $sql_2);
+            mysqli_query($connection, $sql_3);
+            return mysqli_query($connection, $sql_4);
         }
     }
 
@@ -602,21 +614,28 @@ class ControlEvento {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "SELECT DISTINCT b.articulo,(SELECT COUNT(*) FROM Inventario_ocupado_manteles a "
-                    . "WHERE a.id_mantel=b.id AND a.id_evento_montaje=$id_montaje) AS cantidad, b.ruta_img "
-                    . "FROM Inventario_ocupado_manteles a INNER JOIN Inventario_manteles b "
-                    . "ON b.id = a.id_mantel WHERE a.id_evento_montaje = $id_montaje ORDER BY a.id ASC";
+                    . "WHERE a.id_mantel=b.id AND a.id_evento_montaje=$id_montaje) AS cantidad, b.ruta_img, c.capacidad,"
+                    . " b.inventario - (SELECT COUNT(*) FROM Inventario_ocupado_manteles a "
+                    . "WHERE a.id_mantel=b.id AND a.id_evento_montaje=$id_montaje) AS disponibilidad, b.id "
+                    . "FROM Inventario_ocupado_manteles a INNER JOIN Inventario_manteles b ON b.id = a.id_mantel "
+                    . "INNER JOIN Inventario_capacidad_manteles c ON c.id_articulo = a.id_mantel "
+                    . "WHERE a.id_evento_montaje = $id_montaje ORDER BY a.id ASC";
             mysqli_set_charset($connection, "utf8");
             return mysqli_query($connection, $sql);
         }
     }
 
-    public function consulta_equipo_tecnico_montaje($id_montaje) {
+    public function consulta_equipo_tecnico_montaje($id_montaje, $id_lugar) {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "SELECT DISTINCT b.articulo,(SELECT COUNT(*) FROM Inventario_ocupado_equipo_tecnico a "
-                    . "WHERE a.id_articulo=b.id AND a.id_evento_montaje=$id_montaje) AS cantidad, b.ruta_img "
-                    . "FROM Inventario_ocupado_equipo_tecnico a INNER JOIN Inventario_equipo_tecnico b "
-                    . "ON b.id = a.id_articulo WHERE a.id_evento_montaje = $id_montaje";
+                    . "WHERE a.id_articulo=b.id AND a.id_evento_montaje=$id_montaje) AS cantidad, b.ruta_img, c.capacidad, "
+                    . "b.inventario -(SELECT COUNT(*) FROM Inventario_ocupado_equipo_tecnico a "
+                    . "WHERE a.id_articulo=b.id AND a.id_evento_montaje=$id_montaje) AS disponibilidad, b.id "
+                    . "FROM Inventario_ocupado_equipo_tecnico a "
+                    . "INNER JOIN Inventario_equipo_tecnico b ON b.id = a.id_articulo "
+                    . "INNER JOIN Inventario_capacidad_equipo_tecnico c ON c.id_articulo = a.id_articulo "
+                    . "WHERE a.id_evento_montaje = $id_montaje AND c.lugar = $id_lugar ORDER BY a.id ASC";
             mysqli_set_charset($connection, "utf8");
             return mysqli_query($connection, $sql);
         }
@@ -633,9 +652,8 @@ class ControlEvento {
             return mysqli_query($connection, $sql);
         }
     }
-    
-    public function finalizar_ensayo($id_montaje,$fecha_ensayo,$horario_inicial,
-            $horario_final, $requerimientos_especiales, $n_ensayo){
+
+    public function finalizar_ensayo($id_montaje, $fecha_ensayo, $horario_inicial, $horario_final, $requerimientos_especiales, $n_ensayo) {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "INSERT INTO `icloud`.`Evento_ensayos` ("
@@ -653,10 +671,10 @@ class ControlEvento {
                     . "$n_ensayo);";
             mysqli_set_charset($connection, "utf8");
             return mysqli_query($connection, $sql);
-        }        
+        }
     }
-    
-    public function finalizar_personal_ocupado($id_ensayo, $timestamp){
+
+    public function finalizar_personal_ocupado($id_ensayo, $timestamp) {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "UPDATE Personal_ocupado_montaje SET id_ensayo =$id_ensayo WHERE `timestamp` = '$timestamp'";
@@ -664,8 +682,8 @@ class ControlEvento {
             return mysqli_query($connection, $sql);
         }
     }
-    
-    public function consulta_ensayo($id_montaje){
+
+    public function consulta_ensayo($id_montaje) {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "SELECT fecha_ensayo, horario_inicial, horario_final, requerimientos_especiales, n_ensayo "
@@ -674,8 +692,8 @@ class ControlEvento {
             return mysqli_query($connection, $sql);
         }
     }
-    
-    public function consulta_personal_ensayo($id_montaje, $n_ensayo){
+
+    public function consulta_personal_ensayo($id_montaje, $n_ensayo) {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "SELECT DISTINCT b.descripcion, (SELECT COUNT(*) FROM  Personal_ocupado_montaje a "
@@ -688,8 +706,8 @@ class ControlEvento {
             return mysqli_query($connection, $sql);
         }
     }
-    
-    public function consulta_servicio_cafe($catindad_invitados){
+
+    public function consulta_servicio_cafe($catindad_invitados) {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "SELECT b.ingrediente, (a.cantidad_x_invitado*$catindad_invitados.1) AS cantidad_servicio, b.ruta_img  "
@@ -699,11 +717,8 @@ class ControlEvento {
             return mysqli_query($connection, $sql);
         }
     }
-    
-    public function nuevo_montaje_cafe($fecha_solicitud,$solicitante,$tipo_evento,$fecha_montaje,
-            $fecha_montaje_simple, $horario_evento, $horario_final_evento,$nombre_evento, 
-            $responsable_evento, $cantidad_invitados,$valet_parking,$id_lugar_evento,
-            $evento_con_cafe,$anexa_programa,$solo_cafe, $tipo_repliegue, $requerimientos_especiales){
+
+    public function nuevo_montaje_cafe($fecha_solicitud, $solicitante, $tipo_evento, $fecha_montaje, $fecha_montaje_simple, $horario_evento, $horario_final_evento, $nombre_evento, $responsable_evento, $cantidad_invitados, $valet_parking, $id_lugar_evento, $evento_con_cafe, $anexa_programa, $solo_cafe, $tipo_repliegue, $requerimientos_especiales, $tipo_montaje) {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "INSERT INTO `icloud`.`Evento_montaje` ("
@@ -723,7 +738,8 @@ class ControlEvento {
                     . "`anexa_programa`, "
                     . "`solo_cafe`, "
                     . "`tipo_repliegue`, "
-                    . "`requerimientos_especiales`) VALUES("
+                    . "`requerimientos_especiales`, "
+                    . "`tipo_montaje`) VALUES("
                     . "'$fecha_solicitud', "
                     . "'$solicitante', "
                     . "'$tipo_evento', "
@@ -740,11 +756,203 @@ class ControlEvento {
                     . "$anexa_programa, "
                     . "$solo_cafe, "
                     . "'$tipo_repliegue', "
-                    . "'$requerimientos_especiales')";
+                    . "'$requerimientos_especiales', "
+                    . "'$tipo_montaje')";
             mysqli_set_charset($connection, "utf8");
             mysqli_query($connection, $sql);
             return mysqli_insert_id($connection);
         }
     }
 
+    public function ocupar_lugar_evento($id_evento_montaje, $id_lugar, $fecha_montaje, $hora_inicial, $hora_final, $hora_min, $hora_max) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "INSERT INTO `Evento_ocupacion_lugar` ("
+                    . "`id_evento_montaje`, "
+                    . "`id_lugar`, "
+                    . "`fecha_montaje`, "
+                    . "`hora_inicial`, "
+                    . "`hora_final`, "
+                    . "`hora_min`, "
+                    . "`hora_max`) VALUES ("
+                    . "$id_evento_montaje, "
+                    . "$id_lugar, "
+                    . "'$fecha_montaje', "
+                    . "'$hora_inicial', "
+                    . "'$hora_final', "
+                    . "'$hora_min', "
+                    . "'$hora_max');";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function consulta_disponibilidad_lugar($hora_inicial, $hora_final, $id_lugar, $fecha_montaje) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql_1 = "SET @hora_inicial = '$hora_inicial';";
+            $sql_2 = "SET @hora_final = '$hora_final';";
+            $sql_3 = "SELECT COUNT(*) FROM Evento_ocupacion_lugar WHERE id_lugar = $id_lugar "
+                    . "AND fecha_montaje ='$fecha_montaje' "
+                    . "AND(@hora_inicial >= hora_min AND @hora_inicial <= hora_max OR @hora_final >= hora_min "
+                    . "AND @hora_final <= hora_max);";
+            mysqli_set_charset($connection, "utf8");
+            mysqli_query($connection, $sql_1);
+            mysqli_query($connection, $sql_2);
+            return mysqli_query($connection, $sql_3);
+        }
+    }
+
+    public function consulta_disponibilidad_lugar_edicion($hora_inicial, $hora_final, $id_lugar, $fecha_montaje, $id_evento) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql_1 = "SET @hora_inicial = '$hora_inicial';";
+            $sql_2 = "SET @hora_final = '$hora_final';";
+            $sql_3 = "SELECT COUNT(*) FROM Evento_ocupacion_lugar WHERE id_lugar = $id_lugar "
+                    . "AND fecha_montaje ='$fecha_montaje' "
+                    . "AND(@hora_inicial >= hora_min AND @hora_inicial <= hora_max OR @hora_final >= hora_min "
+                    . "AND @hora_final <= hora_max) AND id_evento_montaje != $id_evento;";
+            mysqli_set_charset($connection, "utf8");
+            mysqli_query($connection, $sql_1);
+            mysqli_query($connection, $sql_2);
+            return mysqli_query($connection, $sql_3);
+        }
+    }
+
+    public function actualizar_estaus($id, $estatus) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "UPDATE Evento_montaje SET `estatus`= $estatus WHERE id = $id";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function actualizar_montaje($tipo_montaje, $horario_evento, $hora_final_evento, $tipo_repliegue, $nombre_evento, $responsable_evento, $cantidad_invitados, $estacionamiento, $requerimientos_especiales, $id) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "UPDATE Evento_montaje SET tipo_montaje = '$tipo_montaje', "
+                    . "horario_evento = '$horario_evento', "
+                    . "horario_final_evento = '$hora_final_evento', "
+                    . "tipo_repliegue = '$tipo_repliegue', "
+                    . "nombre_evento = '$nombre_evento', "
+                    . "responsable_evento = '$responsable_evento', "
+                    . "cantidad_invitados = $cantidad_invitados, "
+                    . "valet_parking = $estacionamiento, "
+                    . "requerimientos_especiales = '$requerimientos_especiales' WHERE id = $id";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function edicion_mobiliario_eliminar($id_evento, $id_articulo) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "DELETE FROM Inventario_ocupado_mobiliario WHERE id_evento_montaje = $id_evento "
+                    . "AND id_articulo = $id_articulo";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function edicion_manteles_eliminar($id_evento, $id_mantel) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "DELETE FROM Inventario_ocupado_manteles WHERE id_evento_montaje = $id_evento AND id_mantel = $id_mantel";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function edicion_mobiliario($id_articulo, $id_evento, $fecha_montaje, $horario_inicial, 
+            $horario_final, $hora_min, $hora_max) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "INSERT INTO `Inventario_ocupado_mobiliario` ("
+                    . "`id_articulo`, "
+                    . "`id_evento_montaje`, "
+                    . "`fecha_montaje`, "
+                    . "`horario_inicial`, "
+                    . "`horario_final`, "
+                    . "`hora_min`, "
+                    . "`hora_max`) VALUES ("
+                    . "'$id_articulo', "
+                    . "'$id_evento', "
+                    . "'$fecha_montaje', "
+                    . "'$horario_inicial', "
+                    . "'$horario_final', "
+                    . "'$hora_min', "
+                    . "'$hora_max');";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function consulta_disponibilidad_mobiliario($hora_inicial , $hora_final, $fecha_consulta,$id_montaje) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql_1 = "SET @hora_inicial = '$hora_inicial'";
+            $sql_2 = "SET @hora_final = '$hora_final'";
+            $sql_3 = "SET @fecha_consulta = '$fecha_consulta'";
+            $sql_4 = "SELECT DISTINCT b.id AS id_articulo, b.inventario -(SELECT COUNT(*) "
+                    . "FROM Inventario_ocupado_mobiliario a WHERE a.id_articulo=b.id "
+                    . "AND a.fecha_montaje = @fecha_consulta AND ( @hora_inicial >= a.hora_min "
+                    . "AND @hora_inicial <= a.hora_max OR @hora_final >= a.hora_min "
+                    . "AND @hora_final <= a.hora_max)) AS disponibilidad FROM Inventario_ocupado_mobiliario a "
+                    . "INNER JOIN Inventario_mobiliario b ON b.id = a.id_articulo "
+                    . "INNER JOIN Inventario_capacidad_mobiliario c ON c.id_articulo = a.id_articulo "
+                    . "WHERE a.id_evento_montaje = $id_montaje ORDER BY a.id ASC";
+            mysqli_set_charset($connection, "utf8");
+            mysqli_query($connection, $sql_1);
+            mysqli_query($connection, $sql_2);
+            mysqli_query($connection, $sql_3);
+            return mysqli_query($connection, $sql_4);
+        }
+    }
+
+    public function consulta_disponibilidad_manteles($hora_inicial , $hora_final, $fecha_consulta,$id_montaje) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql_1 = "SET @hora_inicial = '$hora_inicial'";
+            $sql_2 = "SET @hora_final = '$hora_final'";
+            $sql_3 = "SET @fecha_consulta = '$fecha_consulta'";
+            $sql_4 = "SELECT DISTINCT b.id AS id_articulo, b.inventario -(SELECT COUNT(*) "
+                    . "FROM Inventario_ocupado_manteles a WHERE a.id_mantel=b.id AND a.fecha_montaje = @fecha_consulta "
+                    . "AND( @hora_inicial >= a.hora_min AND @hora_inicial <= a.hora_max OR @hora_final >= a.hora_min "
+                    . "AND @hora_final <= a.hora_max)) AS disponibilidad "
+                    . "FROM Inventario_ocupado_manteles a "
+                    . "INNER JOIN Inventario_manteles b ON b.id = a.id_mantel "
+                    . "INNER JOIN Inventario_capacidad_manteles c ON c.id_articulo = a.id_mantel "
+                    . "ORDER BY a.id ASC";
+            mysqli_set_charset($connection, "utf8");
+            mysqli_query($connection, $sql_1);
+            mysqli_query($connection, $sql_2);
+            mysqli_query($connection, $sql_3);
+            return mysqli_query($connection, $sql_4);
+        }
+    }
+
+    public function edicion_manteles($id_mantel, $id_evento, $fecha_montaje, $horario_inicial, 
+            $horario_final, $hora_min, $hora_max) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "INSERT INTO `icloud`.`Inventario_ocupado_manteles` ("
+                    . "`id_mantel`, "
+                    . "`id_evento_montaje`, "
+                    . "`fecha_montaje`, "
+                    . "`horario_inicial`, "
+                    . "`horario_final`, "
+                    . "`hora_min`, "
+                    . "`hora_max`) VALUES ("
+                    . "'$id_mantel', "
+                    . "'$id_evento', "
+                    . "'$fecha_montaje', "
+                    . "'$horario_inicial', "
+                    . "'$horario_final', "
+                    . "'$hora_min', "
+                    . "'$hora_max');";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
 }

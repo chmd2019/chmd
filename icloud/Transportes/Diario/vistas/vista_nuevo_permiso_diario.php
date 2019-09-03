@@ -79,10 +79,7 @@ if (isset($authUrl)) {
         ?>
         <div class="row">
             <div class="col s12 l8 b-blanco border-azul" style="float: none;margin: 0 auto;">
-                <br>
-                <br>
                 <h5 class="center-align c-azul">Cambio del día</h5>
-                <br>
                 <div class="row" style="padding:0rem .5rem;">
                     <div class="col s12 l6">
                         <div class="input-field">
@@ -162,7 +159,6 @@ if (isset($authUrl)) {
                             min: new Date('<?php echo $fecha_minima; ?>')
                         });
                     </script>  
-                    <br>
                     <div class="col s12">
                         <h5 class="c-azul text-center">Selecciona Alumnos</h5>
                         <?php
@@ -199,9 +195,8 @@ if (isset($authUrl)) {
                         }
                         ?>
                     </div>
-                    <br>
+                    <span class="col s12"><br></span>
                     <h5 class="center-align c-azul">Dirección de Casa</h5>
-                    <br>
                     <div class="col s12">
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">person_pin</i>
@@ -211,7 +206,6 @@ if (isset($authUrl)) {
                                       style="font-size: .9rem"></textarea> 
                             <label for="calle_guardada" style="margin-left: 1rem">Calle y Número</label>
                         </div>
-                        <br>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">person_pin</i>
                             <textarea class="materialize-textarea"
@@ -220,7 +214,6 @@ if (isset($authUrl)) {
                                       style="font-size: .9rem"></textarea> 
                             <label for="colonia_guardada" style="margin-left: 1rem">Colonia</label>     
                         </div>
-                        <br>
                         <div class="input-field" hidden>
                             <label for="cp_guardada" style="margin-left: 1rem">CP</label>
                             <i class="material-icons prefix c-azul">person_pin</i>
@@ -228,8 +221,7 @@ if (isset($authUrl)) {
                                    id="cp_guardada"
                                    style="font-size: .9rem"
                                    value=""/>       
-                        </div>               
-                        <br>
+                        </div>     
                         <h5 class="center-align c-azul">Dirección de cambio</h5>
                         <div class="input-field col s12">
                             <i class="material-icons c-azul prefix">person_pin_circle</i>
@@ -241,14 +233,16 @@ if (isset($authUrl)) {
                             <label for="calle_nuevo_permiso" style="margin-left: 1rem">Calle y Número</label>
                             <i class="material-icons c-azul prefix">person_pin_circle</i>
                             <textarea id="calle_nuevo_permiso" 
-                                      class="materialize-textarea"                                
+                                      class="materialize-textarea"  
+                                      onkeyup ="capitaliza_primer_letra(this.id)"
                                       placeholder="INGRESE CALLE Y NUMERO"></textarea> 
                         </div>
-                        <div class="input-field col s12">
+                        <div class="input-field col s12" style="margin-top: -.3rem">
                             <label for="colonia_nuevo_permiso" style="margin-left: 1rem">Colonia</label>
                             <i class="material-icons c-azul prefix">person_pin_circle</i>
                             <textarea class="materialize-textarea"  
                                       id="colonia_nuevo_permiso" 
+                                      onkeyup ="capitaliza_primer_letra(this.id)"
                                       placeholder="INGRESE COLONIA"></textarea> 
                         </div>                    
                         <div class="input-field col s12" hidden>
@@ -273,6 +267,7 @@ if (isset($authUrl)) {
                             <div class="input-field col s12" id="container_descripcion_recordar_direccion">
                                 <i class="material-icons prefix c-azul">store_mall_directory</i>
                                 <input id="descripcion_recordar_direccion" 
+                                       onkeyup ="capitaliza_primer_letra(this.id)"
                                        placeholder="Descripción de la dirección"
                                        autocomplete="off" />
                                 <button type="button" 
@@ -295,7 +290,8 @@ if (isset($authUrl)) {
                     <div class="input-field col s12">
                         <i class="material-icons c-azul prefix">comment</i>
                         <textarea id="comentarios_nuevo_permiso" 
-                                  class="materialize-textarea"                                
+                                  class="materialize-textarea" 
+                                  onkeyup ="capitaliza_primer_letra(this.id)"                               
                                   placeholder="Comentarios"></textarea>    
                         <label>Comentarios</label>
                         <div class="col s12 l6" style="float: none;margin: 0 auto;">
@@ -369,7 +365,7 @@ echo $arrayDias[date('w')] . ", " . date('d') .
     }
     function cambiar_direccion(id) {
         var dato = $('select[id=reside]').val();
-        if (dato == '0') {
+        if (dato === '0') {
             $("#calle_nuevo_permiso").val("");
             $("#colonia_nuevo_permiso").val("");
             $("#cp_nuevo_permiso").val("");
@@ -378,7 +374,7 @@ echo $arrayDias[date('w')] . ", " . date('d') .
             $('#descripcion_recordar_direccion').val("");
             $('#cp').val("");
         }
-        if (dato == '1') {
+        if (dato === '1') {
             $("#calle_nuevo_permiso").val("Periferico Boulevard Manuel Avila Camacho 620");
             M.textareaAutoResize($('#calle_nuevo_permiso'));
             $("#colonia_nuevo_permiso").val("Lomas de Sotelo");
@@ -513,13 +509,13 @@ echo $arrayDias[date('w')] . ", " . date('d') .
             html: '¡Debe llenar todos los campos!',
             classes: 'deep-orange c-blanco'
         });
-        if (calle.length == 0) {
+        if (calle.length === 0) {
             $('#calle_nuevo').focus();
         }
-        if (colonia.length == 0) {
+        if (colonia.length === 0) {
             $('#colonia_nuevo').focus();
         }
-        if (descripcion.length == 0) {
+        if (descripcion.length === 0) {
             $('#descripcion_recordar_direccion').focus();
         }
     }
@@ -637,7 +633,7 @@ echo $arrayDias[date('w')] . ", " . date('d') .
                     $("#loading").fadeIn("slow");
                 },
                 success: function (res) {
-                    if (res == 1) {
+                    if (res === 1) {
                         M.toast({
                             html: '¡Solicitud realizada con éxito!',
                             classes: 'green accent-4 c-blanco'

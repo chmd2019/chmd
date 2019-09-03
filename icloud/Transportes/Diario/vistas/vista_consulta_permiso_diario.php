@@ -63,7 +63,6 @@ if (isset($authUrl)) {
                             <input readonly  id="responsable" type="text"  style="font-size: 1rem"  >               
                         </div>
                     </div>
-                    <br>
                     <h5 class="c-azul text-center col s12">Alumnos</h5>
                     <div class="col s12">
                         <div class="input-field">

@@ -16,6 +16,8 @@
         <script src="/pruebascd/icloud/materialkit/js/materialize.js"></script>       
         <!-- JS GLOBAL -->    
         <script src="/pruebascd/icloud/Transportes/common/js/common.js"></script>
+        <!-- JS GLOBAL -->    
+        <script src="/pruebascd/icloud/materialkit/js/common.js"></script>
         <!-- TIME PICKER -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/timepicker@1.11.15/jquery.timepicker.css">
         <script src="https://cdn.jsdelivr.net/npm/timepicker@1.11.15/jquery.timepicker.min.js"></script>               

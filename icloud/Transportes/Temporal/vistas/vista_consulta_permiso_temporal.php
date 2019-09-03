@@ -57,8 +57,7 @@ if (isset($authUrl)) {
                         <i class="material-icons prefix c-azul">person</i>
                         <input id="solicitante" type="text" readonly style="font-size: .9rem">
                     </div>
-                    <h5 class="center-align c-azul">Alumnos con permiso</h5>
-                    <br>                   
+                    <h5 class="center-align c-azul">Alumnos con permiso</h5>    
                     <div class="col s12">                    
                         <div class="input-field">
                             <label for="alumnos" style="margin-left: 1rem">Alumnos</label> 
@@ -70,7 +69,6 @@ if (isset($authUrl)) {
                         </div>
                     </div>
                     <h5 class="center-align c-azul">Dirección de Casa</h5>
-                    <br>
                     <div class="col s12">
                         <div class="input-field">
                             <label for="calle_guardada" style="margin-left: 1rem">Calle y número</label>   
@@ -88,7 +86,6 @@ if (isset($authUrl)) {
                                       id="colonia_guardada"
                                       style="font-size: .9rem"></textarea>      
                         </div>
-                        <br>
                         <div class="input-field" hidden>
                             <label for="cp_guardada" style="margin-left: 1rem">CP</label>
                             <i class="material-icons prefix c-azul">person_pin</i>
@@ -97,10 +94,8 @@ if (isset($authUrl)) {
                                    style="font-size: .9rem"
                                    value=""/>       
                         </div>
-                    </div>                
-                    <br>
+                    </div>     
                     <h5 class="center-align c-azul">Dirección de cambio</h5>
-                    <br>
                     <div class="col s12">
                         <div class="input-field">
                             <label for="calle_cambio" style="margin-left: 1rem">Calle y número</label>
@@ -110,7 +105,6 @@ if (isset($authUrl)) {
                                       id="calle_cambio" 
                                       style="font-size: .9rem"></textarea> 
                         </div>
-                        <br>
                         <div class="input-field">
                             <label for="colonia_cambio" style="margin-left: 1rem">Colonia</label>
                             <i class="material-icons prefix c-azul">person_pin</i>
@@ -119,7 +113,6 @@ if (isset($authUrl)) {
                                       id="colonia_cambio"
                                       style="font-size: .9rem"></textarea>      
                         </div>
-                        <br>
                         <div class="input-field" hidden>
                             <label for="cp_cambio" style="margin-left: 1rem">CP</label>
                             <i class="material-icons prefix c-azul">person_pin</i>
@@ -129,7 +122,6 @@ if (isset($authUrl)) {
                                    value=""/>       
                         </div>
                     </div>
-                    <br>
                     <h5 class="center-align c-azul">Datos de responsable</h5>
                     <div class="col s12">
                         <div class="input-field">

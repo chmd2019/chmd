@@ -86,8 +86,7 @@ if (isset($authUrl)) {
                             <i class="material-icons prefix c-azul">person</i>
                             <input value="<?php echo $nombre; ?>" readonly  id="solicitante_permiso_temporal" style="font-size: 1rem" type="text" />               
                         </div>
-                    </div>    
-                    <br>
+                    </div>  
                     <div class="col s12">
                         <h5 class="c-azul text-center">Selecciona Alumnos</h5>
                         <?php
@@ -124,9 +123,7 @@ if (isset($authUrl)) {
                         }
                         ?>
                     </div>
-                    <br>
                     <h5 class="center-align c-azul">Dirección de Casa</h5>
-                    <br>
                     <div class="col s12">
                         <div class="input-field">
                             <label for="calle_guardada_nuevo" style="margin-left: 1rem">Calle y Número</label>
@@ -136,7 +133,6 @@ if (isset($authUrl)) {
                                       id="calle_guardada_temporal" 
                                       style="font-size: .9rem"></textarea> 
                         </div>
-                        <br>
                         <div class="input-field">
                             <label for="colonia_guardada_nuevo" style="margin-left: 1rem">Colonia</label>
                             <i class="material-icons prefix c-azul">person_pin</i>
@@ -145,7 +141,6 @@ if (isset($authUrl)) {
                                       id="colonia_guardada_temporal"
                                       style="font-size: .9rem"></textarea>      
                         </div>
-                        <br>
                         <div class="input-field" hidden>
                             <label for="cp_guardada_temporal" style="margin-left: 1rem">CP</label>
                             <i class="material-icons prefix c-azul">person_pin</i>
@@ -154,8 +149,7 @@ if (isset($authUrl)) {
                                    style="font-size: .9rem"
                                    value=""/>       
                         </div>
-                    </div>                
-                    <br>
+                    </div>   
                     <h5 class="center-align c-azul">Dirección de cambio</h5>
                     <div class="input-field col s12">
                         <i class="material-icons c-azul prefix">person_pin_circle</i>
@@ -167,13 +161,15 @@ if (isset($authUrl)) {
                         <label for="calle_nuevo_permiso_temporal" style="margin-left: 1rem">Calle y Número</label>
                         <i class="material-icons c-azul prefix">person_pin_circle</i>
                         <textarea id="calle_nuevo_permiso_temporal" 
-                                  class="materialize-textarea"                                
+                                  class="materialize-textarea"   
+                                  onkeyup ="capitaliza_primer_letra(this.id)"
                                   placeholder="INGRESE CALLE Y NUMERO"></textarea> 
                     </div>
-                    <div class="input-field col s12">
+                    <div class="input-field col s12" style="margin-top: -.3rem">
                         <label for="colonia_nuevo_permiso_temporal " style="margin-left: 1rem">Colonia</label>
                         <i class="material-icons c-azul prefix">person_pin_circle</i>
                         <textarea class="materialize-textarea"  
+                                  onkeyup ="capitaliza_primer_letra(this.id)"
                                   id="colonia_nuevo_permiso_temporal" 
                                   placeholder="INGRESE COLONIA"></textarea> 
                     </div>                    
@@ -200,7 +196,8 @@ if (isset($authUrl)) {
                         <div class="input-field col s12" id="container_descripcion_recordar_direccion">
                             <i class="material-icons prefix c-azul prefix">store_mall_directory</i>
                             <input id="descripcion_recordar_direccion" 
-                                   placeholder="Descripción de la dirección"
+                                   placeholder="Descripción de la dirección"                                   
+                                   onkeyup ="capitaliza_primer_letra(this.id)"
                                    autocomplete="off" />
                             <button type="button" class="btn waves-effect waves-light white-text b-azul w-100" onclick="enviar_direccion()">Guardar</button>
                         </div>
@@ -229,12 +226,18 @@ if (isset($authUrl)) {
                     <div id="nuevo_responsable" hidden>
                         <div class="input-field col s12 l6" id="nuevo_responsable_nombre">
                             <i class="material-icons prefix c-azul">person</i>
-                            <input id="responsable" type="text" autocomplete="off">
+                            <input id="responsable" 
+                                   type="text" 
+                                   onkeyup ="capitaliza_primer_letra(this.id)"
+                                   autocomplete="off">
                             <label for="responsable">Nombre del responsable</label>
                         </div> 
                         <div class="input-field col s12 l6">
                             <i class="material-icons prefix c-azul">person</i>
-                            <input id="parentesco_responsable" type="text" autocomplete="off">
+                            <input id="parentesco_responsable" 
+                                   type="text" 
+                                   onkeyup ="capitaliza_primer_letra(this.id)"
+                                   autocomplete="off">
                             <label for="parentesco_responsable">Parentesco del responsable</label>
                         </div> 
                         <a class="waves-effect waves-light btn col s12 b-azul c-blanco" 
@@ -243,7 +246,6 @@ if (isset($authUrl)) {
                             <i class="material-icons right">send</i>Guardar
                         </a>
                     </div>
-                    <br>
                     <div class="col s12">
                         <div class="input-field col s12 l6">
                             <label for="celular_nuevo_permiso_temporal " style="margin-left: 1rem">Celular</label>
@@ -264,7 +266,6 @@ if (isset($authUrl)) {
                                    onkeypress="return validar_solo_numeros_max(event)">
                         </div>  
                     </div>
-                    <br>
                     <div class="col s12"></div>
                     <div>
                         <link rel='stylesheet' href='../../common/css/calendario.css'> 
@@ -337,7 +338,6 @@ if (isset($authUrl)) {
                                     });
                         </script>  
                     </div>      
-                    <br>
                     <div class="input-field col s12">
                         <i class="material-icons c-azul prefix">departure_board</i>
                         <select class="input-field" id="ruta_nuevo_permiso_temporal" >
@@ -348,11 +348,11 @@ if (isset($authUrl)) {
                         </select>
                         <label>Ruta</label>
                     </div> 
-                    <br>
                     <div class="input-field col s12">
                         <i class="material-icons c-azul prefix">comment</i>
                         <textarea id="comentarios_nuevo_permiso_temporal" 
-                                  class="materialize-textarea"                                
+                                  class="materialize-textarea" 
+                                  onkeyup ="capitaliza_primer_letra(this.id)"                               
                                   placeholder="Comentarios"></textarea>    
                         <label>Comentarios</label>
                     </div>

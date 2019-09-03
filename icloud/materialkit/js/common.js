@@ -155,27 +155,27 @@ function validar_solo_numeros(num) {
     return true;
 }
 
-function validar_solo_numeros(num,id,limite) {
+function validar_solo_numeros(num, id, limite) {
     var charCode = (num.which) ? num.which : num.keyCode;
     if (charCode != 46 && charCode > 31
             && (charCode < 48 || charCode > 57))
         return false;
 
-    if ($("#"+id).val().length > limite) {
+    if ($("#" + id).val().length > limite) {
         return false;
     }
     return true;
 }
 
-function validar_max_caracteres(id, limite){
-    if ($("#"+id).val().length > limite) {
+function validar_max_caracteres(id, limite) {
+    if ($("#" + id).val().length > limite) {
         return false;
     }
     return true;
 }
 
-function validar_maxima_cantidad(id, cantidad){
-    if ($("#"+id).val() > cantidad) {
+function validar_maxima_cantidad(id, cantidad) {
+    if ($("#" + id).val() > cantidad) {
         return false;
     }
     return true;
@@ -214,25 +214,54 @@ function opciones_select(val, id) {
     select.html(options);
 }
 
-function nuevo_responsable(nombre, parentesco ,familia) {
+function nuevo_responsable(nombre, parentesco, familia) {
     $.ajax({
-        async:false,
+        async: false,
         url: 'https://www.chmd.edu.mx/pruebascd/icloud/Especial/common/post_nuevo_responsable.php',
         type: 'POST',
         beforeSend: function () {
             $("#loading").fadeIn("slow");
         },
-        data: {nombre: nombre, familia: familia,parentesco:parentesco},
+        data: {nombre: nombre, familia: familia, parentesco: parentesco},
         success: function (res) {
             res = JSON.parse(res);
             console.log(res);
             if (res === 1) {
                 swal("Información", "Registro exitoso!, puedes seleccionar el responsable en la lista desplegable", "success");
-            }else{
+            } else {
                 swal("Error", "No es posible realizar registro", "error");
             }
         }
     }).always(function () {
         $("#loading").fadeOut("slow");
     });
+}
+
+function capitaliza_primer_letra(id) {
+    var palabra = $("#" + id).val();
+    $("#" + id).val(`${palabra.charAt(0).toUpperCase()}${palabra.slice(1)}`);
+}
+
+function validar_horario_final_ensayo(el, id_hora_inicial) {
+    var hora_inicial = $("#" + id_hora_inicial).val();
+    var hora_final = el.value;
+    hora_inicial = hora_inicial.split(":");
+    hora_final = hora_final.split(":");
+    hora_inicial = (parseInt(hora_inicial[0]) * 60 * 60) + parseInt(hora_inicial[1] * 60);
+    hora_final = (parseInt(hora_final[0]) * 60 * 60) + parseInt(hora_final[1] * 60);
+    if (hora_inicial >= hora_final || $("#" + id_hora_inicial).val() === "") {
+        $("#" + el.id).timepicker('remove');
+        el.value = '';
+        $("#" + el.id).timepicker({
+            'step': 60,
+            'minTime': '00:00',
+            'maxTime': '23:59',
+            'timeFormat': 'H:i:s'
+        });
+        M.toast({
+            html: 'Debe elegir una hora final posterior a la hora inicial!',
+            classes: 'deep-orange c-blanco',
+        }, 5000);
+        return;
+    }
 }

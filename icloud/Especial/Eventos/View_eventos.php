@@ -18,8 +18,15 @@ $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
 <div>
     <span>
         <h6><?php echo $fecha_actual_impresa_script; ?></h6>
-        <br>
         <div style="text-align: right">   
+        <div>
+            <span class="c-azul" style="font-size: 1.5rem"><b>Alta</b></span>
+            <a class="btn-floating btn-large waves-effect waves-light b-azul"
+               href="vistas/vista_nuevo_permiso_eventos.php?idseccion=<?php echo $idseccion; ?>">
+                <i class="large material-icons">add</i>
+            </a>
+        </div>
+        <br>
             <a class="waves-effect waves-light btn b-azul c-blanco" 
                href="https://www.chmd.edu.mx/pruebascd/icloud/Especial/menu.php?idseccion=<?php echo $idseccion; ?>">
                 <i class="material-icons left">keyboard_backspace</i>Atrás
@@ -62,7 +69,7 @@ $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
                     $alumnos_permiso = $control->obtener_alumnos_permiso($id_permiso);
                     $indica_autorizado = "";
                     $indica_no_autorizado = "";
-                    $i=0;
+                    $i = 0;
                     $total_en_evento = mysqli_num_rows($alumnos_permiso);
                     while ($alumno = mysqli_fetch_array($alumnos_permiso)) {
                         if ($alumno[6] !== "2") {
@@ -70,7 +77,7 @@ $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
                             $indica_no_autorizado = "$indica_no_autorizado <i class='material-icons red-text'>face</i>";
                         } else {
                             $indica_autorizado = "$indica_autorizado <i class='material-icons green-text accent-4'>face</i>";
-                            $i = $i+1;                            
+                            $i = $i + 1;
                         }
                     }
                     if ($estatus == 1) {
@@ -104,7 +111,7 @@ $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
                         ?>
                         <tr style="cursor:pointer;">
                             <th scope="row"><?php echo $fecha_cambio; ?></th>
-                            <td><span class="<?php echo $badge; ?> text-center"><?php echo $status_detalle; ?></span><?php echo " <div class='chip green accent-4 c-blanco' style='margin-top:.5rem'><span><i class='material-icons' style='margin-top:.2rem'>face</i> $i de $total_en_evento</span></div>";?></td>
+                            <td><span class="<?php echo $badge; ?> text-center"><?php echo $status_detalle; ?></span><?php echo " <div class='chip green accent-4 c-blanco' style='margin-top:.5rem'><span><i class='material-icons' style='margin-top:.2rem'>face</i> $i de $total_en_evento</span></div>"; ?></td>
                             <td>   
                                 <div class="row">
                                     <div class="col s12 l3">  

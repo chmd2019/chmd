@@ -18,13 +18,20 @@ $dias = array("domingo", "lunes", "martes", "mi&eacute;rcoles", "jueves", "viern
 
 <br>
 <div>
-
     <span>
         <h6><?php echo $fecha_actual_impresa_script; ?></h6>
         <br>
-        <div style="text-align: right">   
+        <div style="text-align: right"> 
+            <div>
+                <span class="c-azul" style="font-size: 1.5rem"><b>Alta</b></span>
+                <a class="btn-floating btn-medium waves-effect waves-light b-azul"
+                   href="vistas/vista_nuevo_permiso_permanente.php?idseccion=<?php echo $idseccion; ?>">
+                    <i class="large material-icons">add</i>
+                </a>
+            </div>
+            <br>
             <a class="waves-effect waves-light btn b-azul c-blanco" 
-		href="https://www.chmd.edu.mx/pruebascd/icloud/menu.php?idseccion=<?php echo $idseccion; ?>">
+               href="https://www.chmd.edu.mx/pruebascd/icloud/menu.php?idseccion=<?php echo $idseccion; ?>">
                 <i class="material-icons left">keyboard_backspace</i>Atrás
             </a>                
             <a class="waves-effect waves-light btn red" href="#!" onclick="logout()">
@@ -32,7 +39,7 @@ $dias = array("domingo", "lunes", "martes", "mi&eacute;rcoles", "jueves", "viern
             </a>  
         </div>
     </span>
-    
+
     <?php
     $control_permanente = new ControlTransportes();
     $listado_permiso_permanente = $control_permanente->listado_permiso_permanente($familia);

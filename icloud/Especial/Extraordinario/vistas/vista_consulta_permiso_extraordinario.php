@@ -44,10 +44,7 @@ if (isset($authUrl)) {
         <div class="col s12 l8 border-azul b-blanco" style="float: none;margin: 0 auto;padding:1rem">
             <div>
                 <h5 class="c-azul center-align">Consulta de permiso extraordinario</h5>
-                <br>
                 <span id="todos_autorizados" class="new badge green col s12" data-badge-caption="Permiso autorizado" hidden></span>
-                <br>
-                <br>
                 <div class="row"> 
                     <div class="col s12 l6">
                         <div class="input-field">
@@ -63,7 +60,6 @@ if (isset($authUrl)) {
                             <input readonly placeholder="Solicitante" id="solicitante" style="font-size: 1rem" type="text" >               
                         </div>                        
                     </div>
-                    <br>
                     <h5 class="c-azul text-center">Fecha de salida</h5>
                     <div class="col s12 l6">
                         <div class="input-field">
@@ -72,9 +68,7 @@ if (isset($authUrl)) {
                             <input readonly placeholder="Fecha del permiso" id="fecha_permiso" style="font-size: 1rem" type="text" >               
                         </div>                        
                     </div>
-                    <br>
                     <h5 class="c-azul text-center col s12">Alumnos</h5>
-                    <br>
                     <?php
                     while ($alumno = mysqli_fetch_array($alumnos_permiso)) :
                         $id_alumno = $alumno[2];
@@ -141,7 +135,6 @@ if (isset($authUrl)) {
                     <?php endwhile; ?>
 
                     <h5 class="c-azul text-center col s12">Información adicional</h5>
-                    <br>
                     <div class="col s12 l6">
                         <div class="input-field">
                         <label for="responsable" style="margin-left: 1rem">Responsable</label>

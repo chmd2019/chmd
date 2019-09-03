@@ -79,9 +79,7 @@ if (isset($authUrl)) {
         <div class="row">
             <div class="col s12 l8 b-blanco border-azul" style="float: none;margin: 0 auto;">
                 <br>
-                <br>
                 <h5 class="center-align c-azul">Permiso extraordinario</h5>
-                <br>
                 <div class="row" style="padding:0rem .5rem;">
                     <div class="col s12 l6">
                         <div class="input-field">
@@ -124,7 +122,6 @@ if (isset($authUrl)) {
                     ?> 
                     <div class="col s12">&nbsp;</div>
                     <div id="fecha_para" <?php echo $hidden; ?>>
-                        <br>
                         <h5 class="c-azul text-center">Fecha de salida</h5>
                         <div class="col s12 l6">
                             <link rel='stylesheet' href='/pruebascd/icloud/materialkit/css/calendario.css'> 
@@ -172,9 +169,7 @@ if (isset($authUrl)) {
                         </div>
                         <div class="col s12 l6">&nbsp;</div>
                     </div>
-
-
-                    <div class="col s12">
+                    <div class="col s12" style="margin-top: -2.5rem">
                         <h5 class="c-azul text-center">Selecciona Alumnos</h5>
                         <?php
                         $alumnos = $objCliente->mostrar_alumnos($nfamilia);
@@ -274,7 +269,6 @@ if (isset($authUrl)) {
                     </div>
                     <div>
                         <h5 class="c-azul text-center col s12">Información adicional</h5>
-                        <br>                        
                         <div class="col s12">
                             <label>
                                 <input 
@@ -297,12 +291,18 @@ if (isset($authUrl)) {
                         <div id="nuevo_responsable" hidden>
                             <div class="input-field col s12 l6" id="nuevo_responsable_nombre">
                                 <i class="material-icons prefix c-azul">person</i>
-                                <input id="responsable" type="text" autocomplete="off">
+                                <input id="responsable" 
+                                       type="text" 
+                                       onkeyup ="capitaliza_primer_letra(this.id)"
+                                       autocomplete="off">
                                 <label for="responsable">Nombre del responsable</label>
                             </div> 
                             <div class="input-field col s12 l6">
                                 <i class="material-icons prefix c-azul">person</i>
-                                <input id="parentesco_responsable" type="text" autocomplete="off">
+                                <input id="parentesco_responsable" 
+                                       type="text" 
+                                       onkeyup ="capitaliza_primer_letra(this.id)"
+                                       autocomplete="off">
                                 <label for="parentesco_responsable">Parentesco del responsable</label>
                             </div> 
                             <a class="waves-effect waves-light btn col s12 b-azul c-blanco" 
@@ -311,12 +311,12 @@ if (isset($authUrl)) {
                                 <i class="material-icons right">send</i>Guardar
                             </a>
                         </div>
-                        <br>
                         <div class="input-field col s12">
                             <label for="motivos">Motivos</label>
                             <i class="material-icons c-azul prefix">chrome_reader_mode</i>
                             <textarea id="motivos" 
-                                      class="materialize-textarea"                                
+                                      class="materialize-textarea"
+                                      onkeyup ="capitaliza_primer_letra(this.id)"                                
                                       placeholder="Motivos"></textarea>    
                         </div>
                     </div>

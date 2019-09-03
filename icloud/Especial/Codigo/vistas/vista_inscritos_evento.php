@@ -142,7 +142,6 @@ if (isset($authUrl)) {
                     ?>
                     <div <?php echo $hidden_inscritos; ?>>
                         <h5 class="c-azul center-align col s12">Estado de inscritos actuales al evento</h5>
-                        <span class="col s12"><br></span>
                         <?php
                         while ($alumno = mysqli_fetch_array($inscritos)) :
                             $identificador = $alumno[0];
