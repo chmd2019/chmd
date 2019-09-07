@@ -29,7 +29,7 @@ if (isset($authUrl)) {
                 <br>
                 <h4 class="c-azul" style="text-align: center;">Solicitudes de montajes</h4>
                 <div>
-                <?php include './View_montajes.php'; ?> 
+                <?php  include './View_montajes.php'; ?> 
                 </div>
                 <?php
             }

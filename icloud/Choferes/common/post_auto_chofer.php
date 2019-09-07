@@ -51,7 +51,7 @@ if (isset($_POST['submit'])){
           //    echo 'Registro exitoso';
           $ultimo_id_conexion = mysqli_insert_id($connection);
 
-          $fotografia = "C:\\\\IDCARDDESIGN\\\\CREDENCIALES\\\\padres\\\\$ultimo_id_conexion.jpg";
+          $fotografia = "C:\\\\IDCARDDESIGN\\\\CREDENCIALES\\\\padres\\\\$ultimo_id_conexion.JPG";
 
           $sql="UPDATE usuarios SET  fotografia='$fotografia'  where id=$ultimo_id_conexion";
           $insertar = mysqli_query($connection, $sql);
@@ -129,8 +129,56 @@ if (isset($_POST['submit'])){
     }
     $c++;
   }
-}
 
+  /*** Busqueda de Id de Choferes Activos actuales  ***/
+  $array_ids_choferes= array();
+  $sql_busqueda= "SELECT id FROM usuarios WHERE numero = $nfamilia and tipo=7 and estatus!=4";
+  $query_busqueda = mysqli_query($conexion, $sql_busqueda);
+  while($row = mysqli_fetch_assoc($query_busqueda)){
+    //almacenar id
+    array_push($array_ids_choferes,$row['id']);
+  }
+
+  /****** Actualizar los tarjetones en los usuarios nuevos para la visualizacion en carnetizacion ******/
+    foreach ($array_ids_choferes as $id_chofer) {
+      $id_familia = $nfamilia;
+      $id_usuario= $id_chofer;
+      //busqueda de tarjetones
+      $sql_tarjetones = "SELECT idtarjeton FROM tarjeton_automoviles WHERE idfamilia = $id_familia LIMIT 2";
+      $query_tarjetones = mysqli_query($conexion, $sql_tarjetones);
+      $row_cnt = mysqli_num_rows($query_tarjetones);
+      $n=0;
+      $Ntarjeton1='';
+      $Ntarjeton2='';
+      if ($row_cnt>0){
+        while($tarjeton = mysqli_fetch_assoc($query_tarjetones)){
+          if ($n==1){
+            $Ntarjeton2 = $tarjeton['idtarjeton'];
+            $n++;
+          }
+          if ($n==0){
+            $Ntarjeton1 = $tarjeton['idtarjeton'];
+            $n++;
+          }
+        }
+        //actualizar columnos tarjeton1 y tarjeton 2  en usuarios
+        if (!$Ntarjeton1==''){
+          $sql_update = "UPDATE usuarios SET ntarjeton1='$Ntarjeton1' WHERE id='$id_usuario' ";
+        }
+        if (!$Ntarjeton2=='') {
+          $sql_update = "UPDATE usuarios SET ntarjeton1='$Ntarjeton1', ntarjeton2='$Ntarjeton2' WHERE id='$id_usuario' ";
+        }
+        //hacer el $query
+        $insertar = mysqli_query($conexion, $sql_update);
+        if ($insertar){
+          mysqli_query($conexion, 'COMMIT');
+        //  echo 'Insertado Tarjetones en Usuario: '.$id_usuario.'<br>';
+        }
+      }
+    }
+
+
+  }
 if($isgood){
   echo "1";
 //  echo 1;

@@ -37,19 +37,20 @@ if (isset($authUrl)) {
         </div>
     </div>
 </div>
-
+<!--
 <div class="fixed-action-btn">
     <a class="btn-floating btn-large waves-effect waves-light b-azul"
        href="vistas/vista_nuevo_chofer_auto.php">
         <i class="large material-icons">add</i>
     </a>
 </div>
+-->
 <script>
 
 $(document).ready(function () {
-  $('.fixed-action-btn').floatingActionButton({
-    hoverEnabled: false
-  });
+//  $('.fixed-action-btn').floatingActionButton({
+//    hoverEnabled: false
+//  });
 
   $('.modal').modal();
   setInterval(function(){

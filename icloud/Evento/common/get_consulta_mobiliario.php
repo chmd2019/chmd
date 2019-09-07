@@ -21,10 +21,28 @@ if (isset($_GET['mobiliario'])) {
     return;
 }
 
-if (isset($_GET['manteles'])){
+if (isset($_GET['manteles'])) {
     $data = $control->consulta_disponibilidad_manteles($hora_inicial, $hora_final, $fecha_consulta, $id_montaje);
     while ($row = mysqli_fetch_array($data)) {
         array_push($res, ["id_articulo" => $row[0], "disponibilidad" => $row[1]]);
+    }
+    echo json_encode($res);
+    return;
+}
+
+if (isset($_GET['equipo_tecnico'])) {
+    $data = $control->consulta_disponibilidad_equipo_tecnico($hora_inicial, $hora_final, $fecha_consulta, $id_montaje);
+    while ($row = mysqli_fetch_array($data)) {
+        array_push($res, ["id_articulo" => $row[0], "disponibilidad" => $row[1]]);
+    }
+    echo json_encode($res);
+    return;
+}
+
+if (isset($_GET['personal'])) {
+    $data = $control->consulta_disponibilidad_personal($hora_inicial, $hora_final, $fecha_consulta);
+    while ($row = mysqli_fetch_array($data)) {
+        array_push($res, ["id_personal" => $row[0], "disponibilidad" => $row[3]]);
     }
     echo json_encode($res);
     return;

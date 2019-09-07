@@ -1,6 +1,7 @@
 <a class="waves-effect waves-light btn modal-trigger  blue accent-3" tooltip="Renovar" onclick="renovar(<?=$id_chofer?>, <?=$familia?>)">
     <i class="material-icons">repeat</i>
 </a>
+
 <script type="text/javascript">
   function renovar(id, nfamilia){
     M.toast({html: 'Renovando datos de Chofer.', classes: 'green accent-4'});

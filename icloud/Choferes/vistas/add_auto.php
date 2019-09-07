@@ -86,17 +86,21 @@
 
       <i class="material-icons prefix c-azul">directions_car</i>
 
-      <input value=""
+      <select id="modelo<?=$n?>" style="font-size: 1rem"  type="text" >
+        <option value="" disabled selected>Seleccione un A&ntilde;o</option>
 
-      id="modelo<?=$n?>"
-
-      style="font-size: 1rem"
-
-      type="text" placeholder="INGRESE A&Ntilde;O"
-
-      onKeyPress="return solo_numeros(event)"
-
-      maxlength="4"  />
+        <?php
+        $anio = date('Y'); //fecha actual
+        $min_anio = $anio - 10;
+        $max_anio = $anio + 1;
+        //ciclo de opciones
+        for ($i  = $max_anio; $i >= $min_anio; $i-- ){
+          ?>
+          <option value="<?=$i?>"><?=$i?></option>
+          <?php
+        }
+        ?>
+      </select>
 
     </div>
 
@@ -181,4 +185,3 @@ function mostrar_auto_<?=$n?>(){
   }
 
 </script>
-

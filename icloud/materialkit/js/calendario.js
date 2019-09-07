@@ -2466,7 +2466,7 @@ Vel = jQuery ? jQuery.Velocity : $ ? $.Velocity : Velocity, Materialize.Vel = Ve
         function (t) {
             t.fn.scrollTo = function (e) {
                 return t(this).scrollTop(t(this).scrollTop() - t(this).offset().top + t(e).offset().top), this
-            }, t.fn.dropdown = function (e) {
+            }/*, t.fn.dropdown = function (e) {
                 var i = {
                     inDuration: 300,
                     outDuration: 225,
@@ -2565,7 +2565,7 @@ Vel = jQuery ? jQuery.Velocity : $ ? $.Velocity : Velocity, Materialize.Vel = Ve
                 })
             }, t(document).ready(function () {
                 t(".dropdown-button").dropdown()
-            })
+            })*/
         }(jQuery),
         function (t, e) {
             "use strict";

@@ -74,8 +74,8 @@ if (isset($authUrl)) {
                                                 </span>
                                             </div>
                                             <div class="card-reveal b-azul white-text">
-                                                <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
-                                                <p>Solicitudes de cambio Permanente, Temporal, Del día.</p>
+                                                <span class="card-title white-text">Informaci�n adicional<i class="material-icons right">close</i></span>
+                                                <p>Solicitudes de cambio Permanente, Temporal, Del d�a.</p>
                                             </div>
                                         </div>
                                     </div>
@@ -92,8 +92,8 @@ if (isset($authUrl)) {
                                                 </span>
                                             </div>
                                             <div class="card-reveal b-azul white-text">
-                                                <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
-                                                <p>Consulta de evaluación.</p>
+                                                <span class="card-title white-text">Informaci�n adicional<i class="material-icons right">close</i></span>
+                                                <p>Consulta de evaluaci�n.</p>
                                             </div>
                                         </div>
                                     </div>
@@ -111,8 +111,8 @@ if (isset($authUrl)) {
                                                 </span>
                                             </div>
                                             <div class="card-reveal b-azul white-text">
-                                                <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
-                                                <p>Pedidos de paquete de uniformes incluido en la canasta básica y de uniformes adicionales.</p>
+                                                <span class="card-title white-text">Informaci�n adicional<i class="material-icons right">close</i></span>
+                                                <p>Pedidos de paquete de uniformes incluido en la canasta b�sica y de uniformes adicionales.</p>
                                             </div>
                                         </div>
                                     </div>      -->
@@ -130,8 +130,8 @@ if (isset($authUrl)) {
                                                 </span>
                                             </div>
                                             <div class="card-reveal b-azul white-text">
-                                                <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
-                                                <p>Podrás ver las imágenes de eventos del Colegio.</p>
+                                                <span class="card-title white-text">Informaci�n adicional<i class="material-icons right">close</i></span>
+                                                <p>Podr�s ver las im�genes de eventos del Colegio.</p>
                                             </div>
                                         </div>
                                     </div>
@@ -150,8 +150,8 @@ if (isset($authUrl)) {
                                                 </span>
                                             </div>
                                             <div class="card-reveal b-azul white-text">
-                                                <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
-                                                <p>Generar permisos extraordinarios, cumpleaños y Bar Mitzvá.</p>
+                                                <span class="card-title white-text">Informaci�n adicional<i class="material-icons right">close</i></span>
+                                                <p>Generar permisos extraordinarios, cumplea�os y Bar Mitzv�.</p>
                                             </div>
                                         </div>
                                     </div>-->
@@ -168,11 +168,30 @@ if (isset($authUrl)) {
                                                 </span>
                                             </div>
                                             <div class="card-reveal b-azul white-text">
-                                                <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
-                                                <p>Podrás realizar un evento y generación de minuta del evento.</p>
+                                                <span class="card-title white-text">Informaci�n adicional<i class="material-icons right">close</i></span>
+                                                <p>Podr�s realizar un evento y generaci�n de minuta del evento.</p>
                                             </div>
                                         </div>
                                     </div>
+
+                                       <div class="col s12 m6 l4">
+                                    <div class="card" style="box-shadow: none">
+                                        <div class="card-image waves-effect waves-block waves-light">
+                                            <a href='misarchivos/misarchivos.php'>
+                                                <img src="pics/activos/misarchivos.png" style="padding:3rem;">
+                                            </a>
+                                        </div>
+                                        <div class="card-content text-center" style="padding:0px;margin-top: -15px">
+                                            <span class="activator waves-effect waves-light btn b-azul c-blanco">
+                                                INFO
+                                            </span>
+                                        </div>
+                                        <div class="card-reveal b-azul white-text">
+                                            <span class="card-title white-text">Informaci�n adicional<i class="material-icons right">close</i></span>
+                                            <p>Encontrar�s archivos y formatos relevantes para descargar e imprimir.</p>
+                                        </div>
+                                    </div>
+                                </div>
                                     <!--
                                                                         <div class="col s12 m6 l4">
                                                                             <div class="card" style="box-shadow: none">
@@ -188,7 +207,7 @@ if (isset($authUrl)) {
                                                                                     </span>
                                                                                 </div>
                                                                                 <div class="card-reveal b-azul white-text">
-                                                                                    <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
+                                                                                    <span class="card-title white-text">Informaci�n adicional<i class="material-icons right">close</i></span>
                                                                                     <p>INFO pendiente.</p>
                                                                                 </div>
                                                                             </div>
@@ -229,8 +248,8 @@ if (isset($authUrl)) {
                                             </span>
                                         </div>
                                         <div class="card-reveal b-azul white-text">
-                                            <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
-                                            <p>Solicitudes de cambio Permanente, Temporal, Del día.</p>
+                                            <span class="card-title white-text">Informaci�n adicional<i class="material-icons right">close</i></span>
+                                            <p>Solicitudes de cambio Permanente, Temporal, Del d�a.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -248,8 +267,8 @@ if (isset($authUrl)) {
                                             </span>
                                         </div>
                                         <div class="card-reveal b-azul white-text">
-                                            <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
-                                            <p>Consulta de evaluación.</p>
+                                            <span class="card-title white-text">Informaci�n adicional<i class="material-icons right">close</i></span>
+                                            <p>Consulta de evaluaci�n.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -265,9 +284,9 @@ if (isset($authUrl)) {
                                             </span>
                                         </div>
                                         <div class="card-reveal b-azul white-text">
-                                            <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
+                                            <span class="card-title white-text">Informaci�n adicional<i class="material-icons right">close</i></span>
 
-                                            <p>Podrás ver las imágenes de eventos del Colegio.</p>
+                                            <p>Podr�s ver las im�genes de eventos del Colegio.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -285,8 +304,8 @@ if (isset($authUrl)) {
                                             </span>
                                         </div>
                                         <div class="card-reveal">
-                                            <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
-                                            <p>Podrás realizar un evento y generación de minuta del evento.</p>
+                                            <span class="card-title white-text">Informaci�n adicional<i class="material-icons right">close</i></span>
+                                            <p>Podrás realizar un evento y generaci�n de minuta del evento.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -303,8 +322,28 @@ if (isset($authUrl)) {
                                             </span>
                                         </div>
                                         <div class="card-reveal b-azul white-text">
-                                            <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
-                                            <p>Podrás realizar un evento y generación de minuta del evento.</p>
+                                            <span class="card-title white-text">Informaci�n adicional<i class="material-icons right">close</i></span>
+                                            <p>Podr�s realizar un evento y generaci�n de minuta del evento.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                  <div class="col s12 m6 l4">
+                                    <div class="card" style="box-shadow: none">
+                                        <div class="card-image waves-effect waves-block waves-light">
+                                            <a href='misarchivos/misarchivos.php'>
+                                                <img src="pics/activos/misarchivos.png" style="padding:3rem;">
+                                            </a>
+                                        </div>
+                                        <div class="card-content text-center" style="padding:0px;margin-top: -15px">
+                                            <span class="activator waves-effect waves-light btn b-azul c-blanco">
+                                                INFO
+                                            </span>
+                                        </div>
+                                        <div class="card-reveal b-azul white-text">
+                                            <span class="card-title white-text">Informaci�n adicional<i class="material-icons right">close</i></span>
+                                            <p>Encontrar�s archivos y formatos relevantes para descargar e imprimir.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -326,8 +365,7 @@ if (isset($authUrl)) {
                             <div class="card" style="box-shadow: none;">
                                 <div class="card-image waves-effect waves-block waves-light">
                                     <a href='Evento/menu.php'>
-                                        <img src="https://www.chmd.edu.mx/pruebascd/icloud/pics/activos/party.svg"
-                                             style="padding:3rem;width: 70%;margin: auto">
+                                    <img src="images/Montajes.svg" style="padding:3rem;">
                                     </a>
                                 </div>
                                 <div class="card-content text-center" style="padding:0px;margin-top: -15px">
@@ -336,7 +374,7 @@ if (isset($authUrl)) {
                                     </span>
                                 </div>
                                 <div class="card-reveal b-azul white-text">
-                                    <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
+                                    <span class="card-title white-text">Informaci�n adicional<i class="material-icons right">close</i></span>
                                     <p>INFO pendiente.</p>
                                 </div>
                             </div>
@@ -344,16 +382,17 @@ if (isset($authUrl)) {
                         <div class="col s12 m3 l4"><br></div>
                     </div>
                 <?php
-            } elseif ($tipo == 8) 
+            } elseif ($tipo == 8)
 {
                 ?>
 
-                    <div style="text-align: right;margin:1rem 1rem 0 0">
-                        <a class="waves-effect waves-light btn red" href="#!" onclick="logout()">
-                            <i class="material-icons left">lock</i>Salir
-                        </a>
-                    </div>
-
+                <!--
+              <div style="text-align: right;margin:1rem 1rem 0 0">
+                <a class="waves-effect waves-light btn red" href="#!" onclick="logout()">
+                <i class="material-icons left">lock</i>Salir
+                </a>
+              </div>
+                  -->
                     <div class="container b-blanco">
                         <div class="row">
                             <div class="row">
@@ -365,13 +404,32 @@ if (isset($authUrl)) {
                                             </a>
                                         </div>
                                         <div class="card-content text-center" style="padding:0px;margin-top: -15px">
-                                            <span class="activator waves-effect waves-light btn b-azul c-blanco">
-                                                INFO
-                                            </span>
+                                          <!--    <span class="activator waves-effect waves-light btn b-azul c-blanco">
+                                                  INFO
+                                              </span> -->
+                                              <svg  class="activator waves-effect waves-light" width="60px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                 viewBox="0 0 600 600" style="enable-background:new 0 0 600 600;" xml:space="preserve">
+                                              <style type="text/css">
+                                                .st0{fill:#0E497B;}
+                                              </style>
+                                              <path class="st0" d="M300,589.51c-77.33,0-150.03-30.11-204.72-84.8S10.49,377.33,10.49,300c0-77.33,30.11-150.03,84.8-204.72
+                                                S222.67,10.49,300,10.49s150.03,30.11,204.72,84.8s84.8,127.38,84.8,204.72c0,77.33-30.11,150.03-84.8,204.71
+                                                S377.33,589.51,300,589.51z M300,38.3c-69.9,0-135.62,27.22-185.05,76.65C65.53,164.38,38.3,230.1,38.3,300
+                                                c0,69.9,27.22,135.62,76.65,185.05C164.38,534.47,230.1,561.7,300,561.7s135.62-27.22,185.05-76.65
+                                                C534.47,435.62,561.7,369.9,561.7,300c0-69.9-27.22-135.62-76.65-185.05C435.62,65.53,369.9,38.3,300,38.3z"/>
+                                              <g>
+                                                <path class="st0" d="M288.49,372.82c-12.32,0-21.42-9.1-23.02-21.42l-5.35-46.05c-2.14-14.46,6.43-25.17,20.88-26.77
+                                                  c50.33-4.82,78.18-24.1,78.18-57.83v-1.07c0-29.98-23.02-50.87-61.58-50.87c-28.38,0-51.4,10.17-72.82,29.45
+                                                  c-5.35,4.28-12.32,7.5-19.81,7.5c-16.6,0-29.99-13.39-29.99-29.45c0-8.03,3.21-16.6,10.71-23.02
+                                                  c28.38-26.77,64.25-44.44,113.51-44.44c74.96,0,125.83,41.76,125.83,108.7v1.07c0,67.47-48.72,97.99-108.16,108.16l-2.14,24.63
+                                                  c-2.14,11.78-10.71,21.42-23.02,21.42H288.49z M288.49,411.91c21.95,0,38.02,16.06,38.02,36.95v5.35
+                                                  c0,20.88-16.06,36.95-38.02,36.95s-38.02-16.06-38.02-36.95v-5.35C250.47,427.97,266.53,411.91,288.49,411.91z"/>
+                                              </g>
+                                              </svg>
                                         </div>
                                         <div class="card-reveal b-azul white-text">
-                                            <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
-                                            <p>Solicitudes de cambio Permanente, Temporal, Del día.</p>
+                                            <span class="card-title white-text">Informaci�n adicional<i class="material-icons right">close</i></span>
+                                            <p>Solicitudes de cambio Permanente, Temporal, Del d�a.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -383,13 +441,32 @@ if (isset($authUrl)) {
                                             </a>
                                         </div>
                                         <div class="card-content text-center" style="padding:0px;margin-top: -15px">
-                                            <span class="activator waves-effect waves-light btn b-azul c-blanco">
+                                        <!--    <span class="activator waves-effect waves-light btn b-azul c-blanco">
                                                 INFO
-                                            </span>
+                                            </span> -->
+                                            <svg  class="activator waves-effect waves-light" width="60px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                               viewBox="0 0 600 600" style="enable-background:new 0 0 600 600;" xml:space="preserve">
+                                            <style type="text/css">
+                                              .st0{fill:#0E497B;}
+                                            </style>
+                                            <path class="st0" d="M300,589.51c-77.33,0-150.03-30.11-204.72-84.8S10.49,377.33,10.49,300c0-77.33,30.11-150.03,84.8-204.72
+                                              S222.67,10.49,300,10.49s150.03,30.11,204.72,84.8s84.8,127.38,84.8,204.72c0,77.33-30.11,150.03-84.8,204.71
+                                              S377.33,589.51,300,589.51z M300,38.3c-69.9,0-135.62,27.22-185.05,76.65C65.53,164.38,38.3,230.1,38.3,300
+                                              c0,69.9,27.22,135.62,76.65,185.05C164.38,534.47,230.1,561.7,300,561.7s135.62-27.22,185.05-76.65
+                                              C534.47,435.62,561.7,369.9,561.7,300c0-69.9-27.22-135.62-76.65-185.05C435.62,65.53,369.9,38.3,300,38.3z"/>
+                                            <g>
+                                              <path class="st0" d="M288.49,372.82c-12.32,0-21.42-9.1-23.02-21.42l-5.35-46.05c-2.14-14.46,6.43-25.17,20.88-26.77
+                                                c50.33-4.82,78.18-24.1,78.18-57.83v-1.07c0-29.98-23.02-50.87-61.58-50.87c-28.38,0-51.4,10.17-72.82,29.45
+                                                c-5.35,4.28-12.32,7.5-19.81,7.5c-16.6,0-29.99-13.39-29.99-29.45c0-8.03,3.21-16.6,10.71-23.02
+                                                c28.38-26.77,64.25-44.44,113.51-44.44c74.96,0,125.83,41.76,125.83,108.7v1.07c0,67.47-48.72,97.99-108.16,108.16l-2.14,24.63
+                                                c-2.14,11.78-10.71,21.42-23.02,21.42H288.49z M288.49,411.91c21.95,0,38.02,16.06,38.02,36.95v5.35
+                                                c0,20.88-16.06,36.95-38.02,36.95s-38.02-16.06-38.02-36.95v-5.35C250.47,427.97,266.53,411.91,288.49,411.91z"/>
+                                            </g>
+                                            </svg>
                                         </div>
                                         <div class="card-reveal b-azul white-text">
-                                            <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
-                                            <p>Consulta de evaluación.</p>
+                                            <span class="card-title white-text">Informaci�n adicional<i class="material-icons right">close</i></span>
+                                            <p>Consulta de evaluaci�n.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -400,14 +477,34 @@ if (isset($authUrl)) {
                                                 <img src="pics/activos/galeria.png" style="padding:3rem;">
                                             </a>
                                         </div>
-                                        <div class="card-content text-center" style="padding:0px;margin-top: -15px">                                            <span class="activator waves-effect waves-light btn b-azul c-blanco">
-                                                INFO
-                                            </span>
+                                        <div class="card-content text-center" style="padding:0px;margin-top: -15px">
+                                          <!--    <span class="activator waves-effect waves-light btn b-azul c-blanco">
+                                                  INFO
+                                              </span> -->
+                                              <svg  class="activator waves-effect waves-light" width="60px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                 viewBox="0 0 600 600" style="enable-background:new 0 0 600 600;" xml:space="preserve">
+                                              <style type="text/css">
+                                                .st0{fill:#0E497B;}
+                                              </style>
+                                              <path class="st0" d="M300,589.51c-77.33,0-150.03-30.11-204.72-84.8S10.49,377.33,10.49,300c0-77.33,30.11-150.03,84.8-204.72
+                                                S222.67,10.49,300,10.49s150.03,30.11,204.72,84.8s84.8,127.38,84.8,204.72c0,77.33-30.11,150.03-84.8,204.71
+                                                S377.33,589.51,300,589.51z M300,38.3c-69.9,0-135.62,27.22-185.05,76.65C65.53,164.38,38.3,230.1,38.3,300
+                                                c0,69.9,27.22,135.62,76.65,185.05C164.38,534.47,230.1,561.7,300,561.7s135.62-27.22,185.05-76.65
+                                                C534.47,435.62,561.7,369.9,561.7,300c0-69.9-27.22-135.62-76.65-185.05C435.62,65.53,369.9,38.3,300,38.3z"/>
+                                              <g>
+                                                <path class="st0" d="M288.49,372.82c-12.32,0-21.42-9.1-23.02-21.42l-5.35-46.05c-2.14-14.46,6.43-25.17,20.88-26.77
+                                                  c50.33-4.82,78.18-24.1,78.18-57.83v-1.07c0-29.98-23.02-50.87-61.58-50.87c-28.38,0-51.4,10.17-72.82,29.45
+                                                  c-5.35,4.28-12.32,7.5-19.81,7.5c-16.6,0-29.99-13.39-29.99-29.45c0-8.03,3.21-16.6,10.71-23.02
+                                                  c28.38-26.77,64.25-44.44,113.51-44.44c74.96,0,125.83,41.76,125.83,108.7v1.07c0,67.47-48.72,97.99-108.16,108.16l-2.14,24.63
+                                                  c-2.14,11.78-10.71,21.42-23.02,21.42H288.49z M288.49,411.91c21.95,0,38.02,16.06,38.02,36.95v5.35
+                                                  c0,20.88-16.06,36.95-38.02,36.95s-38.02-16.06-38.02-36.95v-5.35C250.47,427.97,266.53,411.91,288.49,411.91z"/>
+                                              </g>
+                                              </svg>
                                         </div>
                                         <div class="card-reveal b-azul white-text">
-                                            <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
+                                            <span class="card-title white-text">Informaci�n adicional<i class="material-icons right">close</i></span>
 
-                                            <p>Podrás ver las imágenes de eventos del Colegio.</p>
+                                            <p>Podr�s ver las im�genes de eventos del Colegio.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -419,13 +516,32 @@ if (isset($authUrl)) {
                                             </a>
                                         </div>
                                         <div class="card-content text-center" style="padding:0px;margin-top: -15px">
-                                            <span class="activator waves-effect waves-light btn b-azul c-blanco">
-                                                INFO
-                                            </span>
+                                          <!--    <span class="activator waves-effect waves-light btn b-azul c-blanco">
+                                                  INFO
+                                              </span> -->
+                                              <svg  class="activator waves-effect waves-light" width="60px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                 viewBox="0 0 600 600" style="enable-background:new 0 0 600 600;" xml:space="preserve">
+                                              <style type="text/css">
+                                                .st0{fill:#0E497B;}
+                                              </style>
+                                              <path class="st0" d="M300,589.51c-77.33,0-150.03-30.11-204.72-84.8S10.49,377.33,10.49,300c0-77.33,30.11-150.03,84.8-204.72
+                                                S222.67,10.49,300,10.49s150.03,30.11,204.72,84.8s84.8,127.38,84.8,204.72c0,77.33-30.11,150.03-84.8,204.71
+                                                S377.33,589.51,300,589.51z M300,38.3c-69.9,0-135.62,27.22-185.05,76.65C65.53,164.38,38.3,230.1,38.3,300
+                                                c0,69.9,27.22,135.62,76.65,185.05C164.38,534.47,230.1,561.7,300,561.7s135.62-27.22,185.05-76.65
+                                                C534.47,435.62,561.7,369.9,561.7,300c0-69.9-27.22-135.62-76.65-185.05C435.62,65.53,369.9,38.3,300,38.3z"/>
+                                              <g>
+                                                <path class="st0" d="M288.49,372.82c-12.32,0-21.42-9.1-23.02-21.42l-5.35-46.05c-2.14-14.46,6.43-25.17,20.88-26.77
+                                                  c50.33-4.82,78.18-24.1,78.18-57.83v-1.07c0-29.98-23.02-50.87-61.58-50.87c-28.38,0-51.4,10.17-72.82,29.45
+                                                  c-5.35,4.28-12.32,7.5-19.81,7.5c-16.6,0-29.99-13.39-29.99-29.45c0-8.03,3.21-16.6,10.71-23.02
+                                                  c28.38-26.77,64.25-44.44,113.51-44.44c74.96,0,125.83,41.76,125.83,108.7v1.07c0,67.47-48.72,97.99-108.16,108.16l-2.14,24.63
+                                                  c-2.14,11.78-10.71,21.42-23.02,21.42H288.49z M288.49,411.91c21.95,0,38.02,16.06,38.02,36.95v5.35
+                                                  c0,20.88-16.06,36.95-38.02,36.95s-38.02-16.06-38.02-36.95v-5.35C250.47,427.97,266.53,411.91,288.49,411.91z"/>
+                                              </g>
+                                              </svg>
                                         </div>
                                         <div class="card-reveal">
-                                            <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
-                                            <p>Podrás realizar un evento y generación de minuta del evento.</p>
+                                            <span class="card-title white-text">Informaci�n adicional<i class="material-icons right">close</i></span>
+                                            <p>Podr�s realizar un evento y generaci�n de minuta del evento.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -437,13 +553,32 @@ if (isset($authUrl)) {
                                             </a>
                                         </div>
                                         <div class="card-content text-center" style="padding:0px;margin-top: -15px">
-                                            <span class="activator waves-effect waves-light btn b-azul c-blanco">
-                                                INFO
-                                            </span>
+                                          <!--    <span class="activator waves-effect waves-light btn b-azul c-blanco">
+                                                  INFO
+                                              </span> -->
+                                              <svg  class="activator waves-effect waves-light" width="60px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                 viewBox="0 0 600 600" style="enable-background:new 0 0 600 600;" xml:space="preserve">
+                                              <style type="text/css">
+                                                .st0{fill:#0E497B;}
+                                              </style>
+                                              <path class="st0" d="M300,589.51c-77.33,0-150.03-30.11-204.72-84.8S10.49,377.33,10.49,300c0-77.33,30.11-150.03,84.8-204.72
+                                                S222.67,10.49,300,10.49s150.03,30.11,204.72,84.8s84.8,127.38,84.8,204.72c0,77.33-30.11,150.03-84.8,204.71
+                                                S377.33,589.51,300,589.51z M300,38.3c-69.9,0-135.62,27.22-185.05,76.65C65.53,164.38,38.3,230.1,38.3,300
+                                                c0,69.9,27.22,135.62,76.65,185.05C164.38,534.47,230.1,561.7,300,561.7s135.62-27.22,185.05-76.65
+                                                C534.47,435.62,561.7,369.9,561.7,300c0-69.9-27.22-135.62-76.65-185.05C435.62,65.53,369.9,38.3,300,38.3z"/>
+                                              <g>
+                                                <path class="st0" d="M288.49,372.82c-12.32,0-21.42-9.1-23.02-21.42l-5.35-46.05c-2.14-14.46,6.43-25.17,20.88-26.77
+                                                  c50.33-4.82,78.18-24.1,78.18-57.83v-1.07c0-29.98-23.02-50.87-61.58-50.87c-28.38,0-51.4,10.17-72.82,29.45
+                                                  c-5.35,4.28-12.32,7.5-19.81,7.5c-16.6,0-29.99-13.39-29.99-29.45c0-8.03,3.21-16.6,10.71-23.02
+                                                  c28.38-26.77,64.25-44.44,113.51-44.44c74.96,0,125.83,41.76,125.83,108.7v1.07c0,67.47-48.72,97.99-108.16,108.16l-2.14,24.63
+                                                  c-2.14,11.78-10.71,21.42-23.02,21.42H288.49z M288.49,411.91c21.95,0,38.02,16.06,38.02,36.95v5.35
+                                                  c0,20.88-16.06,36.95-38.02,36.95s-38.02-16.06-38.02-36.95v-5.35C250.47,427.97,266.53,411.91,288.49,411.91z"/>
+                                              </g>
+                                              </svg>
                                         </div>
                                         <div class="card-reveal b-azul white-text">
-                                            <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
-                                            <p>Pedidos de paquete de uniformes incluido en la canasta básica y de uniformes adicionales.</p>
+                                            <span class="card-title white-text">Informaci�n adicional<i class="material-icons right">close</i></span>
+                                            <p>Pedidos de paquete de uniformes incluido en la canasta b�sica y de uniformes adicionales.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -455,13 +590,32 @@ if (isset($authUrl)) {
                                             </a>
                                         </div>
                                         <div class="card-content text-center" style="padding:0px;margin-top: -15px">
-                                            <span class="activator waves-effect waves-light btn b-azul c-blanco">
-                                                INFO
-                                            </span>
+                                          <!--    <span class="activator waves-effect waves-light btn b-azul c-blanco">
+                                                  INFO
+                                              </span> -->
+                                              <svg  class="activator waves-effect waves-light" width="60px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                 viewBox="0 0 600 600" style="enable-background:new 0 0 600 600;" xml:space="preserve">
+                                              <style type="text/css">
+                                                .st0{fill:#0E497B;}
+                                              </style>
+                                              <path class="st0" d="M300,589.51c-77.33,0-150.03-30.11-204.72-84.8S10.49,377.33,10.49,300c0-77.33,30.11-150.03,84.8-204.72
+                                                S222.67,10.49,300,10.49s150.03,30.11,204.72,84.8s84.8,127.38,84.8,204.72c0,77.33-30.11,150.03-84.8,204.71
+                                                S377.33,589.51,300,589.51z M300,38.3c-69.9,0-135.62,27.22-185.05,76.65C65.53,164.38,38.3,230.1,38.3,300
+                                                c0,69.9,27.22,135.62,76.65,185.05C164.38,534.47,230.1,561.7,300,561.7s135.62-27.22,185.05-76.65
+                                                C534.47,435.62,561.7,369.9,561.7,300c0-69.9-27.22-135.62-76.65-185.05C435.62,65.53,369.9,38.3,300,38.3z"/>
+                                              <g>
+                                                <path class="st0" d="M288.49,372.82c-12.32,0-21.42-9.1-23.02-21.42l-5.35-46.05c-2.14-14.46,6.43-25.17,20.88-26.77
+                                                  c50.33-4.82,78.18-24.1,78.18-57.83v-1.07c0-29.98-23.02-50.87-61.58-50.87c-28.38,0-51.4,10.17-72.82,29.45
+                                                  c-5.35,4.28-12.32,7.5-19.81,7.5c-16.6,0-29.99-13.39-29.99-29.45c0-8.03,3.21-16.6,10.71-23.02
+                                                  c28.38-26.77,64.25-44.44,113.51-44.44c74.96,0,125.83,41.76,125.83,108.7v1.07c0,67.47-48.72,97.99-108.16,108.16l-2.14,24.63
+                                                  c-2.14,11.78-10.71,21.42-23.02,21.42H288.49z M288.49,411.91c21.95,0,38.02,16.06,38.02,36.95v5.35
+                                                  c0,20.88-16.06,36.95-38.02,36.95s-38.02-16.06-38.02-36.95v-5.35C250.47,427.97,266.53,411.91,288.49,411.91z"/>
+                                              </g>
+                                              </svg>
                                         </div>
                                         <div class="card-reveal b-azul white-text">
-                                            <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
-                                            <p>Podrás realizar un evento y generación de minuta del evento.</p>
+                                            <span class="card-title white-text">Informaci�n adicional<i class="material-icons right">close</i></span>
+                                            <p>Podr�s realizar un evento y generaci�n de minuta del evento.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -469,17 +623,35 @@ if (isset($authUrl)) {
                                     <div class="card" style="box-shadow: none;">
                                         <div class="card-image waves-effect waves-block waves-light">
                                             <a href='Evento/menu.php'>
-                                                <img src="https://www.chmd.edu.mx/pruebascd/icloud/pics/activos/party.svg"
-                                                     style="padding:3rem;width: 85%;margin: auto">
+                                    <img src="images/Montajes.svg" style="padding:3rem;">
                                             </a>
                                         </div>
                                         <div class="card-content text-center" style="padding:0px;margin-top: -15px">
-                                            <span class="activator waves-effect waves-light btn b-azul c-blanco">
-                                                INFO
-                                            </span>
+                                          <!--    <span class="activator waves-effect waves-light btn b-azul c-blanco">
+                                                  INFO
+                                              </span> -->
+                                              <svg  class="activator waves-effect waves-light" width="60px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                 viewBox="0 0 600 600" style="enable-background:new 0 0 600 600;" xml:space="preserve">
+                                              <style type="text/css">
+                                                .st0{fill:#0E497B;}
+                                              </style>
+                                              <path class="st0" d="M300,589.51c-77.33,0-150.03-30.11-204.72-84.8S10.49,377.33,10.49,300c0-77.33,30.11-150.03,84.8-204.72
+                                                S222.67,10.49,300,10.49s150.03,30.11,204.72,84.8s84.8,127.38,84.8,204.72c0,77.33-30.11,150.03-84.8,204.71
+                                                S377.33,589.51,300,589.51z M300,38.3c-69.9,0-135.62,27.22-185.05,76.65C65.53,164.38,38.3,230.1,38.3,300
+                                                c0,69.9,27.22,135.62,76.65,185.05C164.38,534.47,230.1,561.7,300,561.7s135.62-27.22,185.05-76.65
+                                                C534.47,435.62,561.7,369.9,561.7,300c0-69.9-27.22-135.62-76.65-185.05C435.62,65.53,369.9,38.3,300,38.3z"/>
+                                              <g>
+                                                <path class="st0" d="M288.49,372.82c-12.32,0-21.42-9.1-23.02-21.42l-5.35-46.05c-2.14-14.46,6.43-25.17,20.88-26.77
+                                                  c50.33-4.82,78.18-24.1,78.18-57.83v-1.07c0-29.98-23.02-50.87-61.58-50.87c-28.38,0-51.4,10.17-72.82,29.45
+                                                  c-5.35,4.28-12.32,7.5-19.81,7.5c-16.6,0-29.99-13.39-29.99-29.45c0-8.03,3.21-16.6,10.71-23.02
+                                                  c28.38-26.77,64.25-44.44,113.51-44.44c74.96,0,125.83,41.76,125.83,108.7v1.07c0,67.47-48.72,97.99-108.16,108.16l-2.14,24.63
+                                                  c-2.14,11.78-10.71,21.42-23.02,21.42H288.49z M288.49,411.91c21.95,0,38.02,16.06,38.02,36.95v5.35
+                                                  c0,20.88-16.06,36.95-38.02,36.95s-38.02-16.06-38.02-36.95v-5.35C250.47,427.97,266.53,411.91,288.49,411.91z"/>
+                                              </g>
+                                              </svg>
                                         </div>
                                         <div class="card-reveal b-azul white-text">
-                                            <span class="card-title white-text">Información adicional<i
+                                            <span class="card-title white-text">Informaci�n adicional<i
                                                     class="material-icons right">close</i></span>
                                             <p>INFO pendiente.</p>
                                         </div>
@@ -493,13 +665,32 @@ if (isset($authUrl)) {
                                             </a>
                                         </div>
                                         <div class="card-content text-center" style="padding:0px;margin-top: -15px">
-                                            <span class="activator waves-effect waves-light btn b-azul c-blanco">
-                                                INFO
-                                            </span>
+                                          <!--    <span class="activator waves-effect waves-light btn b-azul c-blanco">
+                                                  INFO
+                                              </span> -->
+                                              <svg  class="activator waves-effect waves-light" width="60px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                 viewBox="0 0 600 600" style="enable-background:new 0 0 600 600;" xml:space="preserve">
+                                              <style type="text/css">
+                                                .st0{fill:#0E497B;}
+                                              </style>
+                                              <path class="st0" d="M300,589.51c-77.33,0-150.03-30.11-204.72-84.8S10.49,377.33,10.49,300c0-77.33,30.11-150.03,84.8-204.72
+                                                S222.67,10.49,300,10.49s150.03,30.11,204.72,84.8s84.8,127.38,84.8,204.72c0,77.33-30.11,150.03-84.8,204.71
+                                                S377.33,589.51,300,589.51z M300,38.3c-69.9,0-135.62,27.22-185.05,76.65C65.53,164.38,38.3,230.1,38.3,300
+                                                c0,69.9,27.22,135.62,76.65,185.05C164.38,534.47,230.1,561.7,300,561.7s135.62-27.22,185.05-76.65
+                                                C534.47,435.62,561.7,369.9,561.7,300c0-69.9-27.22-135.62-76.65-185.05C435.62,65.53,369.9,38.3,300,38.3z"/>
+                                              <g>
+                                                <path class="st0" d="M288.49,372.82c-12.32,0-21.42-9.1-23.02-21.42l-5.35-46.05c-2.14-14.46,6.43-25.17,20.88-26.77
+                                                  c50.33-4.82,78.18-24.1,78.18-57.83v-1.07c0-29.98-23.02-50.87-61.58-50.87c-28.38,0-51.4,10.17-72.82,29.45
+                                                  c-5.35,4.28-12.32,7.5-19.81,7.5c-16.6,0-29.99-13.39-29.99-29.45c0-8.03,3.21-16.6,10.71-23.02
+                                                  c28.38-26.77,64.25-44.44,113.51-44.44c74.96,0,125.83,41.76,125.83,108.7v1.07c0,67.47-48.72,97.99-108.16,108.16l-2.14,24.63
+                                                  c-2.14,11.78-10.71,21.42-23.02,21.42H288.49z M288.49,411.91c21.95,0,38.02,16.06,38.02,36.95v5.35
+                                                  c0,20.88-16.06,36.95-38.02,36.95s-38.02-16.06-38.02-36.95v-5.35C250.47,427.97,266.53,411.91,288.49,411.91z"/>
+                                              </g>
+                                              </svg>
                                         </div>
                                         <div class="card-reveal b-azul white-text">
-                                            <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
-                                            <p>Generar permisos extraordinarios, cumpleaños y Bar Mitzvá.</p>
+                                            <span class="card-title white-text">Informaci�n adicional<i class="material-icons right">close</i></span>
+                                            <p>Generar permisos extraordinarios, cumplea�os y Bar Mitzv�.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -511,13 +702,32 @@ if (isset($authUrl)) {
                                             </a>
                                         </div>
                                         <div class="card-content text-center" style="padding:0px;margin-top: -15px">
-                                            <span class="activator waves-effect waves-light btn b-azul c-blanco">
-                                                INFO
-                                            </span>
+                                          <!--    <span class="activator waves-effect waves-light btn b-azul c-blanco">
+                                                  INFO
+                                              </span> -->
+                                              <svg  class="activator waves-effect waves-light" width="60px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                 viewBox="0 0 600 600" style="enable-background:new 0 0 600 600;" xml:space="preserve">
+                                              <style type="text/css">
+                                                .st0{fill:#0E497B;}
+                                              </style>
+                                              <path class="st0" d="M300,589.51c-77.33,0-150.03-30.11-204.72-84.8S10.49,377.33,10.49,300c0-77.33,30.11-150.03,84.8-204.72
+                                                S222.67,10.49,300,10.49s150.03,30.11,204.72,84.8s84.8,127.38,84.8,204.72c0,77.33-30.11,150.03-84.8,204.71
+                                                S377.33,589.51,300,589.51z M300,38.3c-69.9,0-135.62,27.22-185.05,76.65C65.53,164.38,38.3,230.1,38.3,300
+                                                c0,69.9,27.22,135.62,76.65,185.05C164.38,534.47,230.1,561.7,300,561.7s135.62-27.22,185.05-76.65
+                                                C534.47,435.62,561.7,369.9,561.7,300c0-69.9-27.22-135.62-76.65-185.05C435.62,65.53,369.9,38.3,300,38.3z"/>
+                                              <g>
+                                                <path class="st0" d="M288.49,372.82c-12.32,0-21.42-9.1-23.02-21.42l-5.35-46.05c-2.14-14.46,6.43-25.17,20.88-26.77
+                                                  c50.33-4.82,78.18-24.1,78.18-57.83v-1.07c0-29.98-23.02-50.87-61.58-50.87c-28.38,0-51.4,10.17-72.82,29.45
+                                                  c-5.35,4.28-12.32,7.5-19.81,7.5c-16.6,0-29.99-13.39-29.99-29.45c0-8.03,3.21-16.6,10.71-23.02
+                                                  c28.38-26.77,64.25-44.44,113.51-44.44c74.96,0,125.83,41.76,125.83,108.7v1.07c0,67.47-48.72,97.99-108.16,108.16l-2.14,24.63
+                                                  c-2.14,11.78-10.71,21.42-23.02,21.42H288.49z M288.49,411.91c21.95,0,38.02,16.06,38.02,36.95v5.35
+                                                  c0,20.88-16.06,36.95-38.02,36.95s-38.02-16.06-38.02-36.95v-5.35C250.47,427.97,266.53,411.91,288.49,411.91z"/>
+                                              </g>
+                                              </svg>
                                         </div>
                                         <div class="card-reveal b-azul white-text">
-                                            <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
-                                            <p>Encontrarás archivos y formatos relevantes para descargar e imprimir.</p>
+                                            <span class="card-title white-text">Informaci�n adicional<i class="material-icons right">close</i></span>
+                                            <p>Encontrar�s archivos y formatos relevantes para descargar e imprimir.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -645,7 +855,7 @@ if (isset($authUrl)) {
 
                 <?php
                 echo 'Este usuario no tiene acceso: <span style="color:#00C2EE">' . $user->email .
-                '</span><br> ¡Favor de comunicarse para validar datos!  '
+                '</span><br> �Favor de comunicarse para validar datos!  '
                 . '<br><br><a href="#!" onclick="logout()" class="waves-effect waves-light btn red"> '
                 . '<i class="material-icons left">lock</i>Salir del sistema</a>';
                 ?>

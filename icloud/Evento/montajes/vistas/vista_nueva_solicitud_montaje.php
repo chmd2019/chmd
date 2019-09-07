@@ -13,7 +13,6 @@ require_once "$root_icloud/Evento/common/ControlEvento.php";
 if (isset($_GET['logout'])) {
     unset($_SESSION['access_token']);
 }
-$service = new Google_Service_Oauth2($client);
 if (isset($_GET['code'])) {
     $client->authenticate($_GET['code']);
     $_SESSION['access_token'] = $client->getAccessToken();
@@ -28,6 +27,7 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
 if (isset($authUrl)) {
     header("Location: $redirect_uri?logout=1");
 } else {
+    $service = new Google_Service_Oauth2($client);
     $idseccion = $_GET['idseccion'];
     //usaurio
     $user = $service->userinfo->get();
@@ -89,6 +89,9 @@ if (isset($authUrl)) {
         $fecha_actual = strtotime(date('d-m-Y'));
         $fecha_evento_especial = date('Y-m-d', strtotime("+1 month", $fecha_actual));
         $fecha_minima_ensayo = $date_helper->suma_dia_habil(date("d-m-Y"), 1);
+        $privilegio = mysqli_fetch_array($control->consultar_privilegio_usuario($correo));
+        $id_privilegio = $privilegio[0];
+        
         ?>
         <link rel='stylesheet' href='/pruebascd/icloud/materialkit/css/calendario.css'> 
         <script src='/pruebascd/icloud/materialkit/js/calendario.js'></script>
