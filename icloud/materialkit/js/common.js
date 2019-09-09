@@ -239,7 +239,7 @@ function nuevo_responsable(nombre, parentesco, familia) {
 
 function capitaliza_primer_letra(id) {
     var palabra = $("#" + id).val();
-    $("#" + id).val(`${palabra.charAt(0).toUpperCase()}${palabra.slice(1)}`);
+    $("#" + id).val(`${palabra.charAt(0).toUpperCase()}${palabra.slice(1).toLowerCase()}`);
 }
 
 function validar_horario_final_ensayo(el, id_hora_inicial) {

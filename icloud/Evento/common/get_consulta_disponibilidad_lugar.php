@@ -12,10 +12,10 @@ $fecha_montaje = $_GET['fecha_montaje'];
 $id_evento = $_GET['id_evento'];
 
 if (isset($_GET['edicion_montaje'])) {
-    $disponibilidad = $control->consulta_disponibilidad_lugar_edicion($hora_inicial, $hora_final, $id_lugar, $fecha_montaje);   
+    $disponibilidad = $control->consulta_disponibilidad_lugar_edicion($hora_inicial, $hora_final, $id_lugar, $fecha_montaje, $id_evento);   
     echo json_encode(mysqli_fetch_array($disponibilidad)[0]);
     return;
 }
-$disponibilidad = $control->consulta_disponibilidad_lugar($hora_inicial, $hora_final, $id_lugar, $fecha_montaje);                       
+$disponibilidad = $control->consulta_disponibilidad_lugar($hora_inicial, $hora_final, $id_lugar, $fecha_montaje,$id_evento);                       
 
 echo json_encode(mysqli_fetch_array($disponibilidad)[0]);

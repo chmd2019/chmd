@@ -602,6 +602,7 @@ if (isset($authUrl)) {
                     $ensayos = $control->consulta_ensayo($id_montaje);
                     while ($row = mysqli_fetch_array($ensayos)):
                         $counter++;
+                        $requerimientos_especiales_ensayo = $row[3];
                         $n_ensayo = $row[4];
                         $id_ensayo = $row[5];
                         array_push($id_ensayo_coleccion, $id_ensayo);
@@ -628,7 +629,7 @@ if (isset($authUrl)) {
                                                    style="font-size: 1rem" 
                                                    value="<?php echo $row[0]; ?>" 
                                                    onchange="fecha_minusculas(this.value, 'calendario_ensayo_<?php echo $id_ensayo; ?>');
-                                                           consulta_disponibilidad_lugar_ensayo('hora_inicial_ensayo_<?php echo $id_ensayo; ?>', 'hora_final_ensayo_<?php echo $id_ensayo; ?>', 'lugar_evento', this.id, <?php echo $id_montaje; ?>);"
+                                                           consulta_disponibilidad_lugar_ensayo('hora_inicial_ensayo_<?php echo $id_ensayo; ?>', 'hora_final_ensayo_<?php echo $id_ensayo; ?>', <?php echo $id_lugar; ?>, this.id, <?php echo $id_montaje; ?>, this);"
                                                    readonly> 
                                         </div>
                                     </div>
@@ -636,10 +637,12 @@ if (isset($authUrl)) {
                                         <label style="margin-left: 1rem;color:#00C2EE">Horario inicial</label>
                                         <div class="input-field">
                                             <i class="material-icons prefix c-azul">access_time</i>
-                                            <input type="text" 
+                                            <input class="timepicker" 
+                                                   type="text" 
                                                    id="hora_inicial_ensayo_<?php echo $id_ensayo; ?>"
                                                    style="font-size: 1rem" 
                                                    value="<?php echo $row[1]; ?>" 
+                                                   onchange="consulta_disponibilidad_lugar_ensayo(this.id, 'hora_final_ensayo_<?php echo $id_ensayo; ?>', <?php echo $id_lugar; ?>, 'calendario_ensayo_<?php echo $id_ensayo; ?>', <?php echo $id_montaje; ?>, this);"
                                                    readonly>
                                         </div>
                                     </div>
@@ -647,10 +650,12 @@ if (isset($authUrl)) {
                                         <label style="margin-left: 1rem;color:#00C2EE">Horario final</label>
                                         <div class="input-field">
                                             <i class="material-icons prefix c-azul">access_time</i>
-                                            <input type="text" 
+                                            <input class="timepicker" 
+                                                   type="text" 
                                                    id="hora_final_ensayo_<?php echo $id_ensayo; ?>"
                                                    style="font-size: 1rem" 
                                                    value="<?php echo $row[2]; ?>" 
+                                                   onchange="consulta_disponibilidad_lugar_ensayo('hora_inicial_ensayo_<?php echo $id_ensayo; ?>', this.id, <?php echo $id_lugar; ?>, 'calendario_ensayo_<?php echo $id_ensayo; ?>', <?php echo $id_montaje; ?>, this);"
                                                    readonly>
                                         </div>
                                     </div>
@@ -660,48 +665,56 @@ if (isset($authUrl)) {
                                                   readonly
                                                   id="requerimientos_especiales_ensayo_<?php echo $id_ensayo; ?>"></textarea>
                                     </div>
-                                    <?php if ($id_privilegio == 3): ?>
-                                        <div class="input-field col s12">
-                                            <div style="text-align: center">
-                                                <a class="waves-effect waves-light col s12 l4" 
-                                                   href="#!"
-                                                   onclick='habilitar_ensayo(<?php echo $id_ensayo; ?>);'  
-                                                   id="btn_actualizar_ensayo_<?php echo $id_ensayo; ?>"
-                                                   style="float: none">
-                                                    <img src='../../../images/Editar.svg' style="width: 80px;">
-                                                </a>
-                                                &nbsp;&nbsp; 
-                                                <span id="caja_btn_enviar_ensayo_<?php echo $id_ensayo; ?>" hidden>                                                                                            
-                                                    <button class="waves-effect waves-light btn green accent-4 white-text col s12 l4" 
-                                                            id="btn_enviar_ensayo_<?php echo $id_ensayo; ?>"
-                                                            type="button" 
-                                                            onclick=""
-                                                            style="background-color: #00C2EE;float: none">Actualizar
-                                                        <i class="material-icons right">save</i>
-                                                    </button>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    <?php endif; ?>
                                 </div>
                                 <div id="tab_2_<?php echo $counter; ?>">
                                     <?php
                                     $personal = $control->consulta_personal_ensayo($id_montaje, $n_ensayo);
+                                    $personal_ensayo_index = 0;
+                                    $id_personal_coleccion_ensayo = array();
                                     while ($row_personal = mysqli_fetch_array($personal)) :
-                                        ?>
+                                        $personal_ensayo_index++;
+                                        $id_personal_ensayo = $row_personal[2];
+                                        array_push($id_personal_coleccion_ensayo, $id_personal_ensayo);
+                                        ?>                                 
                                         <div class="input-field col s12 l6">
                                             <i class="material-icons prefix c-azul">build</i>
-                                            <label style="margin-left: 1rem;color:#00C2EE"><?php echo $row_personal[0]; ?></label>
-                                            <input type="text" style="font-size: 1rem" value="<?php echo $row_personal[1]; ?>" readonly>
-                                        </div>
+                                            <select class="personal_ensayo_<?php echo $id_personal_ensayo; ?>" id="personal_ensayo_<?php echo $personal_ensayo_index; ?>" readonly>
+                                                <option value="<?php echo $row_personal[1]; ?>" selected><?php echo $row_personal[1]; ?></option>
+                                            </select>
+                                            <label style="margin-left: 1rem;color:#00C2EE"><?php echo $row_personal[0]; ?></label> 
+                                        </div>                    
                                     <?php endwhile; ?>
                                 </div>
                             </div>
                             <script>
-                                $("#requerimientos_especiales_ensayo_<?php echo $counter; ?>").val("<?php echo $row[3]; ?>");
+                                $("#requerimientos_especiales_ensayo_<?php echo $id_ensayo; ?>").val("<?php echo $requerimientos_especiales_ensayo; ?>");
                                 M.textareaAutoResize($('textarea'));
                                 $('.tabs').tabs();
                             </script>
+                            <?php if ($id_privilegio == 3): ?>
+                                <div class="input-field col s12">
+                                    <div style="text-align: center">
+                                        <a class="waves-effect waves-light col s12 l4" 
+                                           href="#!"
+                                           onclick="habilitar_ensayo(<?php echo $id_ensayo; ?>, <?php echo $personal_ensayo_index; ?>);
+                                                   consultar_disponibilidad_personal_ensayo('hora_inicial_ensayo_<?php echo $id_ensayo; ?>', 'hora_final_ensayo_<?php echo $id_ensayo; ?>', 'calendario_ensayo_<?php echo $id_ensayo; ?>');"  
+                                           id="btn_actualizar_ensayo_<?php echo $id_ensayo; ?>"
+                                           style="float: none">
+                                            <img src='../../../images/Editar.svg' style="width: 80px;">
+                                        </a>
+                                        &nbsp;&nbsp; 
+                                        <span id="caja_btn_enviar_ensayo_<?php echo $id_ensayo; ?>" hidden>                                                                                            
+                                            <button class="waves-effect waves-light btn green accent-4 white-text col s12 l4" 
+                                                    id="btn_enviar_ensayo_<?php echo $id_ensayo; ?>"
+                                                    type="button" 
+                                                    onclick='actualizar_ensayo(<?php echo $id_ensayo; ?>, "calendario_ensayo_<?php echo $id_ensayo; ?>", "hora_inicial_ensayo_<?php echo $id_ensayo; ?>", "hora_final_ensayo_<?php echo $id_ensayo; ?>", "requerimientos_especiales_ensayo_<?php echo $id_ensayo; ?>", <?php echo json_encode($id_personal_coleccion_ensayo); ?>, <?php echo $n_ensayo; ?>, <?php echo $id_montaje; ?>)' 
+                                                    style="background-color: #00C2EE;float: none">Actualizar
+                                                <i class="material-icons right">save</i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     <?php endwhile; ?>
 
@@ -720,7 +733,7 @@ if (isset($authUrl)) {
                                 <button class="waves-effect waves-light btn b-azul white-text col s12 l4" 
                                         id="btn_enviar_formulario"
                                         type="button" 
-                                        onclick="actualizar_montaje('<?php echo $id_montaje; ?> ')"
+                                        onclick="actualizar_montaje('<?php echo $id_montaje; ?>')"
                                         style="background-color: #00C2EE;float: none">Actualizar
                                     <i class="material-icons right">send</i>
                                 </button>
@@ -802,6 +815,7 @@ if (isset($authUrl)) {
     var id_manteles_coleccion = null;
     var id_equipo_tecnico_coleccion = null;
     var id_personal_coleccion = null;
+    var id_personal_ensayo_coleccion = [];
     var mobiliario_index = null;
     var manteles_index = null;
     var equipo_tecnico_index = null;
@@ -820,7 +834,7 @@ if (isset($authUrl)) {
             'maxTime': '23:59',
             'timeFormat': 'H:i:s'
         });
-        $("#disponible_mobiliario_1").text("aaaaaa");
+        //$("#disponible_mobiliario_1").text("aaaaaa");
     });
 
     function mostrar_modal_estatus(id, estatus) {
@@ -1281,11 +1295,20 @@ if (isset($authUrl)) {
             $("#loading").fadeOut();
         });
     }
-    function habilitar_ensayo(id_ensayo) {
+    function habilitar_ensayo(id_ensayo, personal_ensayo_index) {
+        $('.timepicker').timepicker({
+            'step': 60,
+            'minTime': '00:00',
+            'maxTime': '23:59',
+            'timeFormat': 'H:i:s'
+        });
         $("#calendario_ensayo_" + id_ensayo).prop("readonly", false).focus();
         $("#hora_inicial_ensayo_" + id_ensayo).prop("readonly", false);
         $("#hora_final_ensayo_" + id_ensayo).prop("readonly", false);
         $("#requerimientos_especiales_ensayo_" + id_ensayo).prop("readonly", false);
+        for (var i = 1; i <= personal_ensayo_index; i++) {
+            $("#personal_ensayo_" + i).prop("readonly", false);
+        }
         if ($("#caja_btn_enviar_ensayo_" + id_ensayo).prop("hidden")) {
             $("#calendario_ensayo_" + id_ensayo).prop("disabled", false);
             $("#caja_btn_enviar_ensayo_" + id_ensayo).prop("hidden", false);
@@ -1324,12 +1347,12 @@ if (isset($authUrl)) {
             $("#calendario_ensayo_" + id_ensayo).prop("disabled", true);
         }
     }
-    function consulta_disponibilidad_lugar_ensayo(id_hora_inicial, id_hora_final, id_lugar, id_fecha_montaje, id_evento) {
-        var lugar = $("#" + id_lugar).val();
+    function consulta_disponibilidad_lugar_ensayo(id_hora_inicial, id_hora_final, id_lugar, id_fecha_montaje,
+            id_evento, el) {
         var fecha_montaje = formatear_fecha_calendario_formato_a_m_d_guion($("#" + id_fecha_montaje).val());
         var horario_evento = $("#" + id_hora_inicial).val();
         var horario_final_evento = $("#" + id_hora_final).val();
-        
+
         $.ajax({
             url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/get_consulta_disponibilidad_lugar.php',
             type: 'GET',
@@ -1338,7 +1361,7 @@ if (isset($authUrl)) {
                 $("#loading").fadeIn();
             },
             data: {
-                id_lugar: lugar,
+                id_lugar: id_lugar,
                 fecha_montaje: fecha_montaje,
                 horario_evento: horario_evento,
                 horario_final_evento: horario_final_evento,
@@ -1350,6 +1373,88 @@ if (isset($authUrl)) {
                 M.toast({
                     html: '¡El lugar seleccionado ha sido ocupado con anterioridad!',
                     classes: 'deep-orange c-blanco'
+                });
+                el.value = el.defaultValue;
+                el.focus();
+            }
+        }).always(() => {
+            $("#loading").fadeOut();
+        });
+    }
+    function consultar_disponibilidad_personal_ensayo(id_hora_inicial, id_hora_final, id_fecha_consulta) {
+        var hora_inicial = $("#" + id_hora_inicial);
+        var hora_final = $("#" + id_hora_final);
+        var fecha_consulta = formatear_fecha_calendario_formato_m_d_a($("#" + id_fecha_consulta).val());
+        $.ajax({
+            url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/get_consulta_mobiliario.php',
+            type: 'GET',
+            dataType: 'json',
+            beforeSend: () => {
+                $("#loading").fadeIn();
+            },
+            data: {
+                personal: true,
+                hora_inicial: hora_inicial.val(),
+                hora_final: hora_final.val(),
+                fecha_consulta: fecha_consulta
+            }
+        }).done((res) => {
+            if (res) {
+                for (var item in res) {
+                    if ($(`.personal_ensayo_${res[item].id_personal}`).length > 0) {
+                        var options = "";
+                        $(`.personal_ensayo_${res[item].id_personal}`).html('');
+                        for (var i = 1; i <= res[item].disponibilidad; i++) {
+                            options += `<option value="${i}">${i}</option>`;
+                        }
+                        $(`.personal_ensayo_${res[item].id_personal}`).html(options);
+                        $("select").formSelect();
+                    }
+                }
+            }
+        }).always(() => {
+            $("#loading").fadeOut();
+        });
+    }
+    function actualizar_ensayo(id_ensayo, id_fecha_ensayo, id_hora_inicial_ensayo, id_hora_final_ensayo,
+            id_requerimientos_ensayo, id_tipo_personal_conleccion, n_ensayo, id_montaje) {
+        var fecha_ensayo = $("#" + id_fecha_ensayo);
+        var hora_inicial_ensayo = $("#" + id_hora_inicial_ensayo);
+        var hora_final_ensayo = $("#" + id_hora_final_ensayo);
+        var requerimientos_ensayo = $("#" + id_requerimientos_ensayo);
+        var id_tipo_personal_conleccion_ensayo = id_tipo_personal_conleccion;
+        var cantidad_personal = [];
+
+        for (var item in id_tipo_personal_conleccion_ensayo) {
+            var id = id_tipo_personal_conleccion_ensayo[item];
+            if ($(".personal_ensayo_" + id).length > 0) {
+                cantidad_personal.push({id: id, cantidad: $(".personal_ensayo_" + id).val()});
+            }
+        }
+        
+        $.ajax({
+            url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/post_edicion_ensayo.php',
+            type: 'POST',
+            dataType: 'json',
+            beforeSend: () => {
+                $("#loading").fadeIn();
+            },
+            data: {
+                fecha_ensayo_formateada: formatear_fecha_calendario_formato_a_m_d_guion(fecha_ensayo.val()),
+                fecha_ensayo:fecha_ensayo.val(),
+                hora_inicial_ensayo: hora_inicial_ensayo.val(),
+                hora_final_ensayo: hora_final_ensayo.val(),
+                id_ensayo: id_ensayo,
+                requerimientos_ensayo: requerimientos_ensayo.val(),
+                cantidad_personal: cantidad_personal,
+                n_ensayo:n_ensayo,
+                id_montaje:id_montaje
+            }
+        }).done((res) => {
+            if(res){                
+                M.toast({
+                    html: '¡Solicitud exitosa!',
+                    classes: 'green accent-4 c-blanco'
                 });
             }
         }).always(() => {

@@ -707,7 +707,7 @@ class ControlEvento {
         if ($connection) {
             $sql = "SELECT DISTINCT b.descripcion, (SELECT COUNT(*) FROM  Personal_ocupado_montaje a "
                     . "WHERE a.id_tipo_personal = b.tipo_personal "
-                    . "AND a.id_evento_montaje= $id_montaje AND a.n_ensayo = $n_ensayo AND a.ensayo =1) AS cantidad "
+                    . "AND a.id_evento_montaje= $id_montaje AND a.n_ensayo = $n_ensayo AND a.ensayo =1) AS cantidad, b.tipo_personal  "
                     . "FROM Personal_ocupado_montaje a "
                     . "INNER JOIN Personal_montajes b ON a.id_tipo_personal = b.tipo_personal "
                     . "WHERE a.id_evento_montaje = $id_montaje and a.id_tipo_personal = b.tipo_personal ORDER BY b.tipo_personal";
@@ -1079,6 +1079,57 @@ class ControlEvento {
         if ($connection) {
             $sql = "SELECT a.id_privilegio FROM Usuarios_privilegios a "
                     . "INNER JOIN usuarios b ON b.id = a.id_usuario WHERE b.correo = '$correo' ";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function actualizar_ensayo($id_ensayo,$fecha_ensayo,$hora_inicial_ensayo, $hora_final_ensayo, $requerimientos_ensayo) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "UPDATE Evento_ensayos SET "
+                    . "fecha_ensayo='$fecha_ensayo', "
+                    . "horario_inicial='$hora_inicial_ensayo', "
+                    . "horario_final='$hora_final_ensayo', "
+                    . "requerimientos_especiales='$requerimientos_ensayo' WHERE id =$id_ensayo;";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function actualizar_personal_ensayo($id_montaje, $id_tipo_personal,$fecha_ensayo,$hora_inicial_ensayo, 
+            $hora_final_ensayo, $hora_min, $hora_max,$n_ensayo) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "INSERT INTO Personal_ocupado_montaje( "
+                    . "`id_evento_montaje`, "
+                    . "`id_tipo_personal`, "
+                    . "`fecha`, "
+                    . "`horario`, "
+                    . "`horario_final`, "
+                    . "`hora_min`, "
+                    . "`hora_max`, "
+                    . "`n_ensayo`, "
+                    . "`ensayo`) VALUES ( "
+                    . "'$id_montaje', "
+                    . "'$id_tipo_personal', "
+                    . "'$fecha_ensayo', "
+                    . "'$hora_inicial_ensayo', "
+                    . "'$hora_final_ensayo', "
+                    . "'$hora_min', "
+                    . "'$hora_max', "
+                    . "'$n_ensayo', "
+                    . "'1');";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function eliminar_personal_edicion_ensayo($id_montaje, $id_tipo_personal) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "DELETE FROM Personal_ocupado_montaje WHERE `id_evento_montaje`= $id_montaje "
+                    . "AND `id_tipo_personal` = $id_tipo_personal AND `ensayo` = TRUE";
             mysqli_set_charset($connection, "utf8");
             return mysqli_query($connection, $sql);
         }

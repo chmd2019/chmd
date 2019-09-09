@@ -148,5 +148,21 @@ class ControlTransportes {
             return mysqli_query($connection, $sql);
         }
     }
+    public function verificar_permiso_duplicado_x_fecha($fecha, $nfamilia){
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT id_permiso FROM Ventana_Permisos WHERE fecha_cambio = '$fecha' AND nfamilia=$nfamilia LIMIT 1;";
+            mysqli_set_charset($connection, 'utf8');
+            return mysqli_query($connection, $sql);
+        }
+    }
+    public function verificar_permiso_duplicado_x_alumnos($id_permiso, $id_alumno){
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT id_alumno FROM Ventana_permisos_alumnos WHERE id_permiso = $id_permiso AND id_alumno = $id_alumno";
+            mysqli_set_charset($connection, 'utf8');
+            return mysqli_query($connection, $sql);
+        }
+    }
 
 }

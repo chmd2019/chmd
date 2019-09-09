@@ -2,11 +2,13 @@
 
 require '../../Model/DBManager.php';
 require '../../Helpers/DateHelper.php';
+require '../../Transportes/common/ControlTransportes.php';
 
 $db_manager = new DBManager();
 $date_helper = new DateHelper();
 //seteael uso horario para ciudad de mexico
 $date_helper->set_timezone();
+$control = new ControlTransportes();
 
 $idusuario = $_POST['idusuario'];
 $calle_numero = $_POST['calle_numero'];
@@ -43,7 +45,23 @@ if ($hora_limite && $date_helper->comprobar_igual_actual($fecha_inicial)) {
 
 if ($tipo_permiso == 1) {
     $connection = $db_manager->conectar1();
+    
     if ($connection) {
+        $verifica_duplicado_x_fecha = $control->verificar_permiso_duplicado_x_fecha($fecha_permiso, $nfamilia);
+        $id_permiso = mysqli_fetch_array($verifica_duplicado_x_fecha)[0];
+        
+        if ($id_permiso > 0) {
+            //echo json_encode($verifica_duplicado_x_fecha);return;
+            foreach ($coleccion_ids as $value) {
+                $verifica_duplicado_x_alumno = $control->verificar_permiso_duplicado_x_alumnos($id_permiso, $value);
+                $id_alumno_duplicado = mysqli_fetch_array($verifica_duplicado_x_alumno)[0];
+                if ($id_alumno_duplicado>0) {
+                    $nombre_alumno = mysqli_fetch_array($control->consultar_nombre_alumno($id_alumno_duplicado))[0];
+                    echo json_encode("El alumno $nombre_alumno ya tiene una solicitud de transporte generada en la fecha asignada"); 
+                    return;
+                }
+            }
+        }
         $sql = "INSERT INTO Ventana_Permisos(
                 idusuario,
                 calle_numero,
@@ -73,7 +91,7 @@ if ($tipo_permiso == 1) {
         $insertar = mysqli_query($connection, $sql);
         if (!$insertar) {
             die("error:" . mysqli_error($connection));
-            echo "Registro fallido";
+            echo json_encode("Registro fallido");
         }
 
         if ($insertar) {
@@ -86,7 +104,7 @@ if ($tipo_permiso == 1) {
             }
             $sql = "COMMIT";
             mysqli_query($connection, $sql);
-            echo 1;
+            echo json_encode(true);
         } else {
             $sql = "ROLLBACK";
             mysqli_query($connection, $sql);

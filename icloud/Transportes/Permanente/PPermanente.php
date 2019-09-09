@@ -4,7 +4,7 @@ include_once "$root_icloud/Transportes/components/sesion.php";
 include_once "$root_icloud/components/layout_top.php";
 $idseccion = $_GET['idseccion'];
 
-//zona horaria para America/Mexico_city 
+//zona horaria para America/Mexico_city
 require "$root_icloud/Helpers/DateHelper.php";
 $objDateHelper = new DateHelper();
 $objDateHelper->set_timezone();
@@ -16,24 +16,24 @@ $fecha_actual_impresa_script = "<script>var fecha = new Date('$fecha_actual');"
         . "document.write(fecha)</script>";
 if (isset($authUrl)) {
     header("Location: $redirect_uri?logout=1");
-} else {    
+} else {
     $user = $service->userinfo->get();
     $correo = $user->email;
     $objCliente = new Login();
     $consulta = $objCliente->acceso_login($correo);
     include_once "$root_icloud/components/navbar.php";
     ?>
-    <div class="row">    
-        <div class="col s12 m12 l9 b-blanco border-azul" style="float: none;margin: 0 auto;"> 
+    <div class="row">
+        <div class="col s12 m12 l9 b-blanco border-azul" style="float: none;margin: 0 auto;">
             <div>
                 <br>
                 <h4 class="c-azul" style="text-align: center;">Cambio permanente</h4>
                 <div>
-                    <?php include './View_permanente.php'; ?> 
+                    <?php include './View_permanente.php'; ?>
                 </div>
                 <?php
             }
-            ?>               
+            ?>
         </div>
     </div>
 </div>
@@ -49,11 +49,14 @@ if (isset($authUrl)) {
 <script>
 
     $(document).ready(function () {
+      $("th").css("text-align", "center");
+      $("td").css("text-align", "center");
+      
         $('.fixed-action-btn').floatingActionButton({
             hoverEnabled: false
         });
         $('.modal').modal();
-        setInterval(function(){            
+        setInterval(function(){
             window.location.reload();
         }, 30000);
     });
