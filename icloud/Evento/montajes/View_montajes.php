@@ -48,14 +48,14 @@ $fecha_actual_impresa_script = "<script>var fecha = new Date('$fecha_actual');"
     <?php else: ?>
         <br>
         <!--Pinta solo el encabezado de la tabla-->
-        <table>
+        <table id="tabla_paginacion" class="table highlight">
             <thead>
                 <tr class="b-azul white-text">
-                    <td scope="row">Fecha</td>
-                    <td class="hide-on-med-and-down">Solicitante</td>
-                    <td>Evento</td>
-                    <td>Estatus</td>
-                    <td>Acciones</td>
+                    <td scope="col">Fecha</td>
+                    <td class="hide-on-med-and-down" scope="col">Solicitante</td>
+                    <td scope="col">Evento</td>
+                    <td scope="col">Estatus</td>
+                    <td scope="col">Acciones</td>
                 </tr>
             </thead>
             <tbody> 
@@ -78,17 +78,17 @@ $fecha_actual_impresa_script = "<script>var fecha = new Date('$fecha_actual');"
                             break;
                     }
                     ?>
-                    <tr style="cursor:pointer;">
-                        <th><?php echo $fecha_montaje; ?></th>
-                        <th class="hide-on-med-and-down"><?php echo $solicitante; ?></th>
-                        <th><?php echo $nombre_evento; ?></th>
-                        <th><span class="chip white-text" style="font-size: .9rem;padding: 0px 3px;background-color: <?php echo $color_badge; ?>"><?php echo $estatus; ?></span></th>
-                        <td>   
+                    <tr>
+                        <th style="padding: 0px"><?php echo $fecha_montaje; ?></th>
+                        <th style="padding: 0px" class="hide-on-med-and-down"><?php echo $solicitante; ?></th>
+                        <th style="padding: 0px"><?php echo $nombre_evento; ?></th>
+                        <th style="padding: 0px"><span class="chip white-text" style="font-size: .9rem;padding: 0px 3px;background-color: <?php echo $color_badge; ?>"><?php echo $estatus; ?></span></th>
+                        <td style="padding: 0px">   
                             <div class="row">
                                 <div class="col s12 l3" style="padding: 0px">  
                                     <a class="waves-effect waves-light" 
                                        href="https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>">
-                                        <img src='../../images/Ver.svg' style="width: 60px;">
+                                        <img src='../../images/Ver.svg' style="width: 40px;margin-top: 1.2rem">
                                     </a>
                                 </div>                                  
                             </div>

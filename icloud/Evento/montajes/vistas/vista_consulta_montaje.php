@@ -92,7 +92,13 @@ if (isset($authUrl)) {
                     <?php if ($id_privilegio == 3): ?>                    
                         <a class="waves-effect waves-light" href="#!"
                            onclick="habilitar_edicion()">
-                            <img src='../../../images/Editar.svg' style="width: 80px;">
+                            <img src='../../../images/Editar.svg' style="width: 55px;">
+                        </a>
+                        <a class="waves-effect waves-light btn  cyan accent-4 tooltipped" 
+                           data-position="top" 
+                           data-tooltip="Reporte de montaje"
+                           target="_blank"
+                           href="https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_reporte_montaje.php?id=<?php echo $id_montaje;?>"><i class="material-icons">receipt</i>
                         </a>
                     <?php endif; ?>
                     <a class='dropdown-trigger btn <?php echo $color_estatus; ?>' href='#' data-target='dropdown1'>
@@ -126,6 +132,8 @@ if (isset($authUrl)) {
                     <link rel='stylesheet' href='/pruebascd/icloud/materialkit/css/calendario.css'> 
                     <script src='/pruebascd/icloud/materialkit/js/calendario.js'></script>
                     <script src="/pruebascd/icloud/materialkit/js/common.js"></script>
+                    <br> 
+                    <br> 
                     <br> 
                     <br> 
                     <br> 
@@ -383,8 +391,7 @@ if (isset($authUrl)) {
                                 </div>
                             <?php endif; ?>
                         </div>
-                    <?php endif; ?>
-                    <?php
+                    <?php endif; 
                     $manteles = $control->consulta_manteles_montaje($id_montaje);
                     if (mysqli_num_rows($manteles) > 0):
                         ?>
@@ -835,6 +842,7 @@ if (isset($authUrl)) {
             'timeFormat': 'H:i:s'
         });
         //$("#disponible_mobiliario_1").text("aaaaaa");
+        $('.tooltipped').tooltip();
     });
 
     function mostrar_modal_estatus(id, estatus) {
@@ -1431,7 +1439,7 @@ if (isset($authUrl)) {
                 cantidad_personal.push({id: id, cantidad: $(".personal_ensayo_" + id).val()});
             }
         }
-        
+
         $.ajax({
             url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/post_edicion_ensayo.php',
             type: 'POST',
@@ -1441,17 +1449,17 @@ if (isset($authUrl)) {
             },
             data: {
                 fecha_ensayo_formateada: formatear_fecha_calendario_formato_a_m_d_guion(fecha_ensayo.val()),
-                fecha_ensayo:fecha_ensayo.val(),
+                fecha_ensayo: fecha_ensayo.val(),
                 hora_inicial_ensayo: hora_inicial_ensayo.val(),
                 hora_final_ensayo: hora_final_ensayo.val(),
                 id_ensayo: id_ensayo,
                 requerimientos_ensayo: requerimientos_ensayo.val(),
                 cantidad_personal: cantidad_personal,
-                n_ensayo:n_ensayo,
-                id_montaje:id_montaje
+                n_ensayo: n_ensayo,
+                id_montaje: id_montaje
             }
         }).done((res) => {
-            if(res){                
+            if (res) {
                 M.toast({
                     html: '¡Solicitud exitosa!',
                     classes: 'green accent-4 c-blanco'

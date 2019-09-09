@@ -45,9 +45,9 @@ if (isset($authUrl)) {
             hoverEnabled: false
         });
         $('.modal').modal();
-        setInterval(function () {
+        /*setInterval(function () {
             window.location.reload();
-        }, 30000);
+        }, 30000);*/
     });
 </script>
 
