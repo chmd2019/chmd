@@ -66,59 +66,68 @@ if (isset($authUrl)) {
                 <?php if (!$date_helper->comprobar_solicitud_vencida_d_m_y_guion($fecha_destino)): ?>
                     <span class="new badge amber darken-1 w-100" data-badge-caption="Evento vencido"></span>
                     <br>
-                <?php endif; ?>                    
+                <?php endif; ?>
 
                 <?php if (!$flag_estatus): ?>
                     <span class="new badge red w-100" data-badge-caption="No es posible realizar cambios para el evento"></span>
                     <br>
                 <?php endif; ?>
+                <div class="row" style="text-align: right;margin:1rem 1rem 0 0">
+                  <a class="waves-effect waves-light"
+                  href="<?php echo $redirect_uri ?>Especial/menu.php?idseccion=<?php echo $idseccion; ?>">
+                      <img src="../../../images/Atras.svg" style="width: 110px"/>
+                <!--
+                <i class="material-icons left">keyboard_backspace</i>Atrás
+              -->
+            </a>
+          </div>
                 <h5 class="c-azul center-align">Inscripción a evento</h5>
                 <br>
-                <div class="row"> 
+                <div class="row">
                     <div class="col s12 l6">
                         <label for="fecha_solicitud" style="margin-left: 1rem">Fecha del evento</label>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">insert_invitation</i>
-                            <input readonly  
-                                   id="fecha_solicitud" 
-                                   style="font-size: 1rem" 
-                                   type="text" 
-                                   value ="<?php echo $fecha_invitacion; ?>">               
-                        </div>                        
-                    </div>     
+                            <input readonly
+                                   id="fecha_solicitud"
+                                   style="font-size: 1rem"
+                                   type="text"
+                                   value ="<?php echo $fecha_invitacion; ?>">
+                        </div>
+                    </div>
                     <div class="col s12 l6">
                         <label for="codigo" style="margin-left: 1rem">Código de invitación</label>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">looks_6</i>
-                            <input readonly  
-                                   id="codigo" 
-                                   style="font-size: 1rem" 
-                                   type="text" 
-                                   value ="<?php echo $codigo_invitacion; ?>">               
-                        </div>                        
-                    </div>   
+                            <input readonly
+                                   id="codigo"
+                                   style="font-size: 1rem"
+                                   type="text"
+                                   value ="<?php echo $codigo_invitacion; ?>">
+                        </div>
+                    </div>
                     <div class="col s12 l6">
                         <label for="familia_invita" style="margin-left: 1rem">Familia que invita</label>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">nature_people</i>
-                            <input readonly  
-                                   id="familia_invita" 
-                                   style="font-size: 1rem" 
-                                   type="text" 
-                                   value ="<?php echo $familia; ?>">               
-                        </div>                        
-                    </div>     
+                            <input readonly
+                                   id="familia_invita"
+                                   style="font-size: 1rem"
+                                   type="text"
+                                   value ="<?php echo $familia; ?>">
+                        </div>
+                    </div>
                     <div class="col s12 l6">
                         <label for="tipo_evento" style="margin-left: 1rem">Tipo de evento</label>
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">cake</i>
-                            <input readonly  
-                                   id="tipo_evento" 
-                                   style="font-size: 1rem" 
-                                   type="text" 
-                                   value ="<?php echo $tipo_evento; ?>">               
-                        </div>                        
-                    </div> 
+                            <input readonly
+                                   id="tipo_evento"
+                                   style="font-size: 1rem"
+                                   type="text"
+                                   value ="<?php echo $tipo_evento; ?>">
+                        </div>
+                    </div>
                     <br>
                     <?php if ($date_helper->comprobar_solicitud_vencida_d_m_y_guion($fecha_destino) && $flag_estatus): ?>
                         <div>
@@ -135,14 +144,14 @@ if (isset($authUrl)) {
                                     <div class="input-field col s12">
                                         <i class="material-icons prefix c-azul">school</i>
                                         <textarea class="materialize-textarea"
-                                                  readonly  
+                                                  readonly
                                                   id="nombre_<?php echo $counter; ?>"
                                                   style="font-size: 1rem"></textarea>
                                     </div>
                                     <div class="switch col s12">
                                         <label class="checks-alumnos">
-                                            <input type="checkbox" 
-                                                   id="alumno_<?php echo $counter; ?>" 
+                                            <input type="checkbox"
+                                                   id="alumno_<?php echo $counter; ?>"
                                                    value="<?php echo $cliente1['id']; ?>"/>
                                             <span class="lever"></span>
                                         </label>
@@ -157,30 +166,32 @@ if (isset($authUrl)) {
                                     $talumnos = $counter;
                                 }
                             }
-                            ?>   
+                            ?>
                             <span class="col s12"><br><br></span>
                             <div class="col s12 l6" style="float: none;margin: 0 auto;">
-                                <button class="btn waves-effect waves-light b-azul white-text w-100" 
+                                <button class="btn waves-effect waves-light b-azul white-text w-100"
                                         id="btn_enviar_formulario"
-                                        type="button" 
+                                        type="button"
                                         onclick="enviar_formulario('<?php echo $id_permiso; ?>', '<?php echo $tipo_evento; ?>', '<?php echo $codigo_invitacion; ?>', '<?php echo $nfamilia; ?>')">Inscribir
                                     <i class="material-icons right">send</i>
                                 </button>
-                            </div>  
-                        </div>  
-                    <?php endif; ?>                    
-                </div>                     
-            </div>                     
-        </div>                     
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
     </div>
 
 <?php }; ?>
-
+<!--
 <div class="fixed-action-btn">
-    <a class="btn-floating btn-large b-azul" href="<?php echo $redirect_uri ?>Especial/menu.php?idseccion=<?php echo $idseccion; ?>">
+    <a class="btn-floating btn-large b-azul"
+    href="<?php echo $redirect_uri ?>Especial/menu.php?idseccion=<?php echo $idseccion; ?>">
         <i class="large material-icons">keyboard_backspace</i>
     </a>
 </div>
+--->
 
 <div class="loading" id="loading">
     <div class="preloader-wrapper big active">
@@ -202,7 +213,7 @@ if (isset($authUrl)) {
     });
     var coleccion_ids = [];
     var coleccion_checkbox_values = [];
-    //validaciones 
+    //validaciones
     function validar_check_alumnos() {
         var selected = '';
         var id = '';

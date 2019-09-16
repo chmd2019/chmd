@@ -19,14 +19,12 @@ $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
     <span>
         <h6><?php echo $fecha_actual_impresa_script; ?></h6>
         <br>
-        <div style="text-align: right">   
-            <a class="waves-effect waves-light btn b-azul c-blanco" 
+        <div style="text-align: right">
+            <a class="waves-effect waves-light"
                href="https://www.chmd.edu.mx/pruebascd/icloud/Especial/menu.php?idseccion=<?php echo $idseccion; ?>">
-                <i class="material-icons left">keyboard_backspace</i>Atrás
-            </a>                
-            <a class="waves-effect waves-light btn red" href="#!" onclick="logout()">
-                <i class="material-icons left">lock</i>Salir
-            </a>  
+                <!-- Boton de Atras-->
+                <img src="../../../images/Atras.svg" style="width: 110px"/>
+            </a>
         </div>
     </span>
     <?php
@@ -45,12 +43,12 @@ $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
         <table class="highlight">
             <thead>
                 <tr class="b-azul white-text">
-                    <th scope="col">Fecha programada</th>
-                    <th scope="col">Estatus</th>
-                    <th scope="col">Acciones</th>
+                    <th scope="col" width="30%">Fecha programada</th>
+                    <th scope="col" width="35%">Estatus</th>
+                    <th scope="col" width="35%">Acciones</th>
                 </tr>
             </thead>
-            <tbody> 
+            <tbody>
                 <?php
                 while ($permiso = mysqli_fetch_array($listado_eventos_inscritos)):
                     $id_permiso = $permiso[0];
@@ -88,19 +86,19 @@ $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
                     }
                     if ($estatus == 1) {
                         $status_detalle = "Pendiente";
-                        $badge = "badge amber accent-4 c-blanco";
+                        $color_badge = "#F6871F";
                     }
-                    if ($estatus == 2 || $autorizado) {
+                    if ($estatus == 2) {
                         $status_detalle = "Autorizado";
-                        $badge = "badge green accent-4 c-blanco";
+                        $color_badge = "#77AF65";
                     }
-                    if ($estatus == 3 || $todos_declinados) {
+                    if ($estatus == 3) {
+                        $color_badge = "#EF4545";
                         $status_detalle = "Declinado";
-                        $badge = "badge red lighten-1 c-blanco";
                     }
-                    if ($estatus == 4 || $todos_cancelados) {
-                        $status_detalle = "Cancelado por usuario";
-                        $badge = "badge red accent-4 c-blanco";
+                    if ($estatus == 4) {
+                        $status_detalle = "Cancelado";
+                        $color_badge = "#EF4545";
                     }
 
                     $fecha_destino = $objDateHelper->formatear_fecha_calendario($fecha_evento);
@@ -110,24 +108,17 @@ $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
                     $solicitud_vencida = $objDateHelper->comprobar_solicitud_vencida_d_m_y_guion($fecha_destino);
                     if ($solicitud_vencida):
                         ?>
-                        <tr style="cursor:pointer;">
+                        <tr style="cursor:pointer;" onclick='window.location.href = "https://www.chmd.edu.mx/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php?familia=<?php echo $familia; ?>&&codigo_evento=<?php echo $codigo_invitacion; ?>&&volver_listado=true"'>
                             <th scope="row"><?php echo $fecha_evento; ?></th>
-                            <td><span class="<?php echo $badge; ?>"><?php echo $status_detalle; ?></span><?php echo " <div class='chip green accent-4 c-blanco' style='margin-top:.5rem'><span><i class='material-icons' style='margin-top:.2rem'>face</i> $i de $total_en_evento</span></div>"; ?></td>
-                            <td>   
-                                <div class="row">
-                                    <div class="col s12 l3">  
-                                        <a class="waves-effect waves-light btn blue accent-3" 
-                                           href="https://www.chmd.edu.mx/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php?familia=<?php echo $familia; ?>&&codigo_evento=<?php echo $codigo_invitacion; ?>&&volver_listado=true">
-                                            <i class="material-icons">pageview</i>
-                                        </a>
-                                    </div>  
-                                    &nbsp;
-                                    &nbsp;
-                                    &nbsp;
-                                    <div class="col s12 l3">
-                                        <?php include '../modales/modal_cancelar_permiso.php'; ?>
-                                    </div>                                     
-                                </div>
+                            <td class="alinear-flex-center">
+                                <span class="chip white-text" style="font-size: .9rem;padding: 0px 3px;background-color: <?php echo $color_badge; ?>"><?php echo $status_detalle; ?></span>
+                                <span class='chip green accent-4 c-blanco'><i class='material-icons' style='margin-top:.2rem'>face</i> <?= $i ?> de <?= $total_en_evento ?></span></td>
+                            <td>
+                                <a class="waves-effect waves-light"
+                                   href="https://www.chmd.edu.mx/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php?familia=<?php echo $familia; ?>&&codigo_evento=<?php echo $codigo_invitacion; ?>&&volver_listado=true">
+                                    <img src="../../../images/Ver.svg" style="width: 40px"/>
+                                </a>
+                                <?php include '../modales/modal_cancelar_permiso.php'; ?>
                             </td>
                         </tr>
                         <?php
@@ -136,7 +127,7 @@ $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
             }
             ?>
         </tbody>
-    </table>    
+    </table>
 </div>
 <br>
 <br>

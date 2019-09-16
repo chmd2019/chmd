@@ -333,4 +333,13 @@ class ControlEspecial {
         }
     }
 
+    public function cancelar_alumno_x_alumno($id_permiso, $id_alumno) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "UPDATE `Ventana_permisos_alumnos` SET `estatus`='4' WHERE `id_permiso`=$id_permiso AND `id_alumno` = $id_alumno;";
+            mysqli_set_charset($connection, 'utf8');
+            return mysqli_query($connection, $sql);
+        }
+    }
+
 }

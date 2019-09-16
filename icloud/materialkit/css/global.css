@@ -204,6 +204,11 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
     color:white;
     background-color: #2962ff;
 }
+.alinear-flex-center{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 @media screen and (min-width: 280px) and (max-width:960px){
     .caja-login{
         width:90%;
@@ -220,5 +225,8 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
     }
     .ui-timepicker-wrapper{
         width: 80% !important;
+    }
+    .alinear-flex-center{
+        display: inline-block;
     }
 }

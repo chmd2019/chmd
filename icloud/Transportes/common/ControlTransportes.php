@@ -52,7 +52,7 @@ class ControlTransportes {
     public function cancela_permiso($id) {
         $connection = $this->con->conectar1();
         if ($connection) {
-            $sql = "UPDATE Ventana_Permisos SET estatus = 4 WHERE id_permiso ='$id'";
+            $sql = "UPDATE Ventana_Permisos SET estatus = 4, archivado = 0 WHERE id_permiso ='$id'";
             mysqli_set_charset($connection, 'utf8');
             mysqli_query($connection, $sql);
             return true;

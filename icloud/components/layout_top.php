@@ -6,6 +6,7 @@
         <!-- CSS Dependencies -->    
         <!-- Materialisze CSS -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link rel='stylesheet' href='/pruebascd/icloud/materialkit/css/calendario.css'> 
         <link rel="stylesheet" href="/pruebascd/icloud/materialkit/css/global.css"> 
         <!-- Fonts -->    
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Varela+Round&display=swap"> 
@@ -17,6 +18,7 @@
         <!-- JS GLOBAL -->    
         <script src="/pruebascd/icloud/Transportes/common/js/common.js"></script>
         <!-- JS GLOBAL -->    
+        <script src='/pruebascd/icloud/materialkit/js/calendario.js'></script>
         <script src="/pruebascd/icloud/materialkit/js/common.js"></script>
         <!-- TIME PICKER -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/timepicker@1.11.15/jquery.timepicker.css">
@@ -25,5 +27,9 @@
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
         <!-- Pusher - Complemento para usar websockets -->    
         <script src="https://js.pusher.com/4.4/pusher.min.js"></script>
+        <!--Canvas-->
+        <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+        <!--PDF-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
     </head>
     <body>

@@ -73,32 +73,44 @@ if (isset($authUrl)) {
     $color_estatus = $montaje[24];
     $id_estatus = $montaje[25];
     $id_lugar = $montaje[26];
-    // se asignan fechas minimas para realizar solicitud
-    $fecha_minima_servicio_cafe = $date_helper->suma_dia_habil(date("d-m-Y"), $dias_servicio_cafe);
-    $fecha_evento_interno = $date_helper->suma_dia_habil(date("d-m-Y"), $dias_evento_interno);
-    $fecha_evento_combinado_externo = $date_helper->suma_dia_habil(date("d-m-Y"), $dias_evento_combinado_externo);
-    $fecha_actual = strtotime(date('d-m-Y'));
-    $fecha_evento_especial = date('Y-m-d', strtotime("+1 month", $fecha_actual));
-    $fecha_minima_ensayo = $date_helper->suma_dia_habil(date("d-m-Y"), 1);
+    //privilegios
     $privilegio = mysqli_fetch_array($control->consultar_privilegio_usuario($correo));
     $id_privilegio = $privilegio[0];
+    //establece si el superusuario puede cancelar el evento cualquier dia
+    $privilegio_cancelar_cualquier_dia = $id_privilegio == 3 ? true : false;
+    //establece si el evento es solo cafe puede cancelar el evento un dia anterior, sino no lo podria hacer
+    $cancelacion_solo_cafe = $solo_cafe == true ? true : false;
+    $cancela = null;
+    $msj_cancelacion = null;
+    if ($privilegio_cancelar_cualquier_dia) {
+        $cancela = true;
+    } elseif (!$cancelacion_solo_cafe) {
+        $fecha_min_cancelacion_permitida = date("Y-m-d", strtotime("$fecha_montaje_simple -3 days"));
+        if (strtotime(date("Y-m-d")) < strtotime($fecha_min_cancelacion_permitida)) {
+            $cancela = true;
+        } else {
+            $cancela = false;
+            $msj_cancelacion = "La solicitud de cancelacion se debe realizar con 3 días de anticipación";
+        }
+    } elseif ($cancelacion_solo_cafe) {
+        if (strtotime(date("Y-m-d")) < strtotime($fecha_montaje_simple)) {
+            $cancela = true;
+        } else {
+            $cancela = false;
+            $msj_cancelacion = "La solicitud de cancelacion se debe realizar con 1 día de anticipación";
+        }
+    }
     ?>
     <div class="row">
         <div class="col s12 l8 border-azul b-blanco" style="float: none;margin: 0 auto;padding:1rem">
             <div>
                 <h5 class="c-azul center-align">Consulta de montaje</h5>
                 <br>
-                <div class="right">
+                <div class="left">    
                     <?php if ($id_privilegio == 3): ?>                    
                         <a class="waves-effect waves-light" href="#!"
                            onclick="habilitar_edicion()">
                             <img src='../../../images/Editar.svg' style="width: 55px;">
-                        </a>
-                        <a class="waves-effect waves-light btn  cyan accent-4 tooltipped" 
-                           data-position="top" 
-                           data-tooltip="Reporte de montaje"
-                           target="_blank"
-                           href="https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_reporte_montaje.php?id=<?php echo $id_montaje;?>"><i class="material-icons">receipt</i>
                         </a>
                     <?php endif; ?>
                     <a class='dropdown-trigger btn <?php echo $color_estatus; ?>' href='#' data-target='dropdown1'>
@@ -109,7 +121,7 @@ if (isset($authUrl)) {
                             <li style="background-color: #F6871F">
                                 <a href="#!" class="c-blanco" 
                                    onclick="mostrar_modal_estatus('<?php echo $id_montaje; ?>', 1)">
-                                    <i class="material-icons c-blanco">done</i>Pendiente</a>
+                                    <i class="material-icons c-blanco">access_time</i>Pendiente</a>
                             </li>
                         <?php endif; ?>
                         <?php if ($id_estatus != 2 && ($id_privilegio == 2 || $id_privilegio == 3)) : ?>   
@@ -126,17 +138,25 @@ if (isset($authUrl)) {
                                     <i class="material-icons c-blanco">delete</i>Declinar</a>
                             </li>
                         <?php endif; ?>
-                    </ul>   
+                    </ul>    
+                </div>
+                <div class="right">                                   
+                    <a class="waves-effect waves-light"
+                       href="<?php echo $redirect_uri ?>Evento/montajes/PMontajes.php?idseccion=<?php echo $idseccion; ?>">
+                        <img src='../../../images/Atras.svg' style="width: 110px">
+                    </a>
                 </div>
                 <div class="row"> 
                     <link rel='stylesheet' href='/pruebascd/icloud/materialkit/css/calendario.css'> 
                     <script src='/pruebascd/icloud/materialkit/js/calendario.js'></script>
                     <script src="/pruebascd/icloud/materialkit/js/common.js"></script>
+                    <br>
                     <br> 
-                    <br> 
-                    <br> 
-                    <br> 
-                    <br> 
+                    <?php if ($id_privilegio == 3): ?>
+                        <br> 
+                        <br> 
+                        <br> 
+                    <?php endif; ?>
                     <div class="input-field col s12 l6">
                         <label>Fecha de solicitud</label>
                         <i class="material-icons prefix c-azul">calendar_today</i>
@@ -391,7 +411,8 @@ if (isset($authUrl)) {
                                 </div>
                             <?php endif; ?>
                         </div>
-                    <?php endif; 
+                        <?php
+                    endif;
                     $manteles = $control->consulta_manteles_montaje($id_montaje);
                     if (mysqli_num_rows($manteles) > 0):
                         ?>
@@ -636,7 +657,7 @@ if (isset($authUrl)) {
                                                    style="font-size: 1rem" 
                                                    value="<?php echo $row[0]; ?>" 
                                                    onchange="fecha_minusculas(this.value, 'calendario_ensayo_<?php echo $id_ensayo; ?>');
-                                                           consulta_disponibilidad_lugar_ensayo('hora_inicial_ensayo_<?php echo $id_ensayo; ?>', 'hora_final_ensayo_<?php echo $id_ensayo; ?>', <?php echo $id_lugar; ?>, this.id, <?php echo $id_montaje; ?>, this);"
+                                                                   consulta_disponibilidad_lugar_ensayo('hora_inicial_ensayo_<?php echo $id_ensayo; ?>', 'hora_final_ensayo_<?php echo $id_ensayo; ?>', <?php echo $id_lugar; ?>, this.id, <?php echo $id_montaje; ?>, this);"
                                                    readonly> 
                                         </div>
                                     </div>
@@ -701,10 +722,10 @@ if (isset($authUrl)) {
                             <?php if ($id_privilegio == 3): ?>
                                 <div class="input-field col s12">
                                     <div style="text-align: center">
-                                        <a class="waves-effect waves-light col s12 l4" 
+                                        <a class="col s12 l4" 
                                            href="#!"
                                            onclick="habilitar_ensayo(<?php echo $id_ensayo; ?>, <?php echo $personal_ensayo_index; ?>);
-                                                   consultar_disponibilidad_personal_ensayo('hora_inicial_ensayo_<?php echo $id_ensayo; ?>', 'hora_final_ensayo_<?php echo $id_ensayo; ?>', 'calendario_ensayo_<?php echo $id_ensayo; ?>');"  
+                                                               consultar_disponibilidad_personal_ensayo('hora_inicial_ensayo_<?php echo $id_ensayo; ?>', 'hora_final_ensayo_<?php echo $id_ensayo; ?>', 'calendario_ensayo_<?php echo $id_ensayo; ?>');"  
                                            id="btn_actualizar_ensayo_<?php echo $id_ensayo; ?>"
                                            style="float: none">
                                             <img src='../../../images/Editar.svg' style="width: 80px;">
@@ -753,12 +774,6 @@ if (isset($authUrl)) {
     </div>
 </div>
 
-<div class="fixed-action-btn">
-    <a class="btn-floating btn-large waves-effect waves-light b-azul" href="<?php echo $redirect_uri ?>Evento/montajes/PMontajes.php?idseccion=<?php echo $idseccion; ?>">
-        <i class="large material-icons">keyboard_backspace</i>
-    </a>
-</div>
-
 <div class="loading" id="loading" >
     <div class="preloader-wrapper big active">
         <div class="spinner-layer spinner-blue-only">
@@ -794,7 +809,11 @@ if (isset($authUrl)) {
     </div>
     <div class="modal-footer" style="padding:1rem">
         <a href="#!" class="modal-close waves-effect btn-flat white-text" style="background-color: #EF4545">Cancelar</a>    
-        <a href="#!" class="waves-effect btn-flat b-azul white-text" onclick="actualizar_estatus()">Aceptar</a>
+        <a href="#!" 
+           class="waves-effect btn-flat b-azul white-text" 
+           onclick='actualizar_estatus(<?php echo json_encode($cancela); ?>, "<?php echo $msj_cancelacion; ?>")'>
+            Aceptar
+        </a>
     </div>        
     <br>    
 </div>
@@ -851,7 +870,16 @@ if (isset($authUrl)) {
         $("#input_id").val(id);
         $("#input_estatus").val(estatus);
     }
-    function actualizar_estatus() {
+    function actualizar_estatus(flag_cancela, msj_cancelacion) {
+        if (!flag_cancela) {
+            var instance = M.Modal.getInstance($("#modal_estatus"));
+            instance.close();
+            M.toast({
+                html: msj_cancelacion,
+                classes: 'deep-orange c-blanco'
+            });
+            return;
+        }
         $.ajax({
             url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/post_actualiza_estatus.php',
             type: 'POST',
@@ -1304,6 +1332,9 @@ if (isset($authUrl)) {
         });
     }
     function habilitar_ensayo(id_ensayo, personal_ensayo_index) {
+        if(!$("#requerimientos_especiales_ensayo_" + id_ensayo).prop("readonly")){
+            //return;
+        }
         $('.timepicker').timepicker({
             'step': 60,
             'minTime': '00:00',

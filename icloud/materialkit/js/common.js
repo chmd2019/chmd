@@ -265,3 +265,16 @@ function validar_horario_final_ensayo(el, id_hora_inicial) {
         return;
     }
 }
+
+/*function descargarPDF(nombre_pdf) {
+    var elemento = document.getElementById("imprimir");
+    html2canvas(elemento, {
+        onrendered: function (canvas) {
+            var img = canvas.toDataURL("image/png");
+            var doc = new jsPDF();
+            doc.addImage(img, 'JPEG', 0, 0);
+            doc.save(nombre_pdf);
+        }
+
+    });
+}*/

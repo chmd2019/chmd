@@ -91,15 +91,15 @@ if (isset($authUrl)) {
         $fecha_minima_ensayo = $date_helper->suma_dia_habil(date("d-m-Y"), 1);
         $privilegio = mysqli_fetch_array($control->consultar_privilegio_usuario($correo));
         $id_privilegio = $privilegio[0];
-        
         ?>
-        <link rel='stylesheet' href='/pruebascd/icloud/materialkit/css/calendario.css'> 
-        <script src='/pruebascd/icloud/materialkit/js/calendario.js'></script>
-        <script src="/pruebascd/icloud/materialkit/js/common.js"></script>
         <div class="row">
-            <div class="col s12 l8 b-blanco border-azul" style="float: none;margin: 0 auto;">
-                <br>
-                <br>
+            <div class="col s12 l8 b-blanco border-azul" style="float: none;margin: 0 auto;">                
+                <div class="row" style="text-align: right;margin:1rem 1rem 0 0">
+                  <a class="waves-effect waves-light"
+                  href="<?php echo $redirect_uri ?>Evento/montajes/PMontajes.php?idseccion=<?php echo $idseccion; ?>">
+                      <img src='../../../images/Atras.svg' style="width: 110px">
+                  </a>
+                </div>
                 <h5 class="center-align c-azul">Solicitud de requerimientos de montaje</h5>
                 <br>
                 <div class="row" style="padding:0rem .5rem;">
@@ -373,6 +373,7 @@ if (isset($authUrl)) {
                         <input id="nombre_evento"
                                placeholder="Nombre del evento" 
                                autocomplete="off"
+                               onkeyup="capitaliza_primer_letra(this.id)"
                                type="text">
                     </div>              
                     <div class="input-field col s12 l6">
@@ -381,11 +382,12 @@ if (isset($authUrl)) {
                         <input id="responsable_evento"
                                placeholder="Responsable" 
                                autocomplete="off"
+                               onkeyup="capitaliza_primer_letra(this.id)"
                                type="text">
                     </div>                    
                     <div class="input-field col s12 l6" id="caja_lugar_evento">
                         <i class="material-icons prefix c-azul">place</i>
-                        <select onchange="id_lugar_evento_function = this.value;consula_disponibilidad_lugar(this.value, this.id);" id="lugar_evento">
+                        <select onchange="id_lugar=this.value;id_lugar_evento_function = this.value;consula_disponibilidad_lugar(this.value, this.id);" id="lugar_evento">
                         </select>
                         <label style="margin-left: 1rem">Lugar del evento</label>
                     </div>
@@ -400,7 +402,8 @@ if (isset($authUrl)) {
                             <label>Anexa programa minuto a minuto</label>
                             <input class="file-path validate" 
                                    type="text" 
-                                   placeholder="Anexar archivo"
+                                   placeholder="Presionar ícono"
+                                   readonly
                                    style="font-size: .8rem"> 
                         </div>
                         <div class="chip blue white-text">
@@ -577,6 +580,7 @@ if (isset($authUrl)) {
                     <div class="input-field col s12">
                         <i class="material-icons prefix c-azul">list_alt</i>
                         <textarea class="materialize-textarea"
+                                  onkeyup="capitaliza_primer_letra(this.id)"
                                   id="requerimientos_especiales"
                                   placeholder="Requerimientos especiales"></textarea>  
                         <label style="margin-left: 1rem">Requerimientos especiales</label>
@@ -584,12 +588,6 @@ if (isset($authUrl)) {
                     <span class="col s12"><br></span>
                     <div class="input-field col s12">
                         <div style="text-align: center">
-                            <!--<button class="waves-effect waves-light btn col s12 l4" 
-                                    type="button" 
-                                    style="background-color: #00C2EE;float: none">PREVISUALIZAR
-                                <i class="material-icons right">search</i>
-                            </button>
-                            <span class="col s12 hide-on-med-and-up"><br></span>-->
                             <button class="waves-effect waves-light btn b-azul white-text col s12 l4" 
                                     id="btn_enviar_formulario"
                                     type="button" 
@@ -607,12 +605,6 @@ if (isset($authUrl)) {
     }
 }
 ?>
-
-<div class="fixed-action-btn">
-    <a class="btn-floating btn-large waves-effect waves-light b-azul" href="<?php echo $redirect_uri ?>Evento/montajes/PMontajes.php?idseccion=<?php echo $idseccion; ?>">
-        <i class="large material-icons">keyboard_backspace</i>
-    </a>
-</div>
 
 <div class="loading" id="loading" >
     <div class="preloader-wrapper big active">
@@ -689,7 +681,7 @@ if (isset($authUrl)) {
         M.textareaAutoResize($('textarea'));
         $('.timepicker').timepicker({
             'step': 60,
-            'minTime': '00:00',
+            'minTime': '06:00',
             'maxTime': '23:59',
             'timeFormat': 'H:i:s'
         });
@@ -862,7 +854,7 @@ if (isset($authUrl)) {
         lista_ensayos = el.value;
         var codigo_ensayo = "";
         for (var i = 0; i < el.value; i++) {
-            var codigo = `<div class="col s12 card"> <div class="card-content" style="color:#00C2EE;"> <h5>Ensayo N° ${i + 1}</h5> </div><div class="card-tabs"> <ul class="tabs tabs-fixed-width"> <li class="tab blue white-text active"><a href="#tab_1_${i + 1}">Información de ensayo</a> </li><li class="tab blue white-text" onclick="cargar_personal_ensayo(${i})"><a href="#tab_2_${i + 1}">Personal</a> </li></ul> </div><div class="card-content"> <div id="tab_1_${i + 1}"> <div class="col s12 l6"> <label style="margin-left: 1rem;color:#00C2EE">Fecha del ensayo</label> <div class="input-field"> <i class="material-icons prefix c-azul">calendar_today</i> <input type="text" class="datepicker" id="fecha_ensayo_${i}" autocomplete="off" placeholder="Escoja fecha" onchange="fecha_minusculas(this.value, 'fecha_permiso');validar_fecha_no_posterior_ensayo(this);" style="font-size: 1rem"> </div></div><div class="col s12 l6"> <label style="margin-left: 1rem;color:#00C2EE">Horario inicial</label> <div class="input-field"> <i class="material-icons prefix c-azul">access_time</i> <input type="text" id="horario_inicial_ensayo_${i}" class="timepicker" onkeypress="return validar_solo_numeros(event, this.id, 1)" autocomplete="off" onfocus="blur();" placeholder="Seleccione horario"> </div></div><div class="col s12 l6"> <label style="margin-left: 1rem;color:#00C2EE">Horario final</label> <div class="input-field"> <i class="material-icons prefix c-azul">access_time</i> <input type="text" id="horario_final_ensayo_${i}" class="timepicker" onkeypress="return validar_solo_numeros(event, this.id, 1)" onchange="validar_horario_final_ensayo(this,'horario_inicial_ensayo_${i}')" autocomplete="off" onfocus="blur();" placeholder="Seleccione horario"> </div></div><div class="input-field col s12"> <i class="material-icons prefix c-azul">list_alt</i> <textarea class="materialize-textarea" id="requerimientos_especiales_ensayo_${i}" placeholder="Requerimientos especiales"></textarea> </div></div><div id="tab_2_${i + 1}"> <div id="caja_select_${i}"> <div class="input-field col s12 l6"> <i class="material-icons prefix c-azul">build</i> <select id="select_montaje_ensayo_${i}"></select> <label style="margin-left: 1rem;color:#00C2EE">Personal de montaje</label> </div><div class="input-field col s12 l6"> <i class="material-icons prefix c-azul">build</i> <select id="select_cabina_auditorio_ensayo_${i}"></select> <label style="margin-left: 1rem;color:#00C2EE">Personal de cabina de auditorio</label> </div><div class="input-field col s12 l6"> <i class="material-icons prefix c-azul">build</i> <select id="select_limpieza_ensayo_${i}"></select> <label style="margin-left: 1rem;color:#00C2EE">Personal de limpieza</label> </div><div class="input-field col s12" style="text-align: center" id="reserva_personal_${i}"> <button class="waves-effect waves-light btn col l4" onclick="actualizar_personal_ensayo('select_montaje_ensayo_${i}', 'select_cabina_auditorio_ensayo_${i}', 'select_limpieza_ensayo_${i}', 'fecha_ensayo_${i}','horario_inicial_ensayo_${i}','horario_final_ensayo_${i}', '#reserva_personal_${i}', '#caja_reserva_personal_${i}',${i})" type="button" style="background-color: #00C2EE;float: none">Reservar personal <i class="material-icons right">save</i> </button> </div><div class="input-field col s12" style="text-align: center;" hidden id="caja_reserva_personal_${i}"> <button id="btn_anular_reserva_personal_${i}" class="waves-effect waves-light btn red col l3" style="float: none" type="button" onclick="anular_reserva_personal_ensayo('#select_montaje_ensayo_${i}', '#select_cabina_auditorio_ensayo_${i}','#select_limpieza_ensayo_${i}', '#caja_reserva_personal_${i}','#reserva_personal_${i}',${i})">Anular reserva <i class="material-icons right">delete</i> </button> </div></div><span class="col s12"><br></span> <div class="chip orange col s12 white-text" style="text-align: center" id="validacion_ensayo_${i}"> <span>Debe seleccionar una fecha y horarios válidos para continuar!</span> </div><span class="col s12 hide-on-med-and-down"><br><br></span> </div></div></div>`;
+            var codigo = `<div class="col s12 card"> <div class="card-content" style="color:#00C2EE;"> <h5>Ensayo N° ${i + 1}</h5> </div><div class="card-tabs"> <ul class="tabs tabs-fixed-width"> <li class="tab blue white-text active"><a href="#tab_1_${i + 1}">Información de ensayo</a> </li><li class="tab blue white-text" onclick="cargar_personal_ensayo(${i})"><a href="#tab_2_${i + 1}">Personal</a> </li></ul> </div><div class="card-content"> <div id="tab_1_${i + 1}"> <div class="col s12 l6"> <label style="margin-left: 1rem;color:#00C2EE">Fecha del ensayo</label> <div class="input-field"> <i class="material-icons prefix c-azul">calendar_today</i> <input type="text" class="datepicker" id="fecha_ensayo_${i}" autocomplete="off" placeholder="Escoja fecha" onchange="fecha_minusculas(this.value, 'fecha_permiso');validar_fecha_no_posterior_ensayo(this);" style="font-size: 1rem"> </div></div><div class="col s12 l6"> <label style="margin-left: 1rem;color:#00C2EE">Horario inicial</label> <div class="input-field"> <i class="material-icons prefix c-azul">access_time</i> <input type="text" id="horario_inicial_ensayo_${i}" class="timepicker" onkeypress="return validar_solo_numeros(event, this.id, 1)" autocomplete="off" onfocus="blur();" placeholder="Seleccione horario"> </div></div><div class="col s12 l6"> <label style="margin-left: 1rem;color:#00C2EE">Horario final</label> <div class="input-field"> <i class="material-icons prefix c-azul">access_time</i> <input type="text" id="horario_final_ensayo_${i}" class="timepicker" onkeypress="return validar_solo_numeros(event, this.id, 1)" onchange="validar_horario_final_ensayo(this,'horario_inicial_ensayo_${i}')" autocomplete="off" onfocus="blur();" placeholder="Seleccione horario"> </div></div><div class="input-field col s12"> <i class="material-icons prefix c-azul">list_alt</i> <textarea class="materialize-textarea" id="requerimientos_especiales_ensayo_${i}" placeholder="Requerimientos especiales" onkeyup='capitaliza_primer_letra(this.id)'></textarea> </div></div><div id="tab_2_${i + 1}"> <div id="caja_select_${i}"> <div class="input-field col s12 l6"> <i class="material-icons prefix c-azul">build</i> <select id="select_montaje_ensayo_${i}"></select> <label style="margin-left: 1rem;color:#00C2EE">Personal de montaje</label> </div><div class="input-field col s12 l6"> <i class="material-icons prefix c-azul">build</i> <select id="select_cabina_auditorio_ensayo_${i}"></select> <label style="margin-left: 1rem;color:#00C2EE">Personal de cabina de auditorio</label> </div><div class="input-field col s12 l6"> <i class="material-icons prefix c-azul">build</i> <select id="select_limpieza_ensayo_${i}"></select> <label style="margin-left: 1rem;color:#00C2EE">Personal de limpieza</label> </div><div class="input-field col s12" style="text-align: center" id="reserva_personal_${i}"> <button class="waves-effect waves-light btn col l4" onclick="actualizar_personal_ensayo('select_montaje_ensayo_${i}', 'select_cabina_auditorio_ensayo_${i}', 'select_limpieza_ensayo_${i}', 'fecha_ensayo_${i}','horario_inicial_ensayo_${i}','horario_final_ensayo_${i}', '#reserva_personal_${i}', '#caja_reserva_personal_${i}',${i})" type="button" style="background-color: #00C2EE;float: none">Reservar personal <i class="material-icons right">save</i> </button> </div><div class="input-field col s12" style="text-align: center;" hidden id="caja_reserva_personal_${i}"> <button id="btn_anular_reserva_personal_${i}" class="waves-effect waves-light btn red col l3" style="float: none" type="button" onclick="anular_reserva_personal_ensayo('#select_montaje_ensayo_${i}', '#select_cabina_auditorio_ensayo_${i}','#select_limpieza_ensayo_${i}', '#caja_reserva_personal_${i}','#reserva_personal_${i}',${i})">Anular reserva <i class="material-icons right">delete</i> </button> </div></div><span class="col s12"><br></span> <div class="chip orange col s12 white-text" style="text-align: center" id="validacion_ensayo_${i}"> <span>Debe seleccionar una fecha y horarios válidos para continuar!</span> </div><span class="col s12 hide-on-med-and-down"><br><br></span> </div></div></div>`;
             codigo_ensayo += `${codigo}`;
             botones_anulacion.push({caja: `caja_reserva_personal_${i}`, btn: `btn_anular_reserva_personal_${i}`});
         }
@@ -894,7 +886,7 @@ if (isset($authUrl)) {
         });
         $('.timepicker').timepicker({
             'step': 60,
-            'minTime': '00:00',
+            'minTime': '06:00',
             'maxTime': '23:59',
             'timeFormat': 'H:i:s'
         });
@@ -1259,7 +1251,7 @@ if (isset($authUrl)) {
             $("#" + id).val("");
             $("#" + id).focus();
             M.toast({
-                html: 'Máximo dosmil invitados!',
+                html: 'Máximo 2000 invitados!',
                 classes: 'deep-orange c-blanco',
             }, 5000);
         }
@@ -1346,7 +1338,7 @@ if (isset($authUrl)) {
             el.value = '';
             $("#" + el.id).timepicker({
                 'step': 60,
-                'minTime': '00:00',
+                'minTime': '06:00',
                 'maxTime': '23:59',
                 'timeFormat': 'H:i:s'
             });
@@ -1566,6 +1558,7 @@ if (isset($authUrl)) {
     }
     //Actualizacion de inventarios y notificaciones en tiempo real con pusher websockets
     function add_mantel(id, el, capacidad, disponible) {
+        var faltante = disponible - el.value;
         if (parseInt(disponible) <= 0) {
             var modal_recuerde_rentar = M.Modal.getInstance($("#modal_recuerde_rentar"));
             modal_recuerde_rentar.open();
@@ -1582,12 +1575,12 @@ if (isset($authUrl)) {
         if (coleccion_manteles.length !== 0) {
             for (var item in coleccion_manteles) {
                 if (coleccion_manteles[item].id === id) {
-                    coleccion_manteles[item] = {id: id, cantidad: el.value};
+                    coleccion_manteles[item] = {id: id, cantidad: el.value, faltante: faltante < 0 ? faltante : 0};
                     return;
                 }
             }
         }
-        coleccion_manteles.push({id: id, cantidad: el.value});
+        coleccion_manteles.push({id: id, cantidad: el.value, faltante: faltante < 0 ? faltante : 0});
     }
     function actualizar_inventario_manteles() {
         if (!validar_fecha_horario())
@@ -1659,6 +1652,11 @@ if (isset($authUrl)) {
 
     }
     function add_inventario(id, el, capacidad, disponible) {
+        var faltante = disponible - el.value;
+        if(faltante<0){            
+            var modal_recuerde_rentar = M.Modal.getInstance($("#modal_recuerde_rentar"));
+            modal_recuerde_rentar.open();
+        }
         if (parseInt(disponible) <= 0) {
             var modal_recuerde_rentar = M.Modal.getInstance($("#modal_recuerde_rentar"));
             modal_recuerde_rentar.open();
@@ -1675,12 +1673,12 @@ if (isset($authUrl)) {
         if (coleccion_inventario.length !== 0) {
             for (var item in coleccion_inventario) {
                 if (coleccion_inventario[item].id === id) {
-                    coleccion_inventario[item] = {id: id, cantidad: el.value};
+                    coleccion_inventario[item] = {id: id, cantidad: el.value, faltante: faltante < 0 ? faltante : 0};
                     return;
                 }
             }
         }
-        coleccion_inventario.push({id: id, cantidad: el.value});
+        coleccion_inventario.push({id: id, cantidad: el.value, faltante: faltante < 0 ? faltante : 0});
     }
     function actualizar_inventario() {
         if (!validar_fecha_horario())
@@ -1752,6 +1750,7 @@ if (isset($authUrl)) {
 
     }
     function add_equipo_tecnico(id, el, capacidad, disponible) {
+        var faltante = disponible - el.value;
         if (parseInt(disponible) <= 0) {
             var modal_recuerde_rentar = M.Modal.getInstance($("#modal_recuerde_rentar"));
             modal_recuerde_rentar.open();
@@ -1768,12 +1767,12 @@ if (isset($authUrl)) {
         if (coleccion_equipo_tecnico.length !== 0) {
             for (var item in coleccion_equipo_tecnico) {
                 if (coleccion_equipo_tecnico[item].id === id) {
-                    coleccion_equipo_tecnico[item] = {id: id, cantidad: el.value};
+                    coleccion_equipo_tecnico[item] = {id: id, cantidad: el.value, faltante: faltante < 0 ? faltante : 0};
                     return;
                 }
             }
         }
-        coleccion_equipo_tecnico.push({id: id, cantidad: el.value});
+        coleccion_equipo_tecnico.push({id: id, cantidad: el.value, faltante: faltante < 0 ? faltante : 0});
     }
     function actualizar_equipo_tecnico() {
         if (!validar_fecha_horario())
@@ -1992,7 +1991,7 @@ if (isset($authUrl)) {
         var tipo_montaje = $("#tipo_montaje").val();
         if (tipo_montaje === null || tipo_montaje === "" || tipo_montaje === "0") {
             M.toast({
-                html: '¡Debe seleccionar el el tipo del evento para continuar!',
+                html: '¡Debe seleccionar el el tipo montaje para continuar!',
                 classes: 'deep-orange c-blanco'
             });
             return false;
@@ -2024,7 +2023,8 @@ if (isset($authUrl)) {
             });
             return false;
         }
-        if(!validar_tipo_montaje())return;
+        if (!validar_tipo_montaje())
+            return;
         if (!validar_horario_evento())
             return;
         if (!validar_horario_final())

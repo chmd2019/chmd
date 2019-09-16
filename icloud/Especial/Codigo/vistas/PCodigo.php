@@ -4,7 +4,7 @@ include_once "$root_icloud/Transportes/components/sesion.php";
 include_once "$root_icloud/components/layout_top.php";
 $idseccion = $_GET['idseccion'];
 
-//zona horaria para America/Mexico_city 
+//zona horaria para America/Mexico_city
 require "$root_icloud/Helpers/DateHelper.php";
 $objDateHelper = new DateHelper();
 $objDateHelper->set_timezone();
@@ -23,29 +23,31 @@ if (isset($authUrl)) {
     $consulta = $objCliente->acceso_login($correo);
     include_once "$root_icloud/components/navbar.php";
     ?>
-    <div class="row">    
-        <div class="col s12 m12 l9 b-blanco border-azul" style="float: none;margin: 0 auto;"> 
+    <div class="row">
+        <div class="col s12 m12 l9 b-blanco border-azul" style="float: none;margin: 0 auto;">
             <div>
                 <br>
                 <h4 class="c-azul" style="text-align: center;">Eventos inscritos</h4>
                 <div>
-                    <?php include './View_codigo.php'; ?> 
+                    <?php include './View_codigo.php'; ?>
                 </div>
                 <?php
             }
-            ?>               
+            ?>
         </div>
     </div>
 </div>
 
 <script>
-
     $(document).ready(function () {
+      $("th").css("text-align", "center");
+      $("td").css("text-align", "center");
         $('.fixed-action-btn').floatingActionButton({
-            hoverEnabled: false
+          hoverEnabled: false
         });
         $(".modal").modal();
     });
+    setInterval(()=>{window.location.reload();},30000);
 </script>
 
 

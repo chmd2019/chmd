@@ -45,6 +45,11 @@ foreach ($coleccion_manteles as $value) {
 $timestamp = $control->obtener_ultimo_timestamp_inventario_manteles($ultimo_id_conexion);
 $timestamp = mysqli_fetch_array($timestamp);
 
+foreach ($coleccion_manteles as $value) {
+    $control->asignar_ocupacion_articulos(0,$fecha_montaje, 0, $value['id'],0, $value['cantidad'], 
+            $value['faltante'], true, $timestamp[0]);
+}
+
 if ($ultimo_id_conexion != null) {
     echo json_encode(
             array("respuesta" => true,

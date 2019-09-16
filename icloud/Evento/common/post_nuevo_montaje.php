@@ -75,10 +75,16 @@ if ($solo_cafe == "true") {
             $cantidad_ensayos, $requerimientos_especiales, 0, $lugar_evento, $evento_con_cafe,$tipo_montaje);
 }
 if ($ultimo_id_conexion > 0) {
-
+    //se finaliza en tabla Evento_articulos_asignados
     $control->finalizar_mobiliario_asignado($ultimo_id_conexion, $timestamp_inventario);
+    $control->finalizar_articulos_asignados($ultimo_id_conexion, $timestamp_inventario);
+    //manteles
     $control->finalizar_manteles_asignados($ultimo_id_conexion, $timestamp_inventario_manteles);
+    $control->finalizar_articulos_asignados($ultimo_id_conexion, $timestamp_inventario_manteles);
+    //equipo tecnico
     $control->finalizar_equipo_tecnico_asignado($ultimo_id_conexion, $timestamp_equipo_tecnico);
+    $control->finalizar_articulos_asignados($ultimo_id_conexion, $timestamp_equipo_tecnico);
+    //personal
     $control->finalizar_personal_montaje_asignado($ultimo_id_conexion, $timestamp_personal_montaje);
 
     foreach ($timestamp_personal_montaje_ensayos as $value) {

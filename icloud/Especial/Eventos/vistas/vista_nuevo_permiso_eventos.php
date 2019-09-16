@@ -78,31 +78,39 @@ if (isset($authUrl)) {
         ?>
         <div class="row">
             <div class="col s12 l8 b-blanco border-azul" style="float: none;margin: 0 auto;">
-                <br>
+              <div class="row" style="text-align: right;margin:1rem 1rem 0 0">
+                <a class="waves-effect waves-light"
+                href="<?php echo $redirect_uri ?>Especial/Eventos/PEventos.php?idseccion=<?php echo $idseccion; ?>">
+                    <img src='../../../images/Atras.svg' style="width: 110px">   
+              <!--
+              <i class="material-icons left">keyboard_backspace</i>Atrás
+            -->
+          </a>
+        </div>
                 <h5 class="center-align c-azul">Cumpleaños o Bar Mitzvá</h5>
                 <div class="row" style="padding:0rem .5rem;">
                     <div class="col s12 l6">
                         <div class="input-field">
                             <label for="fecha_solicitud" style="margin-left: 1rem">Fecha de solicitud</label>
                             <i class="material-icons prefix c-azul">calendar_today</i>
-                            <input value="<?php echo $fecha_creacion; ?>" 
-                                   readonly  
-                                   id="fecha_solicitud" 
-                                   style="font-size: 1rem" 
-                                   type="text" />               
+                            <input value="<?php echo $fecha_creacion; ?>"
+                                   readonly
+                                   id="fecha_solicitud"
+                                   style="font-size: 1rem"
+                                   type="text" />
                         </div>
-                    </div> 
+                    </div>
                     <div class="col s12 l6">
                         <div class="input-field">
                             <label for="solicitante" style="margin-left: 1rem">Solicitante</label>
                             <i class="material-icons prefix c-azul">person</i>
-                            <input value="<?php echo $nombre; ?>" 
-                                   readonly  
-                                   id="solicitante" 
-                                   style="font-size: 1rem" 
-                                   type="text" />               
+                            <input value="<?php echo $nombre; ?>"
+                                   readonly
+                                   id="solicitante"
+                                   style="font-size: 1rem"
+                                   type="text" />
                         </div>
-                    </div> 
+                    </div>
                     <?php
                     if ($btn_fecha) {
                         $hidden = "hidden";
@@ -119,24 +127,24 @@ if (isset($authUrl)) {
                         $hidden = "";
                         echo "$btn_fecha";
                     }
-                    ?> 
+                    ?>
                     <div class="col s12"><br></div>
                     <div id="fecha_para" <?php echo $hidden; ?>>
                         <h5 class="c-azul text-center">Fecha del evento</h5>
                         <div class="col s12 l6">
-                            <link rel='stylesheet' href='/pruebascd/icloud/materialkit/css/calendario.css'> 
+                            <link rel='stylesheet' href='/pruebascd/icloud/materialkit/css/calendario.css'>
                             <script src='/pruebascd/icloud/materialkit/js/calendario.js'></script>
                             <script src="/pruebascd/icloud/materialkit/js/common.js"></script>
                             <div class="input-field">
                                 <i class="material-icons prefix c-azul">calendar_today</i>
-                                <input 
+                                <input
                                     value="<?php echo $fecha_hoy; ?>"
-                                    type="text" 
-                                    class="datepicker" 
-                                    id="fecha_permiso" 
+                                    type="text"
+                                    class="datepicker"
+                                    id="fecha_permiso"
                                     autocomplete="off"
                                     placeholder="Para el día"
-                                    onchange="fecha_minusculas(this.value, 'fecha_permiso')">            
+                                    onchange="fecha_minusculas(this.value, 'fecha_permiso')">
                             </div>
                             <script>
                                 //obtiene el calendario escolar en db
@@ -164,14 +172,14 @@ if (isset($authUrl)) {
                                     disableWeekends: true,
                                     min: new Date('<?php echo $fecha_minima; ?>')
                                 });
-                            </script>  
+                            </script>
                         </div>
                         <span class="col s12"><br></span>
                     </div>
                     <div class="col s12 l6" style="margin-top: -1.2rem">
                         <div class="input-field">
                             <i class="material-icons prefix c-azul">cake</i>
-                            <select id="tipo_evento"> 
+                            <select id="tipo_evento">
                                 <option value="" disabled selected>Seleccione una opción</option>
                                 <option value="Cumpleaños">Cumpleaños</option>
                                 <option value="Bar Mitzvá">Bar Mitzvá</option>
@@ -179,7 +187,7 @@ if (isset($authUrl)) {
                             </select>
                             <label>Tipo de evento</label>
                         </div>
-                    </div>              
+                    </div>
                     <div class="col s12">
                         <h5 class="c-azul text-center">Selecciona Alumnos</h5>
                         <?php
@@ -194,14 +202,14 @@ if (isset($authUrl)) {
                                 <div class="input-field">
                                     <div class="switch col s1 l1">
                                         <label class="checks-alumnos">
-                                            <input type="checkbox" 
-                                                   id="alumno_<?php echo $counter; ?>" 
+                                            <input type="checkbox"
+                                                   id="alumno_<?php echo $counter; ?>"
                                                    value="<?php echo $alumno['id']; ?>"/>
                                             <span class="lever" style="margin-top: 1rem"></span>
                                         </label>
                                     </div>
                                     <textarea class="materialize-textarea col s9 l11"
-                                              readonly  
+                                              readonly
                                               id="nombre_alumno_<?php echo $counter; ?>"
                                               style="font-size: 1rem;float:right"></textarea>
                                 </div>
@@ -224,14 +232,14 @@ if (isset($authUrl)) {
                                 Responsable del evento: Persona designada por la familia para verificar que todos
                                 los asistentes del evento están presentes y acompañarlos hasta que aborden el
                                 transporte designado para el evento.
-                            </div>                                
+                            </div>
                         </span>
                         <span class="col s12"><br></span>
                         <div class="col s12 l6">
                             <label>
-                                <input 
-                                    type="checkbox" 
-                                    id="check_nuevo_responsable" 
+                                <input
+                                    type="checkbox"
+                                    id="check_nuevo_responsable"
                                     onchange="mostrar_nuevo_responsable()"
                                     class="filled-in" />
                                 <span>Agregar un responsable</span>
@@ -241,7 +249,7 @@ if (isset($authUrl)) {
                         <div class="col s12 l6">
                             <div class="input-field">
                                 <i class="material-icons prefix c-azul">person</i>
-                                <select id="select_responsable" onchange="seleccion_responsable(this.value)">                          
+                                <select id="select_responsable" onchange="seleccion_responsable(this.value)">
                                 </select>
                                 <label>Responsable</label>
                             </div>
@@ -249,64 +257,64 @@ if (isset($authUrl)) {
                         <div id="nuevo_responsable" hidden>
                             <div class="input-field col s12 l6" id="nuevo_responsable_nombre">
                                 <i class="material-icons prefix c-azul">person</i>
-                                <input id="responsable" 
-                                       type="text" 
+                                <input id="responsable"
+                                       type="text"
                                        onkeyup ="capitaliza_primer_letra(this.id)"
                                        autocomplete="off">
                                 <label for="responsable">Nombre del responsable</label>
-                            </div> 
+                            </div>
                             <div class="input-field col s12 l6">
                                 <i class="material-icons prefix c-azul">person</i>
-                                <input id="parentesco_responsable" 
-                                       type="text" 
+                                <input id="parentesco_responsable"
+                                       type="text"
                                        onkeyup ="capitaliza_primer_letra(this.id)"
                                        autocomplete="off">
                                 <label for="parentesco_responsable">Parentesco del responsable</label>
-                            </div> 
-                            <a class="waves-effect waves-light btn col s12 b-azul c-blanco" 
+                            </div>
+                            <a class="waves-effect waves-light btn col s12 b-azul c-blanco"
                                onclick="post_nuevo_responsable()"
-                               id="btn_agregar_nuevo_responsable"> 
+                               id="btn_agregar_nuevo_responsable">
                                 <i class="material-icons right">send</i>Guardar
                             </a>
                         </div>
-                        <br>               
-                        <div class="input-field col s12">        
+                        <br>
+                        <div class="input-field col s12">
                             <label>
                                 <input type="checkbox"
-                                       class="filled-in" 
+                                       class="filled-in"
                                        id="check_tranpsorte"
                                        onchange = "mostrar_tranpsorte()"/>
                                 <span>Ingresa transporte</span>
                             </label>
                             <br>
                             <br>
-                        </div>                   
-                        <div id="caja_transporte" hidden>    
+                        </div>
+                        <div id="caja_transporte" hidden>
                             <div class="col s12">
                                 <div class="input-field">
                                     <label style="margin-left: 3rem">Empresa</label>
                                     <i class="material-icons prefix c-azul">time_to_leave</i>
-                                    <input type="text" 
+                                    <input type="text"
                                            id="empresa"
-                                           onkeyup ="capitaliza_primer_letra(this.id)" 
-                                           autocomplete="off"> 
+                                           onkeyup ="capitaliza_primer_letra(this.id)"
+                                           autocomplete="off">
                                 </div>
                             </div>
                         </div>
                         <div class="input-field col s12">
                             <label for="comentarios">Comentarios</label>
                             <i class="material-icons c-azul prefix">chrome_reader_mode</i>
-                            <textarea id="comentarios" 
+                            <textarea id="comentarios"
                                       class="materialize-textarea"
-                                      onkeyup ="capitaliza_primer_letra(this.id)"                                
-                                      placeholder="Comentarios"></textarea>    
-                        </div>     
-                    </div> 
+                                      onkeyup ="capitaliza_primer_letra(this.id)"
+                                      placeholder="Comentarios"></textarea>
+                        </div>
+                    </div>
                     <div class="col s12 l6" style="float: none;margin: 0 auto;">
-                        <button class="btn waves-effect waves-light b-azul white-text w-100" 
+                        <button class="btn waves-effect waves-light b-azul white-text w-100"
                                 id="btn_enviar_formulario"
                                 type="button"
-                                onclick="enviar_formulario('<?php echo $idusuario; ?>', '<?php echo $nfamilia; ?>', 5)">Enviar
+                                onclick="enviar_formulario('<?php echo $idusuario; ?>', '<?php echo $nfamilia; ?>', 5, '<?php echo $correo;?>')">Enviar
                             <i class="material-icons right">send</i>
                         </button>
                     </div>
@@ -318,13 +326,6 @@ if (isset($authUrl)) {
     }
 }
 ?>
-
-<div class="fixed-action-btn">
-    <a class="btn-floating btn-large waves-effect waves-light b-azul"
-       href="<?php echo $redirect_uri ?>Especial/Eventos/PEventos.php?idseccion=<?php echo $idseccion; ?>">
-        <i class="large material-icons">keyboard_backspace</i>
-    </a>
-</div>
 
 <div class="loading" id="loading" >
     <div class="preloader-wrapper big active">
@@ -501,7 +502,7 @@ if (isset($authUrl)) {
         }
         return true;
     }
-    //validacion de fecha vacia    
+    //validacion de fecha vacia
     function validar_fecha_vacia() {
         var fecha_permiso = $("#fecha_permiso").val();
         if (fecha_permiso === "") {
@@ -582,7 +583,7 @@ if (isset($authUrl)) {
         }
         return true;
     }
-    //valida comentarios    
+    //valida comentarios
     function validar_comentarios() {
         if ($("#comentarios").val() === "") {
             M.toast({
@@ -594,7 +595,7 @@ if (isset($authUrl)) {
         return true;
     }
     //enviar formulario
-    function enviar_formulario(idusuario, familia, tipo_permiso) {
+    function enviar_formulario(idusuario, familia, tipo_permiso, correo) {
         if (!validar_fecha_vacia())
             return;
         if (!validar_tipo_evento())
@@ -637,7 +638,8 @@ if (isset($authUrl)) {
                 "estatus": estatus,
                 "empresa_transporte": empresa,
                 "tipo_evento": tipo_evento,
-                "alumnos": coleccion_ids
+                "alumnos": coleccion_ids,
+                "correo": correo
             }
         }).done((res) => {
             res = JSON.parse(res);

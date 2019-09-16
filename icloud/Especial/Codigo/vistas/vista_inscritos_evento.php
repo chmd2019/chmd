@@ -18,6 +18,12 @@ $date_helper->set_timezone();
 
 $codigo_invitacion = $_GET['codigo_evento'];
 $volver_listado = $_GET['volver_listado'];
+$url = "";
+if ($volver_listado) {
+    $url = "$redirect_uri/Especial/Codigo/vistas/PCodigo.php?idseccion=$idseccion";
+} else {
+    $url = "$redirect_uri/Especial/menu.php?idseccion=$idseccion";
+}
 
 if (isset($_GET['logout'])) {
     unset($_SESSION['access_token']);
@@ -38,8 +44,11 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
     $authUrl = $client->createAuthUrl();
 }
 if (isset($authUrl)) {
-    header("Location: $redirect_uri?logout=1");
+    $url_actual = "Especial/Codigo/vistas/".basename($_SERVER['REQUEST_URI']);;
+    setcookie("url_evento", $url_actual, time()+300, "/","", 0);
+    header("Location: $redirect_uri");
 } else {
+    setcookie("url_evento", "", time() + -300, "/","", 0);
     $user = $service->userinfo->get();
     $correo = $user->email;
     $objCliente = new Login();
@@ -61,7 +70,7 @@ if (isset($authUrl)) {
     $codigo_invitacion = $permiso[7];
     $comentarios = $permiso[8];
     $id_permiso = $permiso[9];
-    //consulta familia que invita tomando el codigo de familia del permiso    
+    //consulta familia que invita tomando el codigo de familia del permiso
     $familia = $control->consultar_familia($permiso[10]);
     $familia = mysqli_fetch_array($familia);
     $familia = $familia[0];
@@ -73,7 +82,7 @@ if (isset($authUrl)) {
     $numero_familia = mysqli_fetch_array($numero_familia);
     $nfamilia = $numero_familia[0];
     ?>
-    <div class="row">        
+    <div class="row">
         <div class="col s12 l8 border-azul b-blanco" style="float: none;margin: 0 auto;padding:1rem">
             <div>
                 <?php if (!$date_helper->comprobar_solicitud_vencida_d_m_y_guion($fecha_destino)): ?>
@@ -86,52 +95,58 @@ if (isset($authUrl)) {
                     <br>
                 <?php endif; ?>
 
+                <div class="row" style="text-align: right;margin:1rem 1rem 0 0">
+                    <a class="waves-effect waves-light"
+                       href="<?php echo $url; ?>">
+                        <img src="../../../images/Atras.svg" style="width: 110px"/>
+                    </a>
+                </div>
                 <h5 class="c-azul center-align">Consulta de invitación a evento</h5>
-                <div class="row"> 
+                <div class="row">
                     <div class="col s12 l6">
                         <div class="input-field">
                             <label for="fecha_evento" style="margin-left: 1rem">Fecha del evento</label>
                             <i class="material-icons prefix c-azul">calendar_today</i>
-                            <input readonly  
-                                   id="fecha_evento" 
-                                   style="font-size: 1rem" 
-                                   type="text" 
-                                   value="<?php echo $fecha_cambio; ?>"/>               
+                            <input readonly
+                                   id="fecha_evento"
+                                   style="font-size: 1rem"
+                                   type="text"
+                                   value="<?php echo $fecha_cambio; ?>"/>
                         </div>
-                    </div>   
+                    </div>
                     <div class="col s12 l6">
                         <div class="input-field">
                             <label for="codigo_evento" style="margin-left: 1rem">Código de invitación</label>
                             <i class="material-icons prefix c-azul">looks_6</i>
-                            <input readonly  
-                                   id="codigo_evento" 
-                                   style="font-size: 1rem" 
-                                   type="text" 
-                                   value="<?php echo $codigo_invitacion; ?>">               
-                        </div>                        
-                    </div>   
+                            <input readonly
+                                   id="codigo_evento"
+                                   style="font-size: 1rem"
+                                   type="text"
+                                   value="<?php echo $codigo_invitacion; ?>">
+                        </div>
+                    </div>
                     <div class="col s12 l6">
                         <div class="input-field">
                             <label for="familia_invita" style="margin-left: 1rem">Familia que invita</label>
                             <i class="material-icons prefix c-azul">nature_people</i>
-                            <input readonly  
-                                   id="familia_invita" 
-                                   style="font-size: 1rem" 
-                                   type="text" 
-                                   value ="<?php echo $familia; ?>">               
-                        </div>                        
-                    </div>   
+                            <input readonly
+                                   id="familia_invita"
+                                   style="font-size: 1rem"
+                                   type="text"
+                                   value ="<?php echo $familia; ?>">
+                        </div>
+                    </div>
                     <div class="col s12 l6">
                         <div class="input-field">
                             <label for="tipo_evento" style="margin-left: 1rem">Tipo de evento</label>
                             <i class="material-icons prefix c-azul">cake</i>
-                            <input readonly  
-                                   id="tipo_evento" 
-                                   style="font-size: 1rem" 
-                                   type="text" 
-                                   value="<?php echo $tipo_evento; ?>"/>               
+                            <input readonly
+                                   id="tipo_evento"
+                                   style="font-size: 1rem"
+                                   type="text"
+                                   value="<?php echo $tipo_evento; ?>"/>
                         </div>
-                    </div> 
+                    </div>
                     <span class="col s12"></span>
                     <?php
                     $id_inscritos = array();
@@ -157,49 +172,54 @@ if (isset($authUrl)) {
                             }
                             switch ($estatus) {
                                 case "1":
-                                    $estatus = "Pendiente";
+                                    $status_detalle = "Pendiente";
+                                    $color_badge = "#F6871F";
+                                    //    $estatus = "Pendiente";
                                     $badge = "amber accent-4 c-blanco";
                                     $todos_autorizados = false;
                                     break;
 
                                 case "2":
-                                    $estatus = "Autorizado";
+                                    $status_detalle = "Autorizado";
+                                    $color_badge = "#77AF65";
+                                    //      $estatus = "Autorizado";
                                     $badge = "green accent-4 c-blanco";
                                     break;
 
                                 case "3":
-                                    $estatus = "Declinado";
+                                    $color_badge = "#EF4545";
+                                    $status_detalle = "Declinado";
+                                    //  $estatus = "Declinado";
                                     $badge = "red lighten-1 c-blanco";
                                     $todos_autorizados = false;
                                     break;
 
                                 case "4":
-                                    $estatus = "Cancelado por el usuario";
+                                    $status_detalle = "Cancelado";
+                                    $color_badge = "#EF4545";
+                                    //    $estatus = "Cancelado por el usuario";
                                     $badge = "red accent-4 c-blanco";
                                     $todos_autorizados = false;
                                     break;
                                 default:
                                     break;
                             }
-                            ?>    
-                            <div class="col s12">                        
+                            ?>
+                            <div class="col s12">
                                 <div class="input-field">
-                                    <i class="material-icons prefix c-azul">school</i>
-                                    <?php if ($date_helper->comprobar_solicitud_vencida_d_m_y_guion($fecha_destino) && $flag_estatus):
-                                        ?>
-                                        <button 
+                                    <?php if ($date_helper->comprobar_solicitud_vencida_d_m_y_guion($fecha_destino) && $flag_estatus): ?>
+                                        <button
                                             onclick="modal_anular_inscripcion('<?php echo $id_alumno; ?>', '<?php echo $nombre; ?>')"
                                             class="btn waves-effect waves-light red lighten-1"
                                             style="float:right;display: <?php echo $hidden_btn_cancelar_inscripcion; ?>">
                                             <i class="material-icons">cancel</i>
                                         </button>
-                                    <?php endif; ?> 
-                                    <br>
-                                    <br>
-                                    <span style="float:left;margin-left:3rem" class="new badge <?php echo $badge; ?>" data-badge-caption="<?php echo $estatus; ?>"></span>
-                                    <br> 
-                                    <textarea class="materialize-textarea"
-                                              readonly  
+                                    <?php endif; ?>
+                                    <div class="text-center">
+                                        <span class="chip white-text new col s2 l1" data-badge-caption="<?php echo $status_detalle; ?>" style="float: left;font-size: .7rem;padding: 0px 3px;background-color: <?php echo $color_badge; ?>"><?php echo $status_detalle; ?></span>
+                                    </div>
+                                    <textarea class="materialize-textarea col s9 l10"
+                                              readonly
                                               id="alumno_<?php echo $identificador; ?>"
                                               style="font-size: 1rem"></textarea>
                                     <script>
@@ -211,10 +231,9 @@ if (isset($authUrl)) {
                             </div>
                         <?php endwhile; ?>
                     </div>
-                    <?php if ($date_helper->comprobar_solicitud_vencida_d_m_y_guion($fecha_destino) && $flag_estatus):
-                        ?>
+                    <?php if ($date_helper->comprobar_solicitud_vencida_d_m_y_guion($fecha_destino) && $flag_estatus): ?>
                         <div class="col s12 l6" style="float: none;margin: 0 auto;">
-                            <button class="btn waves-effect waves-light b-azul white-text w-100" 
+                            <button class="btn waves-effect waves-light b-azul white-text w-100"
                                     type="button"
                                     id="btn_mostrar_anadir_alumnos"
                                     onclick="mostrar_modificar_inscritos()">
@@ -246,20 +265,20 @@ if (isset($authUrl)) {
                                         }
                                     }
                                     array_push($id_todos_alumnos, $cliente1['id']);
-                                    ?> 
+                                    ?>
                                     <div <?php echo $hidden; ?>>
 
                                         <div class="switch col s1">
                                             <label class="checks-alumnos">
-                                                <input type="checkbox" 
-                                                       id="alumno_<?php echo $counter; ?>" 
+                                                <input type="checkbox"
+                                                       id="alumno_<?php echo $counter; ?>"
                                                        value="<?php echo $cliente1['id']; ?>"/>
                                                 <span class="lever" style="margin-top:1rem"></span>
                                             </label>
                                         </div>
                                         <div class="col s10 l11" style="float: right;">
                                             <textarea class="materialize-textarea"
-                                                      readonly  
+                                                      readonly
                                                       id="nombre_<?php echo $counter; ?>"
                                                       style="font-size: 1rem;"></textarea>
                                         </div>
@@ -280,15 +299,15 @@ if (isset($authUrl)) {
                                 <br>
                             </span>
                             <div class="col s12 l6" style="float: none;margin: 0 auto;">
-                                <button class="btn waves-effect waves-light b-azul white-text w-100" 
+                                <button class="btn waves-effect waves-light b-azul white-text w-100"
                                         type="button"
                                         id="btn_inscribir_alumnos"
                                         onclick="inscribir_alumnos('<?php echo $id_permiso; ?>', '<?php echo $tipo_evento; ?>', '<?php echo $codigo_invitacion; ?>', '<?php echo $nfamilia; ?>')">
-                                    <i class="material-icons right">send</i>Inscribir 
+                                    <i class="material-icons right">send</i>Inscribir
                                 </button>
                             </div>
                         </div>
-                    <?php endif; ?>  
+                    <?php endif; ?>
                     <br>
                     <h5 class="c-azul center-align col s12">Información adicional</h5>
                     <span class="col s12">
@@ -298,55 +317,55 @@ if (isset($authUrl)) {
                         <div class="input-field">
                             <label for="solicitante" style="margin-left: 1rem">Solicitante</label>
                             <i class="material-icons prefix c-azul">person</i>
-                            <input readonly  
-                                   id="solicitante" 
-                                   style="font-size: 1rem" 
-                                   type="text" 
-                                   value="<?php echo $solicitante; ?>"/>               
+                            <input readonly
+                                   id="solicitante"
+                                   style="font-size: 1rem"
+                                   type="text"
+                                   value="<?php echo $solicitante; ?>"/>
                         </div>
-                    </div>  
+                    </div>
                     <div class="col s12 l6">
                         <div class="input-field">
                             <label style="margin-left: 3rem">Nombre del responsable</label>
                             <i class="material-icons prefix c-azul prefix">person</i>
-                            <input readonly 
-                                   type="text" 
-                                   id="responsable" 
+                            <input readonly
+                                   type="text"
+                                   id="responsable"
                                    autocomplete="off"
-                                   value="<?php echo $responsable; ?>"> 
+                                   value="<?php echo $responsable; ?>">
                         </div>
                     </div>
                     <div class="col s12 l6">
                         <div class="input-field">
                             <label style="margin-left: 3rem">Parentesco del responsable</label>
                             <i class="material-icons prefix c-azul prefix">person</i>
-                            <input readonly 
-                                   type="text" 
-                                   id="parentesco_responsable" 
+                            <input readonly
+                                   type="text"
+                                   id="parentesco_responsable"
                                    autocomplete="off"
-                                   value="<?php echo $parentesco; ?>"> 
+                                   value="<?php echo $parentesco; ?>">
                         </div>
-                    </div>               
-                    <div id="caja_transporte">    
+                    </div>
+                    <div id="caja_transporte">
                         <div class="col s12 l6">
                             <div class="input-field">
                                 <label style="margin-left: 3rem">Empresa</label>
                                 <i class="material-icons prefix c-azul">time_to_leave</i>
                                 <input readonly
-                                       type="text" 
-                                       id="empresa" 
+                                       type="text"
+                                       id="empresa"
                                        autocomplete="off"
-                                       value="<?php echo $empresa_transporte; ?>"> 
+                                       value="<?php echo $empresa_transporte; ?>">
                             </div>
                         </div>
                     </div>
                     <div class="input-field col s12">
                         <label style="margin-left: 3rem">Comentarios</label>
                         <i class="material-icons c-azul prefix">chrome_reader_mode</i>
-                        <textarea id="comentarios" 
-                                  class="materialize-textarea" 
+                        <textarea id="comentarios"
+                                  class="materialize-textarea"
                                   readonly
-                                  placeholder="Comentarios"></textarea>  
+                                  placeholder="Comentarios"></textarea>
                         <script>
                             $("#comentarios").val('<?php echo $comentarios; ?>');
                             M.textareaAutoResize($("#comentarios"));
@@ -361,19 +380,7 @@ if (isset($authUrl)) {
 $diferencia_inscritos_alumnos_familia = count(array_diff($id_todos_alumnos, $id_inscritos));
 $diferencia_inscritos_alumnos_familia = $diferencia_inscritos_alumnos_familia > 0 ?
         json_encode(true) : json_encode(false);
-$url = "";
-if ($volver_listado) {
-    $url = "$redirect_uri/Especial/Codigo/vistas/PCodigo.php?idseccion=$idseccion";
-} else {
-    $url = "$redirect_uri/Especial/menu.php?idseccion=$idseccion";
-}
 ?>
-
-<div class="fixed-action-btn">
-    <a class="btn-floating btn-large b-azul" href="<?php echo $url; ?>">
-        <i class="large material-icons">keyboard_backspace</i>
-    </a>
-</div>
 
 <div class="loading" id="loading">
     <div class="preloader-wrapper big active">
@@ -393,17 +400,17 @@ if ($volver_listado) {
 <div id="modal_anular_inscripcion" class="modal">
     <div class="modal-content">
         <h4>Confirmación</h4>
-        <p>¿En verdad desea anular la inscripción del alumno 
+        <p>¿En verdad desea anular la inscripción del alumno
             <b><span id="text_anular_inscripcion" class="c-azul"></span></b> al evento?</p>
     </div>
     <div class="modal-footer" style="padding:1rem">
-        <a href="#!" class="modal-close waves-effect btn-flat red white-text">Cancelar</a>    
+        <a href="#!" class="modal-close waves-effect btn-flat red white-text">Cancelar</a>
         <button
             id="btn_anular_inscripcion"
-            class="waves-effect btn-flat b-azul white-text" 
+            class="waves-effect btn-flat b-azul white-text"
             onclick="anular_inscripcion('<?php echo $id_permiso; ?>', '<?php echo $id_alumno; ?>')">Aceptar</button>
-    </div>        
-    <br>    
+    </div>
+    <br>
 </div>
 
 <script>
@@ -417,7 +424,7 @@ if ($volver_listado) {
         if (!flag_btn_mostrar_anadir_alumnos)
             $("#btn_mostrar_anadir_alumnos").hide();
     });
-    //validaciones 
+    //validaciones
     function validar_check_alumnos() {
         var selected = '';
         var id = '';
