@@ -148,10 +148,11 @@ class ControlTransportes {
             return mysqli_query($connection, $sql);
         }
     }
-    public function verificar_permiso_duplicado_x_fecha($fecha, $nfamilia){
+    public function verificar_permiso_duplicado_x_fecha_diario($fecha, $nfamilia){
         $connection = $this->con->conectar1();
         if ($connection) {
-            $sql = "SELECT id_permiso FROM Ventana_Permisos WHERE fecha_cambio = '$fecha' AND nfamilia=$nfamilia LIMIT 1;";
+            $sql = "SELECT id_permiso FROM Ventana_Permisos WHERE fecha_cambio = '$fecha' "
+                    . "AND nfamilia=$nfamilia AND estatus !='4' AND estatus !='3' AND tipo_permiso =1 LIMIT 1 ;";
             mysqli_set_charset($connection, 'utf8');
             return mysqli_query($connection, $sql);
         }

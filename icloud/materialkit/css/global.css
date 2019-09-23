@@ -224,7 +224,7 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
         width:90%;
     }
     .ui-timepicker-wrapper{
-        width: 80% !important;
+        width: 60% !important;
     }
     .alinear-flex-center{
         display: inline-block;

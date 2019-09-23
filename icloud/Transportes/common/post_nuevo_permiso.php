@@ -43,21 +43,21 @@ if ($hora_limite && $date_helper->comprobar_igual_actual($fecha_inicial)) {
     return;
 }
 
+
 if ($tipo_permiso == 1) {
     $connection = $db_manager->conectar1();
-    
+
     if ($connection) {
-        $verifica_duplicado_x_fecha = $control->verificar_permiso_duplicado_x_fecha($fecha_permiso, $nfamilia);
+
+        $verifica_duplicado_x_fecha = $control->verificar_permiso_duplicado_x_fecha_diario($fecha_permiso, $nfamilia);
         $id_permiso = mysqli_fetch_array($verifica_duplicado_x_fecha)[0];
-        
         if ($id_permiso > 0) {
-            //echo json_encode($verifica_duplicado_x_fecha);return;
             foreach ($coleccion_ids as $value) {
                 $verifica_duplicado_x_alumno = $control->verificar_permiso_duplicado_x_alumnos($id_permiso, $value);
                 $id_alumno_duplicado = mysqli_fetch_array($verifica_duplicado_x_alumno)[0];
-                if ($id_alumno_duplicado>0) {
+                if ($id_alumno_duplicado > 0) {
                     $nombre_alumno = mysqli_fetch_array($control->consultar_nombre_alumno($id_alumno_duplicado))[0];
-                    echo json_encode("El alumno $nombre_alumno ya tiene una solicitud de transporte generada en la fecha asignada"); 
+                    echo json_encode("El alumno $nombre_alumno ya tiene una solicitud de transporte generada en la fecha asignada");
                     return;
                 }
             }
@@ -75,17 +75,17 @@ if ($tipo_permiso == 1) {
                 responsable,
                 tipo_permiso)
                  VALUES ( 
-                 '".$idusuario."',
-                 '".$calle_numero."', 
-                 '".$colonia."',
-                 '".$cp."',
-                 '".$ruta."',
-                 '".$comentarios."',
-                 '".$nfamilia."',
-                 '".$fecha_permiso."',
-                 '".$fecha_creacion."',
-                 '".$responsable."',
-                 '".$tipo_permiso."')
+                 '" . $idusuario . "',
+                 '" . $calle_numero . "', 
+                 '" . $colonia . "',
+                 '" . $cp . "',
+                 '" . $ruta . "',
+                 '" . $comentarios . "',
+                 '" . $nfamilia . "',
+                 '" . $fecha_permiso . "',
+                 '" . $fecha_creacion . "',
+                 '" . $responsable . "',
+                 '" . $tipo_permiso . "')
                 ";
         mysqli_set_charset($connection, "utf8");
         $insertar = mysqli_query($connection, $sql);
@@ -111,8 +111,7 @@ if ($tipo_permiso == 1) {
         }
         mysqli_close($connection);
     }
-} 
-else if ($tipo_permiso == 2) {
+} else if ($tipo_permiso == 2) {
     $connection = $db_manager->conectar1();
     if ($connection) {
         $sql = "INSERT INTO Ventana_Permisos(
@@ -171,8 +170,7 @@ else if ($tipo_permiso == 2) {
         }
         mysqli_close($connection);
     }
-} 
-else if ($tipo_permiso == 3) {
+} else if ($tipo_permiso == 3) {
     $connection = $db_manager->conectar1();
     if ($connection) {
         $sql = "INSERT INTO Ventana_Permisos(

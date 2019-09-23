@@ -295,6 +295,10 @@ if (isset($authUrl)) {
           <i class="material-icons left">keyboard_backspace</i>Atrás
           -->
           </a>
+              
+            <a class="waves-effect waves-light" href="vistas/vista_nueva_solicitud_montaje.php?idseccion=<?php echo $idseccion; ?>">
+                <img src='../../images/Nuevo.svg' style="width: 110px">       
+            </a> 
           </div>
                 <div>
                 <?php include './View_calendario.php'; ?>

@@ -1853,3 +1853,66 @@ Stack trace:
 [15-Sep-2019 08:32:06 America/Mexico_city] PHP Notice:  Undefined variable: idseccion in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 25
 [15-Sep-2019 08:35:15 America/Mexico_city] PHP Notice:  Undefined index: volver_listado in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 20
 [15-Sep-2019 08:35:15 America/Mexico_city] PHP Notice:  Undefined variable: idseccion in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 25
+[15-Sep-2019 20:16:44 UTC] PHP Notice:  Undefined index: idseccion in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/PCodigo.php on line 5
+[16-Sep-2019 07:52:10 America/Mexico_city] PHP Notice:  Undefined index: volver_listado in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 20
+[16-Sep-2019 07:52:10 America/Mexico_city] PHP Notice:  Undefined variable: idseccion in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 25
+[16-Sep-2019 07:54:52 America/Mexico_city] PHP Notice:  Undefined index: volver_listado in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 20
+[16-Sep-2019 07:54:52 America/Mexico_city] PHP Notice:  Undefined variable: idseccion in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 25
+[16-Sep-2019 07:54:53 America/Mexico_city] PHP Notice:  Undefined offset: 1 in /home/chmd2016/public_html/pruebascd/icloud/Helpers/DateHelper.php on line 160
+[16-Sep-2019 07:54:53 America/Mexico_city] PHP Notice:  Undefined offset: 3 in /home/chmd2016/public_html/pruebascd/icloud/Helpers/DateHelper.php on line 161
+[16-Sep-2019 07:54:53 America/Mexico_city] PHP Notice:  Undefined offset: 5 in /home/chmd2016/public_html/pruebascd/icloud/Helpers/DateHelper.php on line 162
+[16-Sep-2019 07:54:53 America/Mexico_city] PHP Notice:  Undefined variable: id_todos_alumnos in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 380
+[16-Sep-2019 07:54:53 America/Mexico_city] PHP Warning:  array_diff(): Argument #1 is not an array in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 380
+[16-Sep-2019 07:54:53 America/Mexico_city] PHP Notice:  Undefined variable: id_alumno in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 411
+[16-Sep-2019 09:12:03 America/Mexico_city] PHP Notice:  Undefined index: volver_listado in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 20
+[16-Sep-2019 09:12:03 America/Mexico_city] PHP Notice:  Undefined variable: idseccion in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 25
+[16-Sep-2019 09:12:03 America/Mexico_city] PHP Notice:  Undefined variable: id_todos_alumnos in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 380
+[16-Sep-2019 09:12:03 America/Mexico_city] PHP Notice:  Undefined variable: id_inscritos in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 380
+[16-Sep-2019 09:12:03 America/Mexico_city] PHP Warning:  array_diff(): Argument #1 is not an array in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 380
+[16-Sep-2019 09:12:03 America/Mexico_city] PHP Notice:  Undefined variable: id_permiso in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 411
+[16-Sep-2019 09:12:03 America/Mexico_city] PHP Notice:  Undefined variable: id_alumno in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 411
+[16-Sep-2019 09:12:19 America/Mexico_city] PHP Notice:  Undefined index: volver_listado in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 20
+[16-Sep-2019 09:12:19 America/Mexico_city] PHP Notice:  Undefined variable: idseccion in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 25
+[16-Sep-2019 09:12:19 America/Mexico_city] PHP Notice:  Undefined variable: id_todos_alumnos in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 380
+[16-Sep-2019 09:12:19 America/Mexico_city] PHP Notice:  Undefined variable: id_inscritos in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 380
+[16-Sep-2019 09:12:19 America/Mexico_city] PHP Warning:  array_diff(): Argument #1 is not an array in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 380
+[16-Sep-2019 09:12:19 America/Mexico_city] PHP Notice:  Undefined variable: id_permiso in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 411
+[16-Sep-2019 09:12:19 America/Mexico_city] PHP Notice:  Undefined variable: id_alumno in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 411
+[16-Sep-2019 09:13:31 America/Mexico_city] PHP Notice:  Undefined index: volver_listado in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 20
+[16-Sep-2019 09:13:31 America/Mexico_city] PHP Notice:  Undefined variable: idseccion in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 25
+[17-Sep-2019 06:35:46 America/Mexico_city] PHP Notice:  Undefined index: volver_listado in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 20
+[17-Sep-2019 06:35:46 America/Mexico_city] PHP Notice:  Undefined variable: idseccion in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 25
+[17-Sep-2019 06:36:03 America/Mexico_city] PHP Notice:  Undefined index: volver_listado in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 20
+[17-Sep-2019 06:36:03 America/Mexico_city] PHP Notice:  Undefined variable: idseccion in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 25
+[17-Sep-2019 09:33:29 America/Mexico_city] PHP Notice:  Undefined index: volver_listado in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 20
+[17-Sep-2019 09:33:29 America/Mexico_city] PHP Notice:  Undefined variable: idseccion in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 25
+[17-Sep-2019 09:38:05 America/Mexico_city] PHP Notice:  Undefined index: volver_listado in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 20
+[17-Sep-2019 09:38:05 America/Mexico_city] PHP Notice:  Undefined variable: idseccion in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 25
+[17-Sep-2019 09:41:19 America/Mexico_city] PHP Notice:  Undefined index: volver_listado in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 20
+[17-Sep-2019 09:41:19 America/Mexico_city] PHP Notice:  Undefined variable: idseccion in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 25
+[17-Sep-2019 09:41:33 America/Mexico_city] PHP Notice:  Undefined index: volver_listado in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 20
+[17-Sep-2019 09:41:33 America/Mexico_city] PHP Notice:  Undefined variable: idseccion in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 25
+[18-Sep-2019 13:43:41 UTC] PHP Notice:  Undefined index: idseccion in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/PCodigo.php on line 5
+[18-Sep-2019 19:38:33 America/Mexico_city] PHP Notice:  Undefined index: volver_listado in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 20
+[18-Sep-2019 19:38:33 America/Mexico_city] PHP Notice:  Undefined variable: idseccion in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 25
+[18-Sep-2019 19:38:33 America/Mexico_city] PHP Notice:  Undefined variable: id_todos_alumnos in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 380
+[18-Sep-2019 19:38:33 America/Mexico_city] PHP Notice:  Undefined variable: id_inscritos in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 380
+[18-Sep-2019 19:38:33 America/Mexico_city] PHP Warning:  array_diff(): Argument #1 is not an array in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 380
+[18-Sep-2019 19:38:33 America/Mexico_city] PHP Notice:  Undefined variable: id_permiso in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 411
+[18-Sep-2019 19:38:33 America/Mexico_city] PHP Notice:  Undefined variable: id_alumno in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 411
+[18-Sep-2019 19:38:37 America/Mexico_city] PHP Notice:  Undefined index: volver_listado in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 20
+[18-Sep-2019 19:38:37 America/Mexico_city] PHP Notice:  Undefined variable: idseccion in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 25
+[18-Sep-2019 19:38:37 America/Mexico_city] PHP Notice:  Undefined variable: id_alumno in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 411
+[20-Sep-2019 10:30:41 America/Mexico_city] PHP Notice:  Undefined index: volver_listado in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 20
+[20-Sep-2019 10:30:41 America/Mexico_city] PHP Notice:  Undefined variable: idseccion in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 25
+[20-Sep-2019 10:30:41 America/Mexico_city] PHP Notice:  Undefined variable: id_todos_alumnos in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 380
+[20-Sep-2019 10:30:41 America/Mexico_city] PHP Notice:  Undefined variable: id_inscritos in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 380
+[20-Sep-2019 10:30:41 America/Mexico_city] PHP Warning:  array_diff(): Argument #1 is not an array in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 380
+[20-Sep-2019 10:30:41 America/Mexico_city] PHP Notice:  Undefined variable: id_permiso in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 411
+[20-Sep-2019 10:30:41 America/Mexico_city] PHP Notice:  Undefined variable: id_alumno in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 411
+[20-Sep-2019 10:30:50 America/Mexico_city] PHP Notice:  Undefined index: volver_listado in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 20
+[20-Sep-2019 10:30:50 America/Mexico_city] PHP Notice:  Undefined variable: idseccion in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 25
+[20-Sep-2019 10:35:28 America/Mexico_city] PHP Notice:  Undefined index: volver_listado in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 20
+[20-Sep-2019 10:35:28 America/Mexico_city] PHP Notice:  Undefined variable: idseccion in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 25
+[20-Sep-2019 10:35:29 America/Mexico_city] PHP Notice:  Undefined variable: id_todos_alumnos in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 380
+[20-Sep-2019 10:35:29 America/Mexico_city] PHP Warning:  array_diff(): Argument #1 is not an array in /home/chmd2016/public_html/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php on line 380

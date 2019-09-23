@@ -182,9 +182,9 @@ $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
                         ?>
                         <tr style="cursor:pointer;">
                             <th scope="row"><?php echo $fecha_cambio; ?></th>
-                            <td>
+                            <td class="alinear-flex-center">
                               <span class="chip white-text" style="font-size: .9rem;padding: 0px 3px;background-color: <?php echo $color_badge; ?>"><?php echo $status_detalle; ?></span>
-                              <span class='chip green accent-4 c-blanco' style='margin-top:.5rem'><i class='material-icons' style='margin-top:.2rem'>face</i> <?=$i?> de <?=$total_en_evento?></span>
+                              <span class='chip green accent-4 c-blanco'><i class='material-icons' style='margin-top:.2rem'>face</i> <?=$i?> de <?=$total_en_evento?></span>
                             </td>
                             <td>
                               <a class="waves-effect waves-light"

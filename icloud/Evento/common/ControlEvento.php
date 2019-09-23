@@ -200,7 +200,7 @@ class ControlEvento {
     public function obtener_lugares_evento() {
         $connection = $this->con->conectar1();
         if ($connection) {
-            $sql = "SELECT * FROM Lugares_eventos ORDER BY patio";
+            $sql = "SELECT * FROM Lugares_eventos ORDER BY patio, descripcion ";
             mysqli_set_charset($connection, "utf8");
             return mysqli_query($connection, $sql);
         }

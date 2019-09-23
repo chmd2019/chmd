@@ -1,0 +1,15 @@
+[13-Sep-2019 07:35:33 UTC] PHP Notice:  Undefined variable: idseccion in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_nuevo_permiso_eventos.php on line 351
+[13-Sep-2019 07:35:33 UTC] PHP Notice:  Undefined variable: fecha_hoy in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_nuevo_permiso_eventos.php on line 376
+[13-Sep-2019 07:35:33 UTC] PHP Notice:  Undefined variable: nfamilia in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_nuevo_permiso_eventos.php on line 381
+[13-Sep-2019 07:35:33 UTC] PHP Notice:  Undefined variable: nfamilia in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_nuevo_permiso_eventos.php on line 415
+[14-Sep-2019 12:03:43 UTC] PHP Notice:  Undefined variable: idseccion in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_nuevo_permiso_eventos.php on line 351
+[14-Sep-2019 12:03:43 UTC] PHP Notice:  Undefined variable: fecha_hoy in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_nuevo_permiso_eventos.php on line 376
+[14-Sep-2019 12:03:43 UTC] PHP Notice:  Undefined variable: nfamilia in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_nuevo_permiso_eventos.php on line 381
+[14-Sep-2019 12:03:43 UTC] PHP Notice:  Undefined variable: nfamilia in /home/chmd2016/public_html/pruebascd/icloud/Especial/Eventos/vistas/vista_nuevo_permiso_eventos.php on line 415
+[16-Sep-2019 12:49:43 UTC] PHP Fatal error:  Uncaught Google_Service_Exception: Error calling GET https://www.googleapis.com/oauth2/v2/userinfo: (401) Request is missing required authentication credential. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project. in /home/chmd2016/public_html/pruebascd/icloud/libraries/Google/Http/REST.php:106
+Stack trace:
+#0 /home/chmd2016/public_html/pruebascd/icloud/libraries/Google/Http/REST.php(58): Google_Http_REST::decodeHttpResponse(Object(Google_Http_Request), Object(Google_Client))
+#1 /home/chmd2016/public_html/pruebascd/icloud/libraries/Google/Task/Runner.php(174): Google_Http_REST::doExecute(Object(Google_Client), Object(Google_Http_Request))
+#2 /home/chmd2016/public_html/pruebascd/icloud/libraries/Google/Http/REST.php(43): Google_Task_Runner->run()
+#3 /home/chmd2016/public_html/pruebascd/icloud/libraries/Google/Client.php(593): Google_Http_REST::execute(Object(Google_Client), Object(Google_Http_Request))
+# in /home/chmd2016/public_html/pruebascd/icloud/libraries/Google/Http/REST.php on line 106

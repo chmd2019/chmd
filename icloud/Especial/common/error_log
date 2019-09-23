@@ -1,0 +1,348 @@
+[12-Sep-2019 10:19:34 UTC] PHP Notice:  Undefined index: id_permiso in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_cancela_inscripcion_evento.php on line 4
+[13-Sep-2019 06:51:48 UTC] PHP Warning:  require(../../correo/class.phpmailer.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 06:51:48 UTC] PHP Warning:  require(../../correo/class.phpmailer.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 06:51:48 UTC] PHP Fatal error:  require(): Failed opening required '../../correo/class.phpmailer.php' (include_path='.:/opt/alt/php70/usr/share/pear') in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 06:55:39 UTC] PHP Warning:  require(/home/chmd2016/public_html/pruebascd/icloud/correo/class.phpmailer.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 06:55:39 UTC] PHP Warning:  require(/home/chmd2016/public_html/pruebascd/icloud/correo/class.phpmailer.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 06:55:39 UTC] PHP Fatal error:  require(): Failed opening required '/home/chmd2016/public_html/pruebascd/icloud/correo/class.phpmailer.php' (include_path='.:/opt/alt/php70/usr/share/pear') in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 06:58:43 UTC] PHP Warning:  require(../../correo/class.phpmailer.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 06:58:43 UTC] PHP Warning:  require(../../correo/class.phpmailer.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 06:58:43 UTC] PHP Fatal error:  require(): Failed opening required '../../correo/class.phpmailer.php' (include_path='.:/opt/alt/php70/usr/share/pear') in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 06:59:34 UTC] PHP Warning:  require(../../correo/class.phpmailer.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 06:59:34 UTC] PHP Warning:  require(../../correo/class.phpmailer.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 06:59:34 UTC] PHP Fatal error:  require(): Failed opening required '../../correo/class.phpmailer.php' (include_path='.:/opt/alt/php70/usr/share/pear') in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 07:00:34 UTC] PHP Warning:  include(../../correo/class.phpmailer.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 07:00:34 UTC] PHP Warning:  include(../../correo/class.phpmailer.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 07:00:34 UTC] PHP Warning:  include(): Failed opening '../../correo/class.phpmailer.php' for inclusion (include_path='.:/opt/alt/php70/usr/share/pear') in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 07:01:18 UTC] PHP Warning:  include(/home/chmd2016/public_html/pruebascd/icloud/correo/class.phpmailer.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 07:01:18 UTC] PHP Warning:  include(/home/chmd2016/public_html/pruebascd/icloud/correo/class.phpmailer.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 07:01:18 UTC] PHP Warning:  include(): Failed opening '/home/chmd2016/public_html/pruebascd/icloud/correo/class.phpmailer.php' for inclusion (include_path='.:/opt/alt/php70/usr/share/pear') in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 07:01:34 UTC] PHP Warning:  require(/home/chmd2016/public_html/pruebascd/icloud/correo/class.phpmailer.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 07:01:34 UTC] PHP Warning:  require(/home/chmd2016/public_html/pruebascd/icloud/correo/class.phpmailer.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 07:01:34 UTC] PHP Fatal error:  require(): Failed opening required '/home/chmd2016/public_html/pruebascd/icloud/correo/class.phpmailer.php' (include_path='.:/opt/alt/php70/usr/share/pear') in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 07:02:14 UTC] PHP Warning:  include(/home/chmd2016/public_html/pruebascd/icloud/correo/class.phpmailer.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 07:02:14 UTC] PHP Warning:  include(/home/chmd2016/public_html/pruebascd/icloud/correo/class.phpmailer.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 07:02:14 UTC] PHP Warning:  include(): Failed opening '/home/chmd2016/public_html/pruebascd/icloud/correo/class.phpmailer.php' for inclusion (include_path='.:/opt/alt/php70/usr/share/pear') in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 07:02:14 UTC] PHP Warning:  include(/home/chmd2016/public_html/pruebascd/icloud/correo/class.smtp.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 9
+[13-Sep-2019 07:02:14 UTC] PHP Warning:  include(/home/chmd2016/public_html/pruebascd/icloud/correo/class.smtp.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 9
+[13-Sep-2019 07:02:14 UTC] PHP Warning:  include(): Failed opening '/home/chmd2016/public_html/pruebascd/icloud/correo/class.smtp.php' for inclusion (include_path='.:/opt/alt/php70/usr/share/pear') in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 9
+[13-Sep-2019 07:03:11 UTC] PHP Warning:  require(/home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 07:03:11 UTC] PHP Warning:  require(/home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 07:03:11 UTC] PHP Fatal error:  require(): Failed opening required '/home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php' (include_path='.:/opt/alt/php70/usr/share/pear') in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 07:04:20 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; SMTP has a deprecated constructor in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.smtp.php on line 36
+[13-Sep-2019 07:05:00 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; SMTP has a deprecated constructor in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.smtp.php on line 36
+[13-Sep-2019 07:05:15 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; SMTP has a deprecated constructor in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.smtp.php on line 36
+[13-Sep-2019 07:08:00 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; SMTP has a deprecated constructor in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.smtp.php on line 36
+[13-Sep-2019 02:08:00 America/Mexico_city] PHP Notice:  Undefined variable: correo in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 32
+[13-Sep-2019 02:08:00 America/Mexico_city] PHP Fatal error:  Uncaught Error: Call to undefined function eregi() in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php:592
+Stack trace:
+#0 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(517): PHPMailer->SmtpConnect()
+#1 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(410): PHPMailer->SmtpSend('Date: Fri, 13 S...', '--b1_8a50c65364...')
+#2 /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php(33): PHPMailer->Send()
+#3 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php on line 592
+[13-Sep-2019 07:08:14 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; SMTP has a deprecated constructor in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.smtp.php on line 36
+[13-Sep-2019 02:08:14 America/Mexico_city] PHP Notice:  Undefined variable: correo in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 32
+[13-Sep-2019 02:08:14 America/Mexico_city] PHP Fatal error:  Uncaught Error: Call to undefined function eregi() in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php:592
+Stack trace:
+#0 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(517): PHPMailer->SmtpConnect()
+#1 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(410): PHPMailer->SmtpSend('Date: Fri, 13 S...', '--b1_3b7e8f1def...')
+#2 /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php(33): PHPMailer->Send()
+#3 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php on line 592
+[13-Sep-2019 07:08:38 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; SMTP has a deprecated constructor in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.smtp.php on line 36
+[13-Sep-2019 02:08:38 America/Mexico_city] PHP Notice:  Undefined variable: correo in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 32
+[13-Sep-2019 02:08:38 America/Mexico_city] PHP Fatal error:  Uncaught Error: Call to undefined function eregi() in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php:592
+Stack trace:
+#0 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(517): PHPMailer->SmtpConnect()
+#1 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(410): PHPMailer->SmtpSend('Date: Fri, 13 S...', '--b1_f59ac8780f...')
+#2 /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php(33): PHPMailer->Send()
+#3 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php on line 592
+[13-Sep-2019 07:08:42 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; SMTP has a deprecated constructor in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.smtp.php on line 36
+[13-Sep-2019 02:08:42 America/Mexico_city] PHP Notice:  Undefined variable: correo in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 32
+[13-Sep-2019 02:08:42 America/Mexico_city] PHP Fatal error:  Uncaught Error: Call to undefined function eregi() in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php:592
+Stack trace:
+#0 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(517): PHPMailer->SmtpConnect()
+#1 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(410): PHPMailer->SmtpSend('Date: Fri, 13 S...', '--b1_22e7e6e5f2...')
+#2 /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php(33): PHPMailer->Send()
+#3 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php on line 592
+[13-Sep-2019 07:11:20 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; SMTP has a deprecated constructor in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.smtp.php on line 36
+[13-Sep-2019 02:11:20 America/Mexico_city] PHP Notice:  Undefined variable: correo in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 32
+[13-Sep-2019 02:11:20 America/Mexico_city] PHP Fatal error:  Uncaught Error: Call to undefined function eregi() in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php:592
+Stack trace:
+#0 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(517): PHPMailer->SmtpConnect()
+#1 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(410): PHPMailer->SmtpSend('Date: Fri, 13 S...', '--b1_bf9ca6ff67...')
+#2 /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php(33): PHPMailer->Send()
+#3 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php on line 592
+[13-Sep-2019 07:11:59 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; SMTP has a deprecated constructor in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.smtp.php on line 36
+[13-Sep-2019 02:11:59 America/Mexico_city] PHP Notice:  Undefined variable: correo in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 32
+[13-Sep-2019 02:11:59 America/Mexico_city] PHP Fatal error:  Uncaught Error: Call to undefined function eregi() in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php:592
+Stack trace:
+#0 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(517): PHPMailer->SmtpConnect()
+#1 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(410): PHPMailer->SmtpSend('Date: Fri, 13 S...', '--b1_74eba95c18...')
+#2 /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php(128): PHPMailer->Send()
+#3 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php on line 592
+[13-Sep-2019 07:13:13 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; SMTP has a deprecated constructor in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.smtp.php on line 36
+[13-Sep-2019 02:13:13 America/Mexico_city] PHP Fatal error:  Uncaught Error: Call to undefined function eregi() in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php:592
+Stack trace:
+#0 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(517): PHPMailer->SmtpConnect()
+#1 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(410): PHPMailer->SmtpSend('Date: Fri, 13 S...', '--b1_5c7d48eb3b...')
+#2 /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php(128): PHPMailer->Send()
+#3 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php on line 592
+[13-Sep-2019 07:14:48 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; SMTP has a deprecated constructor in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.smtp.php on line 36
+[13-Sep-2019 07:15:29 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; SMTP has a deprecated constructor in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.smtp.php on line 36
+[13-Sep-2019 02:15:29 America/Mexico_city] PHP Fatal error:  Uncaught Error: Call to undefined function eregi() in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php:592
+Stack trace:
+#0 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(517): PHPMailer->SmtpConnect()
+#1 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(410): PHPMailer->SmtpSend('Date: Fri, 13 S...', '--b1_5330aa03d7...')
+#2 /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php(127): PHPMailer->Send()
+#3 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php on line 592
+[13-Sep-2019 07:16:47 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; SMTP has a deprecated constructor in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.smtp.php on line 36
+[13-Sep-2019 02:16:47 America/Mexico_city] PHP Fatal error:  Uncaught Error: Call to undefined function eregi() in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php:592
+Stack trace:
+#0 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(517): PHPMailer->SmtpConnect()
+#1 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(410): PHPMailer->SmtpSend('Date: Fri, 13 S...', '--b1_d190f1c7d2...')
+#2 /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php(128): PHPMailer->Send()
+#3 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php on line 592
+[13-Sep-2019 07:25:37 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; SMTP has a deprecated constructor in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.smtp.php on line 36
+[13-Sep-2019 02:25:37 America/Mexico_city] PHP Fatal error:  Uncaught Error: Call to undefined function eregi() in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php:592
+Stack trace:
+#0 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(517): PHPMailer->SmtpConnect()
+#1 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(410): PHPMailer->SmtpSend('Date: Fri, 13 S...', '--b1_75706f24a5...')
+#2 /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php(128): PHPMailer->Send()
+#3 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php on line 592
+[13-Sep-2019 07:26:26 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; SMTP has a deprecated constructor in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.smtp.php on line 36
+[13-Sep-2019 07:28:08 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; SMTP has a deprecated constructor in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.smtp.php on line 36
+[13-Sep-2019 07:28:21 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; SMTP has a deprecated constructor in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.smtp.php on line 36
+[13-Sep-2019 02:28:21 America/Mexico_city] PHP Fatal error:  Uncaught Error: Call to undefined function eregi() in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php:592
+Stack trace:
+#0 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(517): PHPMailer->SmtpConnect()
+#1 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(410): PHPMailer->SmtpSend('Date: Fri, 13 S...', '--b1_e5064525f3...')
+#2 /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php(128): PHPMailer->Send()
+#3 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php on line 592
+[13-Sep-2019 07:28:23 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; SMTP has a deprecated constructor in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.smtp.php on line 36
+[13-Sep-2019 02:28:23 America/Mexico_city] PHP Fatal error:  Uncaught Error: Call to undefined function eregi() in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php:592
+Stack trace:
+#0 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(517): PHPMailer->SmtpConnect()
+#1 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(410): PHPMailer->SmtpSend('Date: Fri, 13 S...', '--b1_5d28712e33...')
+#2 /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php(128): PHPMailer->Send()
+#3 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php on line 592
+[13-Sep-2019 07:28:23 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; SMTP has a deprecated constructor in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.smtp.php on line 36
+[13-Sep-2019 02:28:23 America/Mexico_city] PHP Fatal error:  Uncaught Error: Call to undefined function eregi() in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php:592
+Stack trace:
+#0 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(517): PHPMailer->SmtpConnect()
+#1 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(410): PHPMailer->SmtpSend('Date: Fri, 13 S...', '--b1_55ac656584...')
+#2 /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php(128): PHPMailer->Send()
+#3 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php on line 592
+[13-Sep-2019 07:28:56 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; SMTP has a deprecated constructor in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.smtp.php on line 36
+[13-Sep-2019 02:28:56 America/Mexico_city] PHP Fatal error:  Uncaught Error: Call to undefined function eregi() in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php:592
+Stack trace:
+#0 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(517): PHPMailer->SmtpConnect()
+#1 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(410): PHPMailer->SmtpSend('Date: Fri, 13 S...', '--b1_0a1dc188da...')
+#2 /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php(128): PHPMailer->Send()
+#3 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php on line 592
+[13-Sep-2019 07:28:57 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; SMTP has a deprecated constructor in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.smtp.php on line 36
+[13-Sep-2019 02:28:57 America/Mexico_city] PHP Fatal error:  Uncaught Error: Call to undefined function eregi() in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php:592
+Stack trace:
+#0 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(517): PHPMailer->SmtpConnect()
+#1 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(410): PHPMailer->SmtpSend('Date: Fri, 13 S...', '--b1_f5597abc0b...')
+#2 /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php(128): PHPMailer->Send()
+#3 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php on line 592
+[13-Sep-2019 07:29:46 UTC] PHP Warning:  include(correo/class.phpmailer.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 07:29:46 UTC] PHP Warning:  include(correo/class.phpmailer.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 07:29:46 UTC] PHP Warning:  include(): Failed opening 'correo/class.phpmailer.php' for inclusion (include_path='.:/opt/alt/php70/usr/share/pear') in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 07:29:46 UTC] PHP Warning:  include(correo/class.smtp.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 9
+[13-Sep-2019 07:29:46 UTC] PHP Warning:  include(correo/class.smtp.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 9
+[13-Sep-2019 07:29:46 UTC] PHP Warning:  include(): Failed opening 'correo/class.smtp.php' for inclusion (include_path='.:/opt/alt/php70/usr/share/pear') in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 9
+[13-Sep-2019 02:29:46 America/Mexico_city] PHP Fatal error:  Uncaught Error: Class 'PHPMailer' not found in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php:31
+Stack trace:
+#0 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 31
+[13-Sep-2019 07:29:50 UTC] PHP Warning:  include(correo/class.phpmailer.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 07:29:50 UTC] PHP Warning:  include(correo/class.phpmailer.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 07:29:50 UTC] PHP Warning:  include(): Failed opening 'correo/class.phpmailer.php' for inclusion (include_path='.:/opt/alt/php70/usr/share/pear') in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 07:29:50 UTC] PHP Warning:  include(correo/class.smtp.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 9
+[13-Sep-2019 07:29:50 UTC] PHP Warning:  include(correo/class.smtp.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 9
+[13-Sep-2019 07:29:50 UTC] PHP Warning:  include(): Failed opening 'correo/class.smtp.php' for inclusion (include_path='.:/opt/alt/php70/usr/share/pear') in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 9
+[13-Sep-2019 02:29:50 America/Mexico_city] PHP Fatal error:  Uncaught Error: Class 'PHPMailer' not found in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php:31
+Stack trace:
+#0 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 31
+[13-Sep-2019 07:30:08 UTC] PHP Warning:  include(correo/class.phpmailer.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 07:30:08 UTC] PHP Warning:  include(correo/class.phpmailer.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 07:30:08 UTC] PHP Warning:  include(): Failed opening 'correo/class.phpmailer.php' for inclusion (include_path='.:/opt/alt/php70/usr/share/pear') in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 8
+[13-Sep-2019 07:30:08 UTC] PHP Warning:  include(correo/class.smtp.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 9
+[13-Sep-2019 07:30:08 UTC] PHP Warning:  include(correo/class.smtp.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 9
+[13-Sep-2019 07:30:08 UTC] PHP Warning:  include(): Failed opening 'correo/class.smtp.php' for inclusion (include_path='.:/opt/alt/php70/usr/share/pear') in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 9
+[13-Sep-2019 02:30:08 America/Mexico_city] PHP Fatal error:  Uncaught Error: Class 'PHPMailer' not found in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php:31
+Stack trace:
+#0 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 31
+[13-Sep-2019 07:31:49 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; SMTP has a deprecated constructor in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.smtp.php on line 36
+[13-Sep-2019 02:31:49 America/Mexico_city] PHP Fatal error:  Uncaught Error: Call to undefined function eregi() in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php:592
+Stack trace:
+#0 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(517): PHPMailer->SmtpConnect()
+#1 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(410): PHPMailer->SmtpSend('Date: Fri, 13 S...', '--b1_1e4b145afb...')
+#2 /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php(128): PHPMailer->Send()
+#3 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php on line 592
+[13-Sep-2019 07:31:51 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; SMTP has a deprecated constructor in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.smtp.php on line 36
+[13-Sep-2019 02:31:51 America/Mexico_city] PHP Fatal error:  Uncaught Error: Call to undefined function eregi() in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php:592
+Stack trace:
+#0 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(517): PHPMailer->SmtpConnect()
+#1 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(410): PHPMailer->SmtpSend('Date: Fri, 13 S...', '--b1_987fb9c900...')
+#2 /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php(128): PHPMailer->Send()
+#3 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php on line 592
+[13-Sep-2019 07:34:31 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; SMTP has a deprecated constructor in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.smtp.php on line 36
+[13-Sep-2019 02:34:31 America/Mexico_city] PHP Fatal error:  Uncaught Error: Call to undefined function eregi() in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php:592
+Stack trace:
+#0 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(517): PHPMailer->SmtpConnect()
+#1 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(410): PHPMailer->SmtpSend('Date: Fri, 13 S...', '--b1_a4f18bab53...')
+#2 /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php(133): PHPMailer->Send()
+#3 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php on line 592
+[13-Sep-2019 07:34:33 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; SMTP has a deprecated constructor in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.smtp.php on line 36
+[13-Sep-2019 02:34:33 America/Mexico_city] PHP Fatal error:  Uncaught Error: Call to undefined function eregi() in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php:592
+Stack trace:
+#0 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(517): PHPMailer->SmtpConnect()
+#1 /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php(410): PHPMailer->SmtpSend('Date: Fri, 13 S...', '--b1_f4717df1c2...')
+#2 /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php(133): PHPMailer->Send()
+#3 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Helpers/class.phpmailer.php on line 592
+[14-Sep-2019 05:51:10 UTC] PHP Warning:  file_get_contents(message.html): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 119
+[14-Sep-2019 05:51:58 UTC] PHP Warning:  file_get_contents(message.html): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 119
+[14-Sep-2019 06:50:06 UTC] PHP Fatal error:  Uncaught Error: Class 'PHPMailer' not found in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php:108
+Stack trace:
+#0 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 108
+[14-Sep-2019 06:50:10 UTC] PHP Fatal error:  Uncaught Error: Class 'PHPMailer' not found in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php:108
+Stack trace:
+#0 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 108
+[14-Sep-2019 06:50:30 UTC] PHP Fatal error:  Uncaught Error: Class 'PHPMailer' not found in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php:108
+Stack trace:
+#0 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 108
+[14-Sep-2019 06:50:32 UTC] PHP Fatal error:  Uncaught Error: Class 'PHPMailer' not found in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php:108
+Stack trace:
+#0 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 108
+[14-Sep-2019 06:50:32 UTC] PHP Fatal error:  Uncaught Error: Class 'PHPMailer' not found in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php:108
+Stack trace:
+#0 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 108
+[14-Sep-2019 06:55:51 UTC] PHP Fatal error:  Uncaught PHPMailer\PHPMailer\Exception: SMTP connect() failed. https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting in /home/chmd2016/public_html/pruebascd/icloud/Helpers/vendor/phpmailer/phpmailer/src/PHPMailer.php:1775
+Stack trace:
+#0 /home/chmd2016/public_html/pruebascd/icloud/Helpers/vendor/phpmailer/phpmailer/src/PHPMailer.php(1516): PHPMailer\PHPMailer\PHPMailer->smtpSend('Date: Sat, 14 S...', 'This is a multi...')
+#1 /home/chmd2016/public_html/pruebascd/icloud/Helpers/vendor/phpmailer/phpmailer/src/PHPMailer.php(1352): PHPMailer\PHPMailer\PHPMailer->postSend()
+#2 /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php(146): PHPMailer\PHPMailer\PHPMailer->send()
+#3 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Helpers/vendor/phpmailer/phpmailer/src/PHPMailer.php on line 1775
+[14-Sep-2019 06:57:29 UTC] PHP Warning:  require(vendor/autoload.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 109
+[14-Sep-2019 06:57:29 UTC] PHP Warning:  require(vendor/autoload.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 109
+[14-Sep-2019 06:57:29 UTC] PHP Fatal error:  require(): Failed opening required 'vendor/autoload.php' (include_path='.:/opt/alt/php70/usr/share/pear') in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 109
+[14-Sep-2019 06:57:31 UTC] PHP Warning:  require(vendor/autoload.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 109
+[14-Sep-2019 06:57:31 UTC] PHP Warning:  require(vendor/autoload.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 109
+[14-Sep-2019 06:57:31 UTC] PHP Fatal error:  require(): Failed opening required 'vendor/autoload.php' (include_path='.:/opt/alt/php70/usr/share/pear') in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 109
+[14-Sep-2019 07:12:48 UTC] PHP Notice:  Undefined variable: mensaje in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 123
+[14-Sep-2019 07:21:50 UTC] PHP Warning:  gethostname() expects exactly 0 parameters, 1 given in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 115
+[14-Sep-2019 07:21:56 UTC] PHP Warning:  gethostname() expects exactly 0 parameters, 1 given in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 115
+[14-Sep-2019 07:23:15 UTC] PHP Warning:  gethostname() expects exactly 0 parameters, 1 given in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 120
+[14-Sep-2019 07:43:46 UTC] PHP Fatal error:  Uncaught Error: Class 'PHPMailerR' not found in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php:119
+Stack trace:
+#0 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 119
+[14-Sep-2019 07:44:45 UTC] PHP Fatal error:  Uncaught Error: Class 'PHPMailer\PHPMailer\PHPMailer' not found in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php:117
+Stack trace:
+#0 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 117
+[14-Sep-2019 07:50:08 UTC] PHP Warning:  include(lib/class.phpmailer.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 105
+[14-Sep-2019 07:50:08 UTC] PHP Warning:  include(lib/class.phpmailer.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 105
+[14-Sep-2019 07:50:08 UTC] PHP Warning:  include(): Failed opening 'lib/class.phpmailer.php' for inclusion (include_path='.:/opt/alt/php70/usr/share/pear') in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 105
+[14-Sep-2019 07:50:08 UTC] PHP Warning:  include(lib/class.smtp.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 106
+[14-Sep-2019 07:50:08 UTC] PHP Warning:  include(lib/class.smtp.php): failed to open stream: No such file or directory in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 106
+[14-Sep-2019 07:50:08 UTC] PHP Warning:  include(): Failed opening 'lib/class.smtp.php' for inclusion (include_path='.:/opt/alt/php70/usr/share/pear') in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 106
+[14-Sep-2019 07:50:08 UTC] PHP Fatal error:  Uncaught Error: Class 'PHPMailer' not found in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php:110
+Stack trace:
+#0 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 110
+[14-Sep-2019 07:50:55 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function eregi() in /home/chmd2016/public_html/pruebascd/icloud/Especial/lib/class.phpmailer.php:592
+Stack trace:
+#0 /home/chmd2016/public_html/pruebascd/icloud/Especial/lib/class.phpmailer.php(517): PHPMailer->SmtpConnect()
+#1 /home/chmd2016/public_html/pruebascd/icloud/Especial/lib/class.phpmailer.php(410): PHPMailer->SmtpSend('Date: Sat, 14 S...', '--b1_affbc64c5d...')
+#2 /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php(134): PHPMailer->Send()
+#3 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Especial/lib/class.phpmailer.php on line 592
+[14-Sep-2019 07:50:57 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function eregi() in /home/chmd2016/public_html/pruebascd/icloud/Especial/lib/class.phpmailer.php:592
+Stack trace:
+#0 /home/chmd2016/public_html/pruebascd/icloud/Especial/lib/class.phpmailer.php(517): PHPMailer->SmtpConnect()
+#1 /home/chmd2016/public_html/pruebascd/icloud/Especial/lib/class.phpmailer.php(410): PHPMailer->SmtpSend('Date: Sat, 14 S...', '--b1_6410cbe5cc...')
+#2 /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php(134): PHPMailer->Send()
+#3 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Especial/lib/class.phpmailer.php on line 592
+[14-Sep-2019 07:50:58 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function eregi() in /home/chmd2016/public_html/pruebascd/icloud/Especial/lib/class.phpmailer.php:592
+Stack trace:
+#0 /home/chmd2016/public_html/pruebascd/icloud/Especial/lib/class.phpmailer.php(517): PHPMailer->SmtpConnect()
+#1 /home/chmd2016/public_html/pruebascd/icloud/Especial/lib/class.phpmailer.php(410): PHPMailer->SmtpSend('Date: Sat, 14 S...', '--b1_20e1a225e9...')
+#2 /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php(134): PHPMailer->Send()
+#3 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Especial/lib/class.phpmailer.php on line 592
+[14-Sep-2019 07:51:46 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function eregi() in /home/chmd2016/public_html/pruebascd/icloud/Especial/lib/class.phpmailer.php:592
+Stack trace:
+#0 /home/chmd2016/public_html/pruebascd/icloud/Especial/lib/class.phpmailer.php(517): PHPMailer->SmtpConnect()
+#1 /home/chmd2016/public_html/pruebascd/icloud/Especial/lib/class.phpmailer.php(410): PHPMailer->SmtpSend('Date: Sat, 14 S...', '--b1_11d64e8b8c...')
+#2 /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php(134): PHPMailer->Send()
+#3 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Especial/lib/class.phpmailer.php on line 592
+[14-Sep-2019 07:51:48 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function eregi() in /home/chmd2016/public_html/pruebascd/icloud/Especial/lib/class.phpmailer.php:592
+Stack trace:
+#0 /home/chmd2016/public_html/pruebascd/icloud/Especial/lib/class.phpmailer.php(517): PHPMailer->SmtpConnect()
+#1 /home/chmd2016/public_html/pruebascd/icloud/Especial/lib/class.phpmailer.php(410): PHPMailer->SmtpSend('Date: Sat, 14 S...', '--b1_e1bc7b8f42...')
+#2 /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php(134): PHPMailer->Send()
+#3 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Especial/lib/class.phpmailer.php on line 592
+[14-Sep-2019 07:51:49 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function eregi() in /home/chmd2016/public_html/pruebascd/icloud/Especial/lib/class.phpmailer.php:592
+Stack trace:
+#0 /home/chmd2016/public_html/pruebascd/icloud/Especial/lib/class.phpmailer.php(517): PHPMailer->SmtpConnect()
+#1 /home/chmd2016/public_html/pruebascd/icloud/Especial/lib/class.phpmailer.php(410): PHPMailer->SmtpSend('Date: Sat, 14 S...', '--b1_7cca604be5...')
+#2 /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php(134): PHPMailer->Send()
+#3 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Especial/lib/class.phpmailer.php on line 592
+[14-Sep-2019 07:52:13 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function eregi() in /home/chmd2016/public_html/pruebascd/icloud/Especial/lib/class.phpmailer.php:592
+Stack trace:
+#0 /home/chmd2016/public_html/pruebascd/icloud/Especial/lib/class.phpmailer.php(517): PHPMailer->SmtpConnect()
+#1 /home/chmd2016/public_html/pruebascd/icloud/Especial/lib/class.phpmailer.php(410): PHPMailer->SmtpSend('Date: Sat, 14 S...', '--b1_909d8e8e4b...')
+#2 /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php(134): PHPMailer->Send()
+#3 {main}
+  thrown in /home/chmd2016/public_html/pruebascd/icloud/Especial/lib/class.phpmailer.php on line 592
+[14-Sep-2019 13:33:00 UTC] PHP Notice:  Undefined variable: subject in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 155
+[15-Sep-2019 07:34:20 America/Mexico_city] PHP Notice:  Undefined variable: tipo_evento in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 118
+[15-Sep-2019 07:34:20 America/Mexico_city] PHP Notice:  Undefined variable: responsable in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 119
+[15-Sep-2019 07:34:20 America/Mexico_city] PHP Notice:  Undefined variable: tipo_evento in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 120
+[15-Sep-2019 07:34:20 America/Mexico_city] PHP Notice:  Undefined variable: codigo_invitacion in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 121
+[15-Sep-2019 07:34:20 America/Mexico_city] PHP Notice:  Undefined variable: fecha_cambio in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 122
+[15-Sep-2019 07:37:49 America/Mexico_city] PHP Notice:  Undefined variable: tipo_evento in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 117
+[15-Sep-2019 07:37:49 America/Mexico_city] PHP Notice:  Undefined variable: responsable in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 118
+[15-Sep-2019 07:37:49 America/Mexico_city] PHP Notice:  Undefined variable: tipo_evento in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 119
+[15-Sep-2019 07:37:49 America/Mexico_city] PHP Notice:  Undefined variable: codigo_invitacion in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 120
+[15-Sep-2019 07:37:49 America/Mexico_city] PHP Notice:  Undefined variable: fecha_cambio in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 121
+[15-Sep-2019 07:37:49 America/Mexico_city] PHP Notice:  Undefined variable: codigo_invitacion in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 123
+[15-Sep-2019 07:45:12 America/Mexico_city] PHP Notice:  Undefined variable: tipo_evento in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 117
+[15-Sep-2019 07:45:12 America/Mexico_city] PHP Notice:  Undefined variable: responsable in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 118
+[15-Sep-2019 07:45:12 America/Mexico_city] PHP Notice:  Undefined variable: tipo_evento in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 119
+[15-Sep-2019 07:45:12 America/Mexico_city] PHP Notice:  Undefined variable: codigo_invitacion in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 120
+[15-Sep-2019 07:45:12 America/Mexico_city] PHP Notice:  Undefined variable: fecha_cambio in /home/chmd2016/public_html/pruebascd/icloud/Especial/common/post_nuevo_evento.php on line 121

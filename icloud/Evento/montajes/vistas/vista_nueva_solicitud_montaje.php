@@ -445,8 +445,9 @@ if (isset($authUrl)) {
                         </div>
                         <div class="input-field col s12" hidden id="mobiliario">
                             <h5 class="col s12 c-azul text-center">Mobiliario</h5>
-                            <div id="tabla_inventario"></div>         
-                            <div class="input-field col s12" id="caja_asignacion_manteles" hidden>  
+                            <div id="tabla_inventario"></div>      
+                            <!--Oculto la asignacion de manteles para incluirlo en el mobiliario total--->
+                            <div class="input-field col s12" id="caja_asignacion_manteles_oculto" hidden>  
                                 <h5 class="col s12 c-azul text-center">Asignación de manteles</h5>
                                 <br>
                                 <div style="text-align: center" id="badge_mantel_seleccion">               
