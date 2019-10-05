@@ -30,10 +30,10 @@ $estatus = $_POST['estatus'];
 $empresa_transporte = $_POST['empresa_transporte'];
 $tipo_evento = $_POST['tipo_evento'];
 $alumnos = $_POST['alumnos'];
+$coleccion_alumnos_invitados = $_POST['coleccion_alumnos_invitados'];
 
 $connection = $db_manager->conectar1();
 $codigo_invitacion = "";
-
 do {
     $codigo_invitacion = $control->generador_codigo_invitacion();
     $codigo_verificado = $control->verificar_existe_codigo_verificacion($codigo_invitacion);
@@ -93,6 +93,9 @@ if ($connection) {
                     . $nfamilia . "','"
                     . $codigo_invitacion . "')";
             $insert_alumnos = mysqli_query($connection, $sql);
+        }
+        foreach ($coleccion_alumnos_invitados as $value) {
+            $control->inscripcion_invitado($ultimo_id_conexion, $value, 1, $codigo_invitacion, $nfamilia);
         }
         $sql = "COMMIT";
         mysqli_query($connection, $sql);

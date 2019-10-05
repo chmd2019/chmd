@@ -21,6 +21,7 @@ $("#btn_enviar_formulario").prop('disabled', true);
   $("#loading").hide();
   var isgood=true;
   var choferes=''
+  var autos=''
   var counter=0;
 
   $('.checks-choferes input[type=checkbox]').each(function () {
@@ -30,6 +31,12 @@ $("#btn_enviar_formulario").prop('disabled', true);
 //          alert(value);
           let nombre = $("#Chofer" + value).val();
           let apellido = $("#Apellido" + value).val();
+//automoviles
+          let marca = $("#marca" + value).val();
+          let submarca = $("#submarca" + value).val();
+          let modelo = $("#modelo" + value).val();
+          let color = $("#color" + value).val();
+          let placa = $("#placa" + value).val();
           //validar que no estan vacios
           if (nombre==''){
             isgood=false;
@@ -52,27 +59,7 @@ $("#btn_enviar_formulario").prop('disabled', true);
             $("#btn_enviar_formulario").prop('disabled', false);
             return false;
           }
-        //almacenar en implote
-        choferes=choferes + nombre + '|' + apellido +',';
-      }
-  });
-  //Listo cn los choferes
-  var Nchoferes=counter;
-  //alert(choferes);
-
-/********************** autos *****************************/
-  var autos=''
-  counter=0;
-  $('.checks-autos input[type=checkbox]').each(function () {
-      if (this.checked) {
-          counter++;
-          let value = $(this).val();
-  //          alert(value);
-          let marca = $("#marca" + value).val();
-          let submarca = $("#submarca" + value).val();
-          let modelo = $("#modelo" + value).val();
-          let color = $("#color" + value).val();
-          let placa = $("#placa" + value).val();
+          
           //validar que no estan vacios
           if (marca=='' || marca ==  null){
             isgood=false;
@@ -88,17 +75,17 @@ $("#btn_enviar_formulario").prop('disabled', true);
           if (submarca==''){
             isgood=false;
             M.toast({
-              html: 'Debe agregar la Submarca del Automóvil.',
+              html: 'Debe agregar el Modelo del Automóvil.',
               classes: 'deep-orange c-blanco'
             });
             $("#btn_enviar_formulario").prop('disabled', false);
             return false;
           }
-          if (modelo==''){
+          if (modelo=='' || modelo==null){
             isgood=false;
             //alert("Falta agregar Modelo");
             M.toast({
-              html: 'Debe agregar el Modelo del Automóvil.',
+              html: 'Debe agregar el Año del Automóvil.',
               classes: 'deep-orange c-blanco'
             });
             $("#btn_enviar_formulario").prop('disabled', false);
@@ -137,15 +124,18 @@ $("#btn_enviar_formulario").prop('disabled', true);
             $("#btn_enviar_formulario").prop('disabled', false);
             return false;
           }
-
+        //almacenar en implote
+        choferes=choferes + nombre + '|' + apellido +',';
         //almacenar en implote
         autos=autos + marca + '|'+ submarca + '|' + modelo +'|' + color + '|' + placa + ',';
       }
   });
+  //Listo cn los choferes
+  var Nchoferes=counter;
 
   //Listo cn los autos
   var Nautos=counter;
-//  alert(autos);
+
 //hacer el llamado ajax
   var ncheckbox_selected= Nautos+Nchoferes;
 if(isgood==true && ncheckbox_selected>0 ){

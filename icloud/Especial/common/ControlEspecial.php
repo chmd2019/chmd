@@ -17,7 +17,7 @@ class ControlEspecial {
     public function obtener_responsables_padre($familia) {
         $conexion = $this->con->conectar1();
         if ($conexion) {
-            $sql = "SELECT id, nombre, tipo FROM usuarios WHERE numero = '$familia'";
+            $sql = "SELECT id, nombre, tipo FROM usuarios WHERE numero = '$familia' AND estatus = 2";
             mysqli_set_charset($conexion, 'utf8');
             return mysqli_query($conexion, $sql);
         }
@@ -110,7 +110,7 @@ class ControlEspecial {
     public function consultar_nombre_alumno($id_alumno) {
         $connection = $this->con->conectar1();
         if ($connection) {
-            $sql = "SELECT nombre, nivel FROM alumnoschmd WHERE id = '$id_alumno'";
+            $sql = "SELECT nombre, nivel, grupo, grado FROM alumnoschmd WHERE id = '$id_alumno'";
             mysqli_set_charset($connection, 'utf8');
             return mysqli_query($connection, $sql);
         }
@@ -341,5 +341,34 @@ class ControlEspecial {
             return mysqli_query($connection, $sql);
         }
     }
+
+    public function consulta_alumnos_grupo($grupo, $id_anfitrion) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT id, idfamilia, nombre, nivel FROM alumnoschmd WHERE grupo = '$grupo' AND id != '$id_anfitrion';";
+            mysqli_set_charset($connection, 'utf8');
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function inscripcion_invitado($id_permiso,$id_alumno,$estatus,$codigo_invitacion,$familia) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "INSERT INTO `Ventana_permisos_alumnos` ("
+                    . "`id_permiso`, "
+                    . "`id_alumno`, "
+                    . "`estatus`, "
+                    . "`codigo_invitacion`, "
+                    . "`familia`) "
+                    . "VALUES ("
+                    . "'$id_permiso', "
+                    . "'$id_alumno', "
+                    . "'$estatus', "
+                    . "'$codigo_invitacion', "
+                    . "'$familia');";
+            mysqli_set_charset($connection, 'utf8');
+            return mysqli_query($connection, $sql);
+        }
+    }    
 
 }

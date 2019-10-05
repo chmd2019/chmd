@@ -85,7 +85,7 @@ $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
                         }
                     }
                     if ($estatus == 1) {
-                        $status_detalle = "Pendiente";
+                        $status_detalle = "Por autorizar";
                         $color_badge = "#F6871F";
                     }
                     if ($estatus == 2) {

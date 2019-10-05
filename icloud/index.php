@@ -41,7 +41,7 @@ if (isset($authUrl)) {
         require_once './Model/Login.php';
         $objCliente = new Login();
         $consulta = $objCliente->acceso_login($correo);
-
+echo $_SERVER['DOCUMENT_ROOT'];
         include_once "$root_icloud/components/navbar.php";
         
         if ($consulta) { //if user already exist change greeting text to "Welcome Back"
@@ -68,7 +68,7 @@ if (isset($authUrl)) {
                                 <div class="row">
                                     <div class="col s12 m6 l4">
                                         <div class="card" style="box-shadow: none">
-                                            <div class="card-image waves-effect waves-block waves-light">
+                                            <div class="card-image waves-block efecto-btn">
                                                 <!--- SVG Transporte --->
                                                 <a href='menu.php?idseccion=1'>
                                                     <img src="images/svg_main_menu/Transportes.svg" style="padding:1.5rem;">
@@ -108,7 +108,7 @@ if (isset($authUrl)) {
                                     </div>
                                     <div class="col s12 m6 l4">
                                         <div class="card" style="box-shadow: none">
-                                            <div class="card-image waves-effect waves-block waves-light">
+                                            <div class="card-image waves-block efecto-btn">
                                                 <a href='https://users.schoolcloud.net/campus/chmd'>
                                                     <!-- schoolcloud -->
                                                     <img src="images/svg_main_menu/School cloud.svg" style="padding:1.5rem;">
@@ -166,7 +166,7 @@ if (isset($authUrl)) {
 
                                     <div class="col s12 m6 l4">
                                         <div class="card" style="box-shadow: none">
-                                            <div class="card-image waves-effect waves-block waves-light">
+                                            <div class="card-image waves-block efecto-btn">
                                                 <a href='https://chmd.edu.mx/galeria/' class="mb-3">
                                                     <!-- Galeria -->
                                                     <img src="images/svg_main_menu/Galeria.svg" style="padding:1.5rem;">
@@ -225,7 +225,7 @@ if (isset($authUrl)) {
                                     </div>-->
                                     <div class="col s12 m6 l4">
                                         <div class="card" style="box-shadow: none">
-                                            <div class="card-image waves-effect waves-block waves-light">
+                                            <div class="card-image waves-block efecto-btn">
                                                 <a href='Choferes/Choferes.php'>
                                                     <!-- Choferes -->
                                                     <img src="images/svg_main_menu/Choferes.svg" style="padding:1.5rem;">
@@ -264,7 +264,7 @@ if (isset($authUrl)) {
 
                                     <div class="col s12 m6 l4">
                                         <div class="card" style="box-shadow: none">
-                                            <div class="card-image waves-effect waves-block waves-light">
+                                            <div class="card-image waves-block efecto-btn">
                                                 <a href='misarchivos/misarchivos.php'>
                                                     <!-- misarchivos -->
                                                     <img src="images/svg_main_menu/Mis documentos.svg" style="padding:1.5rem;">
@@ -347,7 +347,7 @@ if (isset($authUrl)) {
                                 <div class="row">
                                     <div class="col s12 m6 l4">
                                         <div class="card" style="box-shadow: none">
-                                            <div class="card-image waves-effect waves-block waves-light">
+                                            <div class="card-image waves-block efecto-btn">
                                                 <!--- SVG Transporte --->
                                                 <a href='menu.php?idseccion=1'>
                                                     <img src="images/svg_main_menu/Transportes.svg" style="padding:1.5rem;">
@@ -387,7 +387,7 @@ if (isset($authUrl)) {
                                     </div>
                                     <div class="col s12 m6 l4">
                                         <div class="card" style="box-shadow: none">
-                                            <div class="card-image waves-effect waves-block waves-light">
+                                            <div class="card-image waves-block efecto-btn">
                                                 <a href='https://users.schoolcloud.net/campus/chmd'>
                                                     <!-- schoolcloud -->
                                                     <img src="images/svg_main_menu/School cloud.svg" style="padding:1.5rem;">
@@ -425,7 +425,7 @@ if (isset($authUrl)) {
                                     </div>
                                     <div class="col s12 m6 l4">
                                         <div class="card" style="box-shadow: none">
-                                            <div class="card-image waves-effect waves-block waves-light">
+                                            <div class="card-image waves-block efecto-btn">
                                                 <a href='https://chmd.edu.mx/galeria/' class="mb-3">
                                                     <!-- Galeria -->
                                                     <img src="images/svg_main_menu/Galeria.svg" style="padding:1.5rem;">
@@ -464,7 +464,7 @@ if (isset($authUrl)) {
                                     </div>
                                     <div class="col s12 m6 l4">
                                         <div class="card" style="box-shadow: none">
-                                            <div class="card-image waves-effect waves-block waves-light">
+                                            <div class="card-image waves-block efecto-btn">
                                                 <a href='Choferes/Choferes.php'>
                                                     <!-- Choferes -->
                                                     <img src="images/svg_main_menu/Choferes.svg" style="padding:1.5rem;">
@@ -502,7 +502,7 @@ if (isset($authUrl)) {
                                     </div>
                                     <div class="col s12 m6 l4">
                                         <div class="card" style="box-shadow: none">
-                                            <div class="card-image waves-effect waves-block waves-light">
+                                            <div class="card-image waves-block efecto-btn">
                                                 <a href='http://chmd.chmd.edu.mx:65083/demo/Eventos/menu.php'>
                                                     <!-- Minutas -->
                                                     <img src="images/svg_main_menu/Minutas.svg" style="padding:1.5rem;">
@@ -541,7 +541,7 @@ if (isset($authUrl)) {
 
                                     <div class="col s12 m6 l4">
                                         <div class="card" style="box-shadow: none">
-                                            <div class="card-image waves-effect waves-block waves-light">
+                                            <div class="card-image waves-block efecto-btn">
                                                 <a href='misarchivos/misarchivos.php'>
                                                     <!-- misarchivos -->
                                                     <img src="images/svg_main_menu/Mis documentos.svg" style="padding:1.5rem;">
@@ -593,7 +593,7 @@ if (isset($authUrl)) {
                             <div class="col s12 m3 l4"><br></div>
                             <div class="col s12 m6 l4">
                                 <div class="card" style="box-shadow: none;">
-                                    <div class="card-image waves-effect waves-block waves-light">
+                                    <div class="card-image waves-block efecto-btn">
                                         <a href='Evento/menu.php'>
                                             <!-- Montajes -->
                                             <img src="images/svg_main_menu/Montajes.svg" style="padding:1.5rem;">
@@ -648,7 +648,7 @@ if (isset($authUrl)) {
                                 <div class="row">
                                     <div class="col s12 m6 l4">
                                         <div class="card" style="box-shadow: none">
-                                            <div class="card-image waves-effect waves-block waves-light">
+                                            <div class="card-image waves-block efecto-btn">
                                                 <!--- SVG Transporte --->
                                                 <a href='menu.php?idseccion=1'>
                                                     <img src="images/svg_main_menu/Transportes.svg" style="padding:1.5rem;">
@@ -688,7 +688,7 @@ if (isset($authUrl)) {
                                     </div>
                                     <div class="col s12 m6 l4">
                                         <div class="card" style="box-shadow: none">
-                                            <div class="card-image waves-effect waves-block waves-light">
+                                            <div class="card-image waves-block efecto-btn">
                                                 <a href='https://users.schoolcloud.net/campus/chmd'>
                                                     <!-- schoolcloud -->
                                                     <img src="images/svg_main_menu/School cloud.svg" style="padding:1.5rem;">
@@ -726,7 +726,7 @@ if (isset($authUrl)) {
                                     </div>
                                     <div class="col s12 m6 l4">
                                         <div class="card" style="box-shadow: none">
-                                            <div class="card-image waves-effect waves-block waves-light">
+                                            <div class="card-image waves-block efecto-btn">
                                                 <a href='https://chmd.edu.mx/galeria/' class="mb-3">
                                                     <!-- Galeria -->
                                                     <img src="images/svg_main_menu/Galeria.svg" style="padding:1.5rem;">
@@ -764,7 +764,7 @@ if (isset($authUrl)) {
                                     </div>
                                     <div class="col s12 m6 l4">
                                         <div class="card" style="box-shadow: none">
-                                            <div class="card-image waves-effect waves-block waves-light">
+                                            <div class="card-image waves-block efecto-btn">
                                                 <a href='Choferes/Choferes.php'>
                                                     <!-- Choferes -->
                                                     <img src="images/svg_main_menu/Choferes.svg" style="padding:1.5rem;">
@@ -802,7 +802,7 @@ if (isset($authUrl)) {
                                     </div>
                                     <div class="col s12 m6 l4">
                                         <div class="card" style="box-shadow: none">
-                                            <div class="card-image waves-effect waves-block waves-light">
+                                            <div class="card-image waves-block efecto-btn">
                                                 <a href='Uniformes/menu.php'>
                                                     <!-- Uniformes -->
                                                     <img src="images/svg_main_menu/Uniformes.svg" style="padding:1.5rem;">
@@ -840,7 +840,7 @@ if (isset($authUrl)) {
                                     </div>
                                     <div class="col s12 m6 l4">
                                         <div class="card" style="box-shadow: none">
-                                            <div class="card-image waves-effect waves-block waves-light">
+                                            <div class="card-image waves-block efecto-btn">
                                                 <a href='http://chmd.chmd.edu.mx:65083/demo/Eventos/menu.php'>
                                                     <!-- Minutas -->
                                                     <img src="images/svg_main_menu/Minutas.svg" style="padding:1.5rem;">
@@ -878,7 +878,7 @@ if (isset($authUrl)) {
                                     </div>
                                     <div class="col s12 m6 l4">
                                         <div class="card" style="box-shadow: none;">
-                                            <div class="card-image waves-effect waves-block waves-light">
+                                            <div class="card-image waves-block efecto-btn">
                                                 <a href='Evento/menu.php'>
                                                     <!-- Montajes -->
                                                     <img src="images/svg_main_menu/Montajes.svg" style="padding:1.5rem;">
@@ -917,7 +917,7 @@ if (isset($authUrl)) {
                                     </div>
                                     <div class="col s12 m6 l4">
                                         <div class="card" style="box-shadow: none">
-                                            <div class="card-image waves-effect waves-block waves-light">
+                                            <div class="card-image waves-block efecto-btn">
                                                 <a href='Especial/menu.php?idseccion=1'>
                                                     <!-- Permisos -->
                                                     <img src="images/svg_main_menu/Permisos.svg" style="padding:1.5rem;">
@@ -955,7 +955,7 @@ if (isset($authUrl)) {
                                     </div>
                                     <div class="col s12 m6 l4">
                                         <div class="card" style="box-shadow: none">
-                                            <div class="card-image waves-effect waves-block waves-light">
+                                            <div class="card-image waves-block efecto-btn">
                                                 <a href='misarchivos/misarchivos.php'>
                                                     <!-- misarchivos -->
                                                     <img src="images/svg_main_menu/Mis documentos.svg" style="padding:1.5rem;">
@@ -1010,7 +1010,7 @@ if (isset($authUrl)) {
                                 <div class="row">
                                     <div class="col s12 m6 l4">
                                         <div class="card" style="box-shadow: none">
-                                            <div class="card-image waves-effect waves-block waves-light">
+                                            <div class="card-image waves-block efecto-btn">
                                                 <a href='https://hangouts.google.com/'>
                                                     <img src="pics/hangout.png" style="padding:3rem;">
                                                 </a>
@@ -1019,7 +1019,7 @@ if (isset($authUrl)) {
                                     </div>
                                     <div class="col s12 m6 l4">
                                         <div class="card" style="box-shadow: none">
-                                            <div class="card-image waves-effect waves-block waves-light">
+                                            <div class="card-image waves-block efecto-btn">
                                                 <a href='https://www.google.com/calendar?tab=mc'>
                                                     <img src="pics/calendar.png" style="padding:3rem;">
                                                 </a>
@@ -1028,7 +1028,7 @@ if (isset($authUrl)) {
                                     </div>
                                     <div class="col s12 m6 l4">
                                         <div class="card" style="box-shadow: none">
-                                            <div class="card-image waves-effect waves-block waves-light">
+                                            <div class="card-image waves-block efecto-btn">
                                                 <a href='http://classroom.google.com/'>
                                                     <img src="pics/classroom.png" style="padding:3rem;">
                                                 </a>
@@ -1037,7 +1037,7 @@ if (isset($authUrl)) {
                                     </div>
                                     <div class="col s12 m6 l4">
                                         <div class="card" style="box-shadow: none">
-                                            <div class="card-image waves-effect waves-block waves-light">
+                                            <div class="card-image waves-block efecto-btn">
                                                 <a href='https://drive.google.com/?tab=mo&authuser=0'>
                                                     <img src="pics/drive.png" style="padding:3rem;">
                                                 </a>
@@ -1046,7 +1046,7 @@ if (isset($authUrl)) {
                                     </div>
                                     <div class="col s12 m6 l4">
                                         <div class="card" style="box-shadow: none">
-                                            <div class="card-image waves-effect waves-block waves-light">
+                                            <div class="card-image waves-block efecto-btn">
                                                 <a
                                                     href='http://search.ebscohost.com/login.aspx?authtype=uid&user=maguen&password=ebsco&group=main'>
                                                     <img src="pics/ebsco.png" style="padding:3rem;">
@@ -1056,7 +1056,7 @@ if (isset($authUrl)) {
                                     </div>
                                     <div class="col s12 m6 l4">
                                         <div class="card" style="box-shadow: none">
-                                            <div class="card-image waves-effect waves-block waves-light">
+                                            <div class="card-image waves-block efecto-btn">
                                                 <a href='https://mail.google.com/mail/?tab=mm'>
                                                     <img src="pics/gmail.png" style="padding:3rem;">
                                                 </a>
@@ -1065,7 +1065,7 @@ if (isset($authUrl)) {
                                     </div>
                                     <div class="col s12 m6 l4">
                                         <div class="card" style="box-shadow: none">
-                                            <div class="card-image waves-effect waves-block waves-light">
+                                            <div class="card-image waves-block efecto-btn">
                                                 <a href='http://chmd.chmd.edu.mx:61085/login/index.php'>
                                                     <img src="pics/moodle.png" style="padding:3rem;">
                                                 </a>
@@ -1074,7 +1074,7 @@ if (isset($authUrl)) {
                                     </div>
                                     <div class="col s12 m6 l4">
                                         <div class="card" style="box-shadow: none">
-                                            <div class="card-image waves-effect waves-block waves-light">
+                                            <div class="card-image waves-block efecto-btn">
                                                 <a href='https://sites.google.com/?tab=m3'>
                                                     <img src="pics/sites.png" style="padding:3rem;">
                                                 </a>
@@ -1083,7 +1083,7 @@ if (isset($authUrl)) {
                                     </div>
                                     <div class="col s12 m6 l4">
                                         <div class="card" style="box-shadow: none">
-                                            <div class="card-image waves-effect waves-block waves-light">
+                                            <div class="card-image waves-block efecto-btn">
                                                 <a
                                                     href='http://sn3.colegium.com/es_CL/login/alternativo?id=1583E1CHMD-mx.sha1(YobA6ixTNSO2klMq+1).1'>
                                                     <img src="pics/colegium.png" style="padding:3rem;">

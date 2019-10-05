@@ -76,38 +76,62 @@ if (isset($authUrl)) {
     //privilegios
     $privilegio = mysqli_fetch_array($control->consultar_privilegio_usuario($correo));
     $id_privilegio = $privilegio[0];
+    $privilegio_modificacion_lugar = $id_privilegio != 1 ? true : false;
     //establece si el superusuario puede cancelar el evento cualquier dia
     $privilegio_cancelar_cualquier_dia = $id_privilegio == 3 ? true : false;
     //establece si el evento es solo cafe puede cancelar el evento un dia anterior, sino no lo podria hacer
     $cancelacion_solo_cafe = $solo_cafe == true ? true : false;
     $cancela = null;
     $msj_cancelacion = null;
+    $flag_permiso_modificacion = false;
     if ($privilegio_cancelar_cualquier_dia) {
         $cancela = true;
+        $flag_permiso_modificacion = true;
     } elseif (!$cancelacion_solo_cafe) {
-        $fecha_min_cancelacion_permitida = date("Y-m-d", strtotime("$fecha_montaje_simple -3 days"));
-        if (strtotime(date("Y-m-d")) < strtotime($fecha_min_cancelacion_permitida)) {
-            $cancela = true;
+        if ($tipo_servicio == "Montaje de evento interno") {
+            $fecha_min_cancelacion_permitida = date("Y-m-d", strtotime("$fecha_montaje_simple -2 days"));
+            if (strtotime(date("Y-m-d")) < strtotime($fecha_min_cancelacion_permitida)) {
+                $flag_permiso_modificacion = true;
+                $cancela = true;
+            } else {
+                $cancela = false;
+                $flag_permiso_modificacion = false;
+                $msj_cancelacion = "La solicitud de cancelacion se debe realizar al menos con 2 días de anticipación";
+            }
         } else {
-            $cancela = false;
-            $msj_cancelacion = "La solicitud de cancelacion se debe realizar con 3 días de anticipación";
+            $fecha_min_cancelacion_permitida = date("Y-m-d", strtotime("$fecha_montaje_simple -7 days"));
+            if (strtotime(date("Y-m-d")) < strtotime($fecha_min_cancelacion_permitida)) {
+                $flag_permiso_modificacion = true;
+                $cancela = true;
+            } else {
+                $flag_permiso_modificacion = false;
+                $cancela = false;
+                $msj_cancelacion = "La solicitud de cancelacion se debe realizar al menos con 7 días de anticipación";
+            }
         }
     } elseif ($cancelacion_solo_cafe) {
         if (strtotime(date("Y-m-d")) < strtotime($fecha_montaje_simple)) {
             $cancela = true;
+            $flag_permiso_modificacion = true;
         } else {
             $cancela = false;
-            $msj_cancelacion = "La solicitud de cancelacion se debe realizar con 1 día de anticipación";
+            $flag_permiso_modificacion = false;
+            $msj_cancelacion = "La solicitud de cancelacion se debe realizar con al menos un día de anticipación";
         }
     }
     ?>
     <div class="row">
         <div class="col s12 l8 border-azul b-blanco" style="float: none;margin: 0 auto;padding:1rem">
             <div>
+                <?php if (!$flag_permiso_modificacion): ?>
+                    <div class="text-center">
+                        <span class="chip red white-text">Se ha agotado el tiempo requerido para realizar modificaciones en este montaje</span>
+                    </div>
+                <?php endif; ?>
                 <h5 class="c-azul center-align">Consulta de montaje</h5>
                 <br>
                 <div class="left">    
-                    <?php if ($id_privilegio == 3): ?>                    
+                    <?php if (/* $id_privilegio != 2 && */ $estatus != "Declinado" && $flag_permiso_modificacion): ?>                    
                         <a class="waves-effect waves-light" href="#!"
                            onclick="habilitar_edicion()">
                             <img src='../../../images/Editar.svg' style="width: 55px;">
@@ -151,6 +175,7 @@ if (isset($authUrl)) {
                     <script src='/pruebascd/icloud/materialkit/js/calendario.js'></script>
                     <script src="/pruebascd/icloud/materialkit/js/common.js"></script>
                     <br>
+                    <br> 
                     <br> 
                     <?php if ($id_privilegio == 3): ?>
                         <br> 
@@ -231,14 +256,16 @@ if (isset($authUrl)) {
                                value="<?php echo $horario_final_evento; ?>">      
                     </div>
                     <div class="input-field col s12 l6">
-                        <label>Lugar del evento</label>
                         <i class="material-icons prefix c-azul">place</i>
-                        <input readonly 
-                               id="lugar_evento"
-                               style="font-size: 1rem" 
-                               type="text" 
-                               autocomplete="off"
-                               value="<?php echo $lugar_evento; ?>">      
+                        <select disabled
+                                onchange="consula_disponibilidad_lugar(this.value, this.id);
+                                            cargar_capacidad_lugar_mobiliario(this.value);
+                                            cargar_capacidad_lugar_equipo_tecnico(this.value);
+                                            lugar_evento_select_change = this.value;
+                                            consulta_articulo_en_lugar(mobiliario_guardado, this.value);" 
+                                id="lugar_evento">
+                        </select>
+                        <label style="margin-left: 1rem">Lugar del evento</label>
                     </div>                    
                     <div class="input-field col s12 l6">
                         <i class="material-icons prefix c-azul">donut_small</i>
@@ -345,6 +372,7 @@ if (isset($authUrl)) {
                                 <?php
                                 $mobiliario_index = 0;
                                 $id_montaje_coleccion = array();
+                                $montaje_collecion = array();
                                 while ($row = mysqli_fetch_array($mobiliario)):
                                     $mobiliario_index++;
                                     $articulo = $row[0];
@@ -352,6 +380,7 @@ if (isset($authUrl)) {
                                     $url_img = $row[2];
                                     $id_articulo = $row[3];
                                     array_push($id_montaje_coleccion, $id_articulo);
+                                    array_push($montaje_collecion, ["id_articulo" => $id_articulo, "cantidad" => $cantidad, "articulo" => $articulo]);
                                     $capacidad_lugar = $row[4];
                                     $disponibilidad = $row[5];
                                     ?>
@@ -397,16 +426,31 @@ if (isset($authUrl)) {
                                     </li>
                                 <?php endwhile; ?>
                             </ul>
-                            <?php if ($id_privilegio == 3): ?>
+                            <?php if ($id_privilegio != 2 && $flag_permiso_modificacion): ?>
                                 <div class="input-field col s12">
-                                    <div style="text-align: center">
+                                    <div style="text-align: center;">
                                         <button class="waves-effect waves-light btn green accent-4 white-text col s12 l4" 
                                                 id="btn_disminuir_mobiliario"
                                                 type="button" 
-                                                onclick='consultar_disponibilidad_mobiliario(<?php echo $id_montaje; ?>);habilitar_mobiliario(<?php echo json_encode($id_montaje_coleccion) ?>, <?php echo $mobiliario_index; ?>)' 
+                                                onclick='consultar_disponibilidad_mobiliario(<?php echo $id_montaje; ?>);
+                                                                    habilitar_mobiliario(<?php echo json_encode($id_montaje_coleccion) ?>, <?php echo $mobiliario_index; ?>)' 
                                                 style="background-color: #00C2EE;float: none">Alterar mobiliario
-                                            <i class="material-icons right">edit</i>
+                                            <i class="material-icons left">edit</i>
                                         </button>
+                                        <button class="waves-effect waves-light btn green accent-4 white-text col s12 l4" 
+                                                style="background-color: #00C2EE;float: none"
+                                                onclick="cargar_mobiliario(<?php echo $id_lugar; ?>,
+                                                                            '<?php echo $fecha_montaje_simple; ?>',
+                                                                            '<?php echo $horario_evento; ?>',
+                                                                            '<?php echo $horario_final_evento; ?>')">Más artículos
+                                            <i class="material-icons right">add</i>
+                                        </button>
+                                    </div>
+                                    <div id="mobiliario" hidden>
+                                        <br>
+                                        <h5 class="col s12 c-azul text-center">Añadir más artículos</h5>
+                                        <br>
+                                        <div id="tabla_inventario"></div>
                                     </div>
                                 </div>
                             <?php endif; ?>
@@ -472,12 +516,13 @@ if (isset($authUrl)) {
                                 </li>
                             <?php endwhile; ?>
                         </ul>
-                        <?php if ($id_privilegio == 3): ?>
+                        <?php if ($id_privilegio != 2 && $flag_permiso_modificacion): ?>
                             <div class="input-field col s12">
                                 <div style="text-align: center">
                                     <button class="waves-effect waves-light btn green accent-4 white-text col s12 l4" 
                                             id="btn_edicion_manteles"
-                                            onclick='consultar_disponibilidad_manteles(<?php echo $id_montaje; ?>);habilitar_manteles(<?php echo json_encode($id_manteles_coleccion) ?>, <?php echo $manteles_index; ?>);' 
+                                            onclick='consultar_disponibilidad_manteles(<?php echo $id_montaje; ?>);
+                                                                habilitar_manteles(<?php echo json_encode($id_manteles_coleccion) ?>, <?php echo $manteles_index; ?>);' 
                                             type="button" style="background-color: #00C2EE;float: none">Alterar manteles
                                         <i class="material-icons right">edit</i>
                                     </button>
@@ -494,6 +539,7 @@ if (isset($authUrl)) {
                             <?php
                             $equipo_tecnico_index = 0;
                             $id_equipo_tecnico_coleccion = array();
+                            $equipo_tecnico_coleccion = array();
                             while ($row = mysqli_fetch_array($equipo_tecnico)):
                                 $equipo_tecnico_index++;
                                 $articulo = $row[0];
@@ -503,6 +549,7 @@ if (isset($authUrl)) {
                                 $disponibilidad = $row[4];
                                 $id_articulo = $row[5];
                                 array_push($id_equipo_tecnico_coleccion, $id_articulo);
+                                array_push($equipo_tecnico_coleccion, ["id_articulo" => $id_articulo, "cantidad" => $cantidad]);
                                 ?>
                                 <li class="collection-item avatar col s12" style="justify-content: space-around">
                                     <div class="col s12 l6"> <br>
@@ -545,12 +592,13 @@ if (isset($authUrl)) {
                                 </li>
                             <?php endwhile; ?>
                         </ul>
-                        <?php if ($id_privilegio == 3): ?>
+                        <?php if ($id_privilegio != 2 && $flag_permiso_modificacion): ?>
                             <div class="input-field col s12">
                                 <div style="text-align: center">
                                     <button class="waves-effect waves-light btn green accent-4 white-text col s12 l4" 
                                             id="btn_edicion_equipo_tecnico"
-                                            onclick='consultar_disponibilidad_equipo_tecnico(<?php echo $id_montaje; ?>);habilitar_equipo_tecnico(<?php echo json_encode($id_equipo_tecnico_coleccion) ?>, <?php echo $equipo_tecnico_index; ?>);' 
+                                            onclick='consultar_disponibilidad_equipo_tecnico(<?php echo $id_montaje; ?>);
+                                                                habilitar_equipo_tecnico(<?php echo json_encode($id_equipo_tecnico_coleccion) ?>, <?php echo $equipo_tecnico_index; ?>);' 
                                             type="button" style="background-color: #00C2EE;float: none">Alterar equipo técnico
                                         <i class="material-icons right">edit</i>
                                     </button>
@@ -612,11 +660,12 @@ if (isset($authUrl)) {
                                 </li>
                             <?php endwhile; ?>
                         </ul>
-                        <?php if ($id_privilegio == 3): ?>
+                        <?php if ($id_privilegio != 2 && $flag_permiso_modificacion): ?>
                             <div class="input-field col s12">
                                 <div style="text-align: center">
                                     <button class="waves-effect waves-light btn green accent-4 white-text col s12 l4" 
-                                            onclick='consultar_disponibilidad_personal(<?php echo $id_montaje; ?>);habilitar_personal(<?php echo json_encode($id_personal_coleccion) ?>, <?php echo $personal_index; ?>);'  
+                                            onclick='consultar_disponibilidad_personal(<?php echo $id_montaje; ?>);
+                                                                habilitar_personal(<?php echo json_encode($id_personal_coleccion) ?>, <?php echo $personal_index; ?>);'  
                                             id="btn_edicion_equipo_tecnico"type="button" style="background-color: #00C2EE;float: none">Alterar personal                   
                                         <i class="material-icons right">edit</i>
                                     </button>
@@ -719,7 +768,7 @@ if (isset($authUrl)) {
                                 M.textareaAutoResize($('textarea'));
                                 $('.tabs').tabs();
                             </script>
-                            <?php if ($id_privilegio == 3): ?>
+                            <?php if ($id_privilegio != 2 && $flag_permiso_modificacion): ?>
                                 <div class="input-field col s12">
                                     <div style="text-align: center">
                                         <a class="col s12 l4" 
@@ -755,7 +804,7 @@ if (isset($authUrl)) {
                                   placeholder="Requerimientos especiales"></textarea> 
                         <label style="margin-left: 1rem">Requerimientos especiales</label>
                     </div>
-                    <?php if ($id_privilegio == 3): ?>
+                    <?php if ($id_privilegio != 2 && $flag_permiso_modificacion): ?>
                         <div class="input-field col s12">
                             <div style="text-align: center">
                                 <button class="waves-effect waves-light btn b-azul white-text col s12 l4" 
@@ -799,6 +848,27 @@ if (isset($authUrl)) {
     </div>
 </div>
 
+<div id="modal_capacidad_lugar_sobrepasada" class="modal bottom-sheet">
+    <div class="modal-content">
+        <h4 class="red-text">No es posible realizar su socicitud</h4>
+        <p id="aviso_articulos_sin_capacidad"></p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!"
+           class="modal-close waves-effect waves-light btn-flat green accent-4 c-blanco">Aceptar</a>
+    </div>
+</div>
+
+<div id="modal_articulos_exclusivos" class="modal bottom-sheet">
+    <div class="modal-content">
+        <h4 class="red-text">No es posible realizar su socicitud</h4>
+        <p id="aviso_articulos_exclusivos"></p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!"
+           class="modal-close waves-effect waves-light btn-flat green accent-4 c-blanco">Aceptar</a>
+    </div>
+</div>
 
 <div id="modal_estatus" class="modal">
     <div class="modal-content">
@@ -830,9 +900,11 @@ if (isset($authUrl)) {
     var cantidad_invitados = $("#cantidad_invitados");
     var estacionamiento = $("#estacionamiento");
     var requerimientos_especiales = $("#requerimientos_especiales");
+    var _id_montaje = <?php echo $id_montaje; ?>;
     //selects
     var select_tipo_montaje = ['Auditorio', 'Escuela &quot;mesa con silla&quot;', 'Herradura &quot;una mesa varias sillas&quot;', 'Otros'];
     var select_tipo_montaje_option_selected = '<?php echo $tipo_montaje; ?>';
+    var select_lugar_evento = $("#lugar_evento");
     //valida opcion de repliegue escogida
     var select_repliegue = ['Estacionamiento maestros', 'Patio de camiones 1/2', 'Patio de completo'];
     var select_repliege_option_selected = '<?php echo $tipo_repliegue; ?>';
@@ -846,6 +918,17 @@ if (isset($authUrl)) {
     var manteles_index = null;
     var equipo_tecnico_index = null;
     var personal_index = null;
+    var lugar_evento_guardado = '<?php echo $lugar_evento; ?>';
+    var lugar_evento_select_change = null;
+    var capacidad_lugar_mobiliario = [];
+    var capacidad_lugar_equipo_tecnico = [];
+    var mobiliario_guardado = <?php echo json_encode($montaje_collecion); ?>;
+    var equipo_tecnico_guardado = <?php echo json_encode($equipo_tecnico_coleccion); ?>;
+    var flag_modificacion_lugar = <?php echo json_encode($privilegio_modificacion_lugar); ?>;
+    //inventario
+    var coleccion_inventario = [];
+    var timestamp_inventario = "";
+    var articulos_exclusivos_aviso = "";
     $(document).ready(function () {
         $('.modal').modal();
         $("#requerimientos_especiales").val('<?php echo $requerimientos_especiales; ?>');
@@ -860,8 +943,8 @@ if (isset($authUrl)) {
             'maxTime': '23:59',
             'timeFormat': 'H:i:s'
         });
-        //$("#disponible_mobiliario_1").text("aaaaaa");
         $('.tooltipped').tooltip();
+        cargar_lugares();
     });
 
     function mostrar_modal_estatus(id, estatus) {
@@ -904,6 +987,14 @@ if (isset($authUrl)) {
                 option_tipo_montaje += `<option value ='${select_tipo_montaje[item]}'>${select_tipo_montaje[item]}</option>`;
             }
         }
+        if (flag_modificacion_lugar) {
+            select_lugar_evento.prop("disabled", false);
+        } else {
+            M.toast({
+                html: 'Usted no cuenta con los privilegios para cambiar el lugar del evento',
+                classes: 'deep-orange c-blanco'
+            });
+        }
         tipo_montaje.append(option_tipo_montaje);
         $("select").formSelect();
         hora_inicial.prop("readonly", false);
@@ -930,6 +1021,10 @@ if (isset($authUrl)) {
         });
     }
     function actualizar_montaje(id_montaje) {
+        if (!comprobar_capacidad_lugar_mobiliario())
+            return;
+        if (!comprobar_capacidad_lugar_equipo_tecnico())
+            return;
         $.ajax({
             url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/post_actualiza_montaje.php',
             type: 'POST',
@@ -948,7 +1043,8 @@ if (isset($authUrl)) {
                 responsable: responsable.val(),
                 cantidad_invitados: cantidad_invitados.val(),
                 estacionamiento: estacionamiento.val(),
-                requerimientos_especiales: requerimientos_especiales.val()
+                requerimientos_especiales: requerimientos_especiales.val(),
+                lugar_evento: select_lugar_evento.val()
             }
         }).done((res) => {
             if (res) {
@@ -1332,7 +1428,7 @@ if (isset($authUrl)) {
         });
     }
     function habilitar_ensayo(id_ensayo, personal_ensayo_index) {
-        if(!$("#requerimientos_especiales_ensayo_" + id_ensayo).prop("readonly")){
+        if (!$("#requerimientos_especiales_ensayo_" + id_ensayo).prop("readonly")) {
             //return;
         }
         $('.timepicker').timepicker({
@@ -1499,6 +1595,319 @@ if (isset($authUrl)) {
         }).always(() => {
             $("#loading").fadeOut();
         });
+    }
+    function cargar_mobiliario(id_lugar, fecha_montaje_simple, horario_inicial_evento, horario_final_evento) {
+        $.ajax({
+            url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/get_capacidad_mobiliario.php',
+            type: 'GET',
+            dataType: 'json',
+            beforeSend: () => {
+                $("#loading").fadeIn("slow");
+            },
+            data: {
+                id_lugar_evento: id_lugar,
+                fecha_montaje_simple: fecha_montaje_simple,
+                horario_evento: horario_inicial_evento,
+                horario_final_evento: horario_final_evento
+            }
+        }).done((res) => {
+            capacidad_lugar_mobiliario = res;
+            mostrar_inventario(res);
+        }).always(() => {
+            $("#loading").fadeOut("slow");
+        });
+    }
+    function mostrar_inventario(inventario) {
+        $("#mobiliario").show();
+        var tr = "";
+        var id_lugar = 0;
+        for (var item in inventario) {
+            id_lugar = inventario[item].lugar;
+            tr += `<li class="collection-item avatar col s12" style="justify-content: space-around"> <div class="col s12 l6"> <br><i class="material-icons circle" style="background-color: #00C2EE">done</i> <span class="title"><b>Artículo: </b> ${inventario[item].articulo}</span> <p> <b>Capacidad del lugar: </b> ${inventario[item].capacidad}<br><b>Disponible para el evento: </b>${inventario[item].disponible}</p><b>Cantidad para el evento: </b> <div class="input-field"><input placeholder="Ingrese cantidad deseada" class="cantidad_mobiliario" onblur="add_inventario('${inventario[item].id}', this, ${inventario[item].capacidad}, ${inventario[item].disponible})" id="cantidad_mobiliario_${inventario[item].id}" autocomplete="off" onkeypress="return validar_solo_numeros(event, this.id, 2)" type="tel"></div></div><div class="col s12 l6 text-center"> <a href="${inventario[item].ruta_img}" data-fancybox data-caption="${inventario[item].articulo}"> <br><img src="${inventario[item].ruta_img}" width="150"/> </a> </div><span class="col s12"><br></span></li>`;
+        }
+        $("#tabla_inventario").html(`<ul class="collection row">${tr}<div style="text-align: center" id="caja_btn_actualiza_inventario"> <button class="waves-effect waves-light btn col l4" id="btn_actualizar_inventario" onclick="actualizar_inventario()" type="button" style="background-color: #00C2EE;float: none">Reservar inventario <i class="material-icons right">save</i> </button></div><div style="text-align: center" hidden id="caja_btn_anular_inventario"> <button class="waves-effect waves-light btn col l4 red" id="btn_anular_inventario" onclick="anular_inventario()" type="button" style="float: none">Anular reserva inventario <i class="material-icons right">delete</i> </button></div></ul>`);
+    }
+    function cargar_lugares() {
+        $.ajax({
+            url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/get_lugares_evento.php',
+            type: 'GET',
+            beforeSend: () => {
+                $("#loading").fadeIn();
+            }
+        }).done((res) => {
+            res = JSON.parse(res);
+            var aux = {};
+            //Recorremos el res 
+            res.forEach(x => {
+                //Si no existe lo creamos 
+                if (!aux.hasOwnProperty(x.patio)) {
+                    aux[x.patio] = [];
+                }
+                //Agregamos los datos. 
+                aux[x.patio].push({
+                    id: x.id,
+                    descripcion: x.descripcion
+                });
+            });
+            var options = "";
+            var optgroup = "";
+            var seleccionado = null;
+            for (var item in aux) {
+                var res_item = aux[item];
+                for (var item2 in res_item) {
+                    var res_item2 = res_item[item2];
+                    options += `<option value="${res_item2.id}">${res_item2.descripcion}</option>`;
+                    if (res_item2.descripcion === lugar_evento_guardado) {
+                        seleccionado = res_item2.id;
+                    }
+                }
+                optgroup += `<optgroup label="${item}">${options}</optgroup>`;
+                options = "";
+            }
+            $("#lugar_evento").html(`<option value="0" disabled selected>Seleccione lugar del evento</option>${optgroup}`);
+            $(`#lugar_evento option[value=${seleccionado}]`).attr("selected", "selected");
+            $("select").formSelect();
+        }).always(() => {
+            $("#loading").fadeOut();
+        });
+    }
+    function consula_disponibilidad_lugar(id_lugar, id) {
+        var fecha_montaje = obtener_fecha();
+        $.ajax({
+            url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/get_consulta_disponibilidad_lugar.php',
+            type: 'GET',
+            dataType: 'json',
+            beforeSend: () => {
+                $("#loading").fadeIn();
+            },
+            data: {
+                id_lugar: id_lugar,
+                fecha_montaje: fecha_montaje,
+                horario_evento: hora_inicial.val(),
+                horario_final_evento: hora_final.val()
+            }
+        }).done((res) => {
+            if (parseInt(res) > 0) {
+                M.toast({
+                    html: '¡El lugar seleccionado ha sido ocupado con anterioridad!',
+                    classes: 'deep-orange c-blanco'
+                });
+                $("#" + id + ` option[value=${id_lugar}]`).prop("selected", "selected");
+                $("#" + id).focus();
+                $('select').formSelect();
+            }
+        }).always(() => {
+            $("#loading").fadeOut();
+        });
+    }
+    function cargar_capacidad_lugar_mobiliario(id_lugar) {
+        $.ajax({
+            url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/get_capacidad_mobiliario.php',
+            type: 'GET',
+            dataType: 'json',
+            beforeSend: () => {
+                $("#loading").fadeIn("slow");
+            },
+            data: {
+                id_lugar_evento: id_lugar,
+                fecha_montaje_simple: obtener_fecha(),
+                horario_evento: hora_inicial.val(),
+                horario_final_evento: hora_final.val()
+            }
+        }).done((res) => {
+            capacidad_lugar_mobiliario = res;
+            $("#mobiliario").hide();
+            $("#tabla_inventario").html('');
+        }).always(() => {
+            $("#loading").fadeOut("slow");
+        });
+    }
+    function comprobar_capacidad_lugar_mobiliario() {
+        var articulos_sin_capacidad = "";
+        for (var item in mobiliario_guardado) {
+            for (var item2 in capacidad_lugar_mobiliario) {
+                if (mobiliario_guardado[item].id_articulo === capacidad_lugar_mobiliario[item2].id) {
+                    var cantidad_asignada = parseInt(mobiliario_guardado[item].cantidad);
+                    var capacidad_lugar = parseInt(capacidad_lugar_mobiliario[item2].capacidad);
+                    if (cantidad_asignada > capacidad_lugar) {
+                        articulos_sin_capacidad = `${articulos_sin_capacidad}, ${capacidad_lugar_mobiliario[item2].articulo}`;
+                    }
+                }
+            }
+        }
+        if (articulos_exclusivos_aviso.length > 0) {alert(articulos_exclusivos_aviso)
+            //modal_articulos_exclusivos
+            var modal_articulos_exclusivos = M.Modal.getInstance($("#modal_articulos_exclusivos"));
+            $("#aviso_articulos_exclusivos").text(`Los siguientes artículos no estan permitidos para el lugar seleccionado: ${articulos_exclusivos_aviso.replace(",", "")}. \nPuede asignarle la cantidad de CERO, a cada artículo para cancelar la asignaciión anterior.`);
+            modal_articulos_exclusivos.open();
+            articulos_exclusivos_aviso = "";
+            return false;
+        }
+        if (articulos_sin_capacidad !== "") {
+            var modal_modal_capacidad_lugar_sobrepasada = M.Modal.getInstance($("#modal_capacidad_lugar_sobrepasada"));
+            $("#aviso_articulos_sin_capacidad").text(`Los siguientes artículos sobrepasan la capacidad del lugar seleccionado: ${articulos_sin_capacidad.replace(",", "")}`);
+            modal_modal_capacidad_lugar_sobrepasada.open();
+            return false;
+        }
+        return true;
+    }
+    function cargar_capacidad_lugar_equipo_tecnico(id_lugar) {
+        $.ajax({
+            url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/get_capacidad_equipo_tecnico.php',
+            type: 'GET',
+            dataType: 'json',
+            beforeSend: () => {
+                $("#loading").fadeIn("slow");
+            },
+            data: {
+                id_lugar: id_lugar,
+                fecha_montaje: obtener_fecha(),
+                horario_evento: hora_inicial.val(),
+                horario_final_evento: hora_final.val()
+            }
+        }).done((res) => {
+            capacidad_lugar_equipo_tecnico = res;
+            //$("#mobiliario").hide();
+            //$("#tabla_inventario").html('');
+        }).always(() => {
+            $("#loading").fadeOut("slow");
+        });
+    }
+    function comprobar_capacidad_lugar_equipo_tecnico() {
+        var articulos_sin_capacidad = "";
+        for (var item in equipo_tecnico_guardado) {
+            for (var item2 in capacidad_lugar_equipo_tecnico) {
+                if (equipo_tecnico_guardado[item].id_articulo === capacidad_lugar_equipo_tecnico[item2].id) {
+                    var cantidad_asignada = parseInt(equipo_tecnico_guardado[item].cantidad);
+                    var capacidad_lugar = parseInt(capacidad_lugar_equipo_tecnico[item2].capacidad);
+                    if (cantidad_asignada > capacidad_lugar) {
+                        articulos_sin_capacidad = `${articulos_sin_capacidad} [${capacidad_lugar_equipo_tecnico[item2].articulo}]`;
+                    }
+                }
+            }
+        }
+        if (articulos_sin_capacidad !== "") {
+            var modal_modal_capacidad_lugar_sobrepasada = M.Modal.getInstance($("#modal_capacidad_lugar_sobrepasada"));
+            $("#aviso_articulos_sin_capacidad").text(`Los siguientes artículos sobrepasan la capacidad del lugar seleccionado: ${articulos_sin_capacidad}`);
+            modal_modal_capacidad_lugar_sobrepasada.open();
+            return false;
+        }
+        return true;
+    }
+    function add_inventario(id, el, capacidad, disponible) {
+        var faltante = disponible - el.value;
+        if (faltante < 0) {
+            var modal_recuerde_rentar = M.Modal.getInstance($("#modal_recuerde_rentar"));
+            modal_recuerde_rentar.open();
+        }
+        if (parseInt(disponible) <= 0) {
+            var modal_recuerde_rentar = M.Modal.getInstance($("#modal_recuerde_rentar"));
+            modal_recuerde_rentar.open();
+        }
+        if (capacidad < el.value) {
+            $("#" + el.id).val("");
+            $("#" + el.id).focus();
+            M.toast({
+                html: 'Debe asignar la cantidad de acuerdo con la capacidad del lugar',
+                classes: 'deep-orange c-blanco',
+            });
+            return;
+        }
+        if (coleccion_inventario.length !== 0) {
+            for (var item in coleccion_inventario) {
+                if (coleccion_inventario[item].id === id) {
+                    coleccion_inventario[item] = {id: id, cantidad: el.value, faltante: faltante < 0 ? faltante : 0};
+                    return;
+                }
+            }
+        }
+        coleccion_inventario.push({id: id, cantidad: el.value, faltante: faltante < 0 ? faltante : 0});
+    }
+    function actualizar_inventario() {
+        var fecha_formateada = obtener_fecha();
+        if (coleccion_inventario.length === 0) {
+            M.toast({
+                html: 'Debe asignar la cantidad del artículo',
+                classes: 'deep-orange c-blanco',
+            });
+            return false;
+        }
+        $.ajax({
+            url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/post_actualiza_inventario_edicion.php',
+            type: 'POST',
+            beforeSend: () => {
+                $("#loading").fadeIn();
+            },
+            dataType: 'json',
+            data: {
+                fecha_montaje: fecha_formateada,
+                hora_inicial: hora_inicial.val(),
+                hora_final: hora_final.val(),
+                coleccion_inventario: coleccion_inventario,
+                id_montaje: _id_montaje
+            }
+        }).done((res) => {
+            if (res.respuesta) {
+                for (var item in coleccion_inventario) {
+                    $("#cantidad_mobiliario_" + coleccion_inventario[item].id).prop('disabled', true);
+                }
+                timestamp_inventario = res.timestamp_inventario;
+                $("#caja_btn_actualiza_inventario").prop('hidden', true);
+                $("#caja_btn_anular_inventario").prop('hidden', false);
+            }
+        }).always(() => {
+            $("#loading").fadeOut();
+        });
+    }
+    function anular_inventario() {
+        $.ajax({
+            url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/post_anula_inventario_asignado.php',
+            type: 'POST',
+            beforeSend: () => {
+                $("#loading").fadeIn();
+            },
+            dataType: 'json',
+            data: {
+                coleccion_inventario: coleccion_inventario,
+                timestamp: timestamp_inventario
+            }
+        }).done((res) => {
+            if (res) {
+                M.toast({
+                    html: '¡Ha sido anulada la selección de mobiliario!',
+                    classes: 'blue c-blanco',
+                });
+                for (var item in coleccion_inventario) {
+                    $("#cantidad_mobiliario_" + coleccion_inventario[item].id).prop('disabled', false);
+                }
+                $("#caja_btn_actualiza_inventario").prop('hidden', false);
+                $("#caja_btn_anular_inventario").prop('hidden', true);
+            }
+        }).always(() => {
+            $("#loading").fadeOut();
+        });
+    }
+    function consulta_articulo_en_lugar(mobiliario_guardado, id_lugar) {
+        if (lugar_evento_select_change !== null) {
+            $.ajax({
+                url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/get_consulta_articulo_en_lugar.php',
+                type: 'GET',
+                dataType: 'json',
+                beforeSend: () => {
+                    $("#loading").fadeIn();
+                },
+                data: {mobiliario_guardado: mobiliario_guardado, id_lugar: id_lugar}
+            }).done((res) => {
+                if (res.length > 0) {
+                    articulos_exclusivos_aviso = "";
+                    for (var item in res) {
+                        articulos_exclusivos_aviso = `${articulos_exclusivos_aviso} , ${res[item]}`;
+                    }
+                }
+            }).always(() => {
+                $("#loading").fadeOut();
+            });
+        }
     }
 </script>
 <?php include "$root_icloud/components/layout_bottom.php"; ?>

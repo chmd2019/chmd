@@ -63,7 +63,7 @@ $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
                                 $tipo_permiso = $permiso[3];
                                 $nfamilia = $permiso[4];
                                 if ($estatus == 1) {
-                                    $status_detalle = "Pendiente";
+                                    $status_detalle = "Por autorizar";
                                     $color_badge = "#F6871F";
                                 }
                                 if ($estatus == 2) {

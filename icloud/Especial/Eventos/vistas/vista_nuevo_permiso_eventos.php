@@ -78,15 +78,12 @@ if (isset($authUrl)) {
         ?>
         <div class="row">
             <div class="col s12 l8 b-blanco border-azul" style="float: none;margin: 0 auto;">
-              <div class="row" style="text-align: right;margin:1rem 1rem 0 0">
-                <a class="waves-effect waves-light"
-                href="<?php echo $redirect_uri ?>Especial/Eventos/PEventos.php?idseccion=<?php echo $idseccion; ?>">
-                    <img src='../../../images/Atras.svg' style="width: 110px">   
-              <!--
-              <i class="material-icons left">keyboard_backspace</i>Atrás
-            -->
-          </a>
-        </div>
+                <div class="row" style="text-align: right;margin:1rem 1rem 0 0">
+                    <a class="waves-effect waves-light"
+                       href="<?php echo $redirect_uri ?>Especial/Eventos/PEventos.php?idseccion=<?php echo $idseccion; ?>">
+                        <img src='../../../images/Atras.svg' style="width: 110px">   
+                    </a>
+                </div>
                 <h5 class="center-align c-azul">Cumpleaños o Bar Mitzvá</h5>
                 <div class="row" style="padding:0rem .5rem;">
                     <div class="col s12 l6">
@@ -114,13 +111,12 @@ if (isset($authUrl)) {
                     <?php
                     if ($btn_fecha) {
                         $hidden = "hidden";
-                        ?>
-                        <div class="switch" style="text-align: center">
-                            <label>
-                                Si su permiso es para otro día seleccione aquí
-                                <input type="checkbox" onchange="mostrar_fecha_para()">
-                                <span class="lever"></span>
-                            </label>
+                        ?>      
+                        <div class="text-center">
+                            <a href="#!" class="waves-effect waves-light" onclick="mostrar_fecha_para()">
+                                Si su permiso es para otro día seleccione aquí<br>
+                                <i class="material-icons prefix c-azul">calendar_today</i>
+                            </a>
                         </div>
                         <?php
                     } else {
@@ -128,7 +124,6 @@ if (isset($authUrl)) {
                         echo "$btn_fecha";
                     }
                     ?>
-                    <div class="col s12"><br></div>
                     <div id="fecha_para" <?php echo $hidden; ?>>
                         <h5 class="c-azul text-center">Fecha del evento</h5>
                         <div class="col s12 l6">
@@ -174,56 +169,99 @@ if (isset($authUrl)) {
                                 });
                             </script>
                         </div>
-                        <span class="col s12"><br></span>
                     </div>
-                    <div class="col s12 l6" style="margin-top: -1.2rem">
-                        <div class="input-field">
-                            <i class="material-icons prefix c-azul">cake</i>
-                            <select id="tipo_evento">
-                                <option value="" disabled selected>Seleccione una opción</option>
-                                <option value="Cumpleaños">Cumpleaños</option>
-                                <option value="Bar Mitzvá">Bar Mitzvá</option>
-                                <option value="Otros">Otros</option>
-                            </select>
-                            <label>Tipo de evento</label>
+                    <span class="col s12"><br></span>
+                    <div class="col s12 l6 input-field">
+                        <i class="material-icons prefix c-azul">cake</i>
+                        <select id="tipo_evento" onchange="mostrar_check_al_finalizar_clases(this.value)" disabled>
+                            <!--<option value="disabled selected" >Seleccione una opción</option>-->
+                            <option value="Cumpleaños" selected>Cumpleaños</option>
+                            <option value="Bar Mitzvá">Bar Mitzvá</option>
+                            <option value="Otros">Otros</option>
+                        </select>
+                        <label>Tipo de evento</label>
+                    </div>
+                    <div class="col s12 l6 input-field" style="margin-top: 0rem" id="caja_check_evento_al_finalizar_clases" hidden>
+                        <label>
+                            <input type="checkbox" id="check_evento_al_finalizar_clases" class="filled-in" onchange="mostrar_input_horario(this)"/>
+                            <span>En horario escolar</span>
+                        </label>
+                    </div>
+                    <div class="col s12" id="caja_input_evento_al_finalizar_clases" hidden>
+                        <div class="input-field col s12 l6">
+                            <i class="material-icons prefix c-azul">access_time</i>
+                            <label style="margin-left: 1rem">Horario</label>
+                            <input 
+                                type="text"
+                                id="horario_final_evento"
+                                class="timepicker"
+                                onkeypress="return validar_solo_numeros(event, this.id, 1)"
+                                autocomplete="off"
+                                onfocus="blur();"
+                                placeholder="Seleccione horario">  
                         </div>
                     </div>
-                    <div class="col s12">
-                        <h5 class="c-azul text-center">Selecciona Alumnos</h5>
-                        <?php
-                        $alumnos = $objCliente->mostrar_alumnos($nfamilia);
-                        if ($alumnos) {
-                            $counter = 0;
-                            // $numero = mysql_num_rows($consulta);
-                            while ($alumno = mysqli_fetch_array($alumnos)) {
-                                $nivel_escolaridad = $alumno[9];
-                                $counter++;
-                                ?>
-                                <div class="input-field">
-                                    <div class="switch col s1 l1">
-                                        <label class="checks-alumnos">
-                                            <input type="checkbox"
-                                                   id="alumno_<?php echo $counter; ?>"
-                                                   value="<?php echo $alumno['id']; ?>"/>
-                                            <span class="lever" style="margin-top: 1rem"></span>
-                                        </label>
-                                    </div>
-                                    <textarea class="materialize-textarea col s9 l11"
-                                              readonly
-                                              id="nombre_alumno_<?php echo $counter; ?>"
-                                              style="font-size: 1rem;float:right"></textarea>
+                    <h5 class="col s12 c-azul text-center">Alumnos de mi familia</h5>
+                    <?php
+                    $alumnos = $objCliente->mostrar_alumnos($nfamilia);
+                    if ($alumnos) {
+                        $counter = 0;
+                        // $numero = mysql_num_rows($consulta);
+                        while ($alumno = mysqli_fetch_array($alumnos)) {
+                            $grupo = $alumno[3];
+                            $grado = $alumno[4];
+                            $nivel_escolaridad = $alumno[9];
+                            $counter++;
+                            ?>
+                            <span class="col s4 m2" style="margin-top: 1rem;">
+                                <div class="switch">
+                                    <label class="checks-alumnos">
+                                        <input type="checkbox"
+                                               id="alumno_<?php echo $counter; ?>"
+                                               value="<?php echo $alumno['id']; ?>"
+                                               onchange="mostrar_check_anfitrion(this, 'caja_check_anfitrion_<?php echo $counter; ?>')"/>
+                                        <span class="lever" style="margin-left: 0px"></span>
+                                    </label>
                                 </div>
                                 <br>
-                                <br>
-                                <input id="id_alumno_<?php echo $counter; ?>" hidden value="<?php echo $alumno['id']; ?>"/>
-                                <script>
-                                    $('#nombre_alumno_<?php echo $counter; ?>').val('<?php echo $alumno['nombre']; ?>\nNivel: <?php echo $nivel_escolaridad; ?>');
-                                </script>
-                                <?php
-                                $talumnos = $counter;
-                            }
+                                <label class="text-center" id="caja_check_anfitrion_<?php echo $counter; ?>" hidden>
+                                    <input type="checkbox" 
+                                           class="filled-in" 
+                                           id="anfitrion_<?php echo $counter; ?>"
+                                           onchange="this.checked = comprobar_checks_invirados();
+                                                                   grupo = this.checked ? '<?php echo $grupo; ?>' : '';
+                                                                   mostrar_btn_modal_invitados('btn_modal_invitados');
+                                                                   id_anfitrion = <?php echo $alumno['id']; ?>;"/>
+                                    <span style="font-size: .8rem;">Anfitrión</span>
+                                </label>
+                            </span>
+                            <span class="col s8 m10">
+                                <textarea class="materialize-textarea"
+                                          readonly
+                                          id="nombre_alumno_<?php echo $counter; ?>"
+                                          style="font-size: .8rem;float:right"></textarea>
+                            </span>
+                            <input id="id_alumno_<?php echo $counter; ?>" hidden value="<?php echo $alumno['id']; ?>"/>
+                            <script>
+                                $('#nombre_alumno_<?php echo $counter; ?>').val('<?php echo $alumno['nombre']; ?>\nNivel: <?php echo $nivel_escolaridad; ?>\nGrado: <?php echo $grado; ?>\nGrupo: <?php echo $grupo; ?>');
+                                    M.textareaAutoResize($("#nombre_alumno_<?php echo $counter; ?>"));
+                            </script>
+                            <span class="col s12"><br></span>
+                            <?php
+                            $talumnos = $counter;
                         }
-                        ?>
+                    }
+                    ?>
+                    <div class="col s12 l6" 
+                         style="float: none;margin: 0 auto;"
+                         id="btn_modal_invitados"
+                         hidden>
+                        <a class="btn waves-effect waves-light b-azul white-text w-100 modal-trigger" 
+                           href="#modal_alumnos"
+                           onclick="mostrar_modal_chmd();consulta_alumnos_grupo();">
+                            Añadir invitados
+                            <i class="material-icons right">person_add</i>
+                        </a>
                     </div>
                     <div>
                         <h5 class="c-azul text-center col s12">Información adicional</h5>
@@ -314,7 +352,7 @@ if (isset($authUrl)) {
                         <button class="btn waves-effect waves-light b-azul white-text w-100"
                                 id="btn_enviar_formulario"
                                 type="button"
-                                onclick="enviar_formulario('<?php echo $idusuario; ?>', '<?php echo $nfamilia; ?>', 5, '<?php echo $correo;?>')">Enviar
+                                onclick="enviar_formulario('<?php echo $idusuario; ?>', '<?php echo $nfamilia; ?>', 5, '<?php echo $correo; ?>')">Enviar
                             <i class="material-icons right">send</i>
                         </button>
                     </div>
@@ -352,10 +390,36 @@ if (isset($authUrl)) {
     </div>
 </div>
 
-
+<!-- Modal alumnos -->
+<div class="modal-chmd">
+    <div class="modal-chmd-content">
+        <h4 class="c-azul">Selección de invitados - Grupo <span id="grupo"></span></h4>
+        <table class="table striped">
+            <thead>
+                <tr>
+                    <th style="width: 80%;">Alumno</th>
+                    <th><label><input type="checkbox" class="filled-in" onchange="invitar_todos(this)" id="check_invitar_todos" /><span>Invitar todos</span></label></th>
+                </tr>
+            </thead>
+            <tbody id="tbody_invitados">
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-chmd-footer">
+        <a href="#!" class="waves-effect waves-light btn red c-blanco" onclick="cancelar_invitados();ocultar_modal_chmd()">Cancelar</a>
+        <a href="#!" class="waves-effect waves-light btn green accent-4 c-blanco" onclick="ocultar_modal_chmd()">Aceptar</a>
+    </div>
+</div>
 <script>
     var responsables = [];
     var coleccion_ids = [];
+    var contador_alumnos = <?php echo $counter; ?>;
+    var anfitrion = null;
+    var coleccion_alumnos_invitados = [];
+    var contador_alumnos_invitados = 0;
+    var grupo = "";
+    var flag_check_invitados = false;
+    var id_anfitrion = null;
     $(document).ready(function () {
         //$("#loading").hide();
         $('.fixed-action-btn').floatingActionButton({
@@ -382,7 +446,6 @@ if (isset($authUrl)) {
         opciones_select_padres(responsables, "select_responsable");
         $('select').formSelect();
     }
-
     function opciones_select_padres(val, id) {
         var select = $(`#${id}`);
         var options = "<option value='0' selected>Seleccione una opción</option>";
@@ -391,7 +454,6 @@ if (isset($authUrl)) {
         }
         select.html(options);
     }
-
     function mostrar_nuevo_responsable() {
         if ($("#nuevo_responsable").prop("hidden")) {
             $("#nuevo_responsable").prop("hidden", false);
@@ -407,7 +469,6 @@ if (isset($authUrl)) {
             cargar_responsables();
         }
     }
-
     function post_nuevo_responsable() {
         var responsable = $("#responsable").val();
         var parentesco_responsable = $("#parentesco_responsable").val();
@@ -416,7 +477,6 @@ if (isset($authUrl)) {
             cargar_responsables();
         }
     }
-
     function seleccion_responsable(val) {
         if (val === "0") {
             $("#parentesco_responsable").val("");
@@ -443,7 +503,6 @@ if (isset($authUrl)) {
             }
         }
     }
-
     function mostrar_tranpsorte() {
         if ($("#caja_transporte").prop("hidden")) {
             $("#caja_transporte").prop("hidden", false);
@@ -456,7 +515,6 @@ if (isset($authUrl)) {
             //cargar_responsables();
         }
     }
-
     function mostrar_nuevo_tranpsorte() {
         if ($("#caja_nuevo_transporte").prop("hidden")) {
             $("#caja_nuevo_transporte").prop("hidden", false);
@@ -594,6 +652,73 @@ if (isset($authUrl)) {
         }
         return true;
     }
+    //mostrar checks de anfitrion
+    function mostrar_check_anfitrion(el, id) {
+        if (el.checked) {
+            $("#" + id).prop("hidden", false);
+            return;
+        }
+        $("#" + id).prop("hidden", true);
+    }
+    //valida si se han seleccionado anfitrion
+    function validar_anfitrion() {
+        var i_checks = 0;
+        for (var i = 0; i <= contador_alumnos; i++) {
+            if ($("#anfitrion_" + i).length > 0) {
+                i_checks = $("#anfitrion_" + i).prop("checked") ? i_checks + 1 : i_checks;
+            }
+        }
+        if (i_checks === 0) {
+            M.toast({
+                html: '¡Debe seleccionar al menos un anfitrión!',
+                classes: 'deep-orange c-blanco'
+            });
+            grupo = "";
+            anfitrion = null;
+            coleccion_alumnos_invitados = [];
+            flag_check_invitados = false;
+            return false;
+        } else if (i_checks > 1) {
+            M.toast({
+                html: '¡Debe seleccionar únicamente un anfitrión!',
+                classes: 'deep-orange c-blanco'
+            });
+            return false;
+        }
+        return true;
+    }
+    function mostrar_btn_modal_invitados(id) {
+        if (grupo !== "") {
+            $("#" + id).prop("hidden", false);
+            return;
+        }
+        $("#" + id).prop("hidden", true);
+    }
+    function comprobar_checks_invirados() {
+        if (flag_check_invitados) {
+            var i_checks = 0;
+            for (var i = 0; i <= contador_alumnos; i++) {
+                if ($("#anfitrion_" + i).length > 0) {
+                    i_checks = $("#anfitrion_" + i).prop("checked") ? i_checks + 1 : i_checks;
+                }
+            }
+            if (i_checks === 0) {
+                M.toast({
+                    html: '¡Debe seleccionar al menos un anfitrión!',
+                    classes: 'deep-orange c-blanco'
+                });
+                flag_check_invitados = false;
+            } else {
+                M.toast({
+                    html: '¡Debe seleccionar únicamente un anfitrión!',
+                    classes: 'deep-orange c-blanco'
+                });
+            }
+            return false;
+        }
+        flag_check_invitados = true;
+        return true;
+    }
     //enviar formulario
     function enviar_formulario(idusuario, familia, tipo_permiso, correo) {
         if (!validar_fecha_vacia())
@@ -601,6 +726,8 @@ if (isset($authUrl)) {
         if (!validar_tipo_evento())
             return;
         if (!validar_alumnos())
+            return;
+        if (!validar_anfitrion())
             return;
         if (!validar_responsable())
             return;
@@ -639,7 +766,8 @@ if (isset($authUrl)) {
                 "empresa_transporte": empresa,
                 "tipo_evento": tipo_evento,
                 "alumnos": coleccion_ids,
-                "correo": correo
+                "correo": correo,
+                "coleccion_alumnos_invitados": coleccion_alumnos_invitados
             }
         }).done((res) => {
             res = JSON.parse(res);
@@ -649,8 +777,78 @@ if (isset($authUrl)) {
         }).always(() => {
             $("#loading").fadeOut("slow");
         });
-
         coleccion_ids = [];
+    }
+    function mostrar_check_al_finalizar_clases(value) {
+        if (value === "Bar Mitzvá") {
+            $("#caja_check_evento_al_finalizar_clases").prop("hidden", false);
+        } else {
+            $("#caja_check_evento_al_finalizar_clases").prop("hidden", true);
+            $("#caja_input_evento_al_finalizar_clases").prop("hidden", true);
+            $("#check_evento_al_finalizar_clases").prop("checked", false);
+        }
+    }
+    function mostrar_input_horario(el) {
+        if (el.checked) {
+            $("#caja_input_evento_al_finalizar_clases").prop("hidden", false);
+            $('.timepicker').timepicker({
+                'step': 60,
+                'minTime': '06:00',
+                'maxTime': '04:00',
+                'timeFormat': 'H:i:s'
+            });
+        } else {
+            $("#caja_input_evento_al_finalizar_clases").prop("hidden", true);
+        }
+    }
+    function consulta_alumnos_grupo() {
+        $.ajax({
+            url: 'https://www.chmd.edu.mx/pruebascd/icloud/Especial/common/get_consulta_alumnos_grupo.php',
+            type: 'GET',
+            dataType: 'json',
+            beforeSend: () => {
+                $("#loading").fadeIn();
+            },
+            data: {grupo: grupo, id_anfitrion: id_anfitrion}
+        }).done((res) => {
+            $("#grupo").text(grupo);
+            contador_alumnos_invitados = res.length;
+            $("#tbody_invitados").html('');
+            for (var item in res) {
+                var i = parseInt(item) + 1;
+                var tr = `<tr><td>${res[item].nombre}</td><td><label><input type="checkbox" class="filled-in" value="${res[item].id}" onchange="add_id_invitado(this)" id="check_invitado_${i}" /><span></span></label></td></tr>`;
+                $("#tbody_invitados").append(tr);
+            }
+        }).always(() => {
+            $("#loading").fadeOut();
+        });
+    }
+    function add_id_invitado(el) {
+        if (el.checked) {
+            coleccion_alumnos_invitados.push(el.value);
+        } else {
+            coleccion_alumnos_invitados = new Set(coleccion_alumnos_invitados);
+            coleccion_alumnos_invitados.delete(el.value);
+        }
+        coleccion_alumnos_invitados = [...new Set(coleccion_alumnos_invitados)];
+    }
+    function cancelar_invitados() {
+        for (var i = 1; i <= contador_alumnos_invitados; i++) {
+            $("#check_invitado_" + i).prop("checked", false);
+        }
+        $("#check_invitar_todos").prop("checked", false);
+        coleccion_alumnos_invitados = [];
+        id_anfitrion = null;
+    }
+    function invitar_todos(el) {
+        for (var i = 1; i <= contador_alumnos_invitados; i++) {
+            if (el.checked) {
+                $("#check_invitado_" + i).prop("checked", false);
+            } else {
+                $("#check_invitado_" + i).prop("checked", true);
+            }
+            $("#check_invitado_" + i).click();
+        }
     }
 </script>
 

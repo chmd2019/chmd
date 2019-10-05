@@ -114,10 +114,12 @@ if (isset($authUrl)) {
                         $nombre = mysqli_fetch_array($nombre_alumno);
                         $nivel_escolaridad = $nombre[1];
                         $nombre = $nombre[0];
+                        $grupo = $nombre[1];
+                        $grado = $nombre[2];
 
                         switch ($estatus) {
                             case "1":
-                                $status_detalle = "Pendiente";
+                                $status_detalle = "Por autorizar";
                                 $color_badge = "#F6871F";
                                 //    $estatus = "Pendiente";
                                 $badge = "amber accent-4 c-blanco";
@@ -160,7 +162,7 @@ if (isset($authUrl)) {
                                       id="alumno_<?php echo $id_alumno; ?>"
                                       style="font-size: 1rem"></textarea>
                             <script>
-                                var texto = '<?php echo $nombre; ?>\nNivel: <?php echo $nivel_escolaridad; ?>';
+                                var texto = '<?php echo $nombre; ?>\nNivel: <?php echo $nivel_escolaridad; ?>\nGrado: <?php echo $grado; ?>\nGrupo: <?php echo $grupo; ?>';
                                     $('#alumno_<?php echo $id_alumno; ?>').val(texto);
                                     M.textareaAutoResize($('#alumno_<?php echo $id_alumno; ?>'));
                             </script>

@@ -10,7 +10,7 @@ class DBManager
     public function __construct()
     {
         $this->BaseDatos = "icloud";
-        $this->Servidor = "132.148.43.14";
+        $this->Servidor = "72.167.210.176";
         $this->Usuario = "icloud";
         $this->Clave = "Icloud2019.";
     }

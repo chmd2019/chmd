@@ -91,7 +91,7 @@ $id_privilegio = $privilegio[0];
                     $nombre_evento = $row[3];
                     $estatus = $row[4];
                     switch ($estatus) {
-                        case "Pendiente":
+                        case "Por autorizar":
                             $color_badge = "#F6871F";
                             break;
                         case "Autorizado":
@@ -102,17 +102,17 @@ $id_privilegio = $privilegio[0];
                             break;
                     }
                     ?>
-                <tr style="cursor: pointer;" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'">
-                        <th style="padding: 0px"><?php echo $fecha_montaje; ?></th>
-                        <th style="padding: 0px" class="hide-on-med-and-down"><?php echo $solicitante; ?></th>
-                        <th style="padding: 0px"><?php echo $nombre_evento; ?></th>
-                        <th style="padding: 0px"><span class="chip white-text" style="font-size: .9rem;padding: 0px 3px;background-color: <?php echo $color_badge; ?>"><?php echo $estatus; ?></span></th>
-                        <td style="padding: 0px">   
+                    <tr style="cursor: pointer;" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'">
+                        <th style="padding: 0px;"><?php echo $fecha_montaje; ?></th>
+                        <th style="padding: 0px;" class="hide-on-med-and-down"><?php echo $solicitante; ?></th>
+                        <th style="padding: 0px;"><?php echo $nombre_evento; ?></th>
+                        <th style="padding: 0px;"><span class="chip white-text" style="font-size: .9rem;padding: 0px 3px;background-color: <?php echo $color_badge; ?>"><?php echo $estatus; ?></span></th>
+                        <td style="padding: 0px;">   
                             <div class="row">
-                                <div class="col s12 l3" style="padding: 0px">  
-                                    <a class="waves-effect waves-light" 
+                                <div class="col s12 l3" style="padding: 0px;">  
+                                    <a class="waves-effect waves-light"
                                        href="https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>">
-                                        <img src='../../images/Ver.svg' style="width: 40px;margin-top: 1.2rem">
+                                        <img src='../../images/Ver.svg' style="width: 40px;margin-top: 1.2rem;">
                                     </a>
                                 </div>                                  
                             </div>

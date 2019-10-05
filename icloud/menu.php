@@ -23,22 +23,20 @@ if (isset($authUrl)) {
     include_once "$root_icloud/components/navbar.php";
     ?>
     <h4 class="b-azul c-blanco text-center" style="padding:1rem;margin-top:0px">
-        Mi Maguen 
+        Mi Maguen
         <?php
         echo $anio_actual;
         ?>
     </h4>
     <!--MENU-->
-    <div class="row"> 
-        <div style="text-align: right;margin:1rem 1rem 0 0">   
-            <a class="waves-effect waves-light btn b-azul c-blanco" href="index.php">
-                <i class="material-icons left">keyboard_backspace</i>Atrás
-            </a>                
-            <a class="waves-effect waves-light btn red" href="#!" onclick="logout()">
-                <i class="material-icons left">lock</i>Salir
-            </a>  
+    <div class="row">
+        <div style="text-align: right;margin:1rem 1rem 0 0">
+            <a class="waves-effect waves-light" href="index.php">
+                <img src='images/Atras.svg' style="width: 110px">
+            </a>
         </div>
-        <div class="col s12 m8 l10" style="float:none;margin:auto">
+        <!--col s12 m8 esta grilla establece iconos mas grandes-->
+        <div class="col s12 m8" style="float:none;margin:auto">
             <?php
             if ($consulta) {
                 if ($cliente = mysqli_fetch_array($consulta)) {
@@ -63,23 +61,21 @@ if (isset($authUrl)) {
                         }
                         ?>
                         <div class="col s12 m10 l4">
-                            <div class="card" style="box-shadow: none"> 
-                                <div class="card-image waves-effect waves-block waves-light">     
+                            <div class="card" style="box-shadow: none">
+                                <div class="card-image waves-block efecto-btn">
                                     <a href='<?php echo "$link?idmodulo=$idmodulo&idseccion=$idseccion"; ?>'>
-                                        <img src="<?php echo "pics/$estatuis1/$imagen"; ?>" style="padding:3rem;">  
+                                        <img src="<?php echo "pics/$estatuis1/$imagen"; ?>" style="padding:3rem;">
                                     </a>
                                 </div>
-                                <div class="card-content text-center" style="padding:0px;margin-top: -15px">
-                                    <span class="activator waves-effect waves-light btn b-azul c-blanco">
-                                        INFO
-                                    </span>      
+                                <div class="card-content text-center" style="padding:0px;margin-top: -30px">
+                                    <img class="activator waves-effect waves-light" src="../icloud/images/Info.svg" style="width: 30px;"/>
                                 </div>
                                 <div class="card-reveal b-azul white-text">
                                     <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
                                     <p><?php echo $info;?></p>
                                 </div>
                             </div>
-                        </div>                     
+                        </div>
                         <?php
                     }
                 } else {
@@ -93,6 +89,5 @@ if (isset($authUrl)) {
         <br>
         <br>
     </div>
-</div> 
+</div>
 <?php include './components/layout_bottom.php'; ?>
-

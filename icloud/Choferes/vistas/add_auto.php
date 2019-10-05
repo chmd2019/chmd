@@ -1,4 +1,4 @@
-<div class="switch">
+<div class="switch <? if (isset($ver_switch_autos)) echo $ver_switch_autos;?>">
 
     <label class="checks-autos">
 
@@ -72,7 +72,7 @@
 
         style="font-size: 1rem"
 
-        type="text" placeholder="INGRESE MODELO" />
+        type="text" placeholder="INGRESE MODELO" onkeyup="may_submarca_<?=$n?>"/>
 
       </div>
 
@@ -160,7 +160,7 @@
 
       type="text" placeholder="INGRESE PLACA"
 
-      maxlength="8"  />
+      maxlength="8" onkeyup="may_placa_<?=$n?>()"  />
 
     </div>
 
@@ -177,11 +177,32 @@ function mostrar_auto_<?=$n?>(){
       $('#addauto_<?=$n?>').prop('hidden',false);
 
     }else{
-
       $('#addauto_<?=$n?>').prop('hidden',true);
-
     }
 
+  }
+
+
+  function may_placa_<?=$n?>(){
+    var texto = $("#placa<?=$n?>").val();
+    texto = texto.toUpperCase();
+    $("#placa<?=$n?>").val(texto);
+  }
+
+  function may_submarca_<?=$n?>(){
+    var texto = $("#submarca<?=$n?>").val();
+    texto = texto.toLowerCase();
+    texto = ucwords2(texto);
+
+    //alert(texto);
+    $("#submarca<?=$n?>").val(texto);
+  }
+
+
+  function ucwords2(oracion){
+      return oracion.replace(/^([a-z\u00E0-\u00FC])|\s+([a-z\u00E0-\u00FC])/g, function($1){
+         return $1.toUpperCase();
+      });
   }
 
 </script>

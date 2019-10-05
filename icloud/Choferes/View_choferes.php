@@ -1,22 +1,16 @@
 <?php
-
 $root_icloud = $_SERVER['DOCUMENT_ROOT'] . "/pruebascd/icloud";
-
 include ("$root_icloud/Choferes/common/ControlChoferes.php");
-
 //zona horaria para America/Mexico_city
-
 $consulta = mysqli_fetch_array($consulta);
-
 $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
-
  ?>
 
 <span>
 
     <div style="text-align: right">
         <a class=""  href="https://www.chmd.edu.mx/pruebascd/icloud/index.php">
-
+          <!-- Boton de Atras-->
         <svg width="120px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
            viewBox="0 0 600 209.54" style="enable-background:new 0 0 600 209.54;" xml:space="preserve">
         <style type="text/css">
@@ -56,7 +50,7 @@ $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
         </a>
 
         <a class=""  href="vistas/vista_nuevo_chofer_auto.php">
-
+          <!-- Boton de Nuevo -->
           <svg width="120px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
           	 viewBox="0 0 600 209.54" style="enable-background:new 0 0 600 209.54;" xml:space="preserve">
           <style type="text/css">
@@ -149,11 +143,11 @@ $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
 
   <thead class="b-azul white-text">
 
-      <th >Chofer</th>
+      <th style="align: center" width="40%" >Chofer</th>
 
-      <th >Estatus</th>
+      <th style="align: center" width="25%" >Estatus</th>
 
-      <th >Acciones</th>
+      <th style="align: center" width="35%" >Acciones</th>
 
     </thead>
 
@@ -180,7 +174,26 @@ $choferes=strtoupper($chofer['nombre']);
 
 
   //Estatus
+  switch ($estatus) {
+      case "1":
+          $status_detalle = "Pendiente";
+          $color_badge = "#F6871F";
+          break;
+      case "2":
+          $status_detalle = "Autorizado";
+          $color_badge = "#77AF65";
+          break;
+      case "3":
+          $color_badge = "#EF4545";
+          $status_detalle = "Declinado";
+          break;
+      case "4":
+          $status_detalle = "Cancelado";
+          $color_badge = "#EF4545";
+          break;
 
+  }
+  /*
   $status_detalle = "ERROR";
 
   $badge = "badge red c-blanco";
@@ -213,25 +226,28 @@ $choferes=strtoupper($chofer['nombre']);
 
     case 4:
 
-    $status_detalle = "Cancelado por usuario";
+    $status_detalle = "Cancelado";
 
     $badge = "badge red c-blanco";
 
     break;
 
   }
-
+  */
   //consulto la Vigencia
 
   if ($vigencia != '1'){
-
     //Estatus
 
     $status_detalle = "Vencido";
+    $color_badge = "#F6871F";
+/*
+    $status_detalle = "Vencido";
 
     $badge = "badge yellow accent-4 c-blanco";
-
+*/
   }
+
 
 
 
@@ -275,11 +291,14 @@ if($estatus!=4){
 
   <tr>
 
-    <td><?=$nombre?></td>
+    <td style="align: center"><?=$nombre?></td>
 
-    <td><span class="<?=$badge?>"><?=$status_detalle?></span></td>
+    <td style="align: center">
+      <!--<span class="<?=$badge?>"><?=$status_detalle?>-->
+        <span class="chip white-text" style="font-size: .9rem;padding: 0px 3px;background-color: <?php echo $color_badge; ?>"><?php echo $status_detalle; ?>
+    </span></td>
 
-    <td>
+    <td style="align: center">
 
          <?php
 
@@ -325,11 +344,16 @@ else{
 
     <tr>
 
-      <td><?=$nombre?></td>
+      <td style="align: center"><?=$nombre?></td>
 
-      <td><span class="<?=$badge?>"><?=$status_detalle?></span></td>
 
-      <td></td>
+      <td style="align: center">
+        <!--<span class="<?=$badge?>"><?=$status_detalle?></span>-->
+        <span class="chip white-text" style="font-size: .9rem;padding: 0px 3px;background-color: <?php echo $color_badge; ?>"><?php echo $status_detalle; ?>
+
+      </td>
+
+      <td style="align: center"></td>
 
     </tr>
 
@@ -377,16 +401,16 @@ else{
 
     <thead class="b-azul white-text">
 
-        <th >Marca</th>
+        <th scope="col" width="20%" >Marca</th>
 
 
-        <th >A&ntilde;o</th>
+      <!--  <th >A&ntilde;o</th> -->
 
-        <th >Color</th>
+        <th scope="col" width="20%" >Color</th>
 
-        <th >Placas</th>
+        <th scope="col" width="25%" >Placas</th>
 
-        <th >Acciones</th>
+        <th scope="col" width="35%" >Acciones</th>
 
   </thead>
 
@@ -407,22 +431,22 @@ $placa=strtoupper($auto['placa']);
 
     <tr>
 
-      <td><?=$auto['marca']?></td>
+      <td style="align: center"><?=$auto['marca']?></td>
 
 
-      <td><?=$auto['modelo']?></td>
+    <!--  <td><?=$auto['modelo']?></td> -->
 
-      <td><?=$auto['color']?></td>
+      <td ><?=$auto['color']?></td>
 
-      <td><?=$placa?></td>
+      <td ><?=$placa?></td>
 
-      <td>
+      <td >
 
-         <a class=""
+         <a class="waves-effect waves-light"
+         href="./vistas/vista_editar_auto.php?idcarro=<?php echo $id_auto;?>">
 
-          href="./vistas/vista_editar_auto.php?idcarro=<?php echo $id_auto;?>">
 
-          <svg width="70px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+          <svg width="38px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
           	 viewBox="0 0 600 600" style="enable-background:new 0 0 600 600;" xml:space="preserve">
           <style type="text/css">
           	.stx0{fill:#77AF65;}
@@ -477,9 +501,7 @@ $placa=strtoupper($auto['placa']);
 
       </a> -->
 
-
-
-      <?php include './modales/modal_cancelar_auto.php'; ?>
+      <?php //include './modales/modal_cancelar_auto.php'; ?>
 
     </td>
 
@@ -538,29 +560,24 @@ $placa=strtoupper($auto['placa']);
 
       $nombre= $padres['nombre'];
 
-      $tipo= $padres['tipo'];
+      $tipo= $padres['responsable'];
+//      $tipo= $padres['tipo'];
 
       $tipo_usuario='';
 
       switch ($tipo) {
 
-        case 3:
+        case 'PADRE':
 
           $tipo_usuario='Papá';
 
           break;
 
-          case 4:
+          case 'MADRE':
 
           $tipo_usuario='Mamá';
 
             break;
-
-        default:
-
-          $tipo_usuario='Otro';
-
-          break;
 
       }
 

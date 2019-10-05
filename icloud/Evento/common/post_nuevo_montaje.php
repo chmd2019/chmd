@@ -51,6 +51,8 @@ $ultimo_id_conexion = null;
 switch ($tipo_evento) {
     case '1':
         $tipo_evento = "Servicio de café";
+        $hora_min = date("H:i:s", strtotime($horario_evento . "-3600 seconds"));
+        $hora_max = date("H:i:s", strtotime($horario_final_evento . "+3599 seconds"));
         break;
     case '2':
         $tipo_evento = "Montaje de evento interno";
@@ -62,7 +64,6 @@ switch ($tipo_evento) {
         $tipo_evento = "Montaje de evento especial";
         break;
 }
-
 if ($solo_cafe == "true") {
     $ultimo_id_conexion = $control->nuevo_montaje_cafe($fecha_solicitud, $solicitante, $tipo_evento, $fecha_montaje, 
             $fecha_montaje_simple, $horario_evento, $horario_final_evento, $nombre_evento, $responsable_evento, 

@@ -133,7 +133,7 @@ if (isset($_POST['submit'])){
   /*** Busqueda de Id de Choferes Activos actuales  ***/
   $array_ids_choferes= array();
   $sql_busqueda= "SELECT id FROM usuarios WHERE numero = $nfamilia and tipo=7 and estatus!=4";
-  $query_busqueda = mysqli_query($conexion, $sql_busqueda);
+  $query_busqueda = mysqli_query($connection, $sql_busqueda);
   while($row = mysqli_fetch_assoc($query_busqueda)){
     //almacenar id
     array_push($array_ids_choferes,$row['id']);
@@ -145,7 +145,7 @@ if (isset($_POST['submit'])){
       $id_usuario= $id_chofer;
       //busqueda de tarjetones
       $sql_tarjetones = "SELECT idtarjeton FROM tarjeton_automoviles WHERE idfamilia = $id_familia LIMIT 2";
-      $query_tarjetones = mysqli_query($conexion, $sql_tarjetones);
+      $query_tarjetones = mysqli_query($connection, $sql_tarjetones);
       $row_cnt = mysqli_num_rows($query_tarjetones);
       $n=0;
       $Ntarjeton1='';
@@ -169,9 +169,9 @@ if (isset($_POST['submit'])){
           $sql_update = "UPDATE usuarios SET ntarjeton1='$Ntarjeton1', ntarjeton2='$Ntarjeton2' WHERE id='$id_usuario' ";
         }
         //hacer el $query
-        $insertar = mysqli_query($conexion, $sql_update);
+        $insertar = mysqli_query($connection, $sql_update);
         if ($insertar){
-          mysqli_query($conexion, 'COMMIT');
+          mysqli_query($connection, 'COMMIT');
         //  echo 'Insertado Tarjetones en Usuario: '.$id_usuario.'<br>';
         }
       }

@@ -72,7 +72,7 @@
         return $buttons;
     }
 </script>
-
+<div class="modal-chmd-fondo" onclick="ocultar_modal_chmd()"></div>
 <!-- Footer -->
 <footer>
     <div class="b-blanco">  

@@ -109,12 +109,11 @@ if (isset($authUrl)) {
                     if ($btn_fecha) {
                         $hidden = "hidden";
                         ?>
-                        <div class="switch" style="text-align: center">
-                            <label>
-                                Si su permiso es para otro día seleccione aquí
-                                <input type="checkbox" onchange="mostrar_fecha_para()">
-                                    <span class="lever"></span>
-                            </label>
+                        <div class="text-center">
+                            <a href="#!" class="waves-effect waves-light" onclick="mostrar_fecha_para()">
+                                Si su permiso es para otro día seleccione aquí<br>
+                                <i class="material-icons prefix c-azul">calendar_today</i>
+                            </a>
                         </div>
                         <?php
                     } else {

@@ -68,7 +68,7 @@ $dias = array("domingo", "lunes", "martes", "mi&eacute;rcoles", "jueves", "viern
                                 $estatus = $permiso[7];
                                 $tipo_permiso = 3;
                                 if ($estatus == 1) {
-                                    $status_detalle = "Pendiente";
+                                    $status_detalle = "Por autorizar";
                                     $color_badge = "#F6871F";
                                 }
                                 if ($estatus == 2) {

@@ -266,15 +266,45 @@ function validar_horario_final_ensayo(el, id_hora_inicial) {
     }
 }
 
-/*function descargarPDF(nombre_pdf) {
-    var elemento = document.getElementById("imprimir");
-    html2canvas(elemento, {
-        onrendered: function (canvas) {
-            var img = canvas.toDataURL("image/png");
-            var doc = new jsPDF();
-            doc.addImage(img, 'JPEG', 0, 0);
-            doc.save(nombre_pdf);
-        }
+function calcular_position_time_picker() {
+    var timepicker = $(".ui-timepicker-positioned-top");
+    /*if (timepicker.length > 0) {
+     var alto_ventana = parseInt(window.screen.height);
+     var ancho_ventana = parseInt(window.screen.width);
+     var alto_timepicker = parseInt(timepicker.height());
+     var ancho_timepicker = parseInt(timepicker.width());
+     var y = (alto_ventana / 2) - (alto_timepicker / 2);
+     var x = (ancho_ventana / 2) - (ancho_timepicker / 2);
+     timepicker.animate({
+     'top': y + 'px',
+     'left': x + 'px'
+     });
+     }*/
+}
 
+$(document).ready(function () {
+    $(".modal-chmd-close").on('click', function () {
+        $(".modal-chmd").fadeOut();
+        $(".modal-chmd-fondo").fadeOut();
     });
-}*/
+});
+function mostrar_modal_chmd() {
+    $(".modal-chmd").fadeIn();
+    $(".modal-chmd-fondo").fadeIn();
+}
+function ocultar_modal_chmd() {
+    $(".modal-chmd").fadeOut();
+    $(".modal-chmd-fondo").fadeOut();
+}
+/*function descargarPDF(nombre_pdf) {
+ var elemento = document.getElementById("imprimir");
+ html2canvas(elemento, {
+ onrendered: function (canvas) {
+ var img = canvas.toDataURL("image/png");
+ var doc = new jsPDF();
+ doc.addImage(img, 'JPEG', 0, 0);
+ doc.save(nombre_pdf);
+ }
+ 
+ });
+ }*/

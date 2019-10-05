@@ -19,12 +19,12 @@ $id_montaje = $_POST['id_montaje'];
 if ($hora_inicial_ensayo == "00:00:00" || $hora_inicial_ensayo == "01:00:00") {
     $hora_min = $hora_inicial_ensayo;
 } else {
-    $hora_min = date("H:i:s", strtotime($hora_inicial_ensayo . "-7200 seconds"));
+    $hora_min = date("H:i:s", strtotime($hora_inicial_ensayo . "-3600 seconds"));
 }
 if ($hora_final_ensayo == "22:00:00" || $hora_final_ensayo == "23:00:00") {
     $hora_max = $hora_final_ensayo;
 } else {
-    $hora_max = date("H:i:s", strtotime($hora_final_ensayo . "+7199 seconds"));
+    $hora_max = date("H:i:s", strtotime($hora_final_ensayo . "+3599 seconds"));
 }
 
 $res = $control->actualizar_ensayo($id_ensayo, $fecha_ensayo, $hora_inicial_ensayo, $hora_final_ensayo, $requerimientos_ensayo);

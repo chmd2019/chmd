@@ -1,5 +1,5 @@
-<a  class="modal-trigger" href="#modal_cancelar_auto_<?php echo "$id_auto"; ?>">
-  <svg  width="70px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+<a  class="waves-effect waves-light modal-trigger" href="#modal_cancelar_auto_<?php echo "$id_auto"; ?>">
+  <svg  width="38px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
   	 viewBox="0 0 600 600" style="enable-background:new 0 0 600 600;" xml:space="preserve">
   <style type="text/css">
   	.st01{fill:#EF4545;}

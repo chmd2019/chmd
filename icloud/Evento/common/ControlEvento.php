@@ -303,6 +303,15 @@ class ControlEvento {
         }
     }
 
+    public function anular_inventario_asignado_tabla_evento_articulos_asignado($timestamp) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "DELETE FROM `Evento_articulos_asignados` WHERE  timestamp_temporal = '$timestamp'";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
     public function anular_equipo_tecnico_asignado($timestamp) {
         $connection = $this->con->conectar1();
         if ($connection) {
@@ -350,6 +359,34 @@ class ControlEvento {
                     . "`hora_max`, "
                     . "`temporal`) VALUES ("
                     . "'$id', "
+                    . "'$fecha_montaje', "
+                    . "'$hora_inicial', "
+                    . "'$hora_final', "
+                    . "'$hora_min', "
+                    . "'$hora_max', "
+                    . "'$es_temporal');";
+            mysqli_set_charset($connection, "utf8");
+            $insert = mysqli_query($connection, $sql);
+            if (!$insert)
+                return false;
+            return mysqli_insert_id($connection);
+        }
+    }
+
+    public function actualizar_inventario_asignado_edicion($id_evento_montaje,$id_articulo, $fecha_montaje, $hora_inicial, $hora_final, $hora_min, $hora_max, $es_temporal) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "INSERT INTO `icloud`.`Inventario_ocupado_mobiliario` ("
+                    . "`id_evento_montaje`, "
+                    . "`id_articulo`, "
+                    . "`fecha_montaje`, "
+                    . "`horario_inicial`, "
+                    . "`horario_final`, "
+                    . "`hora_min`, "
+                    . "`hora_max`, "
+                    . "`temporal`) VALUES ("
+                    . "'$id_evento_montaje', "
+                    . "'$id_articulo', "
                     . "'$fecha_montaje', "
                     . "'$hora_inicial', "
                     . "'$hora_final', "
@@ -858,7 +895,8 @@ class ControlEvento {
         }
     }
 
-    public function actualizar_montaje($tipo_montaje, $horario_evento, $hora_final_evento, $tipo_repliegue, $nombre_evento, $responsable_evento, $cantidad_invitados, $estacionamiento, $requerimientos_especiales, $id) {
+    public function actualizar_montaje($tipo_montaje, $horario_evento, $hora_final_evento, $tipo_repliegue, $nombre_evento, 
+            $responsable_evento, $cantidad_invitados, $estacionamiento, $requerimientos_especiales, $id,$lugar_evento) {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "UPDATE Evento_montaje SET tipo_montaje = '$tipo_montaje', "
@@ -869,7 +907,11 @@ class ControlEvento {
                     . "responsable_evento = '$responsable_evento', "
                     . "cantidad_invitados = $cantidad_invitados, "
                     . "valet_parking = $estacionamiento, "
-                    . "requerimientos_especiales = '$requerimientos_especiales' WHERE id = $id";
+                    . "requerimientos_especiales = '$requerimientos_especiales', "
+                    . "edicion = true, "
+                    . "notificacion5 = false, "
+                    . "id_lugar_evento = '$lugar_evento' "
+                    . "WHERE id = $id";
             mysqli_set_charset($connection, "utf8");
             return mysqli_query($connection, $sql);
         }
@@ -880,6 +922,15 @@ class ControlEvento {
         if ($connection) {
             $sql = "DELETE FROM Inventario_ocupado_mobiliario WHERE id_evento_montaje = $id_evento "
                     . "AND id_articulo = $id_articulo";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function edicion_mobiliario_eliminar_tb_evento_articulos_asignados($id_evento, $id_articulo) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "DELETE FROM `Evento_articulos_asignados` WHERE `id_montaje`=$id_evento AND `id_mobiliario` = $id_articulo;";
             mysqli_set_charset($connection, "utf8");
             return mysqli_query($connection, $sql);
         }
@@ -1213,6 +1264,24 @@ class ControlEvento {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "SELECT nombre FROM usuarios WHERE correo = '$correo'";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+    
+    public function actualiza_lugar_ocupacion_montaje($lugar_evento, $id){
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "UPDATE `Evento_ocupacion_lugar` SET `id_lugar`='$lugar_evento' WHERE  `id_evento_montaje`=$id;";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+    
+    public function consultar_articulo_en_lugar($id_articulo, $id_lugar){
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT COUNT(*) FROM Inventario_capacidad_mobiliario WHERE lugar = $id_lugar AND id_articulo = $id_articulo;";
             mysqli_set_charset($connection, "utf8");
             return mysqli_query($connection, $sql);
         }

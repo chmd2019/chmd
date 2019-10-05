@@ -73,6 +73,13 @@ if (isset($authUrl)) {
     });
     
     function consultar_reporte(){
+        if($("#fecha_reporte").val() ===""){
+            M.toast({
+                html: 'Debe seleccionar una fecha válida!',
+                classes: 'deep-orange c-blanco',
+            });
+            return;
+        }
         var fecha_reporte = formatear_fecha_calendario_formato_a_m_d_guion(`${$("#fecha_reporte").val()}`);
         window.open(`https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_reporte_montaje.php?fecha_reporte=${fecha_reporte}`, "Reporte de montajes");
     }

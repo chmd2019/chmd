@@ -12,12 +12,12 @@ $respuesta = array();
 
 if ($consulta_padres) {
     while ($data = mysqli_fetch_array($consulta_padres)) {
-        array_push($respuesta, ["id" => $data[0], "nombre" => $data[1], "tipo" => $data[2]]);
+        array_push($respuesta, ["id" => $data[0], "nombre" => strtoupper($data[1]), "tipo" => $data[2]]);
     }
 }
 if ($consulta_responsables) {
     while ($data = mysqli_fetch_array($consulta_responsables)) {
-        array_push($respuesta, ["id" => $data[0], "nombre" => $data[1], "parentesco" => $data[2]]);
+        array_push($respuesta, ["id" => $data[0], "nombre" => strtoupper($data[1]), "parentesco" => $data[2]]);
     }
 }
 echo json_encode($respuesta);

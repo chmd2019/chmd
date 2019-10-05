@@ -5,6 +5,7 @@ $control = new ControlEvento();
 $timestamp = $_POST['timestamp'];
 $coleccion_inventario = $_POST['coleccion_inventario'];
 $anulado = $control->anular_inventario_asignado($timestamp);
+$control->anular_inventario_asignado_tabla_evento_articulos_asignado($timestamp);
 if ($anulado) {
     foreach ($coleccion_inventario as $value) {
         $control->actualiza_inventario_asignado_resta($value['id'], $value['cantidad']);

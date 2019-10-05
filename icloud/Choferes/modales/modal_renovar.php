@@ -1,5 +1,5 @@
-<a class="waves-effect waves-light btn modal-trigger  blue accent-3" tooltip="Renovar" onclick="renovar(<?=$id_chofer?>, <?=$familia?>)">
-    <i class="material-icons">repeat</i>
+<a class="waves-effect waves-light modal-trigger" tooltip="Renovar" onclick="renovar(<?=$id_chofer?>, <?=$familia?>)">
+    <img src='https://www.chmd.edu.mx/pruebascd/icloud/pics/Renovar.svg' style="width: 45px"> 
 </a>
 
 <script type="text/javascript">

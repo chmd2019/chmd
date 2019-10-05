@@ -19,7 +19,7 @@ if (isset($authUrl)) {
           <div class="col s12 m12 l9 b-blanco border-azul" style="float: none;margin: 0 auto;">
               <div>
                   <br>
-                  <h4 class="c-azul" style="text-align: center;">Mis Archivos</h4>
+                  <h4 class="c-azul" style="text-align: center;">Mis Documentos</h4>
                   <div>
                       <?php
                       include './vistas/view_lista_archivos.php';
@@ -38,6 +38,9 @@ if (isset($authUrl)) {
         $('.fixed-action-btn').floatingActionButton({
             hoverEnabled: false
         });
+        $('.modal').modal();
+        $("th").css("text-align", "center");
+        $("td").css("text-align", "center");
     });
 </script>
 <?php include_once "$root_icloud/components/layout_bottom.php"; ?>

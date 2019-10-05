@@ -51,7 +51,8 @@ $(document).ready(function () {
 //  $('.fixed-action-btn').floatingActionButton({
 //    hoverEnabled: false
 //  });
-
+  $("th").css("text-align", "center");
+  $("td").css("text-align", "center");
   $('.modal').modal();
   setInterval(function(){
     window.location.reload();

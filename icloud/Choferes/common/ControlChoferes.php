@@ -168,7 +168,7 @@ class ControlChoferes{
 
       if ($connection) {
 
-          $sql = "SELECT  id, nombre,tipo,fotografia from usuarios where tipo>=3 and tipo<=4 and numero=$familia limit 2;";
+          $sql = "SELECT  id, nombre,tipo,fotografia, responsable from usuarios where (responsable='PADRE' or responsable='MADRE') and numero=$familia limit 2;";
 
           mysqli_set_charset($connection, 'utf8');
 
@@ -339,4 +339,3 @@ class ControlChoferes{
 }
 
  ?>
-

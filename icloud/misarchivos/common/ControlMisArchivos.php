@@ -7,7 +7,23 @@ class ControlArchivos{
   public function __construct(){
       $this->con = new DBManager();
   }
+  public function listado_archivos($familia) {
+    $connection = $this->con->conectar1();
+    if ($connection) {
+      $sql = "SELECT * from lista_mis_archivos order by idarchivo;";
+      mysqli_set_charset($connection, 'utf8');
+      return mysqli_query($connection, $sql);
+    }
+  }
 
+  public function listado_archivos_autorizados($nfamilia) {
+    $connection = $this->con->conectar1();
+    if ($connection) {
+      $sql = "SELECT * from Archivos_autorizacion where idfamilia= $nfamilia; ";
+      mysqli_set_charset($connection, 'utf8');
+      return mysqli_query($connection, $sql);
+    }
+  }
   public function listado_choferes($familia) {
       $connection = $this->con->conectar1();
       if ($connection) {
@@ -35,14 +51,6 @@ class ControlArchivos{
       }
   }
 
-    public function listado_archivos($familia) {
-        $connection = $this->con->conectar1();
-        if ($connection) {
-            $sql = "SELECT * from lista_mis_archivos;";
-            mysqli_set_charset($connection, 'utf8');
-            return mysqli_query($connection, $sql);
-        }
-    }
   public function listado_autos($familia) {
       $connection = $this->con->conectar1();
       if ($connection) {
@@ -91,7 +99,7 @@ class ControlArchivos{
   public function get_padres($familia) {
       $connection = $this->con->conectar1();
       if ($connection) {
-          $sql = "SELECT  id, nombre,tipo,fotografia from usuarios where tipo>=3 and tipo<=4 and numero=$familia limit 2;";
+          $sql = "SELECT  id, nombre,tipo,fotografia,responsable from usuarios where tipo>=3 and tipo<=4 and numero=$familia limit 2;";
           mysqli_set_charset($connection, 'utf8');
           return mysqli_query($connection, $sql);
       }

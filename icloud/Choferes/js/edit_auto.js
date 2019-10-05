@@ -37,16 +37,16 @@ function enviar_formulario(idauto){
     if (submarca==''){
       isgood=false;
       M.toast({
-        html: 'Debe agregar la Submarca del Automóvil.',
+        html: 'Debe agregar el Modelo del Automóvil.',
         classes: 'deep-orange c-blanco'
       });
       return false;
     }
-    if (modelo==''){
+    if (modelo=='' || modelo ==null){
       isgood=false;
   //    alert("Falta agregar Modelo");
       M.toast({
-                html: 'Debe agregar el Modelo del Automóvil.',
+                html: 'Debe agregar el Año del Automóvil.',
                 classes: 'deep-orange c-blanco'
       });
       return false;

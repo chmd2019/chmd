@@ -26,10 +26,11 @@ if ($hora_final == "22:00:00" || $hora_final == "23:00:00") {
 $res = null;
 
 $control->edicion_mobiliario_eliminar($id_montaje, $id_articulo);
+$control->edicion_mobiliario_eliminar_tb_evento_articulos_asignados($id_montaje, $id_articulo);
 
 for ($index = 1; $index <= $cantidad; $index++) {
     $res = $control->edicion_mobiliario($id_articulo, $id_montaje, $fecha_montaje_simple, $hora_inicial, $hora_final, 
         $hora_min, $hora_max);
 }
 
-echo json_encode($res);
+echo json_encode($id_articulo);

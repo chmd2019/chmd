@@ -1,5 +1,5 @@
-<a class="modal-trigger"  href="#modal_download_<?php echo "$id_chofer"; ?>">
-  <svg width="70px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+<a class="waves-effect waves-light modal-trigger"  href="#modal_download_<?php echo "$id_chofer"; ?>">
+  <svg width="38px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
   	 viewBox="0 0 600 600" style="enable-background:new 0 0 600 600;" xml:space="preserve">
   <style type="text/css">
   	.stp0{fill:#77AF65;}
