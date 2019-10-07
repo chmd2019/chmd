@@ -8,6 +8,8 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
         <link rel='stylesheet' href='/pruebascd/icloud/materialkit/css/calendario.css'> 
         <link rel="stylesheet" href="/pruebascd/icloud/materialkit/css/global.css"> 
+        <!--DataTable-->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"> 
         <!-- Fonts -->    
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Varela+Round&display=swap"> 
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
@@ -31,5 +33,7 @@
         <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
         <!--PDF-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
+        <!--DataTable-->
+        <script type="text/javascript" src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     </head>
     <body>

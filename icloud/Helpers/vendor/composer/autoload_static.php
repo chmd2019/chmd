@@ -4,27 +4,55 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit60ff59bf85a2ec4afb98ee5b19ee5698
+class ComposerStaticInit6f89d2ea26430b89e7ea922d5884958d
 {
+    public static $files = array (
+        '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
+        's' => 
+        array (
+            'setasign\\Fpdi\\' => 14,
+        ),
         'P' => 
         array (
-            'PHPMailer\\PHPMailer\\' => 20,
+            'Psr\\Log\\' => 8,
+        ),
+        'M' => 
+        array (
+            'Mpdf\\' => 5,
+        ),
+        'D' => 
+        array (
+            'DeepCopy\\' => 9,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'PHPMailer\\PHPMailer\\' => 
+        'setasign\\Fpdi\\' => 
         array (
-            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
+            0 => __DIR__ . '/..' . '/setasign/fpdi/src',
+        ),
+        'Psr\\Log\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
+        ),
+        'Mpdf\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mpdf/mpdf/src',
+        ),
+        'DeepCopy\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy',
         ),
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit60ff59bf85a2ec4afb98ee5b19ee5698::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit60ff59bf85a2ec4afb98ee5b19ee5698::$prefixDirsPsr4;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit6f89d2ea26430b89e7ea922d5884958d::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit6f89d2ea26430b89e7ea922d5884958d::$prefixDirsPsr4;
 
         }, null, ClassLoader::class);
     }

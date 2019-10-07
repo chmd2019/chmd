@@ -105,7 +105,7 @@ if (isset($authUrl)) {
                                             <input type="checkbox"
                                                    id="alumno_permiso_permanente_<?php echo $counter; ?>"
                                                    value="<?php echo $cliente1['id']; ?>"/>
-                                            <span class="lever" style="margin-top: 1rem;"></span>
+                                            <span class="lever" style="margin-top: 1rem;margin-left: 0px;"></span>
                                         </label>
                                     </div>
                                     <textarea class="materialize-textarea col s10 l11"

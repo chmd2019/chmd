@@ -41,7 +41,6 @@ if (isset($authUrl)) {
         require_once './Model/Login.php';
         $objCliente = new Login();
         $consulta = $objCliente->acceso_login($correo);
-echo $_SERVER['DOCUMENT_ROOT'];
         include_once "$root_icloud/components/navbar.php";
         
         if ($consulta) { //if user already exist change greeting text to "Welcome Back"

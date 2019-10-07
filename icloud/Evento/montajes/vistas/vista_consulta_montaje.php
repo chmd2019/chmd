@@ -73,6 +73,7 @@ if (isset($authUrl)) {
     $color_estatus = $montaje[24];
     $id_estatus = $montaje[25];
     $id_lugar = $montaje[26];
+    $patio_lugar = $montaje[27];
     //privilegios
     $privilegio = mysqli_fetch_array($control->consultar_privilegio_usuario($correo));
     $id_privilegio = $privilegio[0];
@@ -919,6 +920,7 @@ if (isset($authUrl)) {
     var equipo_tecnico_index = null;
     var personal_index = null;
     var lugar_evento_guardado = '<?php echo $lugar_evento; ?>';
+    var patio_lugar = '<?php echo $patio_lugar; ?>';
     var lugar_evento_select_change = null;
     var capacidad_lugar_mobiliario = [];
     var capacidad_lugar_equipo_tecnico = [];
@@ -1656,7 +1658,7 @@ if (isset($authUrl)) {
                 var res_item = aux[item];
                 for (var item2 in res_item) {
                     var res_item2 = res_item[item2];
-                    options += `<option value="${res_item2.id}">${res_item2.descripcion}</option>`;
+                    options += `<option value="${res_item2.id}">${res_item2.descripcion} - ${patio_lugar}</option>`;
                     if (res_item2.descripcion === lugar_evento_guardado) {
                         seleccionado = res_item2.id;
                     }

@@ -37,6 +37,10 @@ body{
     align-items: center;
     z-index: 10000;
 }
+tr th{
+    padding: 8px;
+    border-radius: 0px;
+}
 .menu-mimaguen{
     font-size: 14px;
     margin-right: 7%;
@@ -222,7 +226,7 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
     top:0;
     left:0;
     z-index: 1099;
-    
+
 }
 .modal-chmd{
     display: none;
@@ -250,6 +254,19 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
     padding-top: 1rem;
     text-align: right;
 }
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background: #12487E !important;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  border: 0px;
+}
+ 
+.dataTables_wrapper .dataTables_paginate .paginate_button:active {
+  background: none;
+  color: white!important;
+}
+
 @media screen and (min-width: 280px) and (max-width:960px){
     .caja-login{
         width:90%;

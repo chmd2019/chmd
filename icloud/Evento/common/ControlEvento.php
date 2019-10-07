@@ -611,7 +611,17 @@ class ControlEvento {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "SELECT a.id, a.fecha_montaje, a.solicitante, a.nombre_evento, b.status, b.color_estatus "
-                    . "FROM Evento_montaje a INNER JOIN Catalogo_status_acceso b ON b.id = a.estatus ORDER BY id DESC";
+                    . "FROM Evento_montaje a INNER JOIN Catalogo_status_acceso b ON b.id = a.estatus WHERE a.archivado = 0 ORDER BY id DESC";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+    public function listar_montajes_archivado() {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT a.id, a.fecha_montaje, a.solicitante, a.nombre_evento, b.status, b.color_estatus "
+                    . "FROM Evento_montaje a INNER JOIN Catalogo_status_acceso b ON b.id = a.estatus "
+                    . "WHERE a.archivado = 1 ORDER BY id DESC";
             mysqli_set_charset($connection, "utf8");
             return mysqli_query($connection, $sql);
         }
@@ -622,7 +632,18 @@ class ControlEvento {
         if ($connection) {
             $sql = "SELECT a.id, a.fecha_montaje, a.solicitante, a.nombre_evento, b.status, b.color_estatus "
                     . "FROM Evento_montaje a INNER JOIN Catalogo_status_acceso b ON b.id = a.estatus "
-                    . "WHERE solicitante = '$nombre_usuario' ORDER BY id DESC";
+                    . "WHERE solicitante = '$nombre_usuario' AND a.archivado = 0 ORDER BY id DESC";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function listar_montaje_clientes_archivado($nombre_usuario) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT a.id, a.fecha_montaje, a.solicitante, a.nombre_evento, b.status, b.color_estatus "
+                    . "FROM Evento_montaje a INNER JOIN Catalogo_status_acceso b ON b.id = a.estatus "
+                    . "WHERE solicitante = '$nombre_usuario' AND a.archivado = 1 ORDER BY id DESC";
             mysqli_set_charset($connection, "utf8");
             return mysqli_query($connection, $sql);
         }
@@ -636,7 +657,7 @@ class ControlEvento {
                     . "a.cantidad_invitados, a.valet_parking, b.url,a.anexa_programa,a.tipo_repliegue,"
                     . "a.requiere_ensayo, a.cantidad_ensayos, a.requerimientos_especiales, b.name_no_encripted, "
                     . "c.descripcion AS lugar_evento, a.solo_cafe, a.evento_con_cafe, a.tipo_montaje, d.status, "
-                    . "d.color_estatus, d.id, c.id AS id_lugar "
+                    . "d.color_estatus, d.id, c.id AS id_lugar, c.patio "
                     . "FROM Evento_montaje a LEFT OUTER JOIN Archivos_montaje b ON b.id_motaje = a.id "
                     . "INNER JOIN Lugares_eventos c ON c.id = a.id_lugar_evento "
                     . "INNER JOIN Catalogo_status_acceso d ON d.id = a.estatus WHERE a.id = $id_montaje";
@@ -1282,6 +1303,15 @@ class ControlEvento {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "SELECT COUNT(*) FROM Inventario_capacidad_mobiliario WHERE lugar = $id_lugar AND id_articulo = $id_articulo;";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+    
+    public function consultar_existe_archivado(){
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT COUNT(*) FROM Evento_montaje WHERE archivado = 1 ";
             mysqli_set_charset($connection, "utf8");
             return mysqli_query($connection, $sql);
         }

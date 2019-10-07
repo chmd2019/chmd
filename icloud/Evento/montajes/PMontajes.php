@@ -45,6 +45,18 @@ if (isset($authUrl)) {
             hoverEnabled: false
         });
         $('.modal').modal();
+        $('table').DataTable({
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.10.11/i18n/Spanish.json"
+            },
+            dom: 'Bfrtip',
+            buttons: [
+                'copyHtml5',
+                'excelHtml5',
+                'csvHtml5',
+                'pdfHtml5'
+            ]
+        });
         /*setInterval(function () {
          window.location.reload();
          }, 30000);*/
@@ -71,9 +83,9 @@ if (isset($authUrl)) {
             //min: new Date()
         });
     });
-    
-    function consultar_reporte(){
-        if($("#fecha_reporte").val() ===""){
+
+    function consultar_reporte() {
+        if ($("#fecha_reporte").val() === "") {
             M.toast({
                 html: 'Debe seleccionar una fecha válida!',
                 classes: 'deep-orange c-blanco',
