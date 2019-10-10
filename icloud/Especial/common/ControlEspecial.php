@@ -229,7 +229,21 @@ class ControlEspecial {
     public function buscar_codigo_invitacion($codigo) {
         $connection = $this->con->conectar1();
         if ($connection) {
-            $sql = "SELECT id_permiso, fecha_cambio, nfamilia,tipo_evento, codigo_invitacion FROM Ventana_Permisos WHERE codigo_invitacion = '$codigo'";
+            $sql = "SELECT id_permiso, fecha_cambio, nfamilia,tipo_evento, codigo_invitacion "
+                    . "FROM Ventana_Permisos WHERE codigo_invitacion = '$codigo'";
+            mysqli_set_charset($connection, 'utf8');
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function buscar_codigo_invitacion_x_id($codigo, $id_alumno) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT a.id_permiso, a.fecha_cambio, a.nfamilia,a.tipo_evento, a.codigo_invitacion, c.status, c.color_estatus "
+                    . "FROM Ventana_Permisos a "
+                    . "INNER JOIN Ventana_permisos_alumnos b ON b.codigo_invitacion = a.codigo_invitacion "
+                    . "INNER JOIN Catalogo_status_evento_padres c ON c.id = b.estatus_padre "
+                    . "WHERE a.codigo_invitacion = '$codigo' AND b.id_alumno =$id_alumno";
             mysqli_set_charset($connection, 'utf8');
             return mysqli_query($connection, $sql);
         }
@@ -359,16 +373,29 @@ class ControlEspecial {
                     . "`id_alumno`, "
                     . "`estatus`, "
                     . "`codigo_invitacion`, "
-                    . "`familia`) "
+                    . "`familia`, "
+                    . "`estatus_padre`) "
                     . "VALUES ("
                     . "'$id_permiso', "
                     . "'$id_alumno', "
                     . "'$estatus', "
                     . "'$codigo_invitacion', "
-                    . "'$familia');";
+                    . "'$familia', "
+                    . "'1');";
             mysqli_set_charset($connection, 'utf8');
             return mysqli_query($connection, $sql);
         }
     }    
+
+    public function aprovacion_padre($estatus, $id_permiso_alumno) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "UPDATE `Ventana_permisos_alumnos` SET `estatus_padre`='$estatus' WHERE  `id`=$id_permiso_alumno;";
+            mysqli_set_charset($connection, 'utf8');
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    
 
 }

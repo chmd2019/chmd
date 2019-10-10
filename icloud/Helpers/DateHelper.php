@@ -212,10 +212,41 @@ class DateHelper {
         $total = (($dias + $findesemana) * 86400) + $datestart;
         return $fechafinal = date('Y-m-d', $total);
     }
-    
-    public function formato_fecha_diagonal_m_d_y($fecha){
+
+    public function formato_fecha_diagonal_m_d_y($fecha) {
         $fecha = explode("-", $fecha);
         return "$fecha[2]/$fecha[1]/$fecha[0]";
+    }
+
+    public function formatear_fecha_calendario_formato_a_m_d_guion($fecha) {
+        $dia = explode(" ", $fecha)[1];
+        $mes = explode(" ", $fecha)[3];
+        $anio = explode(" ", $fecha)[5];
+        if ($mes === "Enero" || $mes === "enero")
+            $mes = "01";
+        if ($mes === "Febrero" || $mes === "febrero")
+            $mes = "02";
+        if ($mes === "Marzo" || $mes === "marzo")
+            $mes = "03";
+        if ($mes === "Abril" || $mes === "abril")
+            $mes = "04";
+        if ($mes === "Mayo" || $mes === "mayo")
+            $mes = "05";
+        if ($mes === "Junio" || $mes === "junio")
+            $mes = "06";
+        if ($mes === "Julio" || $mes === "julio")
+            $mes = "07";
+        if ($mes === "Agosto" || $mes === "agosto")
+            $mes = "08";
+        if ($mes === "Septiembre" || $mes === "septiembre")
+            $mes = "09";
+        if ($mes === "Octubre" || $mes === "octubre")
+            $mes = "10";
+        if ($mes === "Noviembre" || $mes === "noviembre")
+            $mes = "11";
+        if ($mes === "Diciembre" || $mes === "diciembre")
+            $mes = "12";
+        return "{$anio}-{$mes}-{$dia}";
     }
 
 }

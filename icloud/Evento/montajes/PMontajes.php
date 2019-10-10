@@ -44,6 +44,7 @@ if (isset($authUrl)) {
         $('.fixed-action-btn').floatingActionButton({
             hoverEnabled: false
         });
+        $("#loading").fadeOut();
         $('.modal').modal();
         $('table').DataTable({
             "language": {

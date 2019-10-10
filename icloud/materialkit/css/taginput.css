@@ -1,0 +1,19 @@
+
+ div.tagsinput span.tag {
+     display: block;
+     float: left;
+     padding: 5px;
+     text-decoration:none;
+     background: #6DC1EC;
+     color: white;
+     margin-right: 5px;
+     margin-bottom:5px;
+    font-family: helvetica;
+     font-size:13px;
+}
+ div.tagsinput span.tag a {
+     font-weight: bold;
+     color:white;
+     text-decoration:none;
+     font-size: 11px;
+}

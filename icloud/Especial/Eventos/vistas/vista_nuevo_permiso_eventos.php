@@ -219,7 +219,7 @@ if (isset($authUrl)) {
                                         <input type="checkbox"
                                                id="alumno_<?php echo $counter; ?>"
                                                value="<?php echo $alumno['id']; ?>"
-                                               onchange="mostrar_check_anfitrion(this, 'caja_check_anfitrion_<?php echo $counter; ?>')"/>
+                                               onchange="mostrar_check_anfitrion(this, 'caja_check_anfitrion_<?php echo $counter; ?>');"/>
                                         <span class="lever" style="margin-left: 0px"></span>
                                     </label>
                                 </div>
@@ -230,8 +230,8 @@ if (isset($authUrl)) {
                                            id="anfitrion_<?php echo $counter; ?>"
                                            onchange="this.checked = comprobar_checks_invirados();
                                                    grupo = this.checked ? '<?php echo $grupo; ?>' : '';
-                                                   mostrar_btn_modal_invitados('btn_modal_invitados');
-                                                   id_anfitrion = <?php echo $alumno['id']; ?>;"/>
+                                                   id_anfitrion = <?php echo $alumno['id']; ?>;
+                                                   consulta_alumnos_grupo(this);"/>
                                     <span style="font-size: .8rem;">Anfitrión</span>
                                 </label>
                             </span>
@@ -252,19 +252,20 @@ if (isset($authUrl)) {
                         }
                     }
                     ?>
-                    <div class="col s12 l6" 
-                         style="float: none;margin: 0 auto;"
-                         id="btn_modal_invitados"
-                         hidden>
-                        <a class="btn waves-effect waves-light b-azul white-text w-100 modal-trigger" 
-                           href="#modal_alumnos"
-                           onclick="mostrar_modal_chmd();
-                                   consulta_alumnos_grupo();">
-                            Añadir invitados
-                            <i class="material-icons right">person_add</i>
-                        </a>
-                    </div>
                     <span class="col s12"><br></span>
+                    <div id="caja_tabla_invitados" hidden>
+                        <h4 class="c-azul">Selección de invitados - Grupo <span id="grupo"></span></h4>
+                        <table class="table striped">
+                            <thead>
+                                <tr>
+                                    <th style="width: 80%;">Alumno</th>
+                                    <th><label><input type="checkbox" class="filled-in" onchange="invitar_todos(this);" id="check_invitar_todos" /><span>Invitar todos</span></label></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody_invitados">
+                            </tbody>
+                        </table>
+                    </div>
                     <div id="alumnos_invitados_listado"></div>
                     <div>
                         <h5 class="c-azul text-center col s12">Información adicional</h5>
@@ -359,7 +360,6 @@ if (isset($authUrl)) {
                             <i class="material-icons right">send</i>
                         </button>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -393,26 +393,6 @@ if (isset($authUrl)) {
     </div>
 </div>
 
-<!-- Modal alumnos -->
-<div class="modal-chmd">
-    <div class="modal-chmd-content">
-        <h4 class="c-azul">Selección de invitados - Grupo <span id="grupo"></span></h4>
-        <table class="table striped">
-            <thead>
-                <tr>
-                    <th style="width: 80%;">Alumno</th>
-                    <th><label><input type="checkbox" class="filled-in" onchange="invitar_todos(this);" id="check_invitar_todos" /><span>Invitar todos</span></label></th>
-                </tr>
-            </thead>
-            <tbody id="tbody_invitados">
-            </tbody>
-        </table>
-    </div>
-    <div class="modal-chmd-footer">
-        <a href="#!" class="waves-effect waves-light btn red c-blanco" onclick="cancelar_invitados();ocultar_modal_chmd()">Cancelar</a>
-        <a href="#!" class="waves-effect waves-light btn green accent-4 c-blanco" onclick="ocultar_modal_chmd();mostrar_alumnos_invitados();">Aceptar</a>
-    </div>
-</div>
 <script>
     var responsables = [];
     var coleccion_ids = [];
@@ -691,13 +671,6 @@ if (isset($authUrl)) {
         }
         return true;
     }
-    function mostrar_btn_modal_invitados(id) {
-        if (grupo !== "") {
-            $("#" + id).prop("hidden", false);
-            return;
-        }
-        $("#" + id).prop("hidden", true);
-    }
     function comprobar_checks_invirados() {
         if (flag_check_invitados) {
             var i_checks = 0;
@@ -805,27 +778,36 @@ if (isset($authUrl)) {
             $("#caja_input_evento_al_finalizar_clases").prop("hidden", true);
         }
     }
-    function consulta_alumnos_grupo() {
-        $.ajax({
-            url: 'https://www.chmd.edu.mx/pruebascd/icloud/Especial/common/get_consulta_alumnos_grupo.php',
-            type: 'GET',
-            dataType: 'json',
-            beforeSend: () => {
-                $("#loading").fadeIn();
-            },
-            data: {grupo: grupo, id_anfitrion: id_anfitrion}
-        }).done((res) => {
-            $("#grupo").text(grupo);
-            contador_alumnos_invitados = res.length;
+    function consulta_alumnos_grupo(el) {
+        if (el.checked) {
+            $.ajax({
+                url: 'https://www.chmd.edu.mx/pruebascd/icloud/Especial/common/get_consulta_alumnos_grupo.php',
+                type: 'GET',
+                dataType: 'json',
+                beforeSend: () => {
+                    $("#loading").fadeIn();
+                },
+                data: {grupo: grupo, id_anfitrion: id_anfitrion}
+            }).done((res) => {
+                $("#caja_tabla_invitados").fadeIn();
+                $("#grupo").text(grupo);
+                contador_alumnos_invitados = res.length;
+                $("#tbody_invitados").html('');
+                for (var item in res) {
+                    var i = parseInt(item) + 1;
+                    var tr = `<tr><td>${res[item].nombre}</td><td><label><input type="checkbox" class="filled-in" value="${res[item].id}" onchange="add_id_invitado(this);add_alumnos_invitados(this,'${res[item].nombre}')" id="check_invitado_${i}" /><span></span></label></td></tr>`;
+                    $("#tbody_invitados").append(tr);
+                }
+            }).always(() => {
+                $("#loading").fadeOut();
+            });
+        } else {
             $("#tbody_invitados").html('');
-            for (var item in res) {
-                var i = parseInt(item) + 1;
-                var tr = `<tr><td>${res[item].nombre}</td><td><label><input type="checkbox" class="filled-in" value="${res[item].id}" onchange="add_id_invitado(this);add_alumnos_invitados(this,'${res[item].nombre}')" id="check_invitado_${i}" /><span></span></label></td></tr>`;
-                $("#tbody_invitados").append(tr);
-            }
-        }).always(() => {
-            $("#loading").fadeOut();
-        });
+            coleccion_alumnos_invitados = [];
+            coleccion_alumnos_nombres = [];
+            contador_alumnos_invitados = 0;
+            $("#caja_tabla_invitados").fadeOut();
+        }
     }
     function add_id_invitado(el) {
         if (el.checked) {
@@ -865,10 +847,10 @@ if (isset($authUrl)) {
     }
     function mostrar_alumnos_invitados() {
         var tr = "";
-        if(coleccion_alumnos_nombres !== []){
+        if (coleccion_alumnos_nombres !== []) {
             for (var item in coleccion_alumnos_nombres) {
-            tr = `${tr}<tr><td>${coleccion_alumnos_nombres[item]}</td></tr>`;
-        }
+                tr = `${tr}<tr><td>${coleccion_alumnos_nombres[item]}</td></tr>`;
+            }
             $("#alumnos_invitados_listado").html(`<br><h5 class='c-azul text-center col s12'>Alumnos invitados</h5><table class='col s12 l6 border-azul' style='margin:auto;'><thead><tr><th>Alumno</th></tr></thead><tbody>${tr}</tbody></table>`);
             return;
         }

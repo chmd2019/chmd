@@ -85,13 +85,15 @@ if ($connection) {
                     . "id_alumno, "
                     . "estatus, "
                     . "familia, "
-                    . "codigo_invitacion) "
+                    . "codigo_invitacion, "
+                    . "estatus_padre) "
                     . "VALUES ('"
                     . $ultimo_id_conexion . "','"
                     . $alumno . "','"
                     . 1 . "','"
                     . $nfamilia . "','"
-                    . $codigo_invitacion . "')";
+                    . $codigo_invitacion . "', "
+                    . "2)";
             $insert_alumnos = mysqli_query($connection, $sql);
         }
         foreach ($coleccion_alumnos_invitados as $value) {

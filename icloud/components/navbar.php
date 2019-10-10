@@ -76,6 +76,12 @@
             <li><a href="https://www.chmd.edu.mx/fundacion/">FUNDACIÓN</a></li>
             <li><a href="https://www.chmd.edu.mx/academia/">ACADEMIA</a></li>
             <li><a class="dropdown-trigger" href="#!" data-target="dropdown_contacto">CONTACTO<i class="material-icons right">arrow_drop_down</i></a></li>
+            <?php
+            $url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+            if ($url != "www.chmd.edu.mx/pruebascd/icloud/" && $url != "www.chmd.edu.mx/pruebascd/icloud/?logout=1"):
+                ?>
+                <li><a class="dropdown-trigger" href="#!" data-target="dropdown_contacto" onclick="logout();">CERRAR SESIÓN<i class="material-icons right">lock</i></a></li>
+            <?php endif; ?>
         </ul>
     </div>
 </nav>
@@ -86,6 +92,12 @@
     <li><a href="https://www.chmd.edu.mx/fundacion/" class="white-text">FUNDACIÓN</a></li>
     <li><a href="https://www.chmd.edu.mx/academia/" class="white-text">ACADEMIA</a></li>
     <li><a class="dropdown-trigger white-text" href="#!" data-target="dropdown_contacto_movil">CONTACTO<i class="material-icons right white-text">arrow_drop_down</i></a></li>
+    <?php
+    $url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+    if ($url != "www.chmd.edu.mx/pruebascd/icloud/" && $url != "www.chmd.edu.mx/pruebascd/icloud/?logout=1"):
+        ?>
+        <li><a class="dropdown-trigger white-text" href="#!" data-target="dropdown_contacto" onclick="logout();">CERRAR SESIÓN<i class="material-icons right white-text">lock</i></a></li>
+        <?php endif; ?>
 </ul>
 
 <script>

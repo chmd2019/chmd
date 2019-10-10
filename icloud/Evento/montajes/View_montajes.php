@@ -102,20 +102,27 @@ $id_privilegio = $privilegio[0];
                             break;
                     }
                     ?>
-                    <tr style="cursor: pointer;font-size: 1rem;" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'">
-                        <td style="padding: 0px;"><?php echo $fecha_montaje; ?></td>
-                        <td style="padding: 0px;" class="hide-on-med-and-down"><?php echo $solicitante; ?></td>
-                        <td style="padding: 0px;"><?php echo $nombre_evento; ?></td>
-                        <td style="padding: 0px;text-align: center"><span class="chip white-text" style="font-size: .8rem;padding: 0px 3px;background-color: <?php echo $color_badge; ?>"><?php echo $estatus; ?></span></th>
+                    <tr style="cursor: pointer;font-size: 1rem;">
+                        <td style="padding: 0px;" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><?php echo $fecha_montaje; ?></td>
+                        <td style="padding: 0px;" class="hide-on-med-and-down" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><?php echo $solicitante; ?></td>
+                        <td style="padding: 0px;" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><?php echo $nombre_evento; ?></td>
+                        <td style="padding: 0px;text-align: center" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><span class="chip white-text" style="font-size: .8rem;padding: 0px 3px;background-color: <?php echo $color_badge; ?>"><?php echo $estatus; ?></span></th>
                         <td style="padding: 0px;text-align: center">   
                             <a class="waves-effect waves-light"
                                href="https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>">
                                 <img src='../../images/Ver.svg' style="width: 40px;margin-top: .4rem;">
                             </a> 
                             <a class="waves-effect waves-light"
+                               target="_blank"
                                href="https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_descarga_pdf.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>">
                                 <img src='../../images/Descargar.svg' style="width: 40px;margin-top: .4rem;">
                             </a>
+                            <?php if ($id_privilegio == 3): ?>
+                                <a class="waves-effect waves-light light-green-text accent-3" 
+                                   onclick="modal_archivo(true);flag_archivar = true;id_montaje = <?php echo $id_montaje; ?>">
+                                    <i class="material-icons" style="font-size: 2.5rem;">archive</i>
+                                </a>
+                            <?php endif; ?>
                         </td>
                     </tr>                         
                 <?php endwhile; ?>
@@ -162,20 +169,27 @@ $id_privilegio = $privilegio[0];
                                 break;
                         }
                         ?>
-                        <tr style="cursor: pointer;font-size: 1rem;" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'">
-                            <td style="padding: 0px;"><?php echo $fecha_montaje; ?></td>
-                            <td style="padding: 0px;" class="hide-on-med-and-down"><?php echo $solicitante; ?></td>
-                            <td style="padding: 0px;"><?php echo $nombre_evento; ?></td>
-                            <td style="padding: 0px;text-align: center"><span class="chip white-text" style="font-size: .8rem;padding: 0px 3px;background-color: <?php echo $color_badge; ?>"><?php echo $estatus; ?></span></th>
+                        <tr style="cursor: pointer;font-size: 1rem;">
+                            <td style="padding: 0px;" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><?php echo $fecha_montaje; ?></td>
+                            <td style="padding: 0px;" class="hide-on-med-and-down" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><?php echo $solicitante; ?></td>
+                            <td style="padding: 0px;" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><?php echo $nombre_evento; ?></td>
+                            <td style="padding: 0px;text-align: center" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><span class="chip white-text" style="font-size: .8rem;padding: 0px 3px;background-color: <?php echo $color_badge; ?>"><?php echo $estatus; ?></span></th>
                             <td style="padding: 0px;text-align: center">   
                                 <a class="waves-effect waves-light"
                                    href="https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>">
                                     <img src='../../images/Ver.svg' style="width: 40px;margin-top: .4rem;">
                                 </a> 
                                 <a class="waves-effect waves-light"
-                                   href="https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_descarga_pdf.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>">
+                                    target="_blank"
+                                    href="https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_descarga_pdf.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>">
                                     <img src='../../images/Descargar.svg' style="width: 40px;margin-top: .4rem;">
                                 </a>
+                                <?php if ($id_privilegio == 3): ?>
+                                    <a class="waves-effect waves-light light-green-text accent-3" 
+                                       onclick="modal_archivo(false);flag_archivar = false;id_montaje = <?php echo $id_montaje; ?>">
+                                        <i class="material-icons" style="font-size: 2.5rem;">unarchive</i>
+                                    </a>
+                                <?php endif; ?>
                             </td>
                         </tr>                         
                     <?php endwhile; ?>
@@ -189,3 +203,86 @@ $id_privilegio = $privilegio[0];
     <br>
     <br>
 <?php endif; ?>
+
+<div class="loading" id="loading" >
+    <div class="preloader-wrapper big active">
+        <div class="spinner-layer spinner-blue-only">
+            <div class="circle-clipper left">
+                <div class="circle"></div>
+            </div><div class="gap-patch">
+                <div class="circle"></div>
+            </div><div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="confirmar_archivo" class="modal">
+    <div class="modal-content">
+        <h4>Confirmación</h4>
+        <p>¿Confirma archivar este montaje?</p>
+    </div>
+    <div class="modal-footer" style="padding:1rem">
+        <a href="#!" class="modal-close waves-effect btn-flat red white-text" onclick="id_montaje = null;flag_archivar = null;">Cancelar</a>
+        <a href="#!" class="waves-effect btn-flat b-azul white-text" onclick="archivar()">Aceptar</a>
+    </div>
+    <br>
+</div>
+<div id="confirmar_desarchivo" class="modal">
+    <div class="modal-content">
+        <h4>Confirmación</h4>
+        <p>¿Confirma desarchivar este montaje?</p>
+    </div>
+    <div class="modal-footer" style="padding:1rem">
+        <a href="#!" class="modal-close waves-effect btn-flat red white-text" onclick="id_montaje = null;flag_archivar = null;">Cancelar</a>
+        <a href="#!" class="waves-effect btn-flat b-azul white-text" onclick="archivar()">Aceptar</a>
+    </div>
+    <br>
+</div>
+
+<script>
+    var id_montaje = null, flag_archivar = null;
+
+    function modal_archivo(flag_archivo) {
+        var modal_modal_archivo = M.Modal.getInstance($("#confirmar_archivo"));
+        var modal_modal_desarchivo = M.Modal.getInstance($("#confirmar_desarchivo"));
+        if (flag_archivo) {
+            modal_modal_archivo.open();
+        } else {
+            modal_modal_desarchivo.open();
+        }
+    }
+    function archivar() {
+        $.ajax({
+            url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/post_archivar.php',
+            type: 'POST',
+            dataType: 'json',
+            beforeSend: () => {
+                $("#loading").fadeIn();
+            },
+            data: {id_montaje: id_montaje, flag_archivar: flag_archivar}
+        }).done((res) => {
+            if (res) {
+                id_montaje = null;
+                flag_archivar = null;
+                M.toast({
+                    html: '¡Solicitud realizada con éxito!',
+                    classes: 'green accent-4 c-blanco'
+                });
+                setInterval(() => {
+                    window.location.reload();
+                }, 500);
+            } else {
+                M.toast({
+                    html: '¡Solicitud no realizada!',
+                    classes: 'red c-blanco'
+                });
+            }
+        }).always(() => {
+            M.Modal.getInstance($("#confirmar_archivo")).close();
+            M.Modal.getInstance($("#confirmar_desarchivo")).close();
+            $("#loading").fadeOut();
+        });
+    }
+</script>

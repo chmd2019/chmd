@@ -917,7 +917,7 @@ class ControlEvento {
     }
 
     public function actualizar_montaje($tipo_montaje, $horario_evento, $hora_final_evento, $tipo_repliegue, $nombre_evento, 
-            $responsable_evento, $cantidad_invitados, $estacionamiento, $requerimientos_especiales, $id,$lugar_evento) {
+            $responsable_evento, $cantidad_invitados, $estacionamiento, $requerimientos_especiales, $id,$lugar_evento,$tipo_evento) {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "UPDATE Evento_montaje SET tipo_montaje = '$tipo_montaje', "
@@ -931,7 +931,8 @@ class ControlEvento {
                     . "requerimientos_especiales = '$requerimientos_especiales', "
                     . "edicion = true, "
                     . "notificacion5 = false, "
-                    . "id_lugar_evento = '$lugar_evento' "
+                    . "id_lugar_evento = '$lugar_evento', "
+                    . "tipo_evento = '$tipo_evento' "
                     . "WHERE id = $id";
             mysqli_set_charset($connection, "utf8");
             return mysqli_query($connection, $sql);
@@ -1312,6 +1313,15 @@ class ControlEvento {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "SELECT COUNT(*) FROM Evento_montaje WHERE archivado = 1 ";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+    
+    public function archivar($id_montaje,$archivado){
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "UPDATE `Evento_montaje` SET `archivado`=$archivado WHERE  `id`=$id_montaje;";
             mysqli_set_charset($connection, "utf8");
             return mysqli_query($connection, $sql);
         }

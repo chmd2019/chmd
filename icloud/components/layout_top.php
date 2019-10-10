@@ -27,6 +27,10 @@
         <script src="https://cdn.jsdelivr.net/npm/timepicker@1.11.15/jquery.timepicker.min.js"></script>               
         <!-- LIGHTBOX - complemento para Zoom de imagenes -->    
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+        <!-- TAGINPUT -->    
+        <link rel="stylesheet" type="text/css" href="https://www.chmd.edu.mx/pruebascd/icloud/materialkit/css/taginput.css">
+        <!--TAGINPUT-->
+        <script type="text/javascript" src="https://www.chmd.edu.mx/pruebascd/icloud/materialkit/js/taginput.js"></script>
         <!-- Pusher - Complemento para usar websockets -->    
         <script src="https://js.pusher.com/4.4/pusher.min.js"></script>
         <!--Canvas-->

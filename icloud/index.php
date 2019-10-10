@@ -990,6 +990,22 @@ if (isset($authUrl)) {
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col s12 m6 l4">
+                                        <div class="card" style="box-shadow: none">
+                                            <div class="card-image waves-block efecto-btn">
+                                                <a href='Minutas/menu.php'>
+                                                    <img src="pics/_minutas.svg" style="padding:3rem;">
+                                                </a>
+                                            </div>
+                                            <div class="card-content text-center" style="padding:0px;margin-top: -30px">
+                                                <img class="activator waves-effect waves-light" src="../icloud/images/Info.svg" style="width: 30px;"/>
+                                            </div>
+                                            <div class="card-reveal b-azul white-text">
+                                                <span class="card-title white-text">Información adicional<i class="material-icons right">close</i></span>
+                                                <p>INFO PENDIENTE</p>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                 </div>
                             </div>

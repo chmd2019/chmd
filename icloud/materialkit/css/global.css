@@ -266,6 +266,9 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
   background: none;
   color: white!important;
 }
+.input-field .prefix.active, label {
+    color: #6DC1EC !important;
+}
 
 @media screen and (min-width: 280px) and (max-width:960px){
     .caja-login{
