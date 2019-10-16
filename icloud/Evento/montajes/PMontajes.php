@@ -39,25 +39,50 @@ if (isset($authUrl)) {
 </div>
 
 <script>
-
+    var id_montaje = null, flag_archivar = null;
     $(document).ready(function () {
         $('.fixed-action-btn').floatingActionButton({
             hoverEnabled: false
         });
-        $("#loading").fadeOut();
         $('.modal').modal();
-        $('table').DataTable({
+        $('#tabla_no_archivados').DataTable({
             "language": {
-                "url": "//cdn.datatables.net/plug-ins/1.10.11/i18n/Spanish.json"
-            },
-            dom: 'Bfrtip',
-            buttons: [
-                'copyHtml5',
-                'excelHtml5',
-                'csvHtml5',
-                'pdfHtml5'
-            ]
+                "lengthMenu": "_MENU_",
+                "zeroRecords": "<span class='chip red white-text'>Sin registros para mostrar</span>",
+                "info": "<span class='chip blue white-text'>Mostrando colección _PAGE_ de _PAGES_</span>",
+                "infoEmpty": "<span class='chip red white-text'>Sin registros disponibles</span>",
+                "infoFiltered": "(filtrado de _MAX_ total de registros)",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar:",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Último",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            }
         });
+        $('#tabla_archivados').DataTable({
+            "language": {
+                "lengthMenu": "_MENU_",
+                "zeroRecords": "<span class='chip red white-text'>Sin registros para mostrar</span>",
+                "info": "<span class='chip blue white-text'>Mostrando colección _PAGE_ de _PAGES_</span>",
+                "infoEmpty": "<span class='chip red white-text'>Sin registros disponibles</span>",
+                "infoFiltered": "(filtrado de _MAX_ total de registros)",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar:",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Último",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            }
+        });
+        $("select").formSelect();
+        $("#loading").fadeOut();
         /*setInterval(function () {
          window.location.reload();
          }, 30000);*/
@@ -96,8 +121,48 @@ if (isset($authUrl)) {
         var fecha_reporte = formatear_fecha_calendario_formato_a_m_d_guion(`${$("#fecha_reporte").val()}`);
         window.open(`https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_reporte_montaje.php?fecha_reporte=${fecha_reporte}`, "Reporte de montajes");
     }
+    function modal_archivo(flag_archivo) {
+        var modal_modal_archivo = M.Modal.getInstance($("#confirmar_archivo"));
+        var modal_modal_desarchivo = M.Modal.getInstance($("#confirmar_desarchivo"));
+        if (flag_archivo) {
+            modal_modal_archivo.open();
+        } else {
+            modal_modal_desarchivo.open();
+        }
+    }
+    function archivar() {
+        $.ajax({
+            url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/post_archivar.php',
+            type: 'POST',
+            dataType: 'json',
+            beforeSend: () => {
+                $("#loading").fadeIn();
+            },
+            data: {id_montaje: id_montaje, flag_archivar: flag_archivar}
+        }).done((res) => {
+            if (res) {
+                id_montaje = null;
+                flag_archivar = null;
+                M.toast({
+                    html: '¡Solicitud realizada con éxito!',
+                    classes: 'green accent-4 c-blanco'
+                });
+                setInterval(() => {
+                    window.location.reload();
+                }, 500);
+            } else {
+                M.toast({
+                    html: '¡Solicitud no realizada!',
+                    classes: 'red c-blanco'
+                });
+            }
+        }).always(() => {
+            M.Modal.getInstance($("#confirmar_archivo")).close();
+            M.Modal.getInstance($("#confirmar_desarchivo")).close();
+            $("#loading").fadeOut();
+        });
+    }
 </script>
-
 <style>
     #modal_reporte{
         height: 700px;

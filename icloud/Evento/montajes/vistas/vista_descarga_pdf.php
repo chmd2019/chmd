@@ -35,7 +35,7 @@ if (isset($authUrl)) {
     require_once "$root_icloud/Evento/common/ControlEvento.php";
     $id_montaje = $_GET['id'];
     $control = new ControlEvento();
-//consulta de montaje
+    //consulta de montaje
     $montaje = $control->consulta_montaje($id_montaje);
     $montaje = mysqli_fetch_array($montaje);
     $fecha_solicitud = $montaje[1];
@@ -66,6 +66,7 @@ if (isset($authUrl)) {
     $color_estatus = $montaje[24];
     $id_estatus = $montaje[25];
     $id_lugar = $montaje[26];
+    $patio = $montaje[27];
 }
 ?>
  <a class="btn-floating btn-large waves-effect waves-light green" 
@@ -99,7 +100,9 @@ if (isset($authUrl)) {
         <div class="col s12 l6">
             <p>Fecha del evento : <span class="right"><?php echo $fecha_montaje; ?></span></p>
             <p>Nombre del evento :  <span class="right"><?php echo $nombre_evento; ?></span></p>
-            <p>Lugar del evento :  <span class="right"><?php echo $lugar_evento; ?></span></p>
+            <p>Tipo de evento :  <span class="right"><?php echo $tipo_servicio; ?></span></p>
+            <p>Tipo de montaje :  <span class="right"><?php echo $tipo_montaje; ?></span></p>
+            <p>Lugar del evento :  <span class="right"><?php echo $lugar_evento; ?> -&nbsp;<span class="right"><?php echo $patio; ?></span></p>
             <p>Horario del evento : <span class="right"><?php echo "{$horario_evento} - {$horario_final_evento}"; ?></span></p>
             <?php
             if ($requiere_ensayo):

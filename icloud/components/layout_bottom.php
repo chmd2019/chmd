@@ -99,5 +99,7 @@
 </footer>
 <!-- Compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+<!-- FilePond library -->
+<script src="/pruebascd/icloud/materialkit/js/filepond.js"></script>
 </body>
 </html>

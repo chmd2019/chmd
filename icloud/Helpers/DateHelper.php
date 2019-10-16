@@ -248,5 +248,14 @@ class DateHelper {
             $mes = "12";
         return "{$anio}-{$mes}-{$dia}";
     }
-
+    
+    function fecha_listados(){
+        $fecha_actual = date('m/d/Y');
+        $fecha_actual_impresa_script = "<script>var fecha = new Date('$fecha_actual');"
+        . "var options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };"
+        . "fecha = fecha.toLocaleDateString('es-MX', options);"
+        . "fecha = `\${fecha.charAt(0).toUpperCase()}\${fecha.slice(1).toLowerCase()}`;"
+        . "document.write(fecha)</script>";
+        return $fecha_actual_impresa_script;
+    }
 }

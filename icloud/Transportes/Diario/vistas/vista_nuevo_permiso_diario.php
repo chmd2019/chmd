@@ -95,7 +95,7 @@ if (isset($authUrl)) {
                             " de " . $arrayMeses[date('m') - 1] . " de " . date('Y') .
                             ", " . date("h:i a");
                             ?>" readonly  id="fecha_creacion" style="font-size: 1rem" type="text" >
-                                <label for="fecha_creacion" style="margin-left: 1rem">Fecha de solicitud</label>
+                            <label for="fecha_creacion" style="margin-left: 1rem">Fecha de solicitud</label>
                         </div>
                     </div>
                     <div class="col s12 l6">
@@ -123,19 +123,19 @@ if (isset($authUrl)) {
                     ?>
                     <div class="col s12" id="fecha_para" <?php echo $hidden; ?>>
                         <link rel='stylesheet' href='../../common/css/calendario.css'>
-                            <script src='../../common/js/calendario.js'></script>
-                            <script src="../../common/js/common.js"></script>
-                            <div class="input-field">
-                                <i class="material-icons prefix c-azul">calendar_today</i>
-                                <input
-                                    value ="<?php echo $fecha_hoy; ?>"
-                                    type="text"
-                                    class="datepicker"
-                                    id="fecha_solicitud_nuevo"
-                                    placeholder="Para el día"
-                                    onchange="fecha_minusculas(this.value, 'fecha_solicitud_nuevo')">
-                                    <label for="fecha_solicitud_nuevo" style="margin-left: 1rem">Para el día</label>
-                            </div>
+                        <script src='../../common/js/calendario.js'></script>
+                        <script src="../../common/js/common.js"></script>
+                        <div class="input-field">
+                            <i class="material-icons prefix c-azul">calendar_today</i>
+                            <input
+                                value ="<?php echo $fecha_hoy; ?>"
+                                type="text"
+                                class="datepicker"
+                                id="fecha_solicitud_nuevo"
+                                placeholder="Para el día"
+                                onchange="fecha_minusculas(this.value, 'fecha_solicitud_nuevo')">
+                            <label for="fecha_solicitud_nuevo" style="margin-left: 1rem">Para el día</label>
+                        </div>
                     </div>
                     <script>
                         //obtiene el calendario escolar en db
@@ -189,16 +189,16 @@ if (isset($authUrl)) {
                                               style="font-size: 1rem;float: right;"></textarea>
                                 </div>
                                 <br style="clear:both">
-                                    <input id="id_alumno_permiso_temporal_<?php echo $counter; ?>" hidden value="<?php echo $cliente1['id']; ?>"/>
-                                    <script>
-                                        $('#nombre_nuevo_permiso_temporal_<?php echo $counter; ?>').val('<?php echo $cliente1['nombre']; ?>');
-                                        M.textareaAutoResize($('#nombre_nuevo_permiso_temporal_<?php echo $counter; ?>'));
-                                    </script>
-                                    <?php
-                                    $talumnos = $counter;
-                                }
+                                <input id="id_alumno_permiso_temporal_<?php echo $counter; ?>" hidden value="<?php echo $cliente1['id']; ?>"/>
+                                <script>
+                                    $('#nombre_nuevo_permiso_temporal_<?php echo $counter; ?>').val('<?php echo $cliente1['nombre']; ?>');
+                                    M.textareaAutoResize($('#nombre_nuevo_permiso_temporal_<?php echo $counter; ?>'));
+                                </script>
+                                <?php
+                                $talumnos = $counter;
                             }
-                            ?>
+                        }
+                        ?>
                     </div>
                     <span class="col s12"><br></span>
                     <h5 class="center-align c-azul">Dirección de Casa</h5>
@@ -268,20 +268,30 @@ if (isset($authUrl)) {
                             </label>
                         </div>
                         <br>
-                            <div id="container_descripcion_recordar_direccion" hidden>
-                                <div class="input-field col s12" id="container_descripcion_recordar_direccion">
-                                    <i class="material-icons prefix c-azul">store_mall_directory</i>
-                                    <input id="descripcion_recordar_direccion"
-                                           onkeyup ="capitaliza_primer_letra(this.id)"
-                                           placeholder="Descripción de la dirección"
-                                           autocomplete="off" />
-                                    <button type="button"
-                                            class="btn waves-effect waves-light white-text b-azul w-100"
-                                            onclick="enviar_direccion()">Guardar</button>
-                                </div>
+                        <div id="container_descripcion_recordar_direccion" hidden>
+                            <div class="input-field col s12" id="container_descripcion_recordar_direccion">
+                                <i class="material-icons prefix c-azul">store_mall_directory</i>
+                                <input id="descripcion_recordar_direccion"
+                                       onkeyup ="capitaliza_primer_letra(this.id)"
+                                       placeholder="Descripción de la dirección"
+                                       autocomplete="off" />
+                                <button type="button"
+                                        class="btn waves-effect waves-light white-text b-azul w-100"
+                                        onclick="enviar_direccion()">Guardar</button>
                             </div>
+                        </div>
                     </div>
                     <br>
+                    <?php if (date("N") == 5): ?>
+                        <div class="input-field col s12">
+                            <i class="material-icons c-azul prefix">departure_board</i>
+                            <select class="input-field" id="ruta" disabled>
+                                <option value="">Selecciona opción</option>
+                                <option value="General 2:50 PM" selected>General 2:50 PM</option>
+                            </select>
+                            <label>Ruta</label>
+                        </div>
+                    <?php else: ?>
                         <div class="input-field col s12">
                             <i class="material-icons c-azul prefix">departure_board</i>
                             <select class="input-field" id="ruta" >
@@ -291,30 +301,31 @@ if (isset($authUrl)) {
                             </select>
                             <label>Ruta</label>
                         </div>
-                        <br>
-                            <div class="input-field col s12">
-                                <i class="material-icons c-azul prefix">comment</i>
-                                <textarea id="comentarios_nuevo_permiso"
-                                          class="materialize-textarea"
-                                          onkeyup ="capitaliza_primer_letra(this.id)"
-                                          placeholder="Comentarios"></textarea>
-                                <label>Comentarios</label>
-                                <div class="col s12 l6" style="float: none;margin: 0 auto;">
-                                    <button class="btn waves-effect waves-light b-azul white-text w-100"
-                                            id="btn_enviar_formulario"
-                                            type="button"
-                                            onclick="enviar_formulario('<?php echo $id; ?>', '<?php echo $familia; ?>', 1)">Enviar
-                                        <i class="material-icons right">send</i>
-                                    </button>
-                                </div>
-                            </div>
+                    <?php endif; ?>
+                    <br>
+                    <div class="input-field col s12">
+                        <i class="material-icons c-azul prefix">comment</i>
+                        <textarea id="comentarios_nuevo_permiso"
+                                  class="materialize-textarea"
+                                  onkeyup ="capitaliza_primer_letra(this.id)"
+                                  placeholder="Comentarios"></textarea>
+                        <label>Comentarios</label>
+                        <div class="col s12 l6" style="float: none;margin: 0 auto;">
+                            <button class="btn waves-effect waves-light b-azul white-text w-100"
+                                    id="btn_enviar_formulario"
+                                    type="button"
+                                    onclick="enviar_formulario('<?php echo $id; ?>', '<?php echo $familia; ?>', 1)">Enviar
+                                <i class="material-icons right">send</i>
+                            </button>
                         </div>
                     </div>
                 </div>
-            <?php
-        }
+            </div>
+        </div>
+        <?php
     }
-    ?>
+}
+?>
 
 <div class="loading" id="loading" >
     <div class="preloader-wrapper big active">
@@ -358,7 +369,7 @@ if (isset($authUrl)) {
             $("#fecha_para").prop("hidden", true);
             $("#fecha_solicitud_nuevo").val("<?php
 echo $arrayDias[date('w')] . ", " . date('d') .
-" de " . $arrayMeses[date('m') - 1] . " de " . date('Y');
+ " de " . $arrayMeses[date('m') - 1] . " de " . date('Y');
 ?>");
         }
     }

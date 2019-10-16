@@ -269,7 +269,21 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
 .input-field .prefix.active, label {
     color: #6DC1EC !important;
 }
-
+.jqx-menu-vertical {
+    background-color: white !important;
+    padding: 0px !important;
+    color: #12487E !important;
+}
+.jqx-widget-content {
+    border-color: #6DC1EC !important;
+    padding: 0px !important;
+}
+.jqx-fill-state-pressed {
+    border-color: rgba(255,255,255,1) !important;
+    background: #12487E !important;
+    color:white !important;
+    padding: .7rem !important;
+}
 @media screen and (min-width: 280px) and (max-width:960px){
     .caja-login{
         width:90%;

@@ -694,7 +694,7 @@ if (isset($authUrl)) {
         $('select').formSelect();
         M.textareaAutoResize($('textarea'));
         $('.timepicker').timepicker({
-            'step': 60,
+            'step': 30,
             'minTime': '06:00',
             'maxTime': '23:59',
             'timeFormat': 'H:i:s'

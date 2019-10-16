@@ -14,6 +14,10 @@ $fecha_actual_impresa_script = "<script>var fecha = new Date('$fecha_actual');"
 $control = new ControlEvento();
 $privilegio = mysqli_fetch_array($control->consultar_privilegio_usuario($correo));
 $id_privilegio = $privilegio[0];
+$declinados_cancelados = $control->consultar_declinados_cancelados();
+while ($row = mysqli_fetch_array($declinados_cancelados)) {
+    $control->desocupar_lugar($row[0]);
+}
 ?>
 
 <br>
@@ -59,20 +63,20 @@ $id_privilegio = $privilegio[0];
     } else {
         $listado_montajes = $control->listar_montajes();
     }
-
     $counter = mysqli_num_rows($listado_montajes);
-
     if ($counter == 0):
         ?>
-        <br><br>
+        <br>
+        <br>
         <div style="text-align: center">
             <div class="chip blue c-blanco">No existen montajes para listar</div>        
         </div>
-        <br><br>    
+        <br>
+        <br>    
     <?php else: ?>
         <br>
         <!--Pinta solo el encabezado de la tabla-->
-        <table class="display" cellspacing="0" data-order='[[ 1, "asc" ]]' data-page-length='5' >
+        <table class="display" data-page-length='10' id="tabla_no_archivados">
             <thead>
                 <tr class="b-azul white-text">
                     <th style="width: 30%;">Fecha</th>
@@ -139,7 +143,7 @@ $id_privilegio = $privilegio[0];
             ?>
             <br>
             <h5 class="col s12 c-azul">Archviados</h5>
-            <table class="display" cellspacing="0" data-order='[[ 1, "asc" ]]' data-page-length='5' >
+            <table class="display" data-page-length='10' id="tabla_archivados">
                 <thead>
                     <tr class="b-azul white-text">
                         <th style="width: 30%;">Fecha</th>
@@ -149,7 +153,7 @@ $id_privilegio = $privilegio[0];
                         <th style="text-align: center;">Acciones</th>
                     </tr>
                 </thead>
-                <tbody> 
+                <tbody>
                     <?php
                     while ($row = mysqli_fetch_array($listado_montajes_archivado)):
                         $id_montaje = $row[0];
@@ -180,8 +184,8 @@ $id_privilegio = $privilegio[0];
                                     <img src='../../images/Ver.svg' style="width: 40px;margin-top: .4rem;">
                                 </a> 
                                 <a class="waves-effect waves-light"
-                                    target="_blank"
-                                    href="https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_descarga_pdf.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>">
+                                   target="_blank"
+                                   href="https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_descarga_pdf.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>">
                                     <img src='../../images/Descargar.svg' style="width: 40px;margin-top: .4rem;">
                                 </a>
                                 <?php if ($id_privilegio == 3): ?>
@@ -240,49 +244,3 @@ $id_privilegio = $privilegio[0];
     </div>
     <br>
 </div>
-
-<script>
-    var id_montaje = null, flag_archivar = null;
-
-    function modal_archivo(flag_archivo) {
-        var modal_modal_archivo = M.Modal.getInstance($("#confirmar_archivo"));
-        var modal_modal_desarchivo = M.Modal.getInstance($("#confirmar_desarchivo"));
-        if (flag_archivo) {
-            modal_modal_archivo.open();
-        } else {
-            modal_modal_desarchivo.open();
-        }
-    }
-    function archivar() {
-        $.ajax({
-            url: 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/common/post_archivar.php',
-            type: 'POST',
-            dataType: 'json',
-            beforeSend: () => {
-                $("#loading").fadeIn();
-            },
-            data: {id_montaje: id_montaje, flag_archivar: flag_archivar}
-        }).done((res) => {
-            if (res) {
-                id_montaje = null;
-                flag_archivar = null;
-                M.toast({
-                    html: '¡Solicitud realizada con éxito!',
-                    classes: 'green accent-4 c-blanco'
-                });
-                setInterval(() => {
-                    window.location.reload();
-                }, 500);
-            } else {
-                M.toast({
-                    html: '¡Solicitud no realizada!',
-                    classes: 'red c-blanco'
-                });
-            }
-        }).always(() => {
-            M.Modal.getInstance($("#confirmar_archivo")).close();
-            M.Modal.getInstance($("#confirmar_desarchivo")).close();
-            $("#loading").fadeOut();
-        });
-    }
-</script>

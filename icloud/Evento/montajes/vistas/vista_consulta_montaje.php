@@ -940,7 +940,7 @@ if (isset($authUrl)) {
         $("select").formSelect();
         //horario        
         $('.timepicker').timepicker({
-            'step': 60,
+            'step': 30,
             'minTime': '00:00',
             'maxTime': '23:59',
             'timeFormat': 'H:i:s'
@@ -1461,7 +1461,7 @@ if (isset($authUrl)) {
             //return;
         }
         $('.timepicker').timepicker({
-            'step': 60,
+            'step': 30,
             'minTime': '00:00',
             'maxTime': '23:59',
             'timeFormat': 'H:i:s'

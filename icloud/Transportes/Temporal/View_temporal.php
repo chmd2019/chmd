@@ -46,7 +46,7 @@ $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
                 ?>
                 <br>
                     <!--Pinta solo el encabezado de la tabla-->
-                    <table class="highlight" id="tabla_paginacion">
+                    <table class="highlight" id="tabla">
                         <thead>
                             <tr class="b-azul white-text">
                                 <th scope="col" width="25%">Fecha inicial</th>

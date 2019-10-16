@@ -994,10 +994,10 @@ if (isset($authUrl)) {
                                         <div class="card" style="box-shadow: none">
                                             <div class="card-image waves-block efecto-btn">
                                                 <a href='Minutas/menu.php'>
-                                                    <img src="pics/_minutas.svg" style="padding:3rem;">
+                                                    <img src="images/svg_main_menu/Minutas.svg" style="padding:1.5rem;">
                                                 </a>
                                             </div>
-                                            <div class="card-content text-center" style="padding:0px;margin-top: -30px">
+                                            <div class="card-content text-center" style="padding:0px;margin-top: -15px">
                                                 <img class="activator waves-effect waves-light" src="../icloud/images/Info.svg" style="width: 30px;"/>
                                             </div>
                                             <div class="card-reveal b-azul white-text">

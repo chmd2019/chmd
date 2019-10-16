@@ -1326,4 +1326,22 @@ class ControlEvento {
             return mysqli_query($connection, $sql);
         }
     }
+    
+    public function consultar_declinados_cancelados(){
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT id FROM Evento_montaje WHERE estatus = 3 OR estatus = 4;";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+    
+    public function desocupar_lugar($id_montaje){
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "DELETE FROM Evento_ocupacion_lugar WHERE id_evento_montaje = $id_montaje;";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
 }

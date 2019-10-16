@@ -47,7 +47,7 @@ $dias = array("domingo", "lunes", "martes", "mi&eacute;rcoles", "jueves", "viern
                 ?>
                 <br>
                     <!--Pinta solo el encabezado de la tabla-->
-                    <table class="highlight" id="tabla_paginacion">
+                    <table class="highlight" id="tabla">
                         <thead>
                             <tr class="b-azul white-text">
                                 <th scope="col" width="40%">Dias del permiso</th>

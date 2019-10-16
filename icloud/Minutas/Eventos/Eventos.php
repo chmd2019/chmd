@@ -8,6 +8,7 @@ require_once "{$root}/Model/DBManager.php";
 require_once "{$root}/Model/Config.php";
 require_once "{$root}/Helpers/DateHelper.php";
 include_once "{$root}/components/layout_top.php";
+require_once "../common/ControlMinutas.php";
 
 if (isset($_GET['logout'])) {
     unset($_SESSION['access_token']);
@@ -35,22 +36,87 @@ else :
     $consulta = $objCliente->acceso_login($correo);
     $date_helper = new DateHelper();
     $date_helper->set_timezone();
+    $idseccion = $_GET['idseccion'];
     include "{$root}/components/navbar.php";
     ?>
-    <br>
-    <div class="right" style="margin-right: 1rem;">
-        <a class="waves-effect waves-light"
-           href="https://www.chmd.edu.mx/pruebascd/icloud/Minutas/menu.php?idseccion=1">
-            <img src='../../images/Atras.svg' style="width: 110px">
-        </a>
-        <a class="waves-effect waves-light"
-           href="vistas/vista_nuevo_evento.php">
-            <img src='../../images/Nuevo.svg' style="width: 110px">
-        </a>
-    </div>
-    <br>
-    <h4 class="col s12 c-azul text-center">Comité: Consejo Directivo</h4> 
+    <div class="row">
+        <div class="col s12 l8 border-azul" style="float: none;margin: auto;">
+            <br>
+            <br>
+            <h5 class="col s12 c-azul text-center">Comité: Consejo Directivo</h5> 
+            <h6><?php echo $date_helper->fecha_listados(); ?></h6>
+            <br>
+            <div class="right" style="margin-right: 1rem;">
+                <a class="waves-effect waves-light"
+                   href="https://www.chmd.edu.mx/pruebascd/icloud/Minutas/menu.php?idseccion=1">
+                    <img src='../../images/Atras.svg' style="width: 110px">
+                </a>
+                <a class="waves-effect waves-light"
+                   href="vistas/vista_nuevo_evento.php?idseccion=<?php echo $idseccion; ?>">
+                    <img src='../../images/Nuevo.svg' style="width: 110px">
+                </a>
+            </div>
+            <div class="col s12"><br></div>
+            <?php
+            $controlMinutas = new ControlMinutas();
+            $minutas = $controlMinutas->consultar_minutas();
+            if (mysqli_num_rows($minutas) > 0):
+                ?>            
+                <table class="table highlight" id="table">
+                    <thead>
+                        <tr class="b-azul white-text">
+                            <th>Titulo</th>
+                            <th>Estatus</th>
+                            <th>Fecha de evento</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <?php
+                    while ($row = mysqli_fetch_array($minutas)):
+                        $id_evento = $row[0];
+                        $titulo = $row[1];
+                        $fecha = $row[2];
+                        $hora = $row[3];
+                        $convocado = $row[4];
+                        $director = $row[5];
+                        $invitados = $row[6];
+                        $estatus = $row[7];
+                        $id_comite = $row[8];
+                        $id = $row[9];
+                        ?>
+                        <tr style="cursor: pointer;">
+                            <td><b><?php echo $titulo; ?></b></td>
+                            <td><?php echo $estatus; ?></td>
+                            <td><?php echo $fecha; ?></td>
+                            <td>ACCIONES</td>
+                        </tr>
+                    <?php endwhile; ?>
 
+                </table>
+                <script>
+                    $('#table').DataTable({
+                        "language": {
+                            "lengthMenu": "_MENU_",
+                            "zeroRecords": "<span class='chip red white-text'>Sin registros para mostrar</span>",
+                            "info": "<span class='chip blue white-text'>Mostrando colección _PAGE_ de _PAGES_</span>",
+                            "infoEmpty": "<span class='chip red white-text'>Sin registros disponibles</span>",
+                            "infoFiltered": "(filtrado de _MAX_ total de registros)",
+                            "loadingRecords": "Cargando...",
+                            "processing": "Procesando...",
+                            "search": "Buscar:",
+                            "paginate": {
+                                "first": "Primero",
+                                "last": "Último",
+                                "next": "Siguiente",
+                                "previous": "Anterior"
+                            }
+                        }
+                    });
+                    $("select").formSelect();
+                </script>
+            <?php endif; ?>
+        </div>
+    </div>
 
 <?php endif; ?>
 <?php include "{$root}/components/layout_bottom.php"; ?>

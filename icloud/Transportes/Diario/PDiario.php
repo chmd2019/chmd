@@ -48,18 +48,25 @@ if (isset($authUrl)) {
             hoverEnabled: false
         });
         $('.modal').modal();
-        $('table').DataTable({
+        $('#tabla').DataTable({
             "language": {
-                "url": "//cdn.datatables.net/plug-ins/1.10.11/i18n/Spanish.json"
-            },
-            dom: 'Bfrtip',
-            buttons: [
-                'copyHtml5',
-                'excelHtml5',
-                'csvHtml5',
-                'pdfHtml5'
-            ]
-        });       
+                "lengthMenu": "_MENU_",
+                "zeroRecords": "<span class='chip red white-text'>Sin registros para mostrar</span>",
+                "info": "<span class='chip blue white-text'>Mostrando colección _PAGE_ de _PAGES_</span>",
+                "infoEmpty": "<span class='chip red white-text'>Sin registros disponibles</span>",
+                "infoFiltered": "(filtrado de _MAX_ total de registros)",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar:",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Último",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            }
+        });
+        $("select").formSelect();
         setInterval(function () {
             window.location.reload();
         }, 30000);
