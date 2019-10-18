@@ -39,7 +39,8 @@ else :
     //consultas en db
     require_once "../../common/ControlMinutas.php";
     $controlMinutas = new ControlMinutas();
-    $comite = mysqli_fetch_array($controlMinutas->consultar_comite($idseccion))[0];
+    $comite = mysqli_fetch_array($controlMinutas->consultar_comite($idseccion))[1];
+    $id_comite = mysqli_fetch_array($controlMinutas->consultar_comite($idseccion))[0];
     $nombre_usuario = mysqli_fetch_array($controlMinutas->consultar_usuario_nombre_tipo($correo))[0];
     $usuario = mysqli_fetch_array($controlMinutas->consultar_usuario_nombre_tipo($correo));
     $director = mysqli_fetch_array($controlMinutas->consultar_director($idseccion))[0];
@@ -62,22 +63,40 @@ else :
                 <div>
                     <div class="input-field col s12 l6">
                         <i class="material-icons prefix c-azul">person</i>
-                        <input type="text" class="validate" value="<?php echo $nombre_usuario; ?>">
+                        <input 
+                            id="id_convocado_por"
+                            type="text" 
+                            class="validate" 
+                            value="<?php echo $nombre_usuario; ?>">
                         <label>Convocado por</label>
                     </div>                                
                     <div class="input-field col s12 l6">
                         <i class="material-icons prefix c-azul">meeting_room</i>
-                        <input type="text" class="validate" value="<?php echo $comite; ?>">
+                        <input 
+                            id="id_comite"
+                            type="text" 
+                            class="validate" 
+                            value="<?php echo $comite; ?>">
                         <label>Para el comité</label>
                     </div>
                     <div class="input-field col s12 l6">
                         <i class="material-icons prefix c-azul">record_voice_over</i>
-                        <input type="text" class="validate" value="<?php echo $director; ?>">
+                        <input 
+                            id="id_director"
+                            type="text" 
+                            class="validate" 
+                            value="<?php echo $director; ?>">
                         <label>Director</label>
                     </div>
                     <div class="input-field col s12 l6">
                         <i class="material-icons prefix c-azul">work</i>
-                        <input type="text" class="validate" autofocus>
+                        <input 
+                            id="id_titulo_evento"
+                            type="text" 
+                            class="validate" 
+                            placeholder="Título del evento"
+                            onkeyup="capitaliza_primer_letra(this.id)"
+                            autofocus>
                         <label>Título del evento</label>
                     </div>
                     <div class="col s12 s12 l6">
@@ -86,7 +105,7 @@ else :
                             <input 
                                 type="text" 
                                 class="datepicker" 
-                                id="fecha_evento" 
+                                id="id_fecha_evento" 
                                 autocomplete="off"
                                 placeholder="Para el día"
                                 onchange="fecha_minusculas(this.value, 'fecha_evento')">     
@@ -123,7 +142,10 @@ else :
                     </div>   
                     <div class="input-field col s12 l6">
                         <i class="material-icons prefix c-azul">access_time</i>
-                        <input type="text" class="validate timepicker"
+                        <input id="id_horario_minuta"
+                               type="text" 
+                               placeholder="Horario del evento"
+                               class="validate timepicker"
                                onkeypress="return validar_solo_numeros(event, this.id, 1)"
                                autocomplete="off"
                                onfocus="blur();">
@@ -182,13 +204,12 @@ else :
                         </a>
                     </div>
                     <div class="input-field col s12 l6">
-                        <a class="waves-effect waves-light btn b-azul c-blanco col s12">
+                        <a class="waves-effect waves-light btn b-azul c-blanco col s12" onclick="guardar_minuta()">
                             <i class="material-icons right">save</i>&nbsp;Guardar
                         </a>
                     </div>
                 </div>     
             </div>
-            <a href="#!" onclick="x();">AQUI</a>
         </div>
     </div>
     <div class="loading" id="loading" >
@@ -228,6 +249,7 @@ else :
         var table_temas = null;
         var id_session = '<?php echo $id_session; ?>';
         var id_usuario = <?php echo $id_usuario; ?>;
+        var id_comite = <?php echo $id_comite; ?>;
         $(document).ready(function () {
             $('.timepicker').timepicker({
                 'step': 30,
@@ -241,6 +263,7 @@ else :
             //input file
             const inputElement = document.querySelector('input[type="file"]');
             pond = FilePond.create(inputElement);
+
             $('.modal').modal();
             pond.setOptions({
                 multiple: true,
@@ -252,7 +275,7 @@ else :
                         url: './post_nuevo_archivo.php',
                         method: 'POST',
                         withCredentials: false,
-                        onload: (response) => response.key,
+                        onload: (response) => console.log(response),
                         onerror: (response) => response.data,
                         ondata: (formData) => {
                             formData.append('id_usuario', id_usuario);
@@ -260,10 +283,31 @@ else :
                             return formData;
                         }
                     },
-                    revert: './revert.php',
+                    revert: './post_quitar_archivo.php',
                     restore: './restore.php?id=',
                     fetch: './fetch.php?data='
                 }
+            });
+            //escucha peticion parar remover archivo
+            pond.on('removefile', (error, file) => {
+                $.ajax({
+                    url: 'https://www.chmd.edu.mx/pruebascd/icloud/Minutas/common/post_quitar_archivo.php',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {id_session: id_session, archivo: file.filename}
+                }).done((res) => {
+                    if (res) {
+                        M.toast({
+                            html: '<i class="material-icons prefix">done</i> &nbsp; Se ha eliminado el archivo correctamente.',
+                            classes: 'blue accent-3 c-blanco',
+                        });
+                    } else {
+                        M.toast({
+                            html: '<i class="material-icons prefix">highlight_off</i> &nbsp; Ssolicitud no realizada.',
+                            classes: 'red c-blanco',
+                        });
+                    }
+                });
             });
         });
 
@@ -456,6 +500,109 @@ else :
                     table_temas.row($("#" + tr)).remove().draw();
                 }
             });
+        }
+        function guardar_minuta() {
+            if (!validaciones())
+                return;
+
+            var id_convocado_por = $("#id_convocado_por").val();
+            var id_director = $("#id_director").val();
+            var id_titulo_evento = $("#id_titulo_evento").val();
+            var id_fecha_evento = $("#id_fecha_evento").val();
+            var id_horario_minuta = $("#id_horario_minuta").val();
+            $.ajax({
+                url: 'https://www.chmd.edu.mx/pruebascd/icloud/Minutas/common/post_guardar_minuta.php',
+                type: 'POST',
+                dataType: 'json',
+                beforeSend: () => $("#loading").fadeIn(),
+                data: {
+                    titulo_evento: id_titulo_evento,
+                    fecha: formatear_fecha_calendario_formato_a_m_d_guion(id_fecha_evento),
+                    horario_minuta: id_horario_minuta,
+                    fecha_evento: id_fecha_evento,
+                    convocado_por: id_convocado_por,
+                    director: id_director,
+                    id_comite: id_comite,
+                    id_session: id_session,
+                    id_usuario: id_usuario
+                }
+            }).done((res) => {
+                if (res) {
+                    M.toast({
+                        html: '<i class="material-icons prefix">done</i> &nbsp; Solicitud realizada correctamente.',
+                        classes: 'green accent-4 c-blanco'
+                    });
+                    var url = 'https://www.chmd.edu.mx/pruebascd/icloud/Minutas/Eventos/Eventos.php?idseccion=<?php $idseccion; ?>';
+                    setInterval(() => window.location.href = url,
+                            1000);
+                }
+            }).always(() => $("#loading").fadeOut());
+        }
+        function validaciones() {
+            var id_convocado_por = $("#id_convocado_por").val();
+            var id_comite = $("#id_comite").val();
+            var id_director = $("#id_director").val();
+            var id_titulo_evento = $("#id_titulo_evento").val();
+            var id_fecha_evento = $("#id_fecha_evento").val();
+            var id_horario_minuta = $("#id_horario_minuta").val();
+
+            if (id_convocado_por === "") {
+                M.toast({
+                    html: '<i class="material-icons prefix">highlight_off</i> &nbsp; Debe ingresar quien convoca el evento.',
+                    classes: 'amber darken-4 c-blanco'
+                });
+                return false;
+            }
+            if (id_comite === "") {
+                M.toast({
+                    html: '<i class="material-icons prefix">highlight_off</i> &nbsp; Debe ingresar un comité válido.',
+                    classes: 'amber darken-4 c-blanco'
+                });
+                return false;
+            }
+            if (id_director === "") {
+                M.toast({
+                    html: '<i class="material-icons prefix">highlight_off</i> &nbsp; Debe ingresar un director válido.',
+                    classes: 'amber darken-4 c-blanco'
+                });
+                return false;
+            }
+            if (id_titulo_evento === "") {
+                M.toast({
+                    html: '<i class="material-icons prefix">highlight_off</i> &nbsp; Debe ingresar un título válido.',
+                    classes: 'amber darken-4 c-blanco'
+                });
+                return false;
+            }
+            if (id_fecha_evento === "") {
+                M.toast({
+                    html: '<i class="material-icons prefix">highlight_off</i> &nbsp; Debe ingresar una fecha válida.',
+                    classes: 'amber darken-4 c-blanco'
+                });
+                return false;
+            }
+            if (id_horario_minuta === "") {
+                M.toast({
+                    html: '<i class="material-icons prefix">highlight_off</i> &nbsp; Debe ingresar un horario válido.',
+                    classes: 'amber darken-4 c-blanco'
+                });
+                return false;
+            }
+            if (coleccion_invitados.length === 0) {
+                M.toast({
+                    html: '<i class="material-icons prefix">highlight_off</i> &nbsp; Debe ingresar al menos un invitado válido.',
+                    classes: 'amber darken-4 c-blanco'
+                });
+                return false;
+            }
+            if (coleccion_temas.length === 0) {
+                M.toast({
+                    html: '<i class="material-icons prefix">highlight_off</i> &nbsp; Debe ingresar al menos un tema válido.',
+                    classes: 'amber darken-4 c-blanco'
+                });
+                return false;
+            }
+            return true;
         }
         function x() {
             console.log(pond.getMetadata());

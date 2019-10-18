@@ -94,6 +94,7 @@ while ($row = mysqli_fetch_array($declinados_cancelados)) {
                     $solicitante = $row[2];
                     $nombre_evento = $row[3];
                     $estatus = $row[4];
+                    $esta_archivado = $row[6];
                     switch ($estatus) {
                         case "Por autorizar":
                             $color_badge = "#F6871F";
@@ -110,18 +111,28 @@ while ($row = mysqli_fetch_array($declinados_cancelados)) {
                         <td style="padding: 0px;" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><?php echo $fecha_montaje; ?></td>
                         <td style="padding: 0px;" class="hide-on-med-and-down" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><?php echo $solicitante; ?></td>
                         <td style="padding: 0px;" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><?php echo $nombre_evento; ?></td>
-                        <td style="padding: 0px;text-align: center" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><span class="chip white-text" style="font-size: .8rem;padding: 0px 3px;background-color: <?php echo $color_badge; ?>"><?php echo $estatus; ?></span></th>
+                        <td style="padding: 0px;text-align: center" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'">
+                            <?php if ($esta_archivado): ?>
+                                <span class="chip white-text" style="margin-top: 3px;font-size: .8rem;padding: 0px 3px;background-color: <?php echo $color_badge; ?>">
+                                    <?php echo $estatus; ?></span>
+                                <br>
+                                <i class="material-icons teal-text accent-1 tooltipped" data-position="top" data-tooltip="Montaje archivado" style="vertical-align: middle;">tab</i>    
+                            <?php else: ?>
+                                <span class="chip white-text" style="font-size: .8rem;padding: 0px 3px;background-color: <?php echo $color_badge; ?>">
+                                    <?php echo $estatus; ?></span>
+                            <?php endif; ?>
+                        </td>
                         <td style="padding: 0px;text-align: center">   
                             <a class="waves-effect waves-light"
                                href="https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>">
                                 <img src='../../images/Ver.svg' style="width: 40px;margin-top: .4rem;">
                             </a> 
-                            <a class="waves-effect waves-light"
-                               target="_blank"
-                               href="https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_descarga_pdf.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>">
-                                <img src='../../images/Descargar.svg' style="width: 40px;margin-top: .4rem;">
-                            </a>
                             <?php if ($id_privilegio == 3): ?>
+                                <a class="waves-effect waves-light"
+                                   target="_blank"
+                                   href="https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_descarga_pdf.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>">
+                                    <img src='../../images/Descargar.svg' style="width: 40px;margin-top: .4rem;">
+                                </a>
                                 <a class="waves-effect waves-light light-green-text accent-3" 
                                    onclick="modal_archivo(true);flag_archivar = true;id_montaje = <?php echo $id_montaje; ?>">
                                     <i class="material-icons" style="font-size: 2.5rem;">archive</i>
@@ -133,80 +144,85 @@ while ($row = mysqli_fetch_array($declinados_cancelados)) {
             </tbody>
         </table>  
         <?php
-        $existe_archivados = mysqli_fetch_array($control->consultar_existe_archivado())[0];
-        if ($existe_archivados):
-            if ($id_privilegio == 1) {
-                $listado_montajes_archivado = $control->listar_montaje_clientes_archivado($nombre_usuario);
-            } else {
-                $listado_montajes_archivado = $control->listar_montajes_archivado();
-            }
-            ?>
-            <br>
-            <h5 class="col s12 c-azul">Archviados</h5>
-            <table class="display" data-page-length='10' id="tabla_archivados">
-                <thead>
-                    <tr class="b-azul white-text">
-                        <th style="width: 30%;">Fecha</th>
-                        <th class="hide-on-med-and-down" style="width: 20%;">Solicitante</th>
-                        <th style="width: 20%;">Evento</th>
-                        <th style="text-align: center;">Estatus</th>
-                        <th style="text-align: center;">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    while ($row = mysqli_fetch_array($listado_montajes_archivado)):
-                        $id_montaje = $row[0];
-                        $fecha_montaje = $row[1];
-                        $solicitante = $row[2];
-                        $nombre_evento = $row[3];
-                        $estatus = $row[4];
-                        switch ($estatus) {
-                            case "Por autorizar":
-                                $color_badge = "#F6871F";
-                                break;
-                            case "Autorizado":
-                                $color_badge = "#77AF65";
-                                break;
-                            case "Declinado":
-                                $color_badge = "#EF4545";
-                                break;
-                        }
-                        ?>
-                        <tr style="cursor: pointer;font-size: 1rem;">
-                            <td style="padding: 0px;" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><?php echo $fecha_montaje; ?></td>
-                            <td style="padding: 0px;" class="hide-on-med-and-down" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><?php echo $solicitante; ?></td>
-                            <td style="padding: 0px;" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><?php echo $nombre_evento; ?></td>
-                            <td style="padding: 0px;text-align: center" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><span class="chip white-text" style="font-size: .8rem;padding: 0px 3px;background-color: <?php echo $color_badge; ?>"><?php echo $estatus; ?></span></th>
-                            <td style="padding: 0px;text-align: center">   
-                                <a class="waves-effect waves-light"
-                                   href="https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>">
-                                    <img src='../../images/Ver.svg' style="width: 40px;margin-top: .4rem;">
-                                </a> 
-                                <a class="waves-effect waves-light"
-                                   target="_blank"
-                                   href="https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_descarga_pdf.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>">
-                                    <img src='../../images/Descargar.svg' style="width: 40px;margin-top: .4rem;">
-                                </a>
-                                <?php if ($id_privilegio == 3): ?>
-                                    <a class="waves-effect waves-light light-green-text accent-3" 
-                                       onclick="modal_archivo(false);flag_archivar = false;id_montaje = <?php echo $id_montaje; ?>">
-                                        <i class="material-icons" style="font-size: 2.5rem;">unarchive</i>
-                                    </a>
-                                <?php endif; ?>
-                            </td>
-                        </tr>                         
-                    <?php endwhile; ?>
-                </tbody>
-            </table>  
-        <?php else: ?>
-            <br>
-            <div class="col s12 text-center"><span class="chip red white-text">No existen montajes archivados</span></div>
-        <?php endif; ?>
-    </div>
-    <br>
-    <br>
-<?php endif; ?>
+        if ($id_privilegio == 3):
+            $existe_archivados = mysqli_fetch_array($control->consultar_existe_archivado())[0];
+            if ($existe_archivados):
+                if ($id_privilegio == 1) {
+                    $listado_montajes_archivado = $control->listar_montaje_clientes_archivado($nombre_usuario);
+                } else {
+                    $listado_montajes_archivado = $control->listar_montajes_archivado();
+                }
+                ?>
+                <br>
+                <h5 class="col s12 c-azul">Archviados</h5>
+                <table class="display" data-page-length='10' id="tabla_archivados">
+                    <thead>
+                        <tr class="b-azul white-text">
+                            <th style="width: 30%;">Fecha</th>
+                            <th class="hide-on-med-and-down" style="width: 20%;">Solicitante</th>
+                            <th style="width: 20%;">Evento</th>
+                            <th style="text-align: center;">Estatus</th>
+                            <th style="text-align: center;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        while ($row = mysqli_fetch_array($listado_montajes_archivado)):
+                            $id_montaje = $row[0];
+                            $fecha_montaje = $row[1];
+                            $solicitante = $row[2];
+                            $nombre_evento = $row[3];
+                            $estatus = $row[4];
+                            switch ($estatus) {
+                                case "Por autorizar":
+                                    $color_badge = "#F6871F";
+                                    break;
+                                case "Autorizado":
+                                    $color_badge = "#77AF65";
+                                    break;
+                                case "Declinado":
+                                    $color_badge = "#EF4545";
+                                    break;
+                            }
+                            ?>
+                            <tr style="cursor: pointer;font-size: 1rem;">
+                                <td style="padding: 0px;" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><?php echo $fecha_montaje; ?></td>
+                                <td style="padding: 0px;" class="hide-on-med-and-down" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><?php echo $solicitante; ?></td>
+                                <td style="padding: 0px;" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><?php echo $nombre_evento; ?></td>
+                                <td style="padding: 0px;text-align: center" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><span class="chip white-text" style="font-size: .8rem;padding: 0px 3px;background-color: <?php echo $color_badge; ?>"><?php echo $estatus; ?></span></th>
+                                <td style="padding: 0px;text-align: center">   
+                                    <a class="waves-effect waves-light"
+                                       href="https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>">
+                                        <img src='../../images/Ver.svg' style="width: 40px;margin-top: .4rem;">
+                                    </a> 
+                                    <?php if ($id_privilegio == 3 || $id_privilegio == 1): ?>
+                                        <a class="waves-effect waves-light"
+                                           target="_blank"
+                                           href="https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_descarga_pdf.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>">
+                                            <img src='../../images/Descargar.svg' style="width: 40px;margin-top: .4rem;">
+                                        </a>
+
+                                        <a class="waves-effect waves-light light-green-text accent-3" 
+                                           onclick="modal_archivo(false);flag_archivar = false;id_montaje = <?php echo $id_montaje; ?>">
+                                            <i class="material-icons" style="font-size: 2.5rem;">unarchive</i>
+                                        </a>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>                         
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>  
+            <?php else: ?>
+                <br>
+                <div class="col s12 text-center"><span class="chip red white-text">No existen montajes archivados</span></div>
+            <?php endif; ?>
+        </div>
+        <br>
+        <br>
+        <?php
+    endif;
+endif;
+?>
 
 <div class="loading" id="loading" >
     <div class="preloader-wrapper big active">

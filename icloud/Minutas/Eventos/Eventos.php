@@ -65,30 +65,40 @@ else :
                 <table class="table highlight" id="table">
                     <thead>
                         <tr class="b-azul white-text">
+                            <th>Fecha de evento</th>
                             <th>Titulo</th>
                             <th>Estatus</th>
-                            <th>Fecha de evento</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <?php
                     while ($row = mysqli_fetch_array($minutas)):
-                        $id_evento = $row[0];
+                        //a.id, a.titulo, a.fecha, a.convocante, b.status, b.color_estatus
+                        $id_minuta = $row[0];
                         $titulo = $row[1];
                         $fecha = $row[2];
-                        $hora = $row[3];
-                        $convocado = $row[4];
-                        $director = $row[5];
-                        $invitados = $row[6];
-                        $estatus = $row[7];
-                        $id_comite = $row[8];
-                        $id = $row[9];
+                        $convocante = $row[3];
+                        $estatus = $row[4];
+                        $color_estatus = $row[5];
                         ?>
                         <tr style="cursor: pointer;">
-                            <td><b><?php echo $titulo; ?></b></td>
-                            <td><?php echo $estatus; ?></td>
-                            <td><?php echo $fecha; ?></td>
-                            <td>ACCIONES</td>
+                            <td><b><?php echo $fecha; ?></b></td>
+                            <td><?php echo $titulo; ?></td>
+                            <td>
+                                <div class="text-center">
+                                    <span class="chip <?php echo $color_estatus; ?> c-blanco"><?php echo $estatus; ?></span>
+                                </div>
+                            </td>
+                            <td>                             
+                                <a class="waves-effect waves-light"
+                                   href="https://www.chmd.edu.mx/pruebascd/icloud/Minutas/Eventos/vistas/vista_consulta_minuta.php?id_minuta=<?php echo $id_minuta;?>">
+                                    <img src='../../images/Ver.svg' style="width: 40px;margin-top: .4rem;">
+                                </a>                        
+                                <a class="waves-effect waves-light"
+                                   href="">
+                                    <img src='../../images/Descargar.svg' style="width: 40px;margin-top: .4rem;">
+                                </a> 
+                            </td>
                         </tr>
                     <?php endwhile; ?>
 

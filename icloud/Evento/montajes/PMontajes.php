@@ -108,6 +108,7 @@ if (isset($authUrl)) {
             disableWeekends: true,
             //min: new Date()
         });
+        $('.tooltipped').tooltip();
     });
 
     function consultar_reporte() {

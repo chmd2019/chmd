@@ -146,14 +146,6 @@ if (isset($authUrl)) {
     <?php
 }
 ?>
-<!--
-<div class="fixed-action-btn">
-    <a class="btn-floating btn-large b-azul"
-    href="<?php echo $redirect_uri ?>Transportes/Diario/PDiario.php?idseccion=<?php echo $idseccion; ?>">
-        <i class="large material-icons">keyboard_backspace</i>
-    </a>
-</div>
---->
 
 <div class="loading" hidden id="loading">
     <div class="preloader-wrapper big active">
