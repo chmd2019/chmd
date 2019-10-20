@@ -96,6 +96,7 @@ else :
                             class="validate" 
                             placeholder="Título del evento"
                             onkeyup="capitaliza_primer_letra(this.id)"
+                            autocomplete="off"
                             autofocus>
                         <label>Título del evento</label>
                     </div>
@@ -177,8 +178,10 @@ else :
                     <div class="input-field col s12 l6">
                         <i class="material-icons prefix c-azul">assignment</i>
                         <input type="text" 
+                               id="id_tema"
                                placeholder="Añadir tema" 
-                               onchange="add_tema(this.value);this.value = '';">
+                               onchange="add_tema(this.value);this.value = '';"
+                               onkeyup="capitaliza_primer_letra(this.id)">
                         <label>Añadir tema</label>
                         <div id="resultado"></div>
                     </div>                    
@@ -204,9 +207,11 @@ else :
                         </a>
                     </div>
                     <div class="input-field col s12 l6">
-                        <a class="waves-effect waves-light btn b-azul c-blanco col s12" onclick="guardar_minuta()">
+                        <button id="btn_guardar"
+                            class="waves-effect waves-light btn b-azul c-blanco col s12" 
+                            onclick="guardar_minuta()">
                             <i class="material-icons right">save</i>&nbsp;Guardar
-                        </a>
+                        </button>
                     </div>
                 </div>     
             </div>
@@ -514,7 +519,10 @@ else :
                 url: 'https://www.chmd.edu.mx/pruebascd/icloud/Minutas/common/post_guardar_minuta.php',
                 type: 'POST',
                 dataType: 'json',
-                beforeSend: () => $("#loading").fadeIn(),
+                beforeSend: () => {
+                    $("#loading").fadeIn();
+                    $("#btn_guardar").prop("disabled", true);
+                },
                 data: {
                     titulo_evento: id_titulo_evento,
                     fecha: formatear_fecha_calendario_formato_a_m_d_guion(id_fecha_evento),
@@ -532,7 +540,7 @@ else :
                         html: '<i class="material-icons prefix">done</i> &nbsp; Solicitud realizada correctamente.',
                         classes: 'green accent-4 c-blanco'
                     });
-                    var url = 'https://www.chmd.edu.mx/pruebascd/icloud/Minutas/Eventos/Eventos.php?idseccion=<?php $idseccion; ?>';
+                    var url = 'https://www.chmd.edu.mx/pruebascd/icloud/Minutas/Eventos/Eventos.php?idseccion=<?php echo $idseccion; ?>';
                     setInterval(() => window.location.href = url,
                             1000);
                 }

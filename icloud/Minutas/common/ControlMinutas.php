@@ -205,6 +205,7 @@ class ControlMinutas {
                 //insert de temas
                 $sql_temas_tmp = "SELECT * FROM evento_temas_tmp WHERE id_usuario = $id_usuario AND id_session = '$id_session';";
                 $temas = mysqli_query($connection, $sql_temas_tmp);
+                $id_tema = null;
                 while ($row = mysqli_fetch_array($temas)) {
                     $sql_tema = "INSERT INTO `evento_tema` ("
                             . "`tema`, "
@@ -218,9 +219,22 @@ class ControlMinutas {
                             . "'', "
                             . "'1');";
                     mysqli_query($connection, $sql_tema);
+                    $id_tema = mysqli_insert_id($connection);
                     //query de eliminacion de los temas en tmp
                     $sql_delete_tema = "DELETE FROM evento_temas_tmp WHERE id ={$row[0]}";
                     mysqli_query($connection, $sql_delete_tema);
+                    $sql_tema_pendiente = "INSERT INTO `evento_tema_pendiente` ("
+                            . "`id_minuta`, "
+                            . "`id_tema`, "
+                            . "`id_comite`, "
+                            . "`acuerdos`, "
+                            . "`estatus`) VALUES ("
+                            . "'{$id_minuta}', "
+                            . "'{$id_tema}', "
+                            . "'{$id_comite}', "
+                            . "'', "
+                            . "'1');";
+                    mysqli_query($connection, $sql_tema_pendiente);
                 }
                 mysqli_commit($connection);
                 return true;
@@ -254,9 +268,62 @@ class ControlMinutas {
     public function consultar_temas_minuta($id_minuta) {
         $connection = $this->con->conectar1();
         if ($connection) {
-            $sql = "SELECT a.id_tema, a.tema, b.nombre, a.acuerdos, c.`status`, c.color_estatus "
+            $sql = "SELECT a.id_tema, a.tema, b.nombre, a.acuerdos, c.`status`, c.color_estatus, c.id "
                     . "FROM evento_tema a INNER JOIN evento_comites b ON b.id_comite = a.id_comite "
                     . "INNER JOIN Catalogo_status_acceso c ON c.id = a.estatus WHERE a.id_minuta = $id_minuta;";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function guardar_acuerdo_tema($acuerdos, $id_minuta, $id_tema) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "UPDATE `evento_tema_pendiente` SET `acuerdos`='$acuerdos' "
+                    . "WHERE `id_minuta`=$id_minuta AND `id_tema` = $id_tema;";
+            mysqli_set_charset($connection, "utf8");
+            mysqli_query($connection, $sql);
+            $sql_select = "SELECT acuerdos FROM evento_tema_pendiente WHERE id_tema = $id_tema AND id_minuta = $id_minuta;";
+            return mysqli_query($connection, $sql_select);
+        }
+    }
+
+    public function consulta_acuerdo($id_tema) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT acuerdos FROM evento_tema_pendiente a WHERE a.id_tema = $id_tema";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function consulta_catalogo_estatus() {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT id, status, color_estatus FROM Catalogo_status_acceso";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function actualiza_catalogo_estatus($estatus, $id_tema) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql_tema_pendiente = "UPDATE `evento_tema_pendiente` SET `estatus`='$estatus' WHERE `id_tema`=$id_tema;";
+            $sql_tema = "UPDATE `evento_tema` SET `estatus`='$estatus' WHERE `id_tema`=$id_tema;";
+            $sql_color_estatus = "SELECT color_estatus FROM Catalogo_status_acceso WHERE id = $estatus";
+            mysqli_set_charset($connection, "utf8");
+            if (mysqli_query($connection, $sql_tema_pendiente) && mysqli_query($connection, $sql_tema)) {
+                return mysqli_query($connection, $sql_color_estatus);
+            }
+        }
+    }
+
+    public function actualizar_asistencia($id_invitado,$id_minuta, $value) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "UPDATE `evento_invitados` SET `asistencia`= $value "
+                    . "WHERE `id_invitado`= $id_invitado AND id_evento = $id_minuta;";
             mysqli_set_charset($connection, "utf8");
             return mysqli_query($connection, $sql);
         }
