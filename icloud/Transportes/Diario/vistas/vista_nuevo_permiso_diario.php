@@ -75,6 +75,7 @@ if (isset($authUrl)) {
             $fecha_minima = date("m/d/Y");
             $btn_fecha = true;
         }
+        $rutas = $control_temporal->consulta_rutas();
         include "$root_icloud/components/navbar.php";
         ?>
         <div class="row">
@@ -285,9 +286,19 @@ if (isset($authUrl)) {
                     <?php if (date("N") == 5): ?>
                         <div class="input-field col s12">
                             <i class="material-icons c-azul prefix">departure_board</i>
-                            <select class="input-field" id="ruta" disabled>
-                                <option value="">Selecciona opción</option>
-                                <option value="General 2:50 PM" selected>General 2:50 PM</option>
+                            <select class="input-field" id="ruta">
+                                <option value="" selected disabled>Selecciona tu ruta</option>
+                                <?php
+                                if (mysqli_num_rows($rutas)):
+                                    while ($row = mysqli_fetch_array($rutas)):
+                                        if ($row[2]):
+                                            ?>
+                                            <option value="<?php echo $row[0]; ?>"><?php echo $row[1]; ?></option>
+                                            <?php
+                                        endif;
+                                    endwhile;
+                                endif;
+                                ?>
                             </select>
                             <label>Ruta</label>
                         </div>
@@ -295,9 +306,16 @@ if (isset($authUrl)) {
                         <div class="input-field col s12">
                             <i class="material-icons c-azul prefix">departure_board</i>
                             <select class="input-field" id="ruta" >
-                                <option value="">Selecciona opción</option>
-                                <option value="General 2:50 PM">General 2:50 PM</option>
-                                <option value="Taller 4:30 PM">Taller 4:30 PM</option>
+                                <option value="" selected disabled>Selecciona tu ruta</option>
+                                <?php
+                                if (mysqli_num_rows($rutas)):
+                                    while ($row = mysqli_fetch_array($rutas)):
+                                        ?>
+                                        <option value="<?php echo $row[0]; ?>"><?php echo $row[1]; ?></option>
+                                        <?php
+                                    endwhile;
+                                endif;
+                                ?>
                             </select>
                             <label>Ruta</label>
                         </div>

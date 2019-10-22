@@ -249,7 +249,7 @@ class ControlMinutas {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "SELECT a.id, a.titulo, a.fecha, a.fecha_simple, a.hora, a.convocante, a.director, c.nombre,"
-                    . " b.status FROM evento_principal a INNER JOIN Catalogo_status_acceso b ON b.id = a.estatus "
+                    . " b.status, a.cerrado, c.id_comite FROM evento_principal a INNER JOIN Catalogo_status_acceso b ON b.id = a.estatus "
                     . "INNER JOIN evento_comites c ON c.id_comite = a.id_comite WHERE a.id = $id_minuta;";
             mysqli_set_charset($connection, "utf8");
             return mysqli_query($connection, $sql);
@@ -270,7 +270,8 @@ class ControlMinutas {
         if ($connection) {
             $sql = "SELECT a.id_tema, a.tema, b.nombre, a.acuerdos, c.`status`, c.color_estatus, c.id "
                     . "FROM evento_tema a INNER JOIN evento_comites b ON b.id_comite = a.id_comite "
-                    . "INNER JOIN Catalogo_status_acceso c ON c.id = a.estatus WHERE a.id_minuta = $id_minuta;";
+                    . "INNER JOIN Catalogo_status_acceso c ON c.id = a.estatus "
+                    . "WHERE a.id_minuta = $id_minuta OR a.id_minuta_cerradora = $id_minuta;";
             mysqli_set_charset($connection, "utf8");
             return mysqli_query($connection, $sql);
         }
@@ -288,10 +289,19 @@ class ControlMinutas {
         }
     }
 
+    public function guardar_nuevo_acuerdo_tema($acuerdos, $id_tema) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "UPDATE `evento_tema_pendiente` SET `acuerdos`='$acuerdos' WHERE `id_tema` = $id_tema;";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
     public function consulta_acuerdo($id_tema) {
         $connection = $this->con->conectar1();
         if ($connection) {
-            $sql = "SELECT acuerdos FROM evento_tema_pendiente a WHERE a.id_tema = $id_tema";
+            $sql = "SELECT acuerdos, version_acuerdo FROM evento_tema_pendiente a WHERE a.id_tema = $id_tema";
             mysqli_set_charset($connection, "utf8");
             return mysqli_query($connection, $sql);
         }
@@ -319,13 +329,90 @@ class ControlMinutas {
         }
     }
 
-    public function actualizar_asistencia($id_invitado,$id_minuta, $value) {
+    public function actualizar_asistencia($id_invitado, $id_minuta, $value) {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "UPDATE `evento_invitados` SET `asistencia`= $value "
                     . "WHERE `id_invitado`= $id_invitado AND id_evento = $id_minuta;";
             mysqli_set_charset($connection, "utf8");
             return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function cerrar_minuta($id_minuta) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "UPDATE `evento_principal` SET `cerrado`= true WHERE id = $id_minuta;";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function cerrar_temas($id_tema, $id_minuta) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "UPDATE `evento_tema` SET `cerrado`= true, id_minuta_cerradora = $id_minuta  WHERE `id_tema`= $id_tema AND `estatus` != 1 ;";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function cerrar_temas_pendientes($id_tema) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "UPDATE `evento_tema_pendiente` SET `cerrado`= true "
+                    . "WHERE `id_tema`= $id_tema AND `estatus` != 1 ;";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function consultar_temas_pendientes($id_minuta) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT a.id_tema, a.tema, b.acuerdos,c.`status`, c.color_estatus, c.id, a.cerrado "
+                    . "FROM evento_tema a "
+                    . "INNER JOIN evento_tema_pendiente b ON b.id_tema = a.id_tema "
+                    . "INNER JOIN Catalogo_status_acceso c ON c.id = b.estatus "
+                    . "WHERE b.cerrado = false AND b.id_minuta != $id_minuta";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function preparar_nuevo_tema_pendiente($id_tema) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "UPDATE evento_tema_pendiente SET /*acuerdos = CONCAT(acuerdos,';\n'),*/ version_acuerdo = (version_acuerdo +1) WHERE id_tema=$id_tema";
+            mysqli_set_charset($connection, "utf8");
+            mysqli_query($connection, $sql);
+            return mysqli_affected_rows($connection);
+        }
+    }
+
+    public function adicionar_nuevo_tema($nuevo_tema, $id_comite, $id_minuta, $nuevo_acuerdo) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            mysqli_autocommit($connection, false);
+            try {
+                mysqli_set_charset($connection, "utf8");
+                $sql_tema = "INSERT INTO `evento_tema` (`tema`, `id_comite`, `id_minuta`, `estatus`) "
+                        . "VALUES ('$nuevo_tema', '$id_comite', '$id_minuta', 1);";
+                mysqli_query($connection, $sql_tema);
+                $id_tema = mysqli_insert_id($connection);
+                $sql_tema_pendiente = "INSERT INTO `evento_tema_pendiente` ("
+                        . "`id_minuta`, "
+                        . "`id_tema`, "
+                        . "`id_comite`, "
+                        . "`acuerdos`, "
+                        . "`estatus`) VALUES ('$id_minuta', '$id_tema', '$id_comite', '$nuevo_acuerdo', 1);";
+                mysqli_query($connection, $sql_tema_pendiente);
+                mysqli_commit($connection);
+                return true;
+            } catch (Exception $ex) {
+                mysqli_rollback($connection);
+                return false;
+            }
         }
     }
 

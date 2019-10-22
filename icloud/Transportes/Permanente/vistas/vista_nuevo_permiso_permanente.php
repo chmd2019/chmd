@@ -63,16 +63,17 @@ if (isset($authUrl)) {
 
         $arrayDias = array('Domingo', 'Lunes', 'Martes',
             'Miercoles', 'Jueves', 'Viernes', 'Sabado');
+        $rutas = $control_temporal->consulta_rutas();
         include "$root_icloud/components/navbar.php";
         ?>
         <div class="row">
             <div class="col s12 l8 b-blanco border-azul" style="float: none;margin: 0 auto;">
-              <div class="row" style="text-align: right;margin:1rem 1rem 0 0">
-                <a class="waves-effect waves-light"
-                    href="<?php echo $redirect_uri ?>Transportes/Permanente/PPermanente.php?idseccion=<?php echo $idseccion; ?>">
-                    <img src='../../../images/Atras.svg' style="width: 110px">
-                </a>
-        </div>
+                <div class="row" style="text-align: right;margin:1rem 1rem 0 0">
+                    <a class="waves-effect waves-light"
+                       href="<?php echo $redirect_uri ?>Transportes/Permanente/PPermanente.php?idseccion=<?php echo $idseccion; ?>">
+                        <img src='../../../images/Atras.svg' style="width: 110px">
+                    </a>
+                </div>
                 <h5 class="center-align c-azul">Cambio Permanente</h5>
                 <div class="row" style="padding:0rem .5rem;">
                     <div class="col s12 l6">
@@ -248,9 +249,16 @@ if (isset($authUrl)) {
                         <div class="input-field col s12">
                             <i class="material-icons c-azul prefix">departure_board</i>
                             <select class="input-field" id="ruta_nuevo_permiso_permanente" >
-                                <option value="">Seleccione opción</option>
-                                <option value="General 2:50 PM">General 2:50 PM</option>
-                                <option value="Taller 4:30 PM">Taller 4:30 PM</option>
+                                <option value="" selected disabled>Selecciona tu ruta</option>
+                                <?php
+                                if (mysqli_num_rows($rutas)):
+                                    while ($row = mysqli_fetch_array($rutas)):
+                                        ?>
+                                        <option value="<?php echo $row[0]; ?>"><?php echo $row[1]; ?></option>
+                                        <?php
+                                    endwhile;
+                                endif;
+                                ?>
                             </select>
                             <label>Ruta</label>
                         </div>

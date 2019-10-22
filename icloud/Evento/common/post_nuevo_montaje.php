@@ -27,6 +27,7 @@ $solo_cafe = $_POST['solo_cafe'];
 $lugar_evento_solo_cafe = $_POST['lugar_evento_solo_cafe'];
 $evento_con_cafe = $_POST['evento_con_cafe'];
 $tipo_montaje = htmlspecialchars($_POST['tipo_montaje']);
+$privilegios = intval($_POST['privilegios']);
 $id_lugar = $lugar_evento == "" ? $lugar_evento_solo_cafe : $lugar_evento;
 //personal asignado
 //$check_equipo_tecnico = $_POST['check_equipo_tecnico'];
@@ -39,12 +40,20 @@ $timestamp_personal_montaje_ensayos = $_POST['timestamp_personal_montaje_ensayos
 if ($horario_evento == "00:00:00" || $horario_evento == "01:00:00") {
     $hora_min = $horario_evento;
 } else {
-    $hora_min = date("H:i:s", strtotime($horario_evento . "-7200 seconds"));
+    if ($privilegios == 3):
+        $hora_min = date("H:i:s", strtotime($horario_evento . "-3600 seconds"));
+    else:
+        $hora_min = date("H:i:s", strtotime($horario_evento . "-7200 seconds"));
+    endif;
 }
 if ($horario_final_evento == "22:00:00" || $horario_final_evento == "23:00:00") {
     $hora_max = $horario_final_evento;
 } else {
-    $hora_max = date("H:i:s", strtotime($horario_final_evento . "+7199 seconds"));
+    if ($privilegios == 3):
+        $hora_max = date("H:i:s", strtotime($horario_final_evento . "+3599 seconds"));
+    else:
+        $hora_max = date("H:i:s", strtotime($horario_final_evento . "+7199 seconds"));
+    endif;
 }
 //ultimo id
 $ultimo_id_conexion = null;

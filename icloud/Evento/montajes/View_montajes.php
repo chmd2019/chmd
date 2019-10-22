@@ -107,39 +107,79 @@ while ($row = mysqli_fetch_array($declinados_cancelados)) {
                             break;
                     }
                     ?>
-                    <tr style="cursor: pointer;font-size: 1rem;">
-                        <td style="padding: 0px;" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><?php echo $fecha_montaje; ?></td>
-                        <td style="padding: 0px;" class="hide-on-med-and-down" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><?php echo $solicitante; ?></td>
-                        <td style="padding: 0px;" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><?php echo $nombre_evento; ?></td>
-                        <td style="padding: 0px;text-align: center" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'">
-                            <?php if ($esta_archivado): ?>
+                    <?php if (!$esta_archivado && $id_privilegio != 1): ?>
+                        <tr style="cursor: pointer;font-size: 1rem;">
+                            <td style="padding: 0px;" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><?php echo $fecha_montaje; ?></td>
+                            <td style="padding: 0px;" class="hide-on-med-and-down" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><?php echo $solicitante; ?></td>
+                            <td style="padding: 0px;" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><?php echo $nombre_evento; ?></td>
+                            <td style="padding: 0px;text-align: center" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'">
+                                <span class="chip white-text" style="font-size: .8rem;padding: 0px 3px;background-color: <?php echo $color_badge; ?>"><?php echo $estatus; ?></span>
+                            </td>
+                            <td style="padding: 0px;text-align: center">   
+                                <a class="waves-effect waves-light"
+                                   href="https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>">
+                                    <img src='../../images/Ver.svg' style="width: 40px;margin-top: .4rem;">
+                                </a> 
+                                <?php if ($id_privilegio == 3): ?>
+                                    <a class="waves-effect waves-light"
+                                       target="_blank"
+                                       href="https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_descarga_pdf.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>">
+                                        <img src='../../images/Descargar.svg' style="width: 40px;margin-top: .4rem;">
+                                    </a>
+                                    <a class="waves-effect waves-light light-green-text accent-3" 
+                                       onclick="modal_archivo(true);flag_archivar = true;id_montaje = <?php echo $id_montaje; ?>">
+                                        <i class="material-icons" style="font-size: 2.5rem;">archive</i>
+                                    </a>
+                                <?php endif; ?>
+                            </td>
+                        </tr> 
+                    <?php elseif($esta_archivado && $id_privilegio !=3):?>                    
+                        <tr style="cursor: pointer;font-size: 1rem;">
+                            <td style="padding: 0px;" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><?php echo $fecha_montaje; ?></td>
+                            <td style="padding: 0px;" class="hide-on-med-and-down" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><?php echo $solicitante; ?></td>
+                            <td style="padding: 0px;" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><?php echo $nombre_evento; ?></td>
+                            <td style="padding: 0px;text-align: center" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'">
                                 <span class="chip white-text" style="margin-top: 3px;font-size: .8rem;padding: 0px 3px;background-color: <?php echo $color_badge; ?>">
                                     <?php echo $estatus; ?></span>
                                 <br>
-                                <i class="material-icons teal-text accent-1 tooltipped" data-position="top" data-tooltip="Montaje archivado" style="vertical-align: middle;">tab</i>    
-                            <?php else: ?>
-                                <span class="chip white-text" style="font-size: .8rem;padding: 0px 3px;background-color: <?php echo $color_badge; ?>">
-                                    <?php echo $estatus; ?></span>
-                            <?php endif; ?>
-                        </td>
-                        <td style="padding: 0px;text-align: center">   
-                            <a class="waves-effect waves-light"
-                               href="https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>">
-                                <img src='../../images/Ver.svg' style="width: 40px;margin-top: .4rem;">
-                            </a> 
-                            <?php if ($id_privilegio == 3): ?>
+                                <i class="material-icons teal-text accent-1 tooltipped" data-position="top" data-tooltip="Montaje archivado" style="vertical-align: middle;">tab</i>   
+                            </td>
+                            <td style="padding: 0px;text-align: center">   
                                 <a class="waves-effect waves-light"
-                                   target="_blank"
-                                   href="https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_descarga_pdf.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>">
-                                    <img src='../../images/Descargar.svg' style="width: 40px;margin-top: .4rem;">
-                                </a>
-                                <a class="waves-effect waves-light light-green-text accent-3" 
-                                   onclick="modal_archivo(true);flag_archivar = true;id_montaje = <?php echo $id_montaje; ?>">
-                                    <i class="material-icons" style="font-size: 2.5rem;">archive</i>
-                                </a>
-                            <?php endif; ?>
-                        </td>
-                    </tr>                         
+                                   href="https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>">
+                                    <img src='../../images/Ver.svg' style="width: 40px;margin-top: .4rem;">
+                                </a> 
+                                <?php if ($id_privilegio == 3): ?>
+                                    <a class="waves-effect waves-light"
+                                       target="_blank"
+                                       href="https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_descarga_pdf.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>">
+                                        <img src='../../images/Descargar.svg' style="width: 40px;margin-top: .4rem;">
+                                    </a>
+                                    <a class="waves-effect waves-light light-green-text accent-3" 
+                                       onclick="modal_archivo(true);flag_archivar = true;id_montaje = <?php echo $id_montaje; ?>">
+                                        <i class="material-icons" style="font-size: 2.5rem;">archive</i>
+                                    </a>
+                                <?php endif; ?>
+                            </td>
+                        </tr> 
+                    <?php elseif(!$esta_archivado && $id_privilegio !=3):?>                    
+                        <tr style="cursor: pointer;font-size: 1rem;">
+                            <td style="padding: 0px;" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><?php echo $fecha_montaje; ?></td>
+                            <td style="padding: 0px;" class="hide-on-med-and-down" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><?php echo $solicitante; ?></td>
+                            <td style="padding: 0px;" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><?php echo $nombre_evento; ?></td>
+                            <td style="padding: 0px;text-align: center" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'">
+                                <span class="chip white-text" style="margin-top: 3px;font-size: .8rem;padding: 0px 3px;background-color: <?php echo $color_badge; ?>">
+                                    <?php echo $estatus; ?></span>
+                                <br>
+                            </td>
+                            <td style="padding: 0px;text-align: center">   
+                                <a class="waves-effect waves-light"
+                                   href="https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>">
+                                    <img src='../../images/Ver.svg' style="width: 40px;margin-top: .4rem;">
+                                </a> 
+                            </td>
+                        </tr> 
+                    <?php endif; ?>                        
                 <?php endwhile; ?>
             </tbody>
         </table>  

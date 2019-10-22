@@ -181,7 +181,8 @@ else :
                                id="id_tema"
                                placeholder="Añadir tema" 
                                onchange="add_tema(this.value);this.value = '';"
-                               onkeyup="capitaliza_primer_letra(this.id)">
+                               onkeyup="capitaliza_primer_letra(this.id)"
+                               autocomplete="off">
                         <label>Añadir tema</label>
                         <div id="resultado"></div>
                     </div>                    
@@ -196,7 +197,7 @@ else :
                             <tbody>
                             </tbody>
                         </table>
-                    </div>  
+                    </div> 
                     <h5 class="col s12 c-azul text-center">Archivos adjuntos</h5> 
                     <div class="input-field col s12">
                         <input type="file" name="filepond" data-max-files="10" multiple>
@@ -208,8 +209,8 @@ else :
                     </div>
                     <div class="input-field col s12 l6">
                         <button id="btn_guardar"
-                            class="waves-effect waves-light btn b-azul c-blanco col s12" 
-                            onclick="guardar_minuta()">
+                                class="waves-effect waves-light btn b-azul c-blanco col s12" 
+                                onclick="guardar_minuta()">
                             <i class="material-icons right">save</i>&nbsp;Guardar
                         </button>
                     </div>
@@ -247,7 +248,6 @@ else :
     <script>
         //input files
         var pond = null;
-        //
         var coleccion_invitados = [];
         var coleccion_temas = [];
         var table = null;
@@ -506,46 +506,6 @@ else :
                 }
             });
         }
-        function guardar_minuta() {
-            if (!validaciones())
-                return;
-
-            var id_convocado_por = $("#id_convocado_por").val();
-            var id_director = $("#id_director").val();
-            var id_titulo_evento = $("#id_titulo_evento").val();
-            var id_fecha_evento = $("#id_fecha_evento").val();
-            var id_horario_minuta = $("#id_horario_minuta").val();
-            $.ajax({
-                url: 'https://www.chmd.edu.mx/pruebascd/icloud/Minutas/common/post_guardar_minuta.php',
-                type: 'POST',
-                dataType: 'json',
-                beforeSend: () => {
-                    $("#loading").fadeIn();
-                    $("#btn_guardar").prop("disabled", true);
-                },
-                data: {
-                    titulo_evento: id_titulo_evento,
-                    fecha: formatear_fecha_calendario_formato_a_m_d_guion(id_fecha_evento),
-                    horario_minuta: id_horario_minuta,
-                    fecha_evento: id_fecha_evento,
-                    convocado_por: id_convocado_por,
-                    director: id_director,
-                    id_comite: id_comite,
-                    id_session: id_session,
-                    id_usuario: id_usuario
-                }
-            }).done((res) => {
-                if (res) {
-                    M.toast({
-                        html: '<i class="material-icons prefix">done</i> &nbsp; Solicitud realizada correctamente.',
-                        classes: 'green accent-4 c-blanco'
-                    });
-                    var url = 'https://www.chmd.edu.mx/pruebascd/icloud/Minutas/Eventos/Eventos.php?idseccion=<?php echo $idseccion; ?>';
-                    setInterval(() => window.location.href = url,
-                            1000);
-                }
-            }).always(() => $("#loading").fadeOut());
-        }
         function validaciones() {
             var id_convocado_por = $("#id_convocado_por").val();
             var id_comite = $("#id_comite").val();
@@ -612,10 +572,52 @@ else :
             }
             return true;
         }
+        function guardar_minuta() {
+            if (!validaciones())
+                return;
+
+            var id_convocado_por = $("#id_convocado_por").val();
+            var id_director = $("#id_director").val();
+            var id_titulo_evento = $("#id_titulo_evento").val();
+            var id_fecha_evento = $("#id_fecha_evento").val();
+            var id_horario_minuta = $("#id_horario_minuta").val();
+            $.ajax({
+                url: 'https://www.chmd.edu.mx/pruebascd/icloud/Minutas/common/post_guardar_minuta.php',
+                type: 'POST',
+                dataType: 'json',
+                beforeSend: () => {
+                    $("#loading").fadeIn();
+                    $("#btn_guardar").prop("disabled", true);
+                },
+                data: {
+                    titulo_evento: id_titulo_evento,
+                    fecha: formatear_fecha_calendario_formato_a_m_d_guion(id_fecha_evento),
+                    horario_minuta: id_horario_minuta,
+                    fecha_evento: id_fecha_evento,
+                    convocado_por: id_convocado_por,
+                    director: id_director,
+                    id_comite: id_comite,
+                    id_session: id_session,
+                    id_usuario: id_usuario
+                }
+            }).done((res) => {
+                if (res) {
+                    M.toast({
+                        html: '<i class="material-icons prefix">done</i> &nbsp; Solicitud realizada correctamente.',
+                        classes: 'green accent-4 c-blanco'
+                    });
+                    var url = 'https://www.chmd.edu.mx/pruebascd/icloud/Minutas/Eventos/Eventos.php?idseccion=<?php echo $idseccion; ?>';
+                    setInterval(() => window.location.href = url,
+                            1000);
+                }
+            }).always(() => $("#loading").fadeOut());
+        }
         function x() {
             console.log(pond.getMetadata());
         }
     </script>
 
-<?php endif; ?>
-<?php include "{$root}/components/layout_bottom.php"; ?>
+<?php
+endif;
+include "{$root}/components/layout_bottom.php";
+?>

@@ -62,17 +62,11 @@ class ControlTransportes {
     public function consultar_permiso_diario($id) {
         $connection = $this->con->conectar1();
         if ($connection) {
-            $sql = "SELECT "
-                    . "id_permiso, "
-                    . "fecha_creacion, "
-                    . "responsable, "
-                    . "calle_numero, "
-                    . "colonia, "
-                    . "cp, "
-                    . "ruta, "
-                    . "comentarios, "
-                    . "mensaje, "
-                    . "fecha_cambio FROM Ventana_Permisos WHERE id_permiso  = '$id'";
+            $sql = "SELECT a.id_permiso, a.fecha_creacion, a.responsable, a.calle_numero, "
+                    . "a.colonia, a.cp, b.descripcion AS ruta, a.comentarios, a.mensaje, a.fecha_cambio "
+                    . "FROM Ventana_Permisos a "
+                    . "INNER JOIN Catalogo_rutas b ON b.id = a.id_ruta "
+                    . "WHERE id_permiso = $id";
             mysqli_set_charset($connection, 'utf8');
             return mysqli_query($connection, $sql);
         }
@@ -105,21 +99,12 @@ class ControlTransportes {
     public function consultar_permiso_permanente($id) {
         $connection = $this->con->conectar1();
         if ($connection) {
-            $sql = "SELECT responsable,
-                    fecha_creacion,
-                    idusuario,
-                    lunes,
-                    martes,
-                    miercoles,
-                    jueves,
-                    viernes,
-                    calle_numero,
-                    colonia,
-                    comentarios, 
-                    mensaje,
-                    ruta,
-                    cp 
-                    FROM Ventana_Permisos WHERE id_permiso  = '$id'";
+            $sql = "SELECT a.responsable, a.fecha_creacion, a.idusuario, a.lunes, a.martes, a.miercoles, "
+                    . "a.jueves, a.viernes, a.calle_numero, a.colonia, a.comentarios, a.mensaje, "
+                    . "b.descripcion AS ruta, cp "
+                    . "FROM Ventana_Permisos a "
+                    . "INNER JOIN Catalogo_rutas b ON b.id=a.id_ruta "
+                    . "WHERE id_permiso = $id";
             mysqli_set_charset($connection, 'utf8');
             return mysqli_query($connection, $sql);
         }
@@ -161,6 +146,14 @@ class ControlTransportes {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "SELECT id_alumno FROM Ventana_permisos_alumnos WHERE id_permiso = $id_permiso AND id_alumno = $id_alumno";
+            mysqli_set_charset($connection, 'utf8');
+            return mysqli_query($connection, $sql);
+        }
+    }
+    public function consulta_rutas(){
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT * FROM Catalogo_rutas";
             mysqli_set_charset($connection, 'utf8');
             return mysqli_query($connection, $sql);
         }
