@@ -348,6 +348,33 @@ else :
                 endif;
                 $temas_json = json_encode($temas_json);
                 ?>
+                <div class="col s12">
+                    <br>
+                    <div class="card horizontal">
+                        <div class="card-image">
+                            <img src="../../../images/svg/clip.svg" style="width: 120px">
+                        </div>
+                        <div class="card-stacked">
+                            <div class="card-content">
+                                <p>Puedes ver los archivos adjuntos para este evento.</p>
+                            </div>
+                            <div class="card-action">
+                                <?php
+                                $archivos = $controlMinutas->consulta_archivos($id_minuta);
+                                while ($row = mysqli_fetch_array($archivos)):
+                                    $nombre_archivo = $row[0];
+                                    $nombre_compuesto = $row[1];
+                                    $ruta = "https://www.chmd.edu.mx/pruebascd/icloud/Minutas/archivos/{$nombre_compuesto}";
+                                    if (strpos($nombre_compuesto, ".pdf") !== false):
+                                        $ruta = "https://docs.google.com/gview?url=https://www.chmd.edu.mx/pruebascd/icloud/Minutas/archivos/{$nombre_compuesto}";
+                                    endif;
+                                    ?>
+                                    <a href="<?= $ruta ?>" target="_blank" class="c-azul" style="text-decoration: underline;"><?= $nombre_archivo ?></a><br>
+                                    <?php endwhile;?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <span class="col s12"><br><br></span>
                 <?php if (!$cerrado): ?>
                     <div class="input-field col s12" style="text-align: center">

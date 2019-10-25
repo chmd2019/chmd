@@ -111,11 +111,11 @@ if (isset($authUrl)) {
                         $id_alumno = $alumno[2];
                         $estatus = $alumno[6];
                         $nombre_alumno = $control->consultar_nombre_alumno($id_alumno);
-                        $nombre = mysqli_fetch_array($nombre_alumno);
-                        $nivel_escolaridad = $nombre[1];
-                        $nombre = $nombre[0];
-                        $grupo = $nombre[1];
-                        $grado = $nombre[2];
+                        $nombre_consulta = mysqli_fetch_array($nombre_alumno);
+                        $nivel_escolaridad = $nombre_consulta[1];
+                        $nombre = $nombre_consulta[0];
+                        $grupo = $nombre_consulta[2];
+                        $grado = $nombre_consulta[3];
 
                         switch ($estatus) {
                             case "1":

@@ -359,7 +359,7 @@ class ControlEspecial {
     public function consulta_alumnos_grupo($grupo, $id_anfitrion) {
         $connection = $this->con->conectar1();
         if ($connection) {
-            $sql = "SELECT id, idfamilia, nombre, nivel FROM alumnoschmd WHERE grupo = '$grupo' AND id != '$id_anfitrion';";
+            $sql = "SELECT id, idfamilia, nombre, nivel, sexo FROM alumnoschmd WHERE grupo = '$grupo' AND id != '$id_anfitrion';";
             mysqli_set_charset($connection, 'utf8');
             return mysqli_query($connection, $sql);
         }

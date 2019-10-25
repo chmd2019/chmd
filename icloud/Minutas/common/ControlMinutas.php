@@ -2,6 +2,7 @@
 
 $root = dirname(dirname(__DIR__));
 include_once "{$root}/Model/DBManager.php";
+include_once "{$root}/Herlpers/DateHelper.php";
 
 class ControlMinutas {
 
@@ -134,11 +135,14 @@ class ControlMinutas {
         }
     }
 
-    public function guardar_archivo_tmp($nombre, $id_session, $id_usuario) {
+    public function guardar_archivo_tmp($nombre, $nombre_compuesto, $timestamp, $id_session, $id_usuario) {
         $connection = $this->con->conectar1();
         if ($connection) {
-            $sql = "INSERT INTO `evento_archivo_tmp` (`nombre`, `id_session`, `id_usuario`) VALUES ("
+            $sql = "INSERT INTO `evento_archivo_tmp` (`nombre`, `nombre_compuesto`, `timestamp`, `id_session`, `id_usuario`)"
+                    . "VALUES ("
                     . "'$nombre', "
+                    . "'$nombre_compuesto', "
+                    . "'$timestamp', "
                     . "'$id_session', "
                     . "$id_usuario);";
             mysqli_set_charset($connection, "utf8");
@@ -235,6 +239,28 @@ class ControlMinutas {
                             . "'', "
                             . "'1');";
                     mysqli_query($connection, $sql_tema_pendiente);
+                }
+                $dateHelper = new DateHelper();
+                $dateHelper->set_timezone();
+                $timespamp = strtotime(date("Y-m-d"));
+                $sql_select_archivo = "SELECT * FROM evento_archivo_tmp WHERE timestamp ='{$timespamp}'";
+                $archivos = mysqli_query($connection, $sql_select_archivo);
+                while ($row = mysqli_fetch_array($archivos)) {
+                    $id_archivo_tmp = $row[0];
+                    $nombre = $row[1];
+                    $nombre_compuesto = $row[2];
+                    $id_session = $row[4];
+                    $id_usuario = $row[5];
+                    $sql_insert_archivo = "INSERT INTO `evento_archivo` (`id_minuta`, `nombre`, `nombre_compuesto`)"
+                            . " VALUES ("
+                            . "{$id_minuta}, "
+                            . "'{$nombre}', "
+                            . "'{$nombre_compuesto}');";
+                    if (mysqli_query($connection, $sql_insert_archivo)) {
+                        mysqli_query($connection, "DELETE FROM evento_archivo_tmp WHERE id ={$id_archivo_tmp}");
+                    }else{
+                        return "Ya existe un archivo con el nombre actual";
+                    }
                 }
                 mysqli_commit($connection);
                 return true;
@@ -413,6 +439,15 @@ class ControlMinutas {
                 mysqli_rollback($connection);
                 return false;
             }
+        }
+    }
+
+    public function consulta_archivos($id_minuta) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT nombre, nombre_compuesto FROM evento_archivo WHERE id_minuta = $id_minuta";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
         }
     }
 

@@ -16,7 +16,8 @@ while ($row = mysqli_fetch_array($alumnos)) {
         "id"=>$row[0],
         "idfamilia"=>$row[1],
         "nombre"=>$row[2],
-        "nivel"=>$row[3],        
+        "nivel"=>$row[3],   
+        "sexo"=>$row[4],        
     ]);
 }
 

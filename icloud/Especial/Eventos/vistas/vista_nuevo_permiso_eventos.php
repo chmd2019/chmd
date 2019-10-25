@@ -219,7 +219,9 @@ if (isset($authUrl)) {
                                         <input type="checkbox"
                                                id="alumno_<?php echo $counter; ?>"
                                                value="<?php echo $alumno['id']; ?>"
-                                               onchange="mostrar_check_anfitrion(this, 'caja_check_anfitrion_<?php echo $counter; ?>');"/>
+                                               onchange="descheck(this);
+                                                                       mostrar_check_anfitrion(this, 'caja_check_anfitrion_<?php echo $counter; ?>');
+                                                                       descheck_anfitrion('anfitrion_<?php echo $counter; ?>');"/>
                                         <span class="lever" style="margin-left: 0px"></span>
                                     </label>
                                 </div>
@@ -229,9 +231,10 @@ if (isset($authUrl)) {
                                            class="filled-in" 
                                            id="anfitrion_<?php echo $counter; ?>"
                                            onchange="this.checked = comprobar_checks_invirados();
-                                                   grupo = this.checked ? '<?php echo $grupo; ?>' : '';
-                                                   id_anfitrion = <?php echo $alumno['id']; ?>;
-                                                   consulta_alumnos_grupo(this);"/>
+                                                                   grupo = this.checked ? '<?php echo $grupo; ?>' : '';
+                                                                   id_anfitrion = <?php echo $alumno['id']; ?>;
+                                                                   consulta_alumnos_grupo(this);
+                                                                   descheck(this);"/>
                                     <span style="font-size: .8rem;">Anfitrión</span>
                                 </label>
                             </span>
@@ -258,8 +261,33 @@ if (isset($authUrl)) {
                         <table class="table striped">
                             <thead>
                                 <tr>
-                                    <th style="width: 80%;">Alumno</th>
-                                    <th><label><input type="checkbox" class="filled-in" onchange="invitar_todos(this);" id="check_invitar_todos" /><span>Invitar todos</span></label></th>
+                                    <th style="width: 40%;">Alumno</th>
+                                    <th>Género</th>
+                                    <th style="display: flex;text-align: right;">
+                                        <label>
+                                            <input type="checkbox" 
+                                                   class="filled-in" 
+                                                   onchange="invitar_ninas(this);" 
+                                                   id="check_invitar_ninas" />
+                                            <span>Niñas</span>
+                                        </label>
+                                        &nbsp;
+                                        <label>
+                                            <input type="checkbox" 
+                                                   class="filled-in" 
+                                                   onchange="invitar_ninos(this);" 
+                                                   id="check_invitar_ninos" />
+                                            <span>Niños</span>
+                                        </label>
+                                        &nbsp;
+                                        <label>
+                                            <input type="checkbox" 
+                                                   class="filled-in" 
+                                                   onchange="invitar_todos(this);" 
+                                                   id="check_invitar_todos" />
+                                            <span>Todos</span>
+                                        </label>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody id="tbody_invitados">
@@ -795,7 +823,7 @@ if (isset($authUrl)) {
                 $("#tbody_invitados").html('');
                 for (var item in res) {
                     var i = parseInt(item) + 1;
-                    var tr = `<tr><td>${res[item].nombre}</td><td><label><input type="checkbox" class="filled-in" value="${res[item].id}" onchange="add_id_invitado(this);add_alumnos_invitados(this,'${res[item].nombre}')" id="check_invitado_${i}" /><span></span></label></td></tr>`;
+                    var tr = `<tr><td>${res[item].nombre}</td><td>${res[item].sexo}</td><td><label><input type="checkbox" class="filled-in ${res[item].sexo}" value="${res[item].id}" onchange="add_id_invitado(this);add_alumnos_invitados(this,'${res[item].nombre}')" id="check_invitado_${i}" /><span class="right"></span></label></td></tr>`;
                     $("#tbody_invitados").append(tr);
                 }
             }).always(() => {
@@ -855,6 +883,50 @@ if (isset($authUrl)) {
             return;
         }
         $("#alumnos_invitados_listado").html('');
+    }
+    function invitar_ninas(el) {
+        for (var i = 1; i <= contador_alumnos_invitados; i++) {
+            if (el.checked) {
+                if ($("#check_invitado_" + i).hasClass('F')) {
+                    $("#check_invitado_" + i).prop("checked", false);
+                    $("#check_invitado_" + i).click();
+                }
+            } else {
+                if ($("#check_invitado_" + i).hasClass('F')) {
+                    $("#check_invitado_" + i).prop("checked", true);
+                    $("#check_invitado_" + i).click();
+                }
+            }
+        }
+    }
+    function invitar_ninos(el) {
+        for (var i = 1; i <= contador_alumnos_invitados; i++) {
+            if (el.checked) {
+                if ($("#check_invitado_" + i).hasClass('M')) {
+                    $("#check_invitado_" + i).prop("checked", false);
+                    $("#check_invitado_" + i).click();
+                }
+            } else {
+                if ($("#check_invitado_" + i).hasClass('M')) {
+                    $("#check_invitado_" + i).prop("checked", true);
+                    $("#check_invitado_" + i).click();
+                }
+            }
+        }
+    }
+    function descheck(el) {
+        if (!el.checked) {
+            if ($("#check_invitar_ninas").prop("checked"))
+                $("#check_invitar_ninas").click();
+            if ($("#check_invitar_ninos").prop("checked"))
+                $("#check_invitar_ninos").click();
+            if ($("#check_invitar_todos").prop("checked"))
+                $("#check_invitar_todos").click();
+        }
+    }
+    function descheck_anfitrion(id) {
+        if ($("#" + id).prop("checked"))
+            $("#" + id).click();
     }
 </script>
 

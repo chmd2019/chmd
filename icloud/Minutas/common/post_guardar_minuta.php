@@ -15,10 +15,17 @@ $titulo_evento = $_POST['titulo_evento'];
 $fecha = $_POST['fecha'];
 $fecha_simple = $_POST['fecha_evento'];
 $horario_minuta = $_POST['horario_minuta'];
-$id_session = $_POST['id_session'];
+//datos de sesion
 $id_usuario = $_POST['id_usuario'];
+$id_session = $_POST['id_session'];
 
-$res = $controlMontajes->guardar_minuta($titulo_evento, $fecha_simple, $horario_minuta, 
-        $fecha, $convocante, $director, $id_comite, 1, $id_session, $id_usuario);
+$res = $controlMontajes->guardar_minuta($titulo_evento, $fecha_simple, $horario_minuta, $fecha, $convocante, $director, $id_comite, 1, $id_session, $id_usuario);
 
-echo json_encode($res);
+if (strcasecmp($res, "Ya existe un archivo con el nombre actual") === 0) {
+    echo json_encode("Ya existe un archivo con el nombre actual");
+    return;
+}
+if ($res) {
+    echo json_encode($res);
+    return;
+}

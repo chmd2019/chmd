@@ -244,7 +244,7 @@ else :
             <a href="../Eventos.php?idseccion=<?php echo $idseccion; ?>" class="modal-close waves-effect waves-blue btn-flat b-azul white-text"><b>Aceptar</b></a>
         </div>
     </div>
-
+    <a href="#!" onclick="x();">AQUI</a>
     <script>
         //input files
         var pond = null;
@@ -308,7 +308,7 @@ else :
                         });
                     } else {
                         M.toast({
-                            html: '<i class="material-icons prefix">highlight_off</i> &nbsp; Ssolicitud no realizada.',
+                            html: '<i class="material-icons prefix">highlight_off</i> &nbsp; Solicitud no realizada.',
                             classes: 'red c-blanco',
                         });
                     }
@@ -601,7 +601,7 @@ else :
                     id_usuario: id_usuario
                 }
             }).done((res) => {
-                if (res) {
+                if (res === true) {
                     M.toast({
                         html: '<i class="material-icons prefix">done</i> &nbsp; Solicitud realizada correctamente.',
                         classes: 'green accent-4 c-blanco'
@@ -609,6 +609,13 @@ else :
                     var url = 'https://www.chmd.edu.mx/pruebascd/icloud/Minutas/Eventos/Eventos.php?idseccion=<?php echo $idseccion; ?>';
                     setInterval(() => window.location.href = url,
                             1000);
+                }
+                if (res === "Ya existe un archivo con el nombre actual") {
+                    M.toast({
+                        html: '<i class="material-icons prefix">highlight_off</i> &nbsp; Ya existe un archivo con el nombre actual.',
+                        classes: 'red c-blanco'
+                    });
+                    $("#btn_guardar").prop("disabled", false);
                 }
             }).always(() => $("#loading").fadeOut());
         }
