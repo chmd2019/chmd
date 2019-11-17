@@ -45,42 +45,8 @@ if (isset($authUrl)) {
             hoverEnabled: false
         });
         $('.modal').modal();
-        $('#tabla_no_archivados').DataTable({
-            "language": {
-                "lengthMenu": "_MENU_",
-                "zeroRecords": "<span class='chip red white-text'>Sin registros para mostrar</span>",
-                "info": "<span class='chip blue white-text'>Mostrando colección _PAGE_ de _PAGES_</span>",
-                "infoEmpty": "<span class='chip red white-text'>Sin registros disponibles</span>",
-                "infoFiltered": "(filtrado de _MAX_ total de registros)",
-                "loadingRecords": "Cargando...",
-                "processing": "Procesando...",
-                "search": "Buscar:",
-                "paginate": {
-                    "first": "Primero",
-                    "last": "Último",
-                    "next": "Siguiente",
-                    "previous": "Anterior"
-                }
-            }
-        });
-        $('#tabla_archivados').DataTable({
-            "language": {
-                "lengthMenu": "_MENU_",
-                "zeroRecords": "<span class='chip red white-text'>Sin registros para mostrar</span>",
-                "info": "<span class='chip blue white-text'>Mostrando colección _PAGE_ de _PAGES_</span>",
-                "infoEmpty": "<span class='chip red white-text'>Sin registros disponibles</span>",
-                "infoFiltered": "(filtrado de _MAX_ total de registros)",
-                "loadingRecords": "Cargando...",
-                "processing": "Procesando...",
-                "search": "Buscar:",
-                "paginate": {
-                    "first": "Primero",
-                    "last": "Último",
-                    "next": "Siguiente",
-                    "previous": "Anterior"
-                }
-            }
-        });
+        set_table_desordenada('tabla_no_archivados');
+        set_table_desordenada('tabla_archivados');
         $("select").formSelect();
         $("#loading").fadeOut();
         /*setInterval(function () {

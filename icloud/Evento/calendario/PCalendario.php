@@ -258,7 +258,7 @@ $fecha_actual = date('Y-m-d');
             <div class="row">
                 <div class="col s12 m12 l9 b-blanco border-azul" style="float: none;margin: 0 auto;">
                     <h4 class="c-azul" style="text-align: center;">Calendario de Disponibilidad</h4>
-                    <div class="row" style="text-align: right;margin:1rem 1rem 0 0">
+                    <div class="row" style="text-align: right;margin:1rem 1rem 0 0"> 
                         <a class="waves-effect waves-light" href="../menu.php">
                             <img src='../../images/Atras.svg' style="width: 110px"> 
                         </a>              

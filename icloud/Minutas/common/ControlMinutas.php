@@ -161,7 +161,8 @@ class ControlMinutas {
         }
     }
 
-    public function guardar_minuta($titulo, $fecha, $hora, $fecha_formateada, $convocante, $director, $id_comite, $estatus, $id_session, $id_usuario) {
+    public function guardar_minuta($titulo, $fecha, $hora, $fecha_formateada, $convocante, 
+            $director, $id_comite, $estatus, $id_session, $id_usuario,$timespamp) {
         $connection = $this->con->conectar1();
         if ($connection) {
             mysqli_autocommit($connection, false);
@@ -240,9 +241,6 @@ class ControlMinutas {
                             . "'1');";
                     mysqli_query($connection, $sql_tema_pendiente);
                 }
-                $dateHelper = new DateHelper();
-                $dateHelper->set_timezone();
-                $timespamp = strtotime(date("Y-m-d"));
                 $sql_select_archivo = "SELECT * FROM evento_archivo_tmp WHERE timestamp ='{$timespamp}'";
                 $archivos = mysqli_query($connection, $sql_select_archivo);
                 while ($row = mysqli_fetch_array($archivos)) {
@@ -258,7 +256,7 @@ class ControlMinutas {
                             . "'{$nombre_compuesto}');";
                     if (mysqli_query($connection, $sql_insert_archivo)) {
                         mysqli_query($connection, "DELETE FROM evento_archivo_tmp WHERE id ={$id_archivo_tmp}");
-                    }else{
+                    } else {
                         return "Ya existe un archivo con el nombre actual";
                     }
                 }
@@ -303,6 +301,20 @@ class ControlMinutas {
         }
     }
 
+    public function consultar_temas_minuta_descarga($id_minuta) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT a.id_tema, a.tema, b.nombre,d.acuerdos , c.`status`, c.color_estatus, c.id "
+                    . "FROM evento_tema a "
+                    . "INNER JOIN evento_comites b ON b.id_comite = a.id_comite "
+                    . "INNER JOIN Catalogo_status_acceso c ON c.id = a.estatus "
+                    . "INNER JOIN evento_tema_pendiente d ON d.id_minuta = a.id_minuta "
+                    . "WHERE a.id_minuta = $id_minuta OR a.id_minuta_cerradora = $id_minuta;";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
     public function guardar_acuerdo_tema($acuerdos, $id_minuta, $id_tema) {
         $connection = $this->con->conectar1();
         if ($connection) {
@@ -327,7 +339,9 @@ class ControlMinutas {
     public function consulta_acuerdo($id_tema) {
         $connection = $this->con->conectar1();
         if ($connection) {
-            $sql = "SELECT acuerdos, version_acuerdo FROM evento_tema_pendiente a WHERE a.id_tema = $id_tema";
+            $sql = "SELECT acuerdos, version_acuerdo,(SELECT COUNT(*) "
+                    . "FROM evento_tema_pendiente a WHERE a.id_tema = $id_tema) AS conteo "
+                    . "FROM evento_tema_pendiente a WHERE a.id_tema = $id_tema";
             mysqli_set_charset($connection, "utf8");
             return mysqli_query($connection, $sql);
         }
@@ -400,7 +414,7 @@ class ControlMinutas {
                     . "FROM evento_tema a "
                     . "INNER JOIN evento_tema_pendiente b ON b.id_tema = a.id_tema "
                     . "INNER JOIN Catalogo_status_acceso c ON c.id = b.estatus "
-                    . "WHERE b.cerrado = false AND b.id_minuta != $id_minuta";
+                    . "WHERE b.cerrado = false AND b.id_minuta != $id_minuta GROUP BY id_tema ";
             mysqli_set_charset($connection, "utf8");
             return mysqli_query($connection, $sql);
         }
@@ -448,6 +462,44 @@ class ControlMinutas {
             $sql = "SELECT nombre, nombre_compuesto FROM evento_archivo WHERE id_minuta = $id_minuta";
             mysqli_set_charset($connection, "utf8");
             return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function elimina_archivo($nombre_archivo, $id_session) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "DELETE FROM `evento_archivo_tmp` "
+                    . "WHERE  `nombre_compuesto`='$nombre_archivo' AND `id_session` ='$id_session';";
+            mysqli_set_charset($connection, "utf8");
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function cancelar_minuta($id_session, $timestamp) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql_archivos_tmp = "DELETE FROM `evento_archivo_tmp` "
+                    . "WHERE  `timestamp`='$timestamp' AND `id_session`='$id_session';";
+            $sql_invitados_tmp = "DELETE FROM `evento_invitados_tmp` WHERE  `id_session`='$id_session';";
+            $sql_temas_tmp = "DELETE FROM `evento_temas_tmp` WHERE `id_session`='$id_session';";
+            $sql_consulta_archivos_tmp = "SELECT nombre_compuesto FROM evento_archivo_tmp";
+            mysqli_autocommit($connection, false);
+            try {
+                mysqli_set_charset($connection, "utf8");
+                $archivos_tmp = mysqli_query($connection, $sql_consulta_archivos_tmp);
+                while ($row = mysqli_fetch_array($archivos_tmp)) {
+                    $path = "../archivos/{$row[0]}";
+                    unlink($path);
+                }
+                mysqli_query($connection, $sql_archivos_tmp);
+                mysqli_query($connection, $sql_invitados_tmp);
+                mysqli_query($connection, $sql_temas_tmp);
+                mysqli_commit($connection);
+                return true;
+            } catch (Exception $ex) {
+                mysqli_rollback($connection);
+                return $ex->getMessage();
+            }
         }
     }
 

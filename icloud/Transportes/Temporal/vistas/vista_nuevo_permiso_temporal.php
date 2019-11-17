@@ -68,12 +68,12 @@ if (isset($authUrl)) {
 
         <div class="row">
             <div class="col s12 l8 b-blanco border-azul" style="float: none;margin: 0 auto;">
-              <div class="row" style="text-align: right;margin:1rem 1rem 0 0">
-                <a class="waves-effect waves-light"
-                href="<?php echo $redirect_uri ?>Transportes/Temporal/PTemporal.php?idseccion=<?php echo $idseccion; ?>">
-                    <img src='../../../images/Atras.svg' style="width: 110px">
-          </a>
-        </div>
+                <div class="row" style="text-align: right;margin:1rem 1rem 0 0">
+                    <a class="waves-effect waves-light"
+                       href="<?php echo $redirect_uri ?>Transportes/Temporal/PTemporal.php?idseccion=<?php echo $idseccion; ?>">
+                        <img src='../../../images/Atras.svg' style="width: 110px">
+                    </a>
+                </div>
 
                 <h5 class="center-align c-azul">Nuevo permiso temporal</h5>
                 <div class="row" style="padding:0rem .5rem;">
@@ -155,11 +155,15 @@ if (isset($authUrl)) {
                         </div>
                     </div>
                     <h5 class="center-align c-azul">Dirección de cambio</h5>
-                    <div class="input-field col s12">
-                        <i class="material-icons c-azul prefix">person_pin_circle</i>
-                        <select id="reside" class="input-field" onchange="cambiar_direccion('<?php echo $id; ?>')">
+
+                    <label style="margin-left: 1rem">
+                        &nbsp;&nbsp;<i class="material-icons c-azul prefix">person_pin_circle</i>Dirección Guardada
+                    </label>
+                    <div class="input-field col s12">                        
+                        <select id="reside" 
+                                class="browser-default" 
+                                onchange="cambiar_direccion('<?php echo $id; ?>')">
                         </select>
-                        <label style="margin-left: 1rem">Dirección Guardada</label>
                     </div>
                     <div class="input-field col s12">
                         <label for="calle_nuevo_permiso_temporal" style="margin-left: 1rem">Calle y Número</label>
@@ -220,11 +224,14 @@ if (isset($authUrl)) {
                     </div>
                     <span class="col s12"><br></span>
                     <div class="col s12 l6">
-                        <div class="input-field">
-                            <i class="material-icons prefix c-azul">person</i>
-                            <select id="select_responsable" onchange="seleccion_responsable(this.value)">
+                        <label>
+                            &nbsp;&nbsp;<i class="material-icons prefix c-azul">person</i>Responsable
+                        </label> 
+                        <div class="input-field">                           
+                            <select id="select_responsable" 
+                                    class="browser-default"
+                                    onchange="seleccion_responsable(this.value)">
                             </select>
-                            <label>Responsable</label>
                         </div>
                     </div>
                     <div id="nuevo_responsable" hidden>
@@ -342,15 +349,17 @@ if (isset($authUrl)) {
                                     });
                         </script>
                     </div>
-                    <div class="input-field col s12">
-                        <i class="material-icons c-azul prefix">departure_board</i>
-                        <select class="input-field" id="ruta_nuevo_permiso_temporal" >
+                    <div class="col s12">  
+                        <label>
+                            &nbsp;&nbsp;<i class="material-icons c-azul prefix">departure_board</i>Ruta
+                        </label>                      
+                        <select class="browser-default" id="ruta_nuevo_permiso_temporal" >
                             <option value="">Selecciona opción</option>
                             <option value="Mañana">Mañana</option>
                             <option value="Tarde">Tarde</option>
                             <option value="Mañana-Tarde">Mañana-Tarde</option>
                         </select>
-                        <label>Ruta</label>
+                        <br>
                     </div>
                     <div class="input-field col s12">
                         <i class="material-icons c-azul prefix">comment</i>
@@ -375,23 +384,16 @@ if (isset($authUrl)) {
     }
 }
 ?>
-<!---
-<div class="fixed-action-btn">
-    <a class="btn-floating btn-large waves-effect waves-light b-azul"
-       href="<?php echo $redirect_uri ?>Transportes/Temporal/PTemporal.php?idseccion=<?php echo $idseccion; ?>">
-        <i class="large material-icons">keyboard_backspace</i>
-    </a>
-</div>
--->
-
 <div class="loading" id="loading" >
     <div class="preloader-wrapper big active">
         <div class="spinner-layer spinner-blue-only">
             <div class="circle-clipper left">
                 <div class="circle"></div>
-            </div><div class="gap-patch">
+            </div>
+            <div class="gap-patch">
                 <div class="circle"></div>
-            </div><div class="circle-clipper right">
+            </div>
+            <div class="circle-clipper right">
                 <div class="circle"></div>
             </div>
         </div>
@@ -399,490 +401,485 @@ if (isset($authUrl)) {
 </div>
 <script src="/pruebascd/icloud/materialkit/js/common.js"></script>
 <script>
-                                    //arreglo global de ids de los alumnos seleccionados para el permiso
-                                    var coleccion_ids = [];
-                                    var responsables = [];
-                                    $(document).ready(function () {
-                                        $("#loading").hide();
-                                        $('.fixed-action-btn').floatingActionButton({
-                                            hoverEnabled: false
-                                        });
-                                        $('.modal').modal();
-                                        var instance = M.Modal.getInstance($("#modal_alerta"));
-                                        instance.open();
-                                        //redimenciona el tamaño y el value de los textareas
-                                        $('#calle_guardada_temporal').val('<?php echo $calle; ?>');
-                                        M.textareaAutoResize($('#calle_guardada_temporal'));
-                                        $('#colonia_guardada_temporal').val('<?php echo $colonia; ?>');
-                                        M.textareaAutoResize($('#colonia_guardada_temporal'));
-                                        $('#cp_guardada_temporal').val('<?php echo $cp; ?>');
-                                        M.textareaAutoResize($('#cp_guardada_temporal'));
-                                        M.textareaAutoResize($('#nombre_nuevo_permiso_temporal'));
-                                        //inicia select
-                                        $('select').formSelect();
-                                        //consulta de direcciones
-                                        consultar_direcciones("<?php echo $id; ?>");
-                                        cargar_responsables();
+                            //arreglo global de ids de los alumnos seleccionados para el permiso
+                            var coleccion_ids = [];
+                            var responsables = [];
+                            $(document).ready(function () {
+                                $("#loading").hide();
+                                $('.fixed-action-btn').floatingActionButton({
+                                    hoverEnabled: false
+                                });
+                                $('.modal').modal();
+                                var instance = M.Modal.getInstance($("#modal_alerta"));
+                                instance.open();
+                                //redimenciona el tamaño y el value de los textareas
+                                $('#calle_guardada_temporal').val('<?php echo $calle; ?>');
+                                M.textareaAutoResize($('#calle_guardada_temporal'));
+                                $('#colonia_guardada_temporal').val('<?php echo $colonia; ?>');
+                                M.textareaAutoResize($('#colonia_guardada_temporal'));
+                                $('#cp_guardada_temporal').val('<?php echo $cp; ?>');
+                                M.textareaAutoResize($('#cp_guardada_temporal'));
+                                M.textareaAutoResize($('#nombre_nuevo_permiso_temporal'));
+                                //inicia select
+                                $('select').formSelect();
+                                //consulta de direcciones
+                                consultar_direcciones("<?php echo $id; ?>");
+                                cargar_responsables();
+                            });
+                            function recordar_direccion() {
+                                if ($('#recordar_direccion').is(":checked")) {
+                                    $('#container_descripcion_recordar_direccion').show();
+                                    consultar_direcciones("<?php echo $id; ?>");
+                                    return;
+                                }
+                                $('#container_descripcion_recordar_direccion').hide();
+                                $('#descripcion_recordar_direccion').val("");
+                                $('#calle_nuevo_permiso_temporal').focus();
+                            }
+                            function cambiar_direccion(id) {
+                                var dato = $('select[id=reside]').val();
+                                if (dato == '0') {
+                                    $("#calle_nuevo_permiso_temporal").val("");
+                                    $("#colonia_nuevo_permiso_temporal").val("");
+                                    $("#cp_nuevo_permiso_temporal").val("");
+                                    $('#recordar_direccion').prop("checked", false);
+                                    $('#container_descripcion_recordar_direccion').hide();
+                                    $('#descripcion_recordar_direccion').val("");
+                                    $('#cp').val("");
+                                }
+                                if (dato == '1') {
+                                    $("#calle_nuevo_permiso_temporal").val("Periferico Boulevard Manuel Avila Camacho 620");
+                                    M.textareaAutoResize($('#calle_nuevo_permiso_temporal'));
+                                    $("#colonia_nuevo_permiso_temporal").val("Lomas de Sotelo");
+                                    M.textareaAutoResize($('#colonia_nuevo_permiso_temporal'));
+                                    $("#cp").val("53538");
+                                    //limpia recordar direccion
+                                    $('#recordar_direccion').prop("checked", false);
+                                    $('#container_descripcion_recordar_direccion').hide();
+                                    $('#descripcion_recordar_direccion').val("");
+                                }
+                                if (dato !== "0" && dato !== "1") {
+                                    var data = [];
+                                    $.ajax({
+                                        url: "/pruebascd/icloud/Transportes/common/get_consultar_direcciones.php",
+                                        type: "GET",
+                                        data: {"id_usuario": id},
+                                        beforeSend: function () {
+                                            $("#loading").fadeIn("slow");
+                                        },
+                                        success: function (res) {
+                                            res = JSON.parse(res);
+                                            for (var key in res) {
+                                                data.push(res[key]);
+                                            }
+                                            for (var key in data) {
+                                                if (data[key].id_direccion === dato) {
+                                                    $("#calle_nuevo_permiso_temporal").val(data[key].calle);
+                                                    M.textareaAutoResize($('#calle_nuevo_permiso_temporal'));
+                                                    $("#colonia_nuevo_permiso_temporal").val(data[key].colonia);
+                                                    M.textareaAutoResize($('#colonia_nuevo_permiso_temporal'));
+                                                    $("#cp").val(data[key].cp);
+                                                }
+                                            }
+                                        }
+                                    }).always(function () {
+                                        setInterval(function () {
+                                            $("#loading").fadeOut("slow");
+                                        }, 1000);
                                     });
-                                    function recordar_direccion() {
-                                        if ($('#recordar_direccion').is(":checked")) {
-                                            $('#container_descripcion_recordar_direccion').show();
-                                            consultar_direcciones("<?php echo $id; ?>");
-                                            return;
-                                        }
-                                        $('#container_descripcion_recordar_direccion').hide();
-                                        $('#descripcion_recordar_direccion').val("");
-                                        $('#calle_nuevo_permiso_temporal').focus();
+                                    //limpia recordar direccion
+                                    $('#recordar_direccion').prop("checked", false);
+                                    $('#container_descripcion_recordar_direccion').hide();
+                                    $('#descripcion_recordar_direccion').val("");
+                                }
+                            }
+                            function validar_recordar_direccion() {
+                                //valida calle
+                                var calle = $("#calle_nuevo_permiso_temporal");
+                                var regex_calle = "[A-Za-z ]+[0-9 ][A-Za-z0-9 ]{1,40}";
+                                if (!validar_regex(regex_calle, calle.val())) {
+                                    M.toast({
+                                        html: '¡Agrega calle y número:TECAMACHALCO 370, sin acentos ni signos especiales!',
+                                        classes: 'deep-orange c-blanco'
+                                    });
+                                    return false;
+                                }
+                                //valida colonia*
+                                var colonia = $("#colonia_nuevo_permiso_temporal");
+                                var regex_colonia = "[A-Za-z ]{5,30}";
+                                if (!validar_regex(regex_colonia, colonia.val())) {
+                                    M.toast({
+                                        html: '¡Agrega colonia sin acentos ni signos especiales, mínimo 5 y máximo 30 caracteres!',
+                                        classes: 'deep-orange c-blanco'
+                                    });
+                                    return false;
+                                }
+                                //valida DESCRIPCION*
+                                var descripcion = $("#descripcion_recordar_direccion");
+                                if (descripcion.val().length === 0) {
+                                    M.toast({
+                                        html: '¡Agrega descripción!',
+                                        classes: 'deep-orange c-blanco'
+                                    });
+                                    return false;
+                                }
+                                return true;
+                            }
+                            function enviar_direccion() {
+                                var calle = $('#calle_nuevo_permiso_temporal').val();
+                                var colonia = $('#colonia_nuevo_permiso_temporal').val();
+                                var descripcion = $('#descripcion_recordar_direccion').val();
+                                var cp = $('#cp').val();
+                                var validacion = validar_recordar_direccion();
+                                if (!validacion)
+                                    return;
+                                if (calle.length > 0 && colonia.length > 0 && descripcion.length > 0) {
+                                    var data = {
+                                        "calle": calle,
+                                        "colonia": colonia,
+                                        "descripcion": descripcion,
+                                        "cp": cp,
+                                        "id_usuario":<?php echo $id; ?>,
+                                        "familia":<?php echo $familia; ?>
                                     }
-                                    function cambiar_direccion(id) {
-                                        var dato = $('select[id=reside]').val();
-                                        if (dato == '0') {
-                                            $("#calle_nuevo_permiso_temporal").val("");
-                                            $("#colonia_nuevo_permiso_temporal").val("");
-                                            $("#cp_nuevo_permiso_temporal").val("");
-                                            $('#recordar_direccion').prop("checked", false);
-                                            $('#container_descripcion_recordar_direccion').hide();
+                                    $.ajax({
+                                        url: "/pruebascd/icloud/Transportes/common/post_nueva_direccion.php",
+                                        type: "POST",
+                                        data: data,
+                                        beforeSend: function () {
+                                            $("#loading").fadeIn("slow");
+                                        },
+                                        success: function () {
+                                            M.toast({
+                                                html: `¡Registro exitoso!, puedes seleccionar tu nueva dirección en la lista desplegable con la descripción ${data.descripcion}`,
+                                                classes: 'deep-orange c-blanco'
+                                            });
+                                            $('#calle_nuevo_permiso_temporal').val("");
+                                            $('#colonia_nuevo_permiso_temporal').val("");
                                             $('#descripcion_recordar_direccion').val("");
-                                            $('#cp').val("");
+                                            consultar_direcciones(data.id_usuario);
+                                            cambiar_direccion(data.id_usuario);
                                         }
-                                        if (dato == '1') {
-                                            $("#calle_nuevo_permiso_temporal").val("Periferico Boulevard Manuel Avila Camacho 620");
-                                            M.textareaAutoResize($('#calle_nuevo_permiso_temporal'));
-                                            $("#colonia_nuevo_permiso_temporal").val("Lomas de Sotelo");
-                                            M.textareaAutoResize($('#colonia_nuevo_permiso_temporal'));
-                                            $("#cp").val("53538");
-                                            //limpia recordar direccion
-                                            $('#recordar_direccion').prop("checked", false);
-                                            $('#container_descripcion_recordar_direccion').hide();
-                                            $('#descripcion_recordar_direccion').val("");
-                                        }
-                                        if (dato !== "0" && dato !== "1") {
-                                            var data = [];
-                                            $.ajax({
-                                                url: "/pruebascd/icloud/Transportes/common/get_consultar_direcciones.php",
-                                                type: "GET",
-                                                data: {"id_usuario": id},
-                                                beforeSend: function () {
-                                                    $("#loading").fadeIn("slow");
-                                                },
-                                                success: function (res) {
-                                                    res = JSON.parse(res);
-                                                    for (var key in res) {
-                                                        data.push(res[key]);
-                                                    }
-                                                    for (var key in data) {
-                                                        if (data[key].id_direccion === dato) {
-                                                            $("#calle_nuevo_permiso_temporal").val(data[key].calle);
-                                                            M.textareaAutoResize($('#calle_nuevo_permiso_temporal'));
-                                                            $("#colonia_nuevo_permiso_temporal").val(data[key].colonia);
-                                                            M.textareaAutoResize($('#colonia_nuevo_permiso_temporal'));
-                                                            $("#cp").val(data[key].cp);
-                                                        }
-                                                    }
-                                                }
-                                            }).always(function () {
+                                    })
+                                            .always(function () {
                                                 setInterval(function () {
                                                     $("#loading").fadeOut("slow");
                                                 }, 1000);
                                             });
-                                            //limpia recordar direccion
-                                            $('#recordar_direccion').prop("checked", false);
-                                            $('#container_descripcion_recordar_direccion').hide();
-                                            $('#descripcion_recordar_direccion').val("");
-                                        }
+                                    return;
+                                }
+                                M.toast({
+                                    html: '¡Debe llenar todos los campos!',
+                                    classes: 'deep-orange c-blanco'
+                                });
+                                if (calle.length == 0) {
+                                    $('#calle_nuevo').focus();
+                                }
+                                if (colonia.length == 0) {
+                                    $('#colonia_nuevo').focus();
+                                }
+                                if (descripcion.length == 0) {
+                                    $('#descripcion_recordar_direccion').focus();
+                                }
+                            }
+                            function validar_regex(reg, val) {
+                                var regex = new RegExp(reg);
+                                if (regex.test(val)) {
+                                    return true;
+                                }
+                                return false;
+                            }
+                            function validar_formulario() {
+                                //valida checks de alumnos
+                                var selected = '';
+                                $('.checks-alumnos input[type=checkbox]').each(function () {
+                                    if (this.checked) {
+                                        selected += $(this).val() + ', ';
                                     }
-                                    function validar_recordar_direccion() {
-                                        //valida calle
-                                        var calle = $("#calle_nuevo_permiso_temporal");
-                                        var regex_calle = "[A-Za-z ]+[0-9 ][A-Za-z0-9 ]{1,40}";
-                                        if (!validar_regex(regex_calle, calle.val())) {
-                                            M.toast({
-                                                html: '¡Agrega calle y número:TECAMACHALCO 370, sin acentos ni signos especiales!',
-                                                classes: 'deep-orange c-blanco'
-                                            });
-                                            return false;
-                                        }
-                                        //valida colonia*
-                                        var colonia = $("#colonia_nuevo_permiso_temporal");
-                                        var regex_colonia = "[A-Za-z ]{5,30}";
-                                        if (!validar_regex(regex_colonia, colonia.val())) {
-                                            M.toast({
-                                                html: '¡Agrega colonia sin acentos ni signos especiales, mínimo 5 y máximo 30 caracteres!',
-                                                classes: 'deep-orange c-blanco'
-                                            });
-                                            return false;
-                                        }
-                                        //valida DESCRIPCION*
-                                        var descripcion = $("#descripcion_recordar_direccion");
-                                        if (descripcion.val().length === 0) {
-                                            M.toast({
-                                                html: '¡Agrega descripción!',
-                                                classes: 'deep-orange c-blanco'
-                                            });
-                                            return false;
-                                        }
-                                        return true;
-                                    }
-                                    function enviar_direccion() {
-                                        var calle = $('#calle_nuevo_permiso_temporal').val();
-                                        var colonia = $('#colonia_nuevo_permiso_temporal').val();
-                                        var descripcion = $('#descripcion_recordar_direccion').val();
-                                        var cp = $('#cp').val();
-                                        var validacion = validar_recordar_direccion();
-                                        if (!validacion)
-                                            return;
-                                        if (calle.length > 0 && colonia.length > 0 && descripcion.length > 0) {
-                                            var data = {
-                                                "calle": calle,
-                                                "colonia": colonia,
-                                                "descripcion": descripcion,
-                                                "cp": cp,
-                                                "id_usuario":<?php echo $id; ?>,
-                                                "familia":<?php echo $familia; ?>
-                                            }
-                                            $.ajax({
-                                                url: "/pruebascd/icloud/Transportes/common/post_nueva_direccion.php",
-                                                type: "POST",
-                                                data: data,
-                                                beforeSend: function () {
-                                                    $("#loading").fadeIn("slow");
-                                                },
-                                                success: function () {
-                                                    M.toast({
-                                                        html: `¡Registro exitoso!, puedes seleccionar tu nueva dirección en la lista desplegable con la descripción ${data.descripcion}`,
-                                                        classes: 'deep-orange c-blanco'
-                                                    });
-                                                    $('#calle_nuevo_permiso_temporal').val("");
-                                                    $('#colonia_nuevo_permiso_temporal').val("");
-                                                    $('#descripcion_recordar_direccion').val("");
-                                                    consultar_direcciones(data.id_usuario);
-                                                    cambiar_direccion(data.id_usuario);
-                                                }
-                                            })
-                                                    .always(function () {
-                                                        setInterval(function () {
-                                                            $("#loading").fadeOut("slow");
-                                                        }, 1000);
-                                                    });
-                                            return;
-                                        }
-                                        M.toast({
-                                            html: '¡Debe llenar todos los campos!',
-                                            classes: 'deep-orange c-blanco'
-                                        });
-                                        if (calle.length == 0) {
-                                            $('#calle_nuevo').focus();
-                                        }
-                                        if (colonia.length == 0) {
-                                            $('#colonia_nuevo').focus();
-                                        }
-                                        if (descripcion.length == 0) {
-                                            $('#descripcion_recordar_direccion').focus();
-                                        }
-                                    }
-                                    function validar_regex(reg, val) {
-                                        var regex = new RegExp(reg);
-                                        if (regex.test(val)) {
-                                            return true;
-                                        }
-                                        return false;
-                                    }
-                                    function validar_formulario() {
-                                        //valida checks de alumnos
-                                        var selected = '';
-                                        $('.checks-alumnos input[type=checkbox]').each(function () {
-                                            if (this.checked) {
-                                                selected += $(this).val() + ', ';
-                                            }
-                                        });
-                                        if (selected === '') {
-                                            M.toast({
-                                                html: '¡Debes seleccionar al menos un alumno para continuar!',
-                                                classes: 'deep-orange c-blanco'
-                                            });
-                                            return false;
-                                        }
-                                        //valida calle y colonia
-                                        //valida calle
-                                        var calle = $("#calle_nuevo_permiso_temporal");
-                                        var regex_calle = "[A-Za-z ]+[0-9 ][A-Za-z0-9 ]{1,40}";
-                                        if (!validar_regex(regex_calle, calle.val())) {
-                                            M.toast({
-                                                html: '¡Agrega calle y número:TECAMACHALCO 370, sin acentos ni signos especiales!',
-                                                classes: 'deep-orange c-blanco'
-                                            });
-                                            return false;
-                                        }
-                                        //valida colonia*
-                                        var colonia = $("#colonia_nuevo_permiso_temporal");
-                                        var regex_colonia = "[A-Za-z ]{5,30}";
-                                        if (!validar_regex(regex_colonia, colonia.val())) {
-                                            M.toast({
-                                                html: '¡Agrega colonia sin acentos ni signos especiales, mínimo 5 y máximo 30 caracteres!',
-                                                classes: 'deep-orange c-blanco'
-                                            });
-                                            return false;
-                                        }
-                                        //valida nombre*
-                                        var nombre_nuevo_permiso_temporal = $("#responsable");
-                                        var regex_nombre_nuevo_permiso_temporal = "[A-Za-z ]{1,256}";
-                                        if (!validar_regex(regex_nombre_nuevo_permiso_temporal, nombre_nuevo_permiso_temporal.val())) {
-                                            M.toast({
-                                                html: '¡Agregue un responsable válido, sin acentos ni signos especiales!',
-                                                classes: 'deep-orange c-blanco'
-                                            });
-                                            return false;
-                                        }
-                                        //valida parentesco*
-                                        var parentesco_nuevo_permiso_temporal = $("#parentesco_responsable");
-                                        var regex_parentesco_nuevo_permiso_temporal = "[A-Za-z ]{1,256}";
-                                        if (!validar_regex(regex_parentesco_nuevo_permiso_temporal, parentesco_nuevo_permiso_temporal.val())) {
-                                            M.toast({
-                                                html: '¡Agregue parentesco sin acentos ni signos especiales!',
-                                                classes: 'deep-orange c-blanco'
-                                            });
-                                            return false;
-                                        }
-                                        //valida celular*
-                                        var celular_nuevo_permiso_temporal = $("#celular_nuevo_permiso_temporal");
-                                        if (celular_nuevo_permiso_temporal.val().length == 8 ||
-                                                celular_nuevo_permiso_temporal.val().length == 10)
-                                        {
+                                });
+                                if (selected === '') {
+                                    M.toast({
+                                        html: '¡Debes seleccionar al menos un alumno para continuar!',
+                                        classes: 'deep-orange c-blanco'
+                                    });
+                                    return false;
+                                }
+                                //valida calle y colonia
+                                //valida calle
+                                var calle = $("#calle_nuevo_permiso_temporal");
+                                var regex_calle = "[A-Za-z ]+[0-9 ][A-Za-z0-9 ]{1,40}";
+                                if (!validar_regex(regex_calle, calle.val())) {
+                                    M.toast({
+                                        html: '¡Agrega calle y número:TECAMACHALCO 370, sin acentos ni signos especiales!',
+                                        classes: 'deep-orange c-blanco'
+                                    });
+                                    return false;
+                                }
+                                //valida colonia*
+                                var colonia = $("#colonia_nuevo_permiso_temporal");
+                                var regex_colonia = "[A-Za-z ]{5,30}";
+                                if (!validar_regex(regex_colonia, colonia.val())) {
+                                    M.toast({
+                                        html: '¡Agrega colonia sin acentos ni signos especiales, mínimo 5 y máximo 30 caracteres!',
+                                        classes: 'deep-orange c-blanco'
+                                    });
+                                    return false;
+                                }
+                                //valida nombre*
+                                var nombre_nuevo_permiso_temporal = $("#responsable");
+                                var regex_nombre_nuevo_permiso_temporal = "[A-Za-z ]{1,256}";
+                                if (!validar_regex(regex_nombre_nuevo_permiso_temporal, nombre_nuevo_permiso_temporal.val())) {
+                                    M.toast({
+                                        html: '¡Agregue un responsable válido, sin acentos ni signos especiales!',
+                                        classes: 'deep-orange c-blanco'
+                                    });
+                                    return false;
+                                }
+                                //valida parentesco*
+                                var parentesco_nuevo_permiso_temporal = $("#parentesco_responsable");
+                                var regex_parentesco_nuevo_permiso_temporal = "[A-Za-z ]{1,256}";
+                                if (!validar_regex(regex_parentesco_nuevo_permiso_temporal, parentesco_nuevo_permiso_temporal.val())) {
+                                    M.toast({
+                                        html: '¡Agregue parentesco sin acentos ni signos especiales!',
+                                        classes: 'deep-orange c-blanco'
+                                    });
+                                    return false;
+                                }
+                                //valida celular*
+                                var celular_nuevo_permiso_temporal = $("#celular_nuevo_permiso_temporal");
+                                if (celular_nuevo_permiso_temporal.val().length == 8 ||
+                                        celular_nuevo_permiso_temporal.val().length == 10)
+                                {
 
-                                        } else {
-                                            M.toast({
-                                                html: '¡Agregue celular con 8 o 10 dígitos!',
-                                                classes: 'deep-orange c-blanco'
-                                            });
-                                            return false;
+                                } else {
+                                    M.toast({
+                                        html: '¡Agregue celular con 8 o 10 dígitos!',
+                                        classes: 'deep-orange c-blanco'
+                                    });
+                                    return false;
+                                }
+                                //valida telefono
+                                var telefono_nuevo_permiso_temporal = $("#telefono_nuevo_permiso_temporal");
+                                if (telefono_nuevo_permiso_temporal.val().length !== 8) {
+                                    M.toast({
+                                        html: '¡Agregue teléfono con 8 dígitos!',
+                                        classes: 'deep-orange c-blanco'
+                                    });
+                                    return false;
+                                }
+                                //valida fechas
+                                if ($("#fecha_inicial_nuevo_permiso_temporal").val().length === 0) {
+                                    M.toast({
+                                        html: '¡Debes seleccionar una fecha inicial válida!',
+                                        classes: 'deep-orange c-blanco'
+                                    });
+                                    return false;
+                                }
+                                if ($("#fecha_final_nuevo_permiso_temporal").val().length === 0) {
+                                    M.toast({
+                                        html: '¡Debes seleccionar una fecha final válida!',
+                                        classes: 'deep-orange c-blanco'
+                                    });
+                                    return false;
+                                }
+                                //validar fecha final mayor que fecha inicial
+                                var fecha_inicial = $("#fecha_inicial_nuevo_permiso_temporal").val();
+                                fecha_inicial = formatear_fecha_calendario(fecha_inicial);
+                                var fecha_final = $("#fecha_final_nuevo_permiso_temporal").val();
+                                fecha_final = formatear_fecha_calendario(fecha_final);
+                                fecha_inicial = new Date(fecha_inicial);
+                                fecha_final = new Date(fecha_final);
+                                if (fecha_final <= fecha_inicial) {
+                                    M.toast({
+                                        html: '¡La fecha final debe ser posterior a la fecha inicial!',
+                                        classes: 'deep-orange c-blanco'
+                                    });
+                                    return false;
+                                }
+                                //valida seleccion de ruta
+                                if ($("#ruta_nuevo_permiso_temporal").val() === "" ||
+                                        $("#ruta_nuevo_permiso_temporal").val() === null) {
+                                    M.toast({
+                                        html: '¡Debes seleccionar una ruta!',
+                                        classes: 'deep-orange c-blanco'
+                                    });
+                                    return false;
+                                }
+                                return true;
+                            }
+                            function validar_solo_numeros_max(num) {
+                                var charCode = (num.which) ? num.which : num.keyCode;
+                                if (charCode != 46 && charCode > 31
+                                        && (charCode < 48 || charCode > 57))
+                                    return false;
+                                return true;
+                            }
+                            function enviar_formulario(id, familia, tipo_permiso) {
+                                if (validar_formulario()) {
+                                    //fecha solicitud, solicitante, fecha del permiso, nombre del alumno, alumnos, calle, colonia
+                                    var calle_nuevo_permiso_temporal = $("#calle_nuevo_permiso_temporal").val();
+                                    var colonia_nuevo_permiso_temporal = $("#colonia_nuevo_permiso_temporal").val();
+                                    var cp = $("#cp").val() !== "" ? $("#cp").val() : "00000";
+                                    var responsable = $("#responsable").val();
+                                    var parentesco = $("#parentesco_responsable").val();
+                                    var celular = $("#celular_nuevo_permiso_temporal").val();
+                                    var telefono = $("#telefono_nuevo_permiso_temporal").val();
+                                    var fecha_inicial = $("#fecha_inicial_nuevo_permiso_temporal").val();
+                                    var fecha_final = $("#fecha_final_nuevo_permiso_temporal").val();
+                                    var turno = $("#ruta_nuevo_permiso_temporal").val();
+                                    var comentarios = $("#comentarios_nuevo_permiso_temporal").val();
+                                    var fecha_creacion = $("#fecha_solicitud_permiso_temporal").val();
+                                    //toma los id de alumnos
+                                    var selected = '';
+                                    $('.checks-alumnos input[type=checkbox]').each(function () {
+                                        if (this.checked) {
+                                            selected += $(this).val() + ',';
                                         }
-                                        //valida telefono
-                                        var telefono_nuevo_permiso_temporal = $("#telefono_nuevo_permiso_temporal");
-                                        if (telefono_nuevo_permiso_temporal.val().length !== 8) {
-                                            M.toast({
-                                                html: '¡Agregue teléfono con 8 dígitos!',
-                                                classes: 'deep-orange c-blanco'
-                                            });
-                                            return false;
-                                        }
-                                        //valida fechas
-                                        if ($("#fecha_inicial_nuevo_permiso_temporal").val().length === 0) {
-                                            M.toast({
-                                                html: '¡Debes seleccionar una fecha inicial válida!',
-                                                classes: 'deep-orange c-blanco'
-                                            });
-                                            return false;
-                                        }
-                                        if ($("#fecha_final_nuevo_permiso_temporal").val().length === 0) {
-                                            M.toast({
-                                                html: '¡Debes seleccionar una fecha final válida!',
-                                                classes: 'deep-orange c-blanco'
-                                            });
-                                            return false;
-                                        }
-                                        //validar fecha final mayor que fecha inicial
-                                        var fecha_inicial = $("#fecha_inicial_nuevo_permiso_temporal").val();
-                                        fecha_inicial = formatear_fecha_calendario(fecha_inicial);
-                                        var fecha_final = $("#fecha_final_nuevo_permiso_temporal").val();
-                                        fecha_final = formatear_fecha_calendario(fecha_final);
-                                        fecha_inicial = new Date(fecha_inicial);
-                                        fecha_final = new Date(fecha_final);
-                                        if (fecha_final <= fecha_inicial) {
-                                            M.toast({
-                                                html: '¡La fecha final debe ser posterior a la fecha inicial!',
-                                                classes: 'deep-orange c-blanco'
-                                            });
-                                            return false;
-                                        }
-                                        //valida seleccion de ruta
-                                        if ($("#ruta_nuevo_permiso_temporal").val() === "") {
-                                            M.toast({
-                                                html: '¡Debes seleccionar una ruta!',
-                                                classes: 'deep-orange c-blanco'
-                                            });
-                                            return false;
-                                        }
-                                        return true;
-                                    }
-                                    function validar_solo_numeros_max(num) {
-                                        var charCode = (num.which) ? num.which : num.keyCode;
-                                        if (charCode != 46 && charCode > 31
-                                                && (charCode < 48 || charCode > 57))
-                                            return false;
-                                        return true;
-                                    }
-                                    function enviar_formulario(id, familia, tipo_permiso) {
-                                        if (validar_formulario()) {
-                                            //fecha solicitud, solicitante, fecha del permiso, nombre del alumno, alumnos, calle, colonia
-                                            var calle_nuevo_permiso_temporal = $("#calle_nuevo_permiso_temporal").val();
-                                            var colonia_nuevo_permiso_temporal = $("#colonia_nuevo_permiso_temporal").val();
-                                            var cp = $("#cp").val() !== "" ? $("#cp").val() : "00000";
-                                            var responsable = $("#responsable").val();
-                                            var parentesco = $("#parentesco_responsable").val();
-                                            var celular = $("#celular_nuevo_permiso_temporal").val();
-                                            var telefono = $("#telefono_nuevo_permiso_temporal").val();
-                                            var fecha_inicial = $("#fecha_inicial_nuevo_permiso_temporal").val();
-                                            var fecha_final = $("#fecha_final_nuevo_permiso_temporal").val();
-                                            var turno = $("#ruta_nuevo_permiso_temporal").val();
-                                            var comentarios = $("#comentarios_nuevo_permiso_temporal").val();
-                                            var fecha_creacion = $("#fecha_solicitud_permiso_temporal").val();
-                                            //toma los id de alumnos
-                                            var selected = '';
-                                            $('.checks-alumnos input[type=checkbox]').each(function () {
-                                                if (this.checked) {
-                                                    selected += $(this).val() + ',';
-                                                }
-                                            });
-                                            var ids = selected.split(",");
-                                            for (var item in ids) {
-                                                if (ids[item] !== "") {
-                                                    coleccion_ids.push(ids[item]);
-                                                }
-                                            }
-                                            console.log(coleccion_ids);
-                                            var model = {
-                                                idusuario: id,
-                                                calle_numero: calle_nuevo_permiso_temporal,
-                                                colonia: colonia_nuevo_permiso_temporal,
-                                                cp: cp,
-                                                responsable: responsable,
-                                                nfamilia: familia,
-                                                parentesco: parentesco,
-                                                celular: celular,
-                                                telefono: telefono,
-                                                fecha_inicial: fecha_inicial,
-                                                fecha_final: fecha_final,
-                                                turno: turno,
-                                                comentarios: comentarios,
-                                                tipo_permiso: tipo_permiso,
-                                                coleccion_ids: coleccion_ids,
-                                                fecha_creacion: fecha_creacion
-                                            };
-                                            $.ajax({
-                                                url: "/pruebascd/icloud/Transportes/common/post_nuevo_permiso.php",
-                                                type: "POST",
-                                                data: model,
-                                                beforeSend: function () {
-                                                    $("#btn_enviar_formulario").prop("disabled", true);
-                                                    $("#loading").fadeIn("slow");
-                                                },
-                                                success: function (res) {
-                                                    if (res == 1) {
-                                                        M.toast({
-                                                            html: '¡Registro exitoso!',
-                                                            classes: 'green accent- c-blanco'
-                                                        });
-                                                        setInterval(() => {
-                                                            window.location = "https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Temporal/PTemporal.php?idseccion=<?php echo $idseccion; ?>";
-                                                        }, 1500);
-                                                    } else {
-                                                        M.toast({
-                                                            html: res,
-                                                            classes: 'deep-orange c-blanco'
-                                                        });
-                                                        setInterval(() => {
-                                                            location.reload();
-                                                        }, 10000);
-                                                    }
-                                                }
-                                            }).always(function () {
-                                                $("#btn_enviar_formulario").prop("disabled", false);
-                                                setInterval(function () {
-                                                    $("#loading").fadeOut("slow");
-                                                }, 1000);
-                                            });
-
-                                            coleccion_ids = [];
+                                    });
+                                    var ids = selected.split(",");
+                                    for (var item in ids) {
+                                        if (ids[item] !== "") {
+                                            coleccion_ids.push(ids[item]);
                                         }
                                     }
-
-                                    function mostrar_nuevo_responsable() {
-                                        if ($("#nuevo_responsable").prop("hidden")) {
-                                            $("#nuevo_responsable").prop("hidden", false);
-                                            $("#nuevo_responsable").val("");
-                                            $("#select_responsable").val("0");
-                                            $("#nuevo_responsable_nombre").show();
-                                            $("#parentesco_responsable").focusout();
-                                            $("#select_responsable").change();
-                                        } else {
-                                            $("#nuevo_responsable").prop("hidden", true);
-                                            $("#responsable").val("");
-                                            $("#parentesco_responsable").val("");
-                                            cargar_responsables();
-                                        }
-                                    }
-
-                                    function seleccion_responsable(val) {
-                                        if (val === "0") {
-                                            $("#parentesco_responsable").val("");
-                                            $("#responsable").val("");
-                                            $("#btn_agregar_nuevo_responsable").show();
-                                            $("#check_nuevo_responsable").click();
-                                            return;
-                                        }
-                                        $("#nuevo_responsable").prop("hidden", false);
-                                        $("#nuevo_responsable_nombre").hide();
-                                        $("#parentesco_responsable").focus();
-                                        $("#btn_agregar_nuevo_responsable").hide();
-                                        $("#check_nuevo_responsable").prop("checked", true);
-                                        for (var item in responsables) {
-                                            if (responsables[item].id === val) {
-                                                //$("#nuevo_responsable").prop("hidden", false);
-                                                /*se verifica el parentesco a través del tipo en tabla usuarios
-                                                 y si no cumple con la condición se establece el parentesco en tabla Responsables*/
-                                                var parentesco = responsables[item].tipo === "3" ? "Padre" :
-                                                        responsables[item].tipo === "4" ? "Madre" : responsables[item].parentesco;
-                                                $("#parentesco_responsable").val(parentesco);
-                                                $("#responsable").val(responsables[item].nombre);
-                                                //$("#check_nuevo_responsable").prop('checked', true);
+                                    console.log(coleccion_ids);
+                                    var model = {
+                                        idusuario: id,
+                                        calle_numero: calle_nuevo_permiso_temporal,
+                                        colonia: colonia_nuevo_permiso_temporal,
+                                        cp: cp,
+                                        responsable: responsable,
+                                        nfamilia: familia,
+                                        parentesco: parentesco,
+                                        celular: celular,
+                                        telefono: telefono,
+                                        fecha_inicial: fecha_inicial,
+                                        fecha_final: fecha_final,
+                                        turno: turno,
+                                        comentarios: comentarios,
+                                        tipo_permiso: tipo_permiso,
+                                        coleccion_ids: coleccion_ids,
+                                        fecha_creacion: fecha_creacion
+                                    };
+                                    $.ajax({
+                                        url: "/pruebascd/icloud/Transportes/common/post_nuevo_permiso.php",
+                                        type: "POST",
+                                        data: model,
+                                        beforeSend: function () {
+                                            $("#btn_enviar_formulario").prop("disabled", true);
+                                            $("#loading").fadeIn("slow");
+                                        },
+                                        success: function (res) {
+                                            if (res == 1) {
+                                                M.toast({
+                                                    html: '¡Registro exitoso!',
+                                                    classes: 'green accent- c-blanco'
+                                                });
+                                                setInterval(() => {
+                                                    window.location = "https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Temporal/PTemporal.php?idseccion=<?php echo $idseccion; ?>";
+                                                }, 1500);
+                                            } else {
+                                                M.toast({
+                                                    html: res,
+                                                    classes: 'deep-orange c-blanco'
+                                                });
+                                                setInterval(() => {
+                                                    location.reload();
+                                                }, 10000);
                                             }
                                         }
-                                    }
+                                    }).always(function () {
+                                        $("#btn_enviar_formulario").prop("disabled", false);
+                                        setInterval(function () {
+                                            $("#loading").fadeOut("slow");
+                                        }, 1000);
+                                    });
 
-                                    //validaciones responsable
-                                    function validar_responsable() {
-                                        var responsable = $("#responsable").val();
-                                        var parentesco_responsable = $("#parentesco_responsable").val();
-                                        if (responsable === "") {
-                                            M.toast({
-                                                html: 'Debe ingresar un responsable válido!',
-                                                classes: 'deep-orange c-blanco'
-                                            });
-                                            return false;
-                                        }
-                                        if (parentesco_responsable === "") {
-                                            M.toast({
-                                                html: 'Debe ingresar un parentesco válido!',
-                                                classes: 'deep-orange c-blanco'
-                                            });
-                                            return false;
-                                        }
-                                        return true;
+                                    coleccion_ids = [];
+                                }
+                            }
+                            function mostrar_nuevo_responsable() {
+                                if ($("#nuevo_responsable").prop("hidden")) {
+                                    $("#nuevo_responsable").prop("hidden", false);
+                                    $("#nuevo_responsable").val("");
+                                    $("#select_responsable").val("0");
+                                    $("#nuevo_responsable_nombre").show();
+                                    $("#parentesco_responsable").focusout();
+                                    $("#select_responsable").change();
+                                } else {
+                                    $("#nuevo_responsable").prop("hidden", true);
+                                    $("#responsable").val("");
+                                    $("#parentesco_responsable").val("");
+                                    cargar_responsables();
+                                }
+                            }
+                            function seleccion_responsable(val) {
+                                if (val === "0") {
+                                    $("#parentesco_responsable").val("");
+                                    $("#responsable").val("");
+                                    $("#btn_agregar_nuevo_responsable").show();
+                                    $("#check_nuevo_responsable").click();
+                                    return;
+                                }
+                                $("#nuevo_responsable").prop("hidden", false);
+                                $("#nuevo_responsable_nombre").hide();
+                                $("#parentesco_responsable").focus();
+                                $("#btn_agregar_nuevo_responsable").hide();
+                                $("#check_nuevo_responsable").prop("checked", true);
+                                for (var item in responsables) {
+                                    if (responsables[item].id === val) {
+                                        //$("#nuevo_responsable").prop("hidden", false);
+                                        /*se verifica el parentesco a través del tipo en tabla usuarios
+                                         y si no cumple con la condición se establece el parentesco en tabla Responsables*/
+                                        var parentesco = responsables[item].tipo === "3" ? "Padre" :
+                                                responsables[item].tipo === "4" ? "Madre" : responsables[item].parentesco;
+                                        $("#parentesco_responsable").val(parentesco);
+                                        $("#responsable").val(responsables[item].nombre);
+                                        //$("#check_nuevo_responsable").prop('checked', true);
                                     }
-
-                                    function post_nuevo_responsable() {
-                                        var responsable = $("#responsable").val();
-                                        var parentesco_responsable = $("#parentesco_responsable").val();
-                                        if (validar_responsable()) {
-                                            nuevo_responsable(responsable, parentesco_responsable, '<?php echo $familia; ?>');
-                                            cargar_responsables();
-                                        }
-                                    }
-
-                                    function cargar_responsables() {
-                                        responsables = obtener_responsables('<?php echo $familia; ?>');
-                                        opciones_select_padres(responsables, "select_responsable");
-                                        $('select').formSelect();
-                                    }
-
-                                    function opciones_select_padres(val, id) {
-                                        var select = $(`#${id}`);
-                                        var options = "<option value='0' selected>Seleccione una opción</option>";
-                                        for (var key in val) {
-                                            options += `<option value="${val[key].id}">${val[key].nombre}</option>`;
-                                        }
-                                        select.html(options);
-                                    }
+                                }
+                            }
+                            //validaciones responsable
+                            function validar_responsable() {
+                                var responsable = $("#responsable").val();
+                                var parentesco_responsable = $("#parentesco_responsable").val();
+                                if (responsable === "") {
+                                    M.toast({
+                                        html: 'Debe ingresar un responsable válido!',
+                                        classes: 'deep-orange c-blanco'
+                                    });
+                                    return false;
+                                }
+                                if (parentesco_responsable === "") {
+                                    M.toast({
+                                        html: 'Debe ingresar un parentesco válido!',
+                                        classes: 'deep-orange c-blanco'
+                                    });
+                                    return false;
+                                }
+                                return true;
+                            }
+                            function post_nuevo_responsable() {
+                                var responsable = $("#responsable").val();
+                                var parentesco_responsable = $("#parentesco_responsable").val();
+                                if (validar_responsable()) {
+                                    nuevo_responsable(responsable, parentesco_responsable, '<?php echo $familia; ?>');
+                                    cargar_responsables();
+                                }
+                            }
+                            function cargar_responsables() {
+                                responsables = obtener_responsables('<?php echo $familia; ?>');
+                                opciones_select_padres(responsables, "select_responsable");
+                                $('select').formSelect();
+                            }
+                            function opciones_select_padres(val, id) {
+                                var select = $(`#${id}`);
+                                var options = "<option value='0' selected>Seleccione una opción</option>";
+                                for (var key in val) {
+                                    options += `<option value="${val[key].id}">${val[key].nombre}</option>`;
+                                }
+                                select.html(options);
+                            }
 </script>
 <?php include "$root_icloud/Transportes/Temporal/modales/modal_informacion_importante_hora_limite.php"; ?>
 <?php include "$root_icloud/components/layout_bottom.php"; ?>

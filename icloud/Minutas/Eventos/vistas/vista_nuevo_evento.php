@@ -118,7 +118,7 @@ else :
                             //deshabilita el día 6 de la semana, es decir, el día sábado
                             calendario_escolar.push(6);
                             //asigna en el objeto del calendario dias sabados y domigos para deshabilitar
-                            var fecha_minima = new Date('<?php echo date('Y-m-d'); ?>');
+                            var fecha_minima = new Date('<?php echo date('Y-m-d'); ?>'.replace(/-/g, "/"));
                             //fix de error al mostrar calendario (se oculta inmediatamente se abre)
                             $(".datepicker").on('mousedown', function (event) {
                                 event.preventDefault();
@@ -198,6 +198,46 @@ else :
                             </tbody>
                         </table>
                     </div> 
+                    <?php
+                    $temas_pendientes = $controlMinutas->consultar_temas_pendientes(0);
+                    if (mysqli_num_rows($temas_pendientes) > 0):
+                        ?>  
+                        <h5 class="col s12 c-azul text-center">Temas pendientes</h5>                        <div class="input-field col s12">
+                            <table class="display nowrap" id="tabla_temas_pendientes" style="margin-top: 6px;">
+                                <thead>
+                                    <tr>
+                                        <th>Tema</th>
+                                        <th>Estatus</th>
+                                        <th>Acuerdos</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    while ($row = mysqli_fetch_array($temas_pendientes)) :
+                                        ?>               
+                                        <tr>
+                                            <td><?php echo $row[1] ?></td>
+                                            <td>
+                                                <span class="chip <?php echo $row[4]; ?>">
+                                                    <?php echo $row[3]; ?> 
+                                                </span>
+                                            </td>
+                                            <td class="text-center">
+                                                <a class="waves-effect waves-light modal-trigger"
+                                                   style="margin-top: 16px;"
+                                                   href="#modal_acuerdos_pendiente"
+                                                   onclick="modal_acuerdos_pendientes('<?php echo $row[0]; ?>', '<?php echo $row[1]; ?>', 'input_acuerdos_pendiente_<?php echo $row[0]; ?>');
+                                                           get_consulta_acuerdo_temas_pendientes('<?php echo $row[0]; ?>')">
+                                                    <i class="material-icons cyan-text accent-3">search</i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    <?php endwhile; ?>
+                                </tbody>
+                            </table>
+                        </div> 
+                    <?php endif;
+                    ?>
                     <h5 class="col s12 c-azul text-center">Archivos adjuntos</h5> 
                     <div class="input-field col s12">
                         <input type="file" name="filepond" data-max-files="10" multiple>
@@ -235,16 +275,45 @@ else :
     <div id="modal_alerta_salir_sin_guardar" class="modal">
         <div class="modal-content">
             <div>
-                <h6 class="">Alerta</h6>
+                <h6 class="red-text">Alerta</h6>
                 <p>¿Deseas regresar sin guardar el evento?</p>
             </div>  
         </div>
         <div class="modal-footer grey lighten-3">
-            <a href="#!" class="modal-close waves-effect waves-light btn-flat red white-text" onclick="x();"><b>Cancelar</b></a>
-            <a href="../Eventos.php?idseccion=<?php echo $idseccion; ?>" class="modal-close waves-effect waves-blue btn-flat b-azul white-text"><b>Aceptar</b></a>
+            <a href="#!" class="modal-close waves-effect waves-light btn red white-text">
+                <i class="material-icons left">highlight_off</i>&nbsp;Cancelar
+            </a>
+            <a class="modal-close waves-effect waves-blue btn green white-text" onclick="cancelar_minuta()">
+                <i class="material-icons right">done</i>&nbsp;Aceptar
+            </a>
         </div>
     </div>
-    <a href="#!" onclick="x();">AQUI</a>
+    <!-- Modal Structure -->
+    <div id="modal_acuerdos_pendiente" class="modal">
+        <div class="modal-content">
+            <label style="font-size: 1rem;">Acuerdos anteriores</label>  
+            <br>
+            <ul class="collapsible">
+                <li class="active">
+                    <div class="collapsible-header">
+                        <i class="material-icons c-azul-claro">search</i>
+                        <br>
+                        <label id="id_titulo_tema_pendiente" style="font-size: 1rem;"></label> 
+                    </div>
+                    <div class="collapsible-body">
+                        <span id="id_acuerdos_pendiente"></span>
+                    </div>
+                </li>
+            </ul>
+            <input id="id_tema_modal_pendiente" hidden/>
+            <input id="input_id_tema_pendiente" hidden/>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" id="loading_keypress" hidden>
+                <img style="width: 6%;" src="../../../images/svg/loading_keypress.svg"/>
+            </a>
+        </div>
+    </div>
     <script>
         //input files
         var pond = null;
@@ -575,7 +644,6 @@ else :
         function guardar_minuta() {
             if (!validaciones())
                 return;
-
             var id_convocado_por = $("#id_convocado_por").val();
             var id_director = $("#id_director").val();
             var id_titulo_evento = $("#id_titulo_evento").val();
@@ -619,8 +687,35 @@ else :
                 }
             }).always(() => $("#loading").fadeOut());
         }
-        function x() {
-            console.log(pond.getMetadata());
+        function cancelar_minuta() {
+            $.ajax({
+                url: 'https://www.chmd.edu.mx/pruebascd/icloud/Minutas/common/post_cancelar_minuta.php',
+                type: 'POST',
+                dataType: 'json',
+                beforeSend: () => $("#loading").fadeIn(),
+                data: {id_session: id_session}
+            }).done((res) => {
+                if (res) {
+                    window.location.href = "https://www.chmd.edu.mx/pruebascd/icloud/Minutas/Eventos/Eventos.php?idseccion=<?= $idseccion; ?>";
+                }
+            }).always(() => $("#loading").fadeOut());
+        }
+        function modal_acuerdos_pendientes(id_tema, tema, input) {
+            $("#id_titulo_tema_pendiente").text(tema);
+            $("#id_tema_modal_pendiente").val(id_tema);
+            $("#input_id_tema_pendiente").val(input);
+            //M.textareaAutoResize($('#id_acuerdos_nuevos'));
+        }
+        function get_consulta_acuerdo_temas_pendientes(id_tema) {
+            $.ajax({
+                url: 'https://www.chmd.edu.mx/pruebascd/icloud/Minutas/common/get_consulta_acuerdo_temas.php',
+                type: 'GET',
+                dataType: 'json',
+                beforeSend: () => $("#loading_keypress").fadeIn(),
+                data: {id_tema: id_tema}
+            }).done((res) => {
+                $("#id_acuerdos_pendiente").text(res);
+            }).always(() => $("#loading_keypress").fadeOut());
         }
     </script>
 

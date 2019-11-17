@@ -284,12 +284,14 @@ if (isset($authUrl)) {
                         </div>
                         <span class="col s12"><br></span>
                         <div class="col s12 l6">
-                            <div class="input-field">
-                                <i class="material-icons prefix c-azul">person</i>
-                                <select id="select_responsable" onchange="seleccion_responsable(this.value)">
-                                </select>
-                                <label>Responsable</label>
-                            </div>
+                            <label>
+                                &nbsp;&nbsp;<i class="material-icons prefix c-azul">person</i>Responsable
+                            </label>
+                            <select id="select_responsable" 
+                                    class="browser-default"
+                                    onchange="seleccion_responsable(this.value)">
+                            </select>
+                            <br>
                         </div>
                         <div id="nuevo_responsable" hidden>
                             <div class="input-field col s12 l6" id="nuevo_responsable_nombre">

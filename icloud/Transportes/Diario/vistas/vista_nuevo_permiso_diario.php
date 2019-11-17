@@ -76,6 +76,11 @@ if (isset($authUrl)) {
             $btn_fecha = true;
         }
         $rutas = $control_temporal->consulta_rutas();
+        header("Expires: Tue, 01 Jan 2000 00:00:00 GMT"); 
+        header("Last-Modified: " . gmdate("D, d MYH:i:s") . " GMT"); 
+        header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0"); 
+        header("Cache-Control: post-check=0, pre-check=0", false); 
+        header("Pragma: no-cache");
         include "$root_icloud/components/navbar.php";
         ?>
         <div class="row">
@@ -229,11 +234,15 @@ if (isset($authUrl)) {
                                    value=""/>
                         </div>
                         <h5 class="center-align c-azul">Dirección de cambio</h5>
+                        
+                        <label style="margin-left: 1rem">
+                            <i class="material-icons c-azul prefix">person_pin_circle</i>Dirección Guardada
+                        </label>
                         <div class="input-field col s12">
-                            <i class="material-icons c-azul prefix">person_pin_circle</i>
-                            <select id="reside" class="input-field" onchange="cambiar_direccion('<?php echo $id; ?>')">
+                            <select id="reside" 
+                                    class="browser-default" 
+                                    onchange="cambiar_direccion('<?php echo $id; ?>')">
                             </select>
-                            <label style="margin-left: 1rem">Dirección Guardada</label>
                         </div>
                         <div class="input-field col s12">
                             <label for="calle_nuevo_permiso" style="margin-left: 1rem">Calle y Número</label>
@@ -282,12 +291,16 @@ if (isset($authUrl)) {
                             </div>
                         </div>
                     </div>
-                    <br>
+                    <span class="col s12"><br></span>
                     <?php if (date("N") == 5): ?>
+                        <label>
+                            &nbsp;&nbsp;&nbsp;<i class="material-icons c-azul prefix">departure_board</i>Ruta
+                        </label>
                         <div class="input-field col s12">
-                            <i class="material-icons c-azul prefix">departure_board</i>
-                            <select class="input-field" id="ruta">
-                                <option value="" selected disabled>Selecciona tu ruta</option>
+                            <select class="browser-default" 
+                                    id="ruta" 
+                                    title="Selecciona tu ruta">
+                                <option value="" selected>Selecciona tu ruta</option>
                                 <?php
                                 if (mysqli_num_rows($rutas)):
                                     while ($row = mysqli_fetch_array($rutas)):
@@ -300,13 +313,15 @@ if (isset($authUrl)) {
                                 endif;
                                 ?>
                             </select>
-                            <label>Ruta</label>
                         </div>
-                    <?php else: ?>
-                        <div class="input-field col s12">
-                            <i class="material-icons c-azul prefix">departure_board</i>
-                            <select class="input-field" id="ruta" >
-                                <option value="" selected disabled>Selecciona tu ruta</option>
+                    <?php else: ?>   
+                        <label>
+                            &nbsp;&nbsp;&nbsp;<i class="material-icons c-azul prefix">departure_board</i>Ruta
+                        </label>   
+                        <div class="input-field col s12">                      
+                            <select class="browser-default" 
+                                    id="ruta">
+                                <option value="" selected>Selecciona tu ruta</option>
                                 <?php
                                 if (mysqli_num_rows($rutas)):
                                     while ($row = mysqli_fetch_array($rutas)):
@@ -317,7 +332,6 @@ if (isset($authUrl)) {
                                 endif;
                                 ?>
                             </select>
-                            <label>Ruta</label>
                         </div>
                     <?php endif; ?>
                     <br>
@@ -603,7 +617,7 @@ echo $arrayDias[date('w')] . ", " . date('d') .
             return false;
         }
         //valida seleccion de ruta
-        if ($("#ruta").val() === "") {
+        if ($("#ruta").val() === "" || $("#ruta").val() === null) {
             M.toast({
                 html: '¡Debes seleccionar una ruta!',
                 classes: 'deep-orange c-blanco'
@@ -637,7 +651,6 @@ echo $arrayDias[date('w')] . ", " . date('d') .
                 }
             }
 
-            console.log(coleccion_ids);
             var model = {
                 idusuario: id,
                 calle_numero: calle,

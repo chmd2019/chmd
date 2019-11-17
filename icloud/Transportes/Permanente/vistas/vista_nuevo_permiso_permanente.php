@@ -154,11 +154,15 @@ if (isset($authUrl)) {
                         </div>
                     </div>
                     <h5 class="center-align c-azul">Dirección de cambio</h5>
-                    <div class="input-field col s12">
-                        <i class="material-icons c-azul prefix">person_pin_circle</i>
-                        <select id="reside" class="input-field" onchange="cambiar_direccion('<?php echo $id; ?>')">
+                    <div class="col s12">
+                        <label style="margin-left: 1rem">
+                            &nbsp;&nbsp;<i class="material-icons c-azul prefix">person_pin_circle</i>Dirección Guardada
+                        </label>
+                        <select id="reside" 
+                                class="browser-default" 
+                                onchange="cambiar_direccion('<?php echo $id; ?>')">
                         </select>
-                        <label style="margin-left: 1rem">Dirección Guardada</label>
+                        <br>
                     </div>
                     <div class="input-field col s12">
                         <i class="material-icons c-azul prefix">person_pin_circle</i>
@@ -246,9 +250,13 @@ if (isset($authUrl)) {
                         </div>
                     </div>
                     <div>
-                        <div class="input-field col s12">
-                            <i class="material-icons c-azul prefix">departure_board</i>
-                            <select class="input-field" id="ruta_nuevo_permiso_permanente" >
+                        <div class="col s12">
+                            <br>
+                            <br>
+                            <label>
+                                &nbsp;&nbsp;<i class="material-icons c-azul prefix">departure_board</i>Ruta
+                            </label>
+                            <select class="browser-default" id="ruta_nuevo_permiso_permanente" >
                                 <option value="" selected disabled>Selecciona tu ruta</option>
                                 <?php
                                 if (mysqli_num_rows($rutas)):
@@ -260,7 +268,7 @@ if (isset($authUrl)) {
                                 endif;
                                 ?>
                             </select>
-                            <label>Ruta</label>
+                            <br>
                         </div>
                     </div>
                     <div class="input-field col s12">
@@ -286,15 +294,6 @@ if (isset($authUrl)) {
     }
 }
 ?>
-
-<!--
-<div class="fixed-action-btn">
-<a class="btn-floating btn-large waves-effect waves-light b-azul"
-href="<?php echo $redirect_uri ?>Transportes/Permanente/PPermanente.php?idseccion=<?php echo $idseccion; ?>">
-<i class="large material-icons">keyboard_backspace</i>
-</a>
-</div>
--->
 
 <div class="loading" id="loading" >
     <div class="preloader-wrapper big active">
@@ -543,7 +542,7 @@ href="<?php echo $redirect_uri ?>Transportes/Permanente/PPermanente.php?idseccio
             return false;
         }
         //valida seleccion de ruta
-        if ($("#ruta_nuevo_permiso_permanente").val() === "") {
+        if ($("#ruta_nuevo_permiso_permanente").val() === "" || $("#ruta_nuevo_permiso_permanente").val() === null) {
             M.toast({
                 html: '¡Debes seleccionar una ruta!',
                 classes: 'deep-orange c-blanco'

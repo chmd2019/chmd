@@ -318,3 +318,51 @@ function validaNombre(nombre) {
     var regex = /^([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\']+[\s])+([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\'])+[\s]?([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\'])?$/g;
     return regex.test(nombre);
 }
+
+function set_table(id_table) {
+    $('#' + id_table).DataTable({
+        "processing": true,
+        "language": {
+            "lengthMenu": "_MENU_",
+            "zeroRecords": "<span class='chip red white-text'>Sin registros para mostrar</span>",
+            "info": "<span class='chip blue white-text'>Mostrando colección _PAGE_ de _PAGES_</span>",
+            "infoEmpty": "<span class='chip red white-text'>Sin registros disponibles</span>",
+            "infoFiltered": "(filtrado de _MAX_ total de registros)",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "paginate": {
+                "first": "Primero",
+                "last": "Último",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        }
+    });
+}
+function set_table_desordenada(id_table) {
+    $('#' + id_table).DataTable({
+        "processing": true,
+        "order": [],
+        "columnDefs": [{
+                "targets": 'no-sort',
+                "orderable": false,
+            }],
+        "language": {
+            "lengthMenu": "_MENU_",
+            "zeroRecords": "<span class='chip red white-text'>Sin registros para mostrar</span>",
+            "info": "<span class='chip blue white-text'>Mostrando colección _PAGE_ de _PAGES_</span>",
+            "infoEmpty": "<span class='chip red white-text'>Sin registros disponibles</span>",
+            "infoFiltered": "(filtrado de _MAX_ total de registros)",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "paginate": {
+                "first": "Primero",
+                "last": "Último",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        }
+    });
+}

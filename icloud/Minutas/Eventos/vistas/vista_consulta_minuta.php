@@ -57,8 +57,8 @@ else :
     //inclusion de navbar
     include "{$root}/components/navbar.php";
     ?>
-    <div class="row">
-        <div class="col s12 l8 border-azul" style="float: none;margin: 0 auto;">            
+    <div class="row" style="overflow: hidden;">
+        <div class="col s12 l8 border-azul" style="float: none;margin: 0 auto;overflow: hidden;">            
             <div class="row">
                 <br>
                 <?php if ($cerrado): ?>
@@ -137,58 +137,44 @@ else :
                 </div>  
                 <h5 class="col s12 c-azul text-center">Invitados para el evento</h5> 
                 <div class="input-field col s12">
-                    <table class="display nowrap" id="tabla_invitados" style="margin-top: 6px;">
+                    <table id="tabla_invitados" style="margin-top: 6px;">
                         <thead>
                             <tr>
                                 <th>Invitado</th>
                                 <th>Correo</th>
-                                <th>Notificado</th>
-                                <?php if (!$cerrado): ?>
-                                    <th>Asistencia</th>
-                                <?php endif; ?>
+                                <th>Asistencia</th> 
                             </tr>
                         </thead>
                         <tbody>
                             <?php
                             $invitados = $controlMinutas->consultar_invitados_minuta($id_minuta);
-                            if (mysqli_num_rows($invitados) > 0):
-                                while ($row = mysqli_fetch_array($invitados)):
-                                    $id_invitacion = $row[0];
-                                    $id_invitado = $row[2];
-                                    $invitado = $row[3];
-                                    $correo = $row[4];
-                                    $notificacion = $row[5];
-                                    $asistencia = $row[6];
-                                    ?>
-                                    <tr>
-                                        <td><?php echo $invitado; ?></td>
-                                        <td><?php echo $correo; ?></td>
-                                        <td>
-                                            <label>
-                                                <input type="checkbox" 
-                                                       class="filled-in" 
-                                                       disabled
-                                                       <?php if ($notificacion) echo "checked"; ?> />
-                                                <span style="left: 35%;"></span>
-                                            </label>
-                                        </td>                                        
-                                        <?php if (!$cerrado): ?>
-                                            <td>
-                                                <label>
-                                                    <input 
-                                                    <?php if ($asistencia) echo "checked"; ?> 
-                                                        type="checkbox" 
-                                                        class="filled-in" 
-                                                        onchange="actualizar_asistencia(<?php echo $id_invitado; ?>,<?php echo $id_minuta; ?>, this);"/>
-                                                    <span style="left: 35%;"></span>
-                                                </label>
-                                            </td>
-                                        <?php endif; ?>
-                                    </tr>
-                                    <?php
-                                endwhile;
-                            endif;
-                            ?>
+                            while ($row = mysqli_fetch_array($invitados)):
+                                $id_invitacion = $row[0];
+                                $id_invitado = $row[2];
+                                $invitado = $row[3];
+                                $correo = $row[4];
+                                $notificacion = $row[5];
+                                $asistencia = $row[6];
+                                $check = false;
+                                if ($asistencia) {
+                                    $check = true;
+                                }
+                                ?>
+                                <tr>
+                                    <td><?php echo $invitado; ?></td>
+                                    <td><?php echo $correo; ?></td> 
+                                    <td>
+                                        <label>
+                                            <input 
+                                                checked="<?= $check; ?>"
+                                                type="checkbox" 
+                                                class="filled-in" 
+                                                onchange="actualizar_asistencia(<?php echo $id_invitado; ?>,<?php echo $id_minuta; ?>, this);"/>
+                                            <span style="left: 35%;"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                            <?php endwhile; ?>
                         </tbody>
                     </table>
                 </div>
@@ -197,12 +183,9 @@ else :
                     <table class="display nowrap" id="tabla_temas" style="margin-top: 6px;">
                         <thead>
                             <tr>
-                                <th style="width: 25%">Tema</th>
-                                <th style="width: 20%">Acuerdos</th>
-                                <th style="width: 30%">Estatus</th>
-                                <?php if (!$cerrado): ?>
-                                    <th style="width: 10%">Acciones</th>
-                                <?php endif; ?>
+                                <th>Tema</th>
+                                <th>Estatus</th>
+                                <th style="width: 10%">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -219,29 +202,28 @@ else :
                                     array_push($temas_json, $id_tema);
                                     ?>
                                     <tr style="font-size: .9rem;padding: 0px;">
-                                        <td><?php echo $tema; ?></td>
-                                        <td><input id="input_acuerdos_<?php echo $id_tema; ?>" style="border-bottom: 0px;font-size: .9rem;" value="<?php echo $acuerdos; ?>"/></td>
-                                        <td>
+                                        <td><?php echo $tema; ?></td><td>
                                             <?php if (!$cerrado): ?>
                                                 <div style="display: flex;">
-                                                    <select style="font-size: .8rem;" 
+                                                    <select style="font-size: .8rem;" id="select_estatus"
                                                             onchange="actualizar_estado_tema('<?php echo $id_tema; ?>', this.value, 'id_chip_<?php echo $id_tema; ?>')">
-                                                                <?php
-                                                                $catalogo_estatus = $controlMinutas->consulta_catalogo_estatus();
-                                                                while ($row = mysqli_fetch_array($catalogo_estatus)):
-                                                                    if ($row[0] != $id_estatus && $row[0] != 4):
-                                                                        ?>
+                                                        <option value="" disabled selected>Seleccione un estatus</option>
+                                                        <?php
+                                                        $catalogo_estatus = $controlMinutas->consulta_catalogo_estatus();
+                                                        while ($row = mysqli_fetch_array($catalogo_estatus)):
+                                                            if ($row[0] != $id_estatus && $row[0] != 4):
+                                                                ?>
                                                                 <option value="<?php echo $row[0]; ?>"><?php echo $row[1]; ?></option>
                                                             <?php elseif ($row[0] == $id_estatus): ?>
-                                                                <option value="<?php echo $row[0]; ?>" selected><?php echo $row[1]; ?></option>
+                                                                <option value="<?php echo $row[0]; ?>"><?php echo $row[1]; ?></option>
                                                                 <?php
                                                             endif;
                                                         endwhile;
                                                         ?>
                                                     </select>
                                                     <span id="id_chip_<?php echo $id_tema; ?>"
-                                                          class="chip <?php echo $color_estatus; ?>" 
-                                                          style="padding: .2rem;height: 10px;width: 10px;">&nbsp;
+                                                          class="chip <?php echo $color_estatus; ?> tooltipped" data-position="top" data-tooltip="<?php echo $estatus; ?>"
+                                                          style="padding: .2rem;height: 10px;width: 10px;cursor: pointer;">&nbsp;
                                                     </span>   
                                                 </div>
 
@@ -251,16 +233,23 @@ else :
                                                 </span>  
                                             <?php endif; ?>
                                         </td>
-                                        <?php if (!$cerrado): ?>
-                                            <td class="text-center">
+                                        <td class="text-center">
+                                            <?php if (!$cerrado): ?>
                                                 <a class="waves-effect waves-light modal-trigger"
                                                    style="margin-top: 16px;"
                                                    href="#modal_acuerdos"
                                                    onclick="modal_acuerdos('<?php echo $id_tema; ?>', '<?php echo $tema; ?>', 'input_acuerdos_<?php echo $id_tema; ?>');get_consulta_acuerdo_temas('<?php echo $id_tema; ?>')">
                                                     <i class="material-icons cyan-text accent-3">post_add</i>
                                                 </a>
-                                            </td>
-                                        <?php endif; ?>
+                                            <?php else: ?>
+                                                <a class="waves-effect waves-light modal-trigger"
+                                                   style="margin-top: 16px;"
+                                                   href="#modal_acuerdos_pendiente"
+                                                   onclick="modal_acuerdos_pendientes('<?php echo $id_tema; ?>', '<?php echo $tema; ?>', 'input_acuerdos_pendiente_<?php echo $id_tema; ?>');get_consulta_acuerdo_temas_pendientes('<?php echo $id_tema; ?>')">
+                                                    <i class="material-icons cyan-text accent-3">search</i>
+                                                </a>
+                                            <?php endif; ?>
+                                        </td>
                                     </tr>
                                     <?php
                                 endwhile;
@@ -272,16 +261,13 @@ else :
                 <?php if (mysqli_num_rows($temas_pendientes) > 0): ?>
                     <h5 class="col s12 c-azul text-center">Temas pendientes</h5> 
                     <br>
-                    <div class="input-field col s12">
-                        <table class="display nowrap" id="tabla_temas" style="margin-top: 6px;">
+                    <div>
+                        <table class="display nowrap col s12" id="tabla_temas_pendientes" style="margin-top: 6px;">
                             <thead>
                                 <tr>
-                                    <th style="width: 25%">Tema</th>
-                                    <th style="width: 20%">Acuerdos</th>
+                                    <th style="width: 45%">Tema</th>
                                     <th style="width: 30%">Estatus</th>
-                                    <?php if (!$cerrado): ?>
-                                        <th style="width: 10%">Acciones</th>
-                                    <?php endif; ?>
+                                    <th style="width: 10%">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -298,20 +284,20 @@ else :
                                     ?>
                                     <tr>
                                         <td><?php echo $tema_pendiente; ?></td>
-                                        <td><input id="input_acuerdos_pendiente_<?php echo $id_tema_pendiente; ?>" style="border-bottom: 0px;font-size: .9rem;" value="<?php echo $acuerdos_pendiente; ?>"/></td>
                                         <td>
                                             <?php if (!$cerrado): ?>
-                                                <div style="display: flex;"> 
-                                                    <select style="font-size: .8rem;" 
+                                                <div style="display: flex;">
+                                                    <select style="font-size: .8rem;"  id="select_estatus_pendiente"
                                                             onchange="actualizar_estado_tema('<?php echo $id_tema_pendiente; ?>', this.value, 'id_chip_pendiente_<?php echo $id_tema_pendiente; ?>')">
-                                                                <?php
-                                                                $catalogo_estatus = $controlMinutas->consulta_catalogo_estatus();
-                                                                while ($row = mysqli_fetch_array($catalogo_estatus)):
-                                                                    if ($row[0] != $id_estatus_pendiente && $row[0] != 4):
-                                                                        ?>
+                                                        <option value="" disabled selected>Seleccione un estatus</option>
+                                                        <?php
+                                                        $catalogo_estatus = $controlMinutas->consulta_catalogo_estatus();
+                                                        while ($row = mysqli_fetch_array($catalogo_estatus)):
+                                                            if ($row[0] != $id_estatus_pendiente && $row[0] != 4):
+                                                                ?>
                                                                 <option value="<?php echo $row[0]; ?>"><?php echo $row[1]; ?></option>
                                                             <?php elseif ($row[0] == $id_estatus_pendiente): ?>
-                                                                <option value="<?php echo $row[0]; ?>" selected><?php echo $row[1]; ?></option>
+                                                                <option value="<?php echo $row[0]; ?>"><?php echo $row[1]; ?></option>
                                                                 <?php
                                                             endif;
                                                         endwhile;
@@ -322,23 +308,20 @@ else :
                                                           style="padding: .2rem;height: 10px;width: 10px;">&nbsp;
                                                     </span>   
                                                 </div>
-
                                             <?php else: ?>
                                                 <span class="chip <?php echo $color_estatus_pendiente; ?>">
                                                     <?php echo $estatus_pendiente; ?> 
                                                 </span>  
                                             <?php endif; ?>
                                         </td>  
-                                        <?php if (!$cerrado): ?>
-                                            <td class="text-center">
-                                                <a class="waves-effect waves-light modal-trigger"
-                                                   style="margin-top: 16px;"
-                                                   href="#modal_acuerdos_pendiente"
-                                                   onclick="modal_acuerdos_pendientes('<?php echo $id_tema_pendiente; ?>', '<?php echo $tema_pendiente; ?>', 'input_acuerdos_pendiente_<?php echo $id_tema_pendiente; ?>');get_consulta_acuerdo_temas_pendientes('<?php echo $id_tema_pendiente; ?>')">
-                                                    <i class="material-icons cyan-text accent-3">search</i>
-                                                </a>
-                                            </td>
-                                        <?php endif; ?>
+                                        <td class="text-center">
+                                            <a class="waves-effect waves-light modal-trigger"
+                                               style="margin-top: 16px;"
+                                               href="#modal_acuerdos_pendiente"
+                                               onclick="modal_acuerdos_pendientes('<?php echo $id_tema_pendiente; ?>', '<?php echo $tema_pendiente; ?>', 'input_acuerdos_pendiente_<?php echo $id_tema_pendiente; ?>');get_consulta_acuerdo_temas_pendientes('<?php echo $id_tema_pendiente; ?>')">
+                                                <i class="material-icons cyan-text accent-3">search</i>
+                                            </a>
+                                        </td>
                                     </tr>
                                 <?php endwhile; ?>
                             </tbody>
@@ -347,42 +330,39 @@ else :
                     <?php
                 endif;
                 $temas_json = json_encode($temas_json);
-                ?>
-                <div class="col s12">
-                    <br>
-                    <div class="card horizontal">
-                        <div class="card-image">
-                            <img src="../../../images/svg/clip.svg" style="width: 120px">
-                        </div>
-                        <div class="card-stacked">
-                            <div class="card-content">
-                                <p>Puedes ver los archivos adjuntos para este evento.</p>
-                            </div>
-                            <div class="card-action">
-                                <?php
-                                $archivos = $controlMinutas->consulta_archivos($id_minuta);
-                                while ($row = mysqli_fetch_array($archivos)):
-                                    $nombre_archivo = $row[0];
-                                    $nombre_compuesto = $row[1];
-                                    $ruta = "https://www.chmd.edu.mx/pruebascd/icloud/Minutas/archivos/{$nombre_compuesto}";
-                                    if (strpos($nombre_compuesto, ".pdf") !== false):
-                                        $ruta = "https://docs.google.com/gview?url=https://www.chmd.edu.mx/pruebascd/icloud/Minutas/archivos/{$nombre_compuesto}";
-                                    endif;
-                                    ?>
-                                    <a href="<?= $ruta ?>" target="_blank" class="c-azul" style="text-decoration: underline;"><?= $nombre_archivo ?></a><br>
-                                    <?php endwhile;?>
+                $archivos = $controlMinutas->consulta_archivos($id_minuta);
+                if (mysqli_num_rows($archivos) > 0):
+                    ?>
+                    <div class="col s12">
+                        <div class="card-panel grey lighten-5 z-depth-1">
+                            <div class="row valign-wrapper">
+                                <div class="col s2">
+                                    <img src="../../../images/svg/clip.svg" class="responsive-img" style="width: 35px;"> <!-- notice the "circle" class -->
+                                </div>
+                                <div class="col s10">
+                                    <span class="black-text">
+                                        <h6 class="c-azul">Archivos adjuntos</h6>
+                                        <p>Puedes ver los archivos adjuntos para este evento.</p>
+                                        <?php
+                                        while ($row = mysqli_fetch_array($archivos)):
+                                            $nombre_archivo = $row[0];
+                                            $nombre_compuesto = $row[1];
+                                            $ruta = "https://docs.google.com/gview?url=https://www.chmd.edu.mx/pruebascd/icloud/Minutas/archivos/{$nombre_compuesto}";
+                                            ?>
+                                            <a href="<?= $ruta ?>" target="_blank" class="c-azul" style="text-decoration: underline;"><?= $nombre_archivo ?></a><br>
+                                        <?php endwhile; ?>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                <?php endif; ?>
                 <span class="col s12"><br><br></span>
                 <?php if (!$cerrado): ?>
                     <div class="input-field col s12" style="text-align: center">
-                        <button id="btn_cerrar"
-                                class="waves-effect btn b-azul c-blanco" 
-                                onclick='cerrar_minuta(<?php echo $temas_json; ?>)'>
+                        <a class="waves-effect btn b-azul c-blanco modal-trigger" href="#modal_cerrar_minuta">
                             <i class="material-icons right">lock</i>&nbsp;Cerrar minuta
-                        </button>
+                        </a>
                     </div>
                 <?php endif; ?>
 
@@ -471,6 +451,22 @@ else :
             <a href="#!" id="loading_keypress" hidden><img style="width: 6%;" src="../../../images/svg/loading_keypress.svg"/></a>
         </div>
     </div>
+    <!-- Modal nuevo acuerdo -->
+    <div id="modal_cerrar_minuta" class="modal">
+        <div class="modal-content">
+            <h4 class="red-text">Alerta</h4>
+            <p>¿Está seguro(a) de realizar ésta solicitud?</p>
+        </div>
+        <div class="modal-footer">
+            <a class="waves-effect waves-light modal-close btn red white-text">
+                <i class="material-icons left">highlight_off</i>Cancelar</a>
+            <button id="btn_cerrar"
+                    class="waves-effect btn green c-blanco" 
+                    onclick='cerrar_minuta(<?php echo $temas_json; ?>)'>
+                <i class="material-icons right">done</i>&nbsp;Aceptar
+            </button>
+        </div>
+    </div>
     <!-- Modal Structure -->
     <div id="modal_acuerdos_pendiente" class="modal">
         <div class="modal-content">
@@ -488,6 +484,8 @@ else :
                     </div>
                 </li>
             </ul>
+            <label style="font-size: 1rem;">Nuevos acuerdos</label>
+            <textarea class="materialize-textarea" onkeypress="post_nuevo_acuerdo()"></textarea>
             <input id="id_tema_modal_pendiente" hidden/>
             <input id="input_id_tema_pendiente" hidden/>
         </div>
@@ -537,6 +535,24 @@ else :
                     }
                 }
             });
+            $('#tabla_temas_pendientes').DataTable({
+                "language": {
+                    "lengthMenu": "_MENU_",
+                    "zeroRecords": "<span class='chip red white-text'>Sin registros para mostrar</span>",
+                    "info": "<span class='chip blue white-text'>Mostrando colección _PAGE_ de _PAGES_</span>",
+                    "infoEmpty": "<span class='chip red white-text'>Sin registros disponibles</span>",
+                    "infoFiltered": "(filtrado de _MAX_ total de registros)",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Último",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
+                }
+            });
             $('.modal').modal();
             $('select').formSelect();
             $("#loading").fadeOut();
@@ -549,6 +565,7 @@ else :
         var limpia_post_acuerdo_temas_pendientes = null;
         var id_minuta = <?php echo $id_minuta; ?>;
         var id_comite = <?php echo $id_comite; ?>;
+        var coleccion_conteo_acuerdos = [];
 
         function modal_acuerdos(id_tema, tema, input) {
             $("#id_titulo_tema").text(tema);
@@ -609,7 +626,12 @@ else :
                 dataType: 'json',
                 data: {id_tema: id_tema}
             }).done((res) => {
-                $("#id_acuerdos_pendiente").text(res);
+                var infoPanel = "";
+                for (var item in res) {
+                    infoPanel += `<div class="card-panel white"><span class="grey-text">${res[item].acuerdos}</span></div>`;
+                    coleccion_conteo_acuerdos.push({id_tema: parseInt(id_tema), conteo: parseInt(res[item].conteo)});
+                }
+                $("#id_acuerdos_pendiente").html(infoPanel);
             });
         }
         function actualizar_estado_tema(id_tema, estatus, chip) {
@@ -748,13 +770,15 @@ else :
             }).always(() => $("#loading_keypress_nuevo_acuerdo").fadeOut());
         }
         function cerrar_minuta(temas) {
+            if (!validaciones())
+                return;
             $.ajax({
                 url: 'https://www.chmd.edu.mx/pruebascd/icloud/Minutas/common/post_cerrar_minuta.php',
                 type: 'POST',
                 dataType: 'json',
                 beforeSend: () => {
                     $("#loading").fadeIn();
-                    $("#btn_cerrar").prop("disabled", true)
+                    $("#btn_cerrar").prop("disabled", true);
                 },
                 data: {id_minuta: id_minuta, temas: temas}
             }).done((res) => {
@@ -773,6 +797,21 @@ else :
                     window.location.reload();
                 }, 1000);
             }).always(() => $("#loading").fadeOut());
+        }
+        function post_nuevo_acuerdo(value) {
+
+        }
+        function validaciones() {
+            var select_estatus = $("#select_estatus").val();
+            var select_estatus_pendiente = $("#select_estatus_pendiente").val();
+            if (select_estatus === null || select_estatus_pendiente === null) {
+                M.toast({
+                    html: '<i class="material-icons prefix">highlight_off</i> &nbsp; Debe seleccionar un estatus válido.',
+                    classes: 'red c-blanco',
+                });
+                return false;
+            }
+            return true;
         }
     </script>
 <?php

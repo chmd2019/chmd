@@ -611,7 +611,8 @@ class ControlEvento {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "SELECT a.id, a.fecha_montaje, a.solicitante, a.nombre_evento, b.status, b.color_estatus, a.archivado "
-                    . "FROM Evento_montaje a INNER JOIN Catalogo_status_acceso b ON b.id = a.estatus ORDER BY id DESC";
+                    . "FROM Evento_montaje a INNER JOIN Catalogo_status_acceso b ON b.id = a.estatus "
+                    . "ORDER BY a.estatus, CONVERT(a.fecha_montaje_simple ,date)";
             mysqli_set_charset($connection, "utf8");
             return mysqli_query($connection, $sql);
         }
@@ -633,7 +634,7 @@ class ControlEvento {
         if ($connection) {
             $sql = "SELECT a.id, a.fecha_montaje, a.solicitante, a.nombre_evento, b.status, b.color_estatus, a.archivado "
                     . "FROM Evento_montaje a INNER JOIN Catalogo_status_acceso b ON b.id = a.estatus "
-                    . "WHERE solicitante = '$nombre_usuario' ORDER BY id DESC";
+                    . "WHERE solicitante = '$nombre_usuario' ORDER BY a.estatus";
             mysqli_set_charset($connection, "utf8");
             return mysqli_query($connection, $sql);
         }

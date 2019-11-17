@@ -95,7 +95,7 @@ else :
                                     <img src='../../images/Ver.svg' style="width: 40px;margin-top: .4rem;">
                                 </a>                        
                                 <a class="waves-effect waves-light"
-                                   href="">
+                                   href="vistas/vista_descargar_minuta.php?id_minuta=<?php echo $id_minuta; ?>">
                                     <img src='../../images/Descargar.svg' style="width: 40px;margin-top: .4rem;">
                                 </a> 
                             </td>

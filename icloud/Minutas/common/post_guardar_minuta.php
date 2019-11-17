@@ -18,8 +18,10 @@ $horario_minuta = $_POST['horario_minuta'];
 //datos de sesion
 $id_usuario = $_POST['id_usuario'];
 $id_session = $_POST['id_session'];
+$timespamp = strtotime(date("Y-m-d"));
 
-$res = $controlMontajes->guardar_minuta($titulo_evento, $fecha_simple, $horario_minuta, $fecha, $convocante, $director, $id_comite, 1, $id_session, $id_usuario);
+$res = $controlMontajes->guardar_minuta($titulo_evento, $fecha_simple, 
+        $horario_minuta, $fecha, $convocante, $director, $id_comite, 1, $id_session, $id_usuario, $timespamp);
 
 if (strcasecmp($res, "Ya existe un archivo con el nombre actual") === 0) {
     echo json_encode("Ya existe un archivo con el nombre actual");
