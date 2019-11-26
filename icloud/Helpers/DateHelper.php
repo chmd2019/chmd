@@ -248,14 +248,24 @@ class DateHelper {
             $mes = "12";
         return "{$anio}-{$mes}-{$dia}";
     }
-    
-    function fecha_listados(){
+
+    function fecha_listados() {
         $fecha_actual = date('m/d/Y');
         $fecha_actual_impresa_script = "<script>var fecha = new Date('$fecha_actual');"
-        . "var options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };"
-        . "fecha = fecha.toLocaleDateString('es-MX', options);"
-        . "fecha = `\${fecha.charAt(0).toUpperCase()}\${fecha.slice(1).toLowerCase()}`;"
-        . "document.write(fecha)</script>";
+                . "var options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };"
+                . "fecha = fecha.toLocaleDateString('es-MX', options);"
+                . "fecha = `\${fecha.charAt(0).toUpperCase()}\${fecha.slice(1).toLowerCase()}`;"
+                . "document.write(fecha)</script>";
         return $fecha_actual_impresa_script;
     }
+
+    function gana_tiempo_extraordinario($hora) {
+        date_default_timezone_set('America/Mexico_city');
+        $hora_asignada = strtotime(date("Y-m-d {$hora}"));
+        $hora_actual = strtotime(date("Y-m-d H:i"));
+        $diferencia_hora = ($hora_actual - $hora_asignada) / 60;
+        $hora_final = ( $diferencia_hora >= -5 && $diferencia_hora <= 5 ) ? $hora_asignada + 600 : $hora_asignada;
+        return date("H:i", $hora_final);
+    }
+
 }

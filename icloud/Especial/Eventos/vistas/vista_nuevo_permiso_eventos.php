@@ -29,9 +29,9 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
 } else {
     $authUrl = $client->createAuthUrl();
 }
-if (isset($authUrl)) {
+if (isset($authUrl)):
     header("Location: $redirect_uri?logout=1");
-} else {
+else:
     $idseccion = $_GET['idseccion'];
     //usaurio
     $user = $service->userinfo->get();
@@ -43,7 +43,7 @@ if (isset($authUrl)) {
     $date_helper->set_timezone();
     $meses = $date_helper->obtener_meses();
     $dias = $date_helper->obtener_dias();
-    if ($consulta = mysqli_fetch_array($consulta)) {
+    if ($consulta = mysqli_fetch_array($consulta)):
         //campos necesarios en tabla Ventana_permisos
         $idusuario = $consulta[0];
         $nombre = $consulta[1];
@@ -171,7 +171,7 @@ if (isset($authUrl)) {
                         </div>
                     </div>
                     <span class="col s12"><br></span>
-                    <div class="col s12 l6 input-field">
+                    <div class="col s12 l6 input-field" hidden>
                         <i class="material-icons prefix c-azul">cake</i>
                         <select id="tipo_evento" onchange="mostrar_check_al_finalizar_clases(this.value)" disabled>
                             <!--<option value="disabled selected" >Seleccione una opción</option>-->
@@ -204,24 +204,24 @@ if (isset($authUrl)) {
                     <h5 class="col s12 c-azul text-center">Alumnos de mi familia</h5>
                     <?php
                     $alumnos = $objCliente->mostrar_alumnos($nfamilia);
-                    if ($alumnos) {
+                    if ($alumnos) :
                         $counter = 0;
                         // $numero = mysql_num_rows($consulta);
-                        while ($alumno = mysqli_fetch_array($alumnos)) {
+                        while ($alumno = mysqli_fetch_array($alumnos)):
                             $grupo = $alumno[3];
                             $grado = $alumno[4];
                             $nivel_escolaridad = $alumno[9];
                             $counter++;
                             ?>
-                            <span class="col s4 m2" style="margin-top: 1rem;">
+                            <span class="col s3 m2" style="margin-top: 1rem;">
                                 <div class="switch">
                                     <label class="checks-alumnos">
                                         <input type="checkbox"
                                                id="alumno_<?php echo $counter; ?>"
                                                value="<?php echo $alumno['id']; ?>"
                                                onchange="descheck(this);
-                                                                       mostrar_check_anfitrion(this, 'caja_check_anfitrion_<?php echo $counter; ?>');
-                                                                       descheck_anfitrion('anfitrion_<?php echo $counter; ?>');"/>
+                                                       mostrar_check_anfitrion(this, 'caja_check_anfitrion_<?php echo $counter; ?>');
+                                                       descheck_anfitrion('anfitrion_<?php echo $counter; ?>');"/>
                                         <span class="lever" style="margin-left: 0px"></span>
                                     </label>
                                 </div>
@@ -231,14 +231,15 @@ if (isset($authUrl)) {
                                            class="filled-in" 
                                            id="anfitrion_<?php echo $counter; ?>"
                                            onchange="this.checked = comprobar_checks_invirados();
-                                                                   grupo = this.checked ? '<?php echo $grupo; ?>' : '';
-                                                                   id_anfitrion = <?php echo $alumno['id']; ?>;
-                                                                   consulta_alumnos_grupo(this);
-                                                                   descheck(this);"/>
-                                    <span style="font-size: .8rem;">Anfitrión</span>
+                                                   grupo = this.checked ? '<?php echo $grupo; ?>' : '';
+                                                   id_anfitrion = <?php echo $alumno['id']; ?>;
+                                                   consulta_alumnos_grupo(this);
+                                                   descheck(this);"/>
+                                    <span style="font-size: .8rem;margin-">Anfitrión</span>
                                 </label>
                             </span>
-                            <span class="col s8 m10">
+                    
+                            <span class="col s6 m10 margin-no-desktop">
                                 <textarea class="materialize-textarea"
                                           readonly
                                           id="nombre_alumno_<?php echo $counter; ?>"
@@ -252,18 +253,19 @@ if (isset($authUrl)) {
                             <span class="col s12"><br></span>
                             <?php
                             $talumnos = $counter;
-                        }
-                    }
+                        endwhile;
+                    endif;
                     ?>
-                    <span class="col s12"><br></span>
                     <div id="caja_tabla_invitados" hidden>
-                        <h4 class="c-azul">Selección de invitados - Grupo <span id="grupo"></span></h4>
-                        <table class="table striped">
+                        <h5 class="c-azul col s12 text-center">Selección de invitados - Grupo 
+                            <span id="grupo"></span>
+                        </h5>
+                        <table class="table striped" id="id_table_alumnos">
                             <thead>
                                 <tr>
-                                    <th style="width: 40%;">Alumno</th>
+                                    <th>Alumno</th>
                                     <th>Género</th>
-                                    <th style="display: flex;text-align: right;">
+                                    <th>
                                         <label>
                                             <input type="checkbox" 
                                                    class="filled-in" 
@@ -321,12 +323,12 @@ if (isset($authUrl)) {
                                 &nbsp;&nbsp;<i class="material-icons prefix c-azul">person</i>Responsable
                             </label>
                             <select id="select_responsable" 
-                                    class="browser-default"
+                                    class="browser-default border-azul"
                                     onchange="seleccion_responsable(this.value)">
                             </select>
                         </div>
                         <div id="nuevo_responsable" hidden>
-                            <div class="input-field col s12 l6" id="nuevo_responsable_nombre">
+                            <div class="input-field col s12 l6" id="nuevo_responsable_nombre" style="margin-top: 2rem;">
                                 <i class="material-icons prefix c-azul">person</i>
                                 <input id="responsable"
                                        type="text"
@@ -334,7 +336,7 @@ if (isset($authUrl)) {
                                        autocomplete="off">
                                 <label for="responsable">Nombre del responsable</label>
                             </div>
-                            <div class="input-field col s12 l6">
+                            <div class="input-field col s12 l6" style="margin-top: 2rem;">
                                 <i class="material-icons prefix c-azul">person</i>
                                 <input id="parentesco_responsable"
                                        type="text"
@@ -393,8 +395,8 @@ if (isset($authUrl)) {
             </div>
         </div>
         <?php
-    }
-}
+    endif;
+endif;
 ?>
 
 <div class="loading" id="loading" >
@@ -442,6 +444,7 @@ if (isset($authUrl)) {
         cargar_responsables();
         //M.textareaAutoResize($('#motivos'));
         M.updateTextFields();
+        set_table_sin_paginacion('id_table_alumnos');
     });
 
     function mostrar_fecha_para() {
@@ -507,10 +510,10 @@ if (isset($authUrl)) {
             if (responsables[item].id === val) {
                 //$("#nuevo_responsable").prop("hidden", false);
                 /*se verifica el parentesco a través del tipo en tabla usuarios
-                 y si no cumple con la condición se establece el parentesco en tabla Responsables*/
+                 y si no cumple con la condición se establece el parentesco en tabla Responsables
                 var parentesco = responsables[item].tipo === "3" ? "Padre" :
-                        responsables[item].tipo === "4" ? "Madre" : responsables[item].parentesco;
-                $("#parentesco_responsable").val(parentesco);
+                        responsables[item].tipo === "4" ? "Madre" : responsables[item].parentesco;*/
+                $("#parentesco_responsable").val(responsables[item].responsable);
                 $("#responsable").val(responsables[item].nombre);
                 //$("#check_nuevo_responsable").prop('checked', true);
             }
@@ -822,10 +825,13 @@ if (isset($authUrl)) {
                 $("#grupo").text(grupo);
                 contador_alumnos_invitados = res.length;
                 $("#tbody_invitados").html('');
+                var table = $("#id_table_alumnos").DataTable();
+                table.clear().draw();
                 for (var item in res) {
                     var i = parseInt(item) + 1;
-                    var tr = `<tr><td>${res[item].nombre}</td><td>${res[item].sexo}</td><td><label><input type="checkbox" class="filled-in ${res[item].sexo}" value="${res[item].id}" onchange="add_id_invitado(this);add_alumnos_invitados(this,'${res[item].nombre}')" id="check_invitado_${i}" /><span class="right"></span></label></td></tr>`;
-                    $("#tbody_invitados").append(tr);
+                    table.row.add([`${res[item].nombre}`, `${res[item].sexo}`,`<label><input type="checkbox" class="filled-in ${res[item].sexo}" value="${res[item].id}" onchange="add_id_invitado(this);add_alumnos_invitados(this,'${res[item].nombre}')" id="check_invitado_${i}" /><span class="right"></span></label>`]).draw().node();
+                    //var tr = `<tr><td>${res[item].nombre}</td><td>${res[item].sexo}</td><td><label><input type="checkbox" class="filled-in ${res[item].sexo}" value="${res[item].id}" onchange="add_id_invitado(this);add_alumnos_invitados(this,'${res[item].nombre}')" id="check_invitado_${i}" /><span class="right"></span></label></td></tr>`;
+                    //$("#tbody_invitados").append(tr);
                 }
             }).always(() => {
                 $("#loading").fadeOut();
@@ -859,8 +865,18 @@ if (isset($authUrl)) {
         for (var i = 1; i <= contador_alumnos_invitados; i++) {
             if (el.checked) {
                 $("#check_invitado_" + i).prop("checked", false);
+                if ($("#check_invitar_ninas").prop("checked")) {
+                    $("#check_invitar_ninas").click();
+                }
+                if ($("#check_invitar_ninos").prop("checked")) {
+                    $("#check_invitar_ninos").click();
+                }
+                $("#check_invitar_ninas").prop("disabled", true);
+                $("#check_invitar_ninos").prop("disabled", true);
             } else {
                 $("#check_invitado_" + i).prop("checked", true);
+                $("#check_invitar_ninas").prop("disabled", false);
+                $("#check_invitar_ninos").prop("disabled", false);
             }
             $("#check_invitado_" + i).click();
         }

@@ -37,14 +37,6 @@ if (isset($authUrl)) {
         </div>
     </div>
 </div>
-<!--
-<div class="fixed-action-btn">
-    <a class="btn-floating btn-large waves-effect waves-light b-azul"
-       href="vistas/vista_nuevo_permiso_eventos.php?idseccion=<?php //echo $idseccion; ?>">
-        <i class="large material-icons">add</i>
-    </a>
-</div>
--->
 <script>
 
 $("th").css("text-align", "center");
@@ -53,18 +45,7 @@ $("td").css("text-align", "center");
         $('.fixed-action-btn').floatingActionButton({
             hoverEnabled: false
         });
-        $('table').DataTable({
-            "language": {
-                "url": "//cdn.datatables.net/plug-ins/1.10.11/i18n/Spanish.json"
-            },
-            dom: 'Bfrtip',
-            buttons: [
-                'copyHtml5',
-                'excelHtml5',
-                'csvHtml5',
-                'pdfHtml5'
-            ]
-        });   
+        set_table_desordenada('tabla'); 
         $(".modal").modal();
     });    
     setInterval(()=>{window.location.reload();},30000);

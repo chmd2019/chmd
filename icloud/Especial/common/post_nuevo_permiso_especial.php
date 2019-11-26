@@ -80,7 +80,7 @@ if ($connection) {
                     . "VALUES ('"
                     . $ultimo_id_conexion . "','"
                     . $alumno['id_alumno'] . "','"
-                    . $alumno['hora_salida'] . "','"
+                    . $date_helper->gana_tiempo_extraordinario($alumno['hora_salida']) . "','"
                     . $alumno['hora_regreso'] . "','"
                     . $alumno['regresa'] . "','"
                     . $alumno['estatus'] . "','"

@@ -4,9 +4,9 @@ require '../../Model/DBManager.php';
 $db_manager = new DBManager();
 $connection = $db_manager->conectar1();
 
-$calle = $_POST['calle'];
-$colonia = $_POST['colonia'];
-$descripcion = $_POST['descripcion'];
+$calle = htmlspecialchars($_POST['calle']);
+$colonia = htmlspecialchars($_POST['colonia']);
+$descripcion = htmlspecialchars($_POST['descripcion']);
 $id_usuario = $_POST['id_usuario'];
 $cp = $_POST['cp'];
 $familia = $_POST['familia'];

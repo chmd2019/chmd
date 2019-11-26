@@ -81,6 +81,7 @@ if (isset($authUrl)) {
     $numero_familia = $control->consultar_numero_familia($correo);
     $numero_familia = mysqli_fetch_array($numero_familia);
     $nfamilia = $numero_familia[0];
+    $url_back = "https://".$_SERVER['HTTP_HOST'].dirname(dirname(dirname($_SERVER['REQUEST_URI'])))."/Eventos/PEventos.php";
     ?>
     <div class="row">
         <div class="col s12 l8 border-azul b-blanco" style="float: none;margin: 0 auto;padding:1rem">
@@ -97,7 +98,7 @@ if (isset($authUrl)) {
 
                 <div class="row" style="text-align: right;margin:1rem 1rem 0 0">
                     <a class="waves-effect waves-light"
-                       href="<?php echo $url; ?>">
+                       href="<?=$url_back;?>">
                         <img src="../../../images/Atras.svg" style="width: 110px"/>
                     </a>
                 </div>
@@ -163,11 +164,11 @@ if (isset($authUrl)) {
                             $id_alumno = $alumno[2];
                             $estatus = $alumno[3];
                             $nombre_alumno = $control->consultar_nombre_alumno($id_alumno);
-                            $nombre = mysqli_fetch_array($nombre_alumno);
-                            $nivel_escolaridad = $nombre[1];
-                            $nombre = $nombre[0];
-                            $grupo = $nombre[1];
-                            $grado = $nombre[2];
+                            $nombres = mysqli_fetch_array($nombre_alumno);
+                            $nivel_escolaridad = $nombres[1];
+                            $nombre = $nombres[0];
+                            $grupo = $nombres[1];
+                            $grado = $nombres[2];
                             $hidden_btn_cancelar_inscripcion = "none";
                             if ($estatus != 4) {
                                 array_push($id_inscritos, $id_alumno);
@@ -218,9 +219,13 @@ if (isset($authUrl)) {
                                         </button>
                                     <?php endif; ?>
                                     <div class="text-center">
-                                        <span class="chip white-text new col s2 l1" data-badge-caption="<?php echo $status_detalle; ?>" style="float: left;font-size: .7rem;padding: 0px 3px;background-color: <?php echo $color_badge; ?>"><?php echo $status_detalle; ?></span>
+                                        <span class="chip white-text new col s3 l1" 
+                                              data-badge-caption="<?php echo $status_detalle; ?>" 
+                                              style="float: left;font-size: .7rem;padding: 0px 3px;background-color: <?php echo $color_badge; ?>">
+                                                  <?php echo $status_detalle; ?>
+                                        </span>
                                     </div>
-                                    <textarea class="materialize-textarea col s9 l10"
+                                    <textarea class="materialize-textarea col s8 l10 right"
                                               readonly
                                               id="alumno_<?php echo $identificador; ?>"
                                               style="font-size: 1rem"></textarea>
@@ -467,14 +472,12 @@ $diferencia_inscritos_alumnos_familia = $diferencia_inscritos_alumnos_familia > 
         }
         $("#caja_modificar_inscritos").prop("hidden", true);
     }
-
     function modal_anular_inscripcion(id_alumno, alumno) {
         id_alumno_anular = id_alumno;
         var modal_anular_inscripcion = M.Modal.getInstance($("#modal_anular_inscripcion"));
         $("#text_anular_inscripcion").text(alumno);
         modal_anular_inscripcion.open();
     }
-
     function anular_inscripcion(id_permiso) {
         $.ajax({
             url: 'https://www.chmd.edu.mx/pruebascd/icloud/Especial/common/post_cancela_inscripcion_evento_alumno.php',
@@ -499,7 +502,6 @@ $diferencia_inscritos_alumnos_familia = $diferencia_inscritos_alumnos_familia > 
             $("#loading").fadeOut("slow");
         });
     }
-
     function inscribir_alumnos(id_permiso, tipo_evento, codigo_invitacion, familia) {
         var alumnos = coleccion_checkbox_values;
         if (!validar_check_alumnos())

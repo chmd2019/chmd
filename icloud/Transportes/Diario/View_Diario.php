@@ -13,6 +13,7 @@ $fecha_actual_impresa_script = "<script>var fecha = new Date('$fecha_actual');"
         . "document.write(fecha)</script>";
 $consulta = mysqli_fetch_array($consulta);
 $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
+$url_home = dirname(dirname(dirname($_SERVER['REQUEST_URI']))) . "/index.php";
 ?>
 
 <br>
@@ -29,6 +30,11 @@ $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
                     <a class="waves-effect waves-light"
                        href="vistas/vista_nuevo_permiso_diario.php?idseccion=<?php echo $idseccion; ?>">
                         <img src='../../images/Nuevo.svg' style="width: 110px">
+                    </a>
+                    <a class="waves-effect waves-light b-azul-claro" 
+                       href="<?= $url_home;?>"
+                       style="border-radius: 5px;padding: .05rem 1.5rem;margin-top: -.35rem;">
+                        <img src='../../images/svg/home_page.svg' style="width: 25px">
                     </a>
                 </div>
         </span>
@@ -92,7 +98,7 @@ $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
                                     ?>
                                     <tr style="cursor:pointer;">
                                         <th scope="row" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Diario/vistas/vista_consulta_permiso_diario.php?id=<?php echo $id_permiso; ?>&&tipo_permiso=1&&idseccion=<?php echo $idseccion; ?>'"><?php echo $fecha_cambio; ?></th>
-                                        <td onclick="window.location.href='https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Diario/vistas/vista_consulta_permiso_diario.php?id=<?php echo $id_permiso; ?>&&tipo_permiso=1&&idseccion=<?php echo $idseccion; ?>'">
+                                        <td onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Diario/vistas/vista_consulta_permiso_diario.php?id=<?php echo $id_permiso; ?>&&tipo_permiso=1&&idseccion=<?php echo $idseccion; ?>'">
                                             <span class="chip white-text" style="font-size: .9rem;padding: 0px 3px;background-color: <?php echo $color_badge; ?>"><?php echo $status_detalle; ?></span>
                                         </td>
                                         <td>

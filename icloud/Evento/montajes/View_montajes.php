@@ -18,6 +18,7 @@ $declinados_cancelados = $control->consultar_declinados_cancelados();
 while ($row = mysqli_fetch_array($declinados_cancelados)) {
     $control->desocupar_lugar($row[0]);
 }
+$url_home = dirname(dirname(dirname($_SERVER['REQUEST_URI']))) . "/index.php";
 ?>
 
 <br>
@@ -50,7 +51,12 @@ while ($row = mysqli_fetch_array($declinados_cancelados)) {
                 </a>
                 <a class="waves-effect waves-light" href="vistas/vista_nueva_solicitud_montaje.php?idseccion=<?php echo $idseccion; ?>">
                     <img src='../../images/Nuevo.svg' style="width: 110px">       
-                </a>         
+                </a>      
+                <a class="waves-effect waves-light b-azul-claro" 
+                   href="<?= $url_home; ?>"
+                   style="border-radius: 5px;padding: .05rem 1.5rem;margin-top: -.35rem;">
+                    <img src='../../images/svg/home_page.svg' style="width: 25px">
+                </a>   
             </div>     
         </div>
     </span>
@@ -133,7 +139,7 @@ while ($row = mysqli_fetch_array($declinados_cancelados)) {
                                 <?php endif; ?>
                             </td>
                         </tr> 
-                    <?php elseif($esta_archivado && $id_privilegio !=3):?>                    
+                    <?php elseif ($esta_archivado && $id_privilegio != 3): ?>                    
                         <tr style="cursor: pointer;font-size: 1rem;">
                             <td style="padding: 0px;" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><?php echo $fecha_montaje; ?></td>
                             <td style="padding: 0px;" class="hide-on-med-and-down" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><?php echo $solicitante; ?></td>
@@ -162,7 +168,7 @@ while ($row = mysqli_fetch_array($declinados_cancelados)) {
                                 <?php endif; ?>
                             </td>
                         </tr> 
-                    <?php elseif(!$esta_archivado && $id_privilegio !=3):?>                    
+                    <?php elseif (!$esta_archivado && $id_privilegio != 3): ?>                    
                         <tr style="cursor: pointer;font-size: 1rem;">
                             <td style="padding: 0px;" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><?php echo $fecha_montaje; ?></td>
                             <td style="padding: 0px;" class="hide-on-med-and-down" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Evento/montajes/vistas/vista_consulta_montaje.php?id=<?php echo $id_montaje; ?>&&idseccion=<?php echo $idseccion; ?>'"><?php echo $solicitante; ?></td>

@@ -30,13 +30,13 @@ if (isset($authUrl)) {
     </h4>
     <!--MENU-->
     <div class="row">
-        <div style="text-align: right;margin:1rem 1rem 0 0">
+        <div style="text-align: right;margin:1rem 1rem 0 0;">
             <a class="waves-effect waves-light" href="index.php">
                 <img src='images/Atras.svg' style="width: 110px">
             </a>
         </div>
         <!--col s12 m8 esta grilla establece iconos mas grandes-->
-        <div class="col s12 m8" style="float:none;margin:auto">
+        <div class="col s12 m8" style="float:none;margin:auto;clear: both;">
             <?php
             if ($consulta) {
                 if ($cliente = mysqli_fetch_array($consulta)) {

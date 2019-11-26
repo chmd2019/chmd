@@ -13,6 +13,7 @@ $fecha_actual_impresa_script = "<script>var fecha = new Date('$fecha_actual');"
         . "document.write(fecha)</script>";
 $consulta = mysqli_fetch_array($consulta);
 $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
+$url_home = dirname(dirname(dirname($_SERVER['REQUEST_URI']))) . "/index.php";
 ?>
 <br>
 <div>
@@ -30,6 +31,11 @@ $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
                 <!-- Boton de Nuevo -->
                 <img src='../../images/Nuevo.svg' style="width: 120px">   
             </a>
+            <a class="waves-effect waves-light b-azul-claro" 
+               href="<?= $url_home; ?>"
+               style="border-radius: 5px;padding: .09rem 1.5rem;margin-top: -.35rem;">
+                <img src='../../images/svg/home_page.svg' style="width: 25px">
+            </a>
         </div>
     </span>
     <?php
@@ -45,12 +51,12 @@ $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
         ?>
         <br>
         <!--Pinta solo el encabezado de la tabla-->
-        <table class="highlight">
+        <table id="tabla">
             <thead>
                 <tr class="b-azul white-text">
-                    <th scope="col" width="30%">Fecha programada</th>
-                    <th scope="col" width="35%">Estatus</th>
-                    <th scope="col" width="35%">Acciones</th>
+                    <th scope="col" width="30%" style="padding: 3px;">Fecha programada</th>
+                    <th scope="col" width="40%" style="padding: 3px;">Estatus</th>
+                    <th scope="col" width="30%" style="padding: 3px;">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -69,7 +75,7 @@ $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
                     $resta_cancelados = 0;
                     $total_en_evento = mysqli_num_rows($alumnos_permiso);
                     while ($alumno = mysqli_fetch_array($alumnos_permiso)) {
-                        if ($alumno[6]=="4") {
+                        if ($alumno[6] == "4") {
                             $resta_cancelados++;
                         }
                         if ($alumno[6] !== "2") {
@@ -110,11 +116,13 @@ $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
                     $solicitud_vencida = $objDateHelper->comprobar_solicitud_vencida_d_m_y_guion($fecha_destino);
                     if ($solicitud_vencida) {
                         ?>
-                        <tr style="cursor:pointer;" onclick='window.location.href="https://www.chmd.edu.mx/pruebascd/icloud/Especial/Eventos/vistas/vista_consulta_evento.php?id_permiso=<?php echo $id_permiso; ?>&&tipo_permiso=<?php echo $tipo_permiso; ?>&&idseccion=<?php echo $idseccion; ?>"'>
-                            <th scope="row"><?php echo $fecha_cambio; ?></th>
+                        <tr style="cursor:pointer;" onclick='window.location.href = "https://www.chmd.edu.mx/pruebascd/icloud/Especial/Eventos/vistas/vista_consulta_evento.php?id_permiso=<?php echo $id_permiso; ?>&&tipo_permiso=<?php echo $tipo_permiso; ?>&&idseccion=<?php echo $idseccion; ?>"'>
+                            <td scope="row"><?php echo $fecha_cambio; ?></td>
                             <td class="alinear-flex-center">
-                                <span class="chip white-text" style="font-size: .9rem;padding: 0px 3px;background-color: <?php echo $color_badge; ?>"><?php echo $status_detalle; ?></span>
-                                <span class='chip green accent-4 c-blanco' ><i class='material-icons' style='margin-top:.2rem'>face</i> <?= $i; ?> de <?= $total_en_evento -$resta_cancelados;?></span>
+                                <span class="chip white-text" 
+                                      style="font-size: .7rem;padding: 0px 3px;background-color: <?php echo $color_badge; ?>"><?php echo $status_detalle; ?></span>
+                                <span class='chip green accent-4 c-blanco' style="font-size: .8rem;">
+                                    <i class='material-icons' style='margin-top:.2rem;font-size: .8rem;'>face</i> <?= $i; ?> de <?= $total_en_evento - $resta_cancelados; ?></span>
                             </td>
                             <td>
                                 <a class="waves-effect waves-light"

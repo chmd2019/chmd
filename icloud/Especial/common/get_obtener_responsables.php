@@ -12,7 +12,12 @@ $respuesta = array();
 
 if ($consulta_padres) {
     while ($data = mysqli_fetch_array($consulta_padres)) {
-        array_push($respuesta, ["id" => $data[0], "nombre" => strtoupper($data[1]), "tipo" => $data[2]]);
+        array_push($respuesta, [
+            "id" => $data[0], 
+            "nombre" => strtoupper($data[1]),
+            "tipo" => $data[2],
+            "responsable"=>$data[3]
+                ]);
     }
 }
 if ($consulta_responsables) {

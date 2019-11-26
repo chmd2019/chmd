@@ -159,7 +159,7 @@ if (isset($authUrl)) {
                             &nbsp;&nbsp;<i class="material-icons c-azul prefix">person_pin_circle</i>Dirección Guardada
                         </label>
                         <select id="reside" 
-                                class="browser-default" 
+                                class="browser-default border-azul" 
                                 onchange="cambiar_direccion('<?php echo $id; ?>')">
                         </select>
                         <br>
@@ -256,7 +256,7 @@ if (isset($authUrl)) {
                             <label>
                                 &nbsp;&nbsp;<i class="material-icons c-azul prefix">departure_board</i>Ruta
                             </label>
-                            <select class="browser-default" id="ruta_nuevo_permiso_permanente" >
+                            <select class="browser-default border-azul" id="ruta_nuevo_permiso_permanente" >
                                 <option value="" selected disabled>Selecciona tu ruta</option>
                                 <?php
                                 if (mysqli_num_rows($rutas)):

@@ -5,7 +5,7 @@
             <h5 class="c-azul">Debe ingresar un código válido</h5>
             <br>
             <div class="input-field">
-                <input id="codigo" type="text" class="c-azul" onkeypress="return (this.value.length <= 5);">
+                <input id="codigo" type="text" class="c-azul" onkeypress="return (this.value.length <= 5);" autofocus>
                 <label for="codigo" class="light-blue-text accent-3-text">Código</label>
             </div>            
         </div>  

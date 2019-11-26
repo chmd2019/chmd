@@ -15,6 +15,7 @@ $fecha_actual_impresa_script = "<script>var fecha = new Date('$fecha_actual');"
 
 $consulta = mysqli_fetch_array($consulta);
 $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
+$url_home = dirname(dirname(dirname($_SERVER['REQUEST_URI']))) . "/index.php";
 ?>
 <br>
     <div>
@@ -29,6 +30,11 @@ $familia = str_pad($consulta[2], 4, 0, STR_PAD_LEFT);
                     <a class="waves-effect waves-light"
                        href="vistas/vista_nuevo_permiso_temporal.php?idseccion=<?php echo $idseccion; ?>">
                         <img src='../../images/Nuevo.svg' style="width: 110px">
+                    </a>
+                    <a class="waves-effect waves-light b-azul-claro" 
+                       href="<?= $url_home;?>"
+                       style="border-radius: 5px;padding: .05rem 1.5rem;margin-top: -.35rem;">
+                        <img src='../../images/svg/home_page.svg' style="width: 25px">
                     </a>
                 </div>
         </span>

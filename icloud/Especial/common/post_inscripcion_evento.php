@@ -34,13 +34,15 @@ if ($connection) {
                 . "id_alumno, "
                 . "estatus, "
                 . "familia, "
-                . "codigo_invitacion) "
+                . "codigo_invitacion, "
+                . "estatus_padre) "
                 . "VALUES ('"
                 . $id_permiso . "','"
                 . $alumno . "','"
                 . 1 . "','"
                 . $familia . "','"
-                . $codigo_invitacion . "')";
+                . $codigo_invitacion . "', "
+                . "2)";
         $query = mysqli_query($connection, $sql);
     }
 }

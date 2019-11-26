@@ -2,6 +2,7 @@
 $root_icloud = $_SERVER['DOCUMENT_ROOT'] . "/pruebascd/icloud";
 include_once "$root_icloud/Transportes/components/sesion.php";
 $fecha_actual = date('Y-m-d');
+$url_home = dirname(dirname(dirname($_SERVER['REQUEST_URI']))) . "/index.php";
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -265,6 +266,11 @@ $fecha_actual = date('Y-m-d');
                         <a class="waves-effect waves-light" href="../montajes/vistas/vista_nueva_solicitud_montaje.php?idseccion=<?php echo $idseccion; ?>">
                             <img src='../../images/Nuevo.svg' style="width: 110px">       
                         </a> 
+                        <a class="waves-effect waves-light b-azul-claro" 
+                           href="<?= $url_home;?>"
+                           style="border-radius: 5px;padding: .05rem 1.5rem;margin-top: -.35rem;">
+                            <img src='../../images/svg/home_page.svg' style="width: 25px">
+                        </a>
                     </div>
                     <div>
     <?php include './View_calendario.php'; ?>

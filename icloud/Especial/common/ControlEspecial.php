@@ -17,7 +17,7 @@ class ControlEspecial {
     public function obtener_responsables_padre($familia) {
         $conexion = $this->con->conectar1();
         if ($conexion) {
-            $sql = "SELECT id, nombre, tipo FROM usuarios WHERE numero = '$familia' AND estatus = 2";
+            $sql = "SELECT id, nombre, tipo, responsable FROM usuarios WHERE numero = '$familia' AND estatus = 2";
             mysqli_set_charset($conexion, 'utf8');
             return mysqli_query($conexion, $sql);
         }
@@ -288,8 +288,10 @@ class ControlEspecial {
     public function consultar_inscripcion_evento($codigo_invitacion, $familia) {
         $connection = $this->con->conectar1();
         if ($connection) {
-            $sql = "SELECT id, id_permiso, id_alumno, estatus, codigo_invitacion, familia "
-                    . "FROM Ventana_permisos_alumnos WHERE codigo_invitacion = '$codigo_invitacion' && familia = '$familia'";
+            $sql = "SELECT a.id, a.id_permiso, a.id_alumno, a.estatus, a.codigo_invitacion, a.familia "
+                    . "FROM Ventana_permisos_alumnos a "
+                    . "INNER JOIN alumnoschmd b ON b.id = a.id_alumno "
+                    . "WHERE codigo_invitacion = '$codigo_invitacion' AND b.idfamilia = $familia;";
             mysqli_set_charset($connection, 'utf8');
             return mysqli_query($connection, $sql);
         }
@@ -350,7 +352,7 @@ class ControlEspecial {
     public function cancelar_alumno_x_alumno($id_permiso, $id_alumno) {
         $connection = $this->con->conectar1();
         if ($connection) {
-            $sql = "UPDATE `Ventana_permisos_alumnos` SET `estatus`='4' WHERE `id_permiso`=$id_permiso AND `id_alumno` = $id_alumno;";
+            $sql = "UPDATE `Ventana_permisos_alumnos` SET `estatus`='3' WHERE `id_permiso`=$id_permiso AND `id_alumno` = $id_alumno;";
             mysqli_set_charset($connection, 'utf8');
             return mysqli_query($connection, $sql);
         }
@@ -396,6 +398,30 @@ class ControlEspecial {
         }
     }
 
-    
+    public function select_alumno_inscrito($id_alumno, $codigo_invitacion) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT a.id_alumno, c.nombre AS alumno, b.`status` AS estatus_adm, "
+                    . "b.color_estatus AS color_estatus_adm, d.`status` AS estatus_padre, "
+                    . "d.color_estatus AS color_estatus_padre "
+                    . "FROM Ventana_permisos_alumnos a "
+                    . "INNER JOIN Catalogo_status_acceso b ON b.id = a.estatus "
+                    . "INNER JOIN alumnoschmd c ON c.id = a.id_alumno "
+                    . "INNER JOIN Catalogo_status_evento_padres d ON d.id = a.estatus_padre "
+                    . "WHERE a.id_alumno = $id_alumno AND a.codigo_invitacion = '$codigo_invitacion';";
+            mysqli_set_charset($connection, 'utf8');
+            return mysqli_query($connection, $sql);
+        }
+    }
+
+    public function select_fecha_invitaction($codigo_invitacion) {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT a.fecha_cambio FROM Ventana_Permisos a "
+                    . "WHERE a.codigo_invitacion = '$codigo_invitacion' LIMIT 1;";
+            mysqli_set_charset($connection, 'utf8');
+            return mysqli_fetch_assoc(mysqli_query($connection, $sql))['fecha_cambio'];
+        }
+    }    
 
 }

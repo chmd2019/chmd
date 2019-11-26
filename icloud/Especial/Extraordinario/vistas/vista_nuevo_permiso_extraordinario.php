@@ -12,7 +12,7 @@ require_once "$root_icloud/Model/Config.php";
 require_once "$root_icloud/Helpers/DateHelper.php";
 
 if (isset($_GET['logout'])) {
-    
+
     unset($_SESSION['access_token']);
 }
 
@@ -185,12 +185,13 @@ if (isset($authUrl)) {
                                 $counter++;
                                 $grado_escolaridad = $alumno[6];
                                 $nivel_escolaridad = $alumno[9];
+                                $grado = $alumno[3];
                                 //cambiar a grado_escolaridad a 17
                                 if ($grado_escolaridad != 17)
                                     $flag_no_sale_solo = true;
                                 $horario_permitido = "";
                                 if ($grado_escolaridad >= 1 && $grado_escolaridad <= 4) {
-                                    $horario_permitido = 1; //kinder
+                                    $horario_permitido = 4; //kinder
                                 } else if ($grado_escolaridad >= 5 && $grado_escolaridad <= 6) {
                                     $horario_permitido = 2; //primaria baja
                                 } else if ($grado_escolaridad >= 7 && $grado_escolaridad <= 10) {
@@ -204,7 +205,7 @@ if (isset($authUrl)) {
                                 <input hidden value="<?php echo $idcursar; ?>" id="idcursar_alumno_<?php echo $counter; ?>">
                                 <div>
                                     <span class="col s12"><br></span>
-                                    <div class="switch col s1 l1">
+                                    <div class="switch col s3 l1">
                                         <label class="checks-alumnos">
                                             <input type="checkbox"
                                                    id="alumno_<?php echo $counter; ?>"
@@ -213,7 +214,7 @@ if (isset($authUrl)) {
                                             <span class="lever" style="margin-top: 1rem"></span>
                                         </label>
                                     </div>
-                                    <textarea class="materialize-textarea col s10 l11"
+                                    <textarea class="materialize-textarea col s8 l11 left"
                                               readonly
                                               id="nombre_alumno_<?php echo $counter; ?>"
                                               style="font-size: 1rem;float: right;"></textarea>
@@ -230,7 +231,9 @@ if (isset($authUrl)) {
                                                 id="hora_salida_<?php echo $counter; ?>"
                                                 autocomplete="off"
                                                 placeholder="Salida"
-                                                onclick="mostrar_timepicker_salida(this, '<?php echo $counter; ?>', '<?php echo $horario_permitido; ?>')">
+                                                onfocus="blur();"
+                                                onchange="asignar_hora(this);"
+                                                onclick="mostrar_timepicker_salida(this, '<?php echo $counter; ?>', '<?php echo $horario_permitido; ?>');">
                                         </div>
                                     </div>
 
@@ -240,6 +243,7 @@ if (isset($authUrl)) {
                                             <label class="input-field col s12 l3" style="margin-top: 2rem">
                                                 <input type="checkbox"
                                                        class="filled-in"
+                                                       onfocus="blur();"
                                                        id="check_regreso_<?php echo $counter; ?>"
                                                        onchange="check_regresa('hora_regreso_<?php echo $counter; ?>', 'caja_regresa_<?php echo $counter; ?>')" />
                                                 <span>Regresa</span>
@@ -253,6 +257,8 @@ if (isset($authUrl)) {
                                                     id="hora_regreso_<?php echo $counter; ?>"
                                                     autocomplete="off"
                                                     placeholder="Regreso"
+                                                    onfocus="blur();"
+                                                    onchange="asignar_hora(this);"
                                                     onclick="mostrar_timepicker_regreso(this, '<?php echo $counter; ?>', '<?php echo $horario_permitido; ?>')">
                                             </div>
                                         </div>
@@ -261,7 +267,7 @@ if (isset($authUrl)) {
                                 <input id="id_alumno_<?php echo $counter; ?>" hidden value="<?php echo $alumno['id']; ?>"/>
                                 <script>
                                     $('#nombre_alumno_<?php echo $counter; ?>')
-                                            .val('<?php echo $alumno['nombre']; ?>\nNivel: <?php echo $nivel_escolaridad; ?>');
+                                            .val('<?php echo $alumno['nombre']; ?>\nNivel: <?php echo $nivel_escolaridad; ?>\nGrupo: <?= $grado; ?>');
                                                 M.textareaAutoResize($('#nombre_alumno_<?php echo $counter; ?>'));
                                 </script>
                                 <?php
@@ -288,7 +294,7 @@ if (isset($authUrl)) {
                                 &nbsp;&nbsp;<i class="material-icons prefix c-azul">person</i>Responsable
                             </label>
                             <select id="select_responsable" 
-                                    class="browser-default"
+                                    class="browser-default border-azul"
                                     onchange="seleccion_responsable(this.value)">
                             </select>
                             <br>
@@ -302,7 +308,7 @@ if (isset($authUrl)) {
                                        autocomplete="off">
                                 <label for="responsable">Nombre del responsable</label>
                             </div>
-                            <div class="input-field col s12 l6">
+                            <div class="input-field col s12 l6" style="margin-top: 2rem;">
                                 <i class="material-icons prefix c-azul">person</i>
                                 <input id="parentesco_responsable"
                                        type="text"
@@ -317,9 +323,10 @@ if (isset($authUrl)) {
                             </a>
                         </div>
                         <div class="input-field col s12">
-                            <label for="motivos">Motivos</label>
+                            <label for="motivos"><span class="red-text">* Motivos</span></label>
                             <i class="material-icons c-azul prefix">chrome_reader_mode</i>
                             <textarea id="motivos"
+                                      style="border-bottom:1px solid red;"
                                       class="materialize-textarea"
                                       onkeyup ="capitaliza_primer_letra(this.id)"
                                       placeholder="Motivos"></textarea>
@@ -341,14 +348,6 @@ if (isset($authUrl)) {
     }
 }
 ?>
-<!--
-<div class="fixed-action-btn">
-    <a class="btn-floating btn-large waves-effect waves-light b-azul"
-       href="<?php echo $redirect_uri ?>Especial/Extraordinario/PExtraordinario.php?idseccion=<?php echo $idseccion; ?>">
-        <i class="large material-icons">keyboard_backspace</i>
-    </a>
-</div>
---->
 
 <div class="loading" id="loading" >
     <div class="preloader-wrapper big active">
@@ -395,13 +394,11 @@ if (isset($authUrl)) {
         }
         return true;
     }
-
     function cargar_responsables() {
         responsables = obtener_responsables('<?php echo $nfamilia; ?>');
         opciones_select_padres(responsables, "select_responsable");
         $('select').formSelect();
     }
-
     function mostrar_fecha_para() {
         if ($("#fecha_para").prop("hidden")) {
             $("#fecha_para").prop("hidden", false);
@@ -411,42 +408,32 @@ if (isset($authUrl)) {
             $("#fecha_permiso").val("<?php echo $fecha_hoy; ?>");
         }
     }
-
     function mostrar_timepicker_salida(el, counter, horario_permitido) {
         $(document.activeElement).filter(':input:focus').blur();
         if (!validar_fecha_vacia())
             return;
         var hora_maxima_del_dia = '';
         var fecha_permiso = $("#fecha_permiso").val();
-        //BACHILLERATO Y KINDER
+
         fecha_permiso = fecha_permiso.split(",");
-        //BACHILLERATO Y KINDER
         // de lunes a jueves
-        var hora_habilitada = '<?php echo getdate()['hours']; ?>';
-        var fecha_actual = '<?php echo date('Y-m-d'); ?>';
+        var hora_habilitada = '<?= getdate()['hours'] ?>';
+        var fecha_actual = '<?= date('Y-m-d'); ?>';
         var fecha_seleccionada = formatear_fecha_calendario_formato_a_m_d_guion($("#fecha_permiso").val());
         var hora_min_dia = "";
-
-        if (fecha_permiso[0] !== "Viernes" && horario_permitido === "1") {
-            hora_maxima_del_dia = '14:50';
+        //KINDER 
+        if (horario_permitido === "4") {
+            hora_maxima_del_dia = '13:00';
             if (fecha_actual === fecha_seleccionada) {
-                hora_min_dia = parseInt(hora_habilitada) === 23 ? '09:00' : parseInt(hora_habilitada) + 1;
-            } else {
-                hora_min_dia = '09:00';
-            }
-            $('#hora_salida_' + counter).timepicker({
-                'step': 5,
-                'minTime': hora_min_dia + ':00',
-                'maxTime': hora_maxima_del_dia,
-                'timeFormat': 'H:i'
-            });
-            $('#hora_salida_' + counter).timepicker('show');
-        }
-        // los viernes
-        else if (fecha_permiso[0] === "Viernes" && horario_permitido === "1") {
-            hora_maxima_del_dia = '14:00';
-            if (fecha_actual === fecha_seleccionada) {
-                hora_min_dia = parseInt(hora_habilitada) === 23 ? '09:00' : parseInt(hora_habilitada) + 1;
+                var hora_mayor = (parseInt(hora_habilitada) + 1);
+                if (parseInt(hora_habilitada) <= 8) {
+                    hora_min_dia = '09:00';
+                } else if (parseInt(hora_habilitada) >= 9) {
+                    hora_min_dia = `${hora_mayor}`;
+                }
+                if (parseInt(hora_habilitada) >= 13) {
+                    hora_min_dia = '09:00';
+                }
             } else {
                 hora_min_dia = '09:00';
             }
@@ -454,6 +441,60 @@ if (isset($authUrl)) {
                 'step': 5,
                 'minTime': hora_min_dia,
                 'maxTime': hora_maxima_del_dia,
+                'timeFormat': 'H:i'
+            });
+            $('#hora_salida_' + counter).timepicker('show');
+        }
+        //BACHILLERATO
+        if (fecha_permiso[0] !== "Viernes" && horario_permitido === "1") {
+            hora_maxima_del_dia = '12:55';
+            if (fecha_actual === fecha_seleccionada) {
+                var hora_mayor = (parseInt(hora_habilitada) + 1);
+                if (parseInt(hora_habilitada) <= 9) {
+                    hora_min_dia = '10:50';
+                } else if (parseInt(hora_habilitada) >= 10) {
+                    hora_min_dia = `${hora_mayor}`;
+                }
+                if (parseInt(hora_habilitada) >= 12) {
+                    hora_min_dia = '10:50';
+                }
+            } else {
+                hora_min_dia = '10:50';
+            }
+            $('#hora_salida_' + counter).timepicker({
+                'step': 5,
+                'minTime': hora_min_dia,
+                'maxTime': hora_maxima_del_dia,
+                'disableTimeRanges': [
+                    ['11:30', '12:10']
+                ],
+                'timeFormat': 'H:i'
+            });
+            $('#hora_salida_' + counter).timepicker('show');
+        }
+        // los viernes
+        else if (fecha_permiso[0] === "Viernes" && horario_permitido === "1") {
+            hora_maxima_del_dia = '12:55';
+            if (fecha_actual === fecha_seleccionada) {
+                var hora_mayor = (parseInt(hora_habilitada) + 1);
+                if (parseInt(hora_habilitada) <= 9) {
+                    hora_min_dia = '10:50';
+                } else if (parseInt(hora_habilitada) >= 10) {
+                    hora_min_dia = `${hora_mayor}`;
+                }
+                if (parseInt(hora_habilitada) >= 12) {
+                    hora_min_dia = '10:50';
+                }
+            } else {
+                hora_min_dia = '10:50';
+            }
+            $('#hora_salida_' + counter).timepicker({
+                'step': 5,
+                'minTime': hora_min_dia,
+                'maxTime': hora_maxima_del_dia,
+                'disableTimeRanges': [
+                    ['11:30', '12:10']
+                ],
                 'timeFormat': 'H:i'
             });
             $('#hora_salida_' + counter).timepicker('show');
@@ -463,7 +504,15 @@ if (isset($authUrl)) {
         if (fecha_permiso[0] !== "Viernes" && horario_permitido === "2") {
             hora_maxima_del_dia = '13:15';
             if (fecha_actual === fecha_seleccionada) {
-                hora_min_dia = parseInt(hora_habilitada) === 23 ? '10:50' : parseInt(hora_habilitada) + 1;
+                hora_min_dia = parseInt(hora_habilitada) + 1;
+                if (parseInt(hora_habilitada) <= 9) {
+                    hora_min_dia = '10:50';
+                } else if (parseInt(hora_habilitada) >= 10) {
+                    hora_min_dia = `${hora_mayor}`;
+                }
+                if (parseInt(hora_habilitada) >= 12) {
+                    hora_min_dia = '10:50';
+                }
             } else {
                 hora_min_dia = '10:50';
             }
@@ -472,7 +521,7 @@ if (isset($authUrl)) {
                 'minTime': hora_min_dia,
                 'maxTime': hora_maxima_del_dia,
                 'disableTimeRanges': [
-                    ['11:20', '12:50']
+                    ['11:30', '12:55']
                 ],
                 'timeFormat': 'H:i'
             });
@@ -482,7 +531,15 @@ if (isset($authUrl)) {
         else if (fecha_permiso[0] === "Viernes" && horario_permitido === "2") {
             hora_maxima_del_dia = '12:35';
             if (fecha_actual === fecha_seleccionada) {
-                hora_min_dia = parseInt(hora_habilitada) === 23 ? '10:35' : parseInt(hora_habilitada) + 1;
+                hora_min_dia = parseInt(hora_habilitada) + 1;
+                if (parseInt(hora_habilitada) <= 9) {
+                    hora_min_dia = '10:35';
+                } else if (parseInt(hora_habilitada) >= 10) {
+                    hora_min_dia = `${hora_mayor}`;
+                }
+                if (parseInt(hora_habilitada) >= 12) {
+                    hora_min_dia = '10:35';
+                }
             } else {
                 hora_min_dia = '10:35';
             }
@@ -499,29 +556,18 @@ if (isset($authUrl)) {
         }
         //PRIMARIA ALTA (3, 4, 5 y 6)
         //de lunes a jueves
-        if (fecha_permiso[0] !== "Viernes" && horario_permitido === "3") {
-            hora_maxima_del_dia = '13:15';
-            if (fecha_actual === fecha_seleccionada) {
-                hora_min_dia = parseInt(hora_habilitada) === 23 ? '10:05' : parseInt(hora_habilitada) + 1;
-            } else {
-                hora_min_dia = '10:05';
-            }
-            $('#hora_salida_' + counter).timepicker({
-                'step': 5,
-                'minTime': hora_min_dia,
-                'maxTime': hora_maxima_del_dia,
-                'disableTimeRanges': [
-                    ['10:45', '12:55']
-                ],
-                'timeFormat': 'H:i'
-            });
-            $('#hora_salida_' + counter).timepicker('show');
-        }
-        // viernes
-        else if (fecha_permiso[0] === "Viernes" && horario_permitido === "3") {
+        if (fecha_permiso[0] === "Viernes" && horario_permitido === "3") {
             hora_maxima_del_dia = '12:35';
             if (fecha_actual === fecha_seleccionada) {
-                hora_min_dia = parseInt(hora_habilitada) === 23 ? '09:55' : parseInt(hora_habilitada) + 1;
+                hora_min_dia = parseInt(hora_habilitada) + 1;
+                if (parseInt(hora_habilitada) <= 9) {
+                    hora_min_dia = '09:55';
+                } else if (parseInt(hora_habilitada) >= 10) {
+                    hora_min_dia = `${hora_mayor}`;
+                }
+                if (parseInt(hora_habilitada) >= 12) {
+                    hora_min_dia = '09:55';
+                }
             } else {
                 hora_min_dia = '09:55';
             }
@@ -536,12 +582,38 @@ if (isset($authUrl)) {
             });
             $('#hora_salida_' + counter).timepicker('show');
         }
+        // viernes
+        else if (fecha_permiso[0] !== "Viernes" && horario_permitido === "3") {
+            hora_maxima_del_dia = '13:15';
+            if (fecha_actual === fecha_seleccionada) {
+                hora_min_dia = parseInt(hora_habilitada) + 1;
+                if (parseInt(hora_habilitada) <= 9) {
+                    hora_min_dia = '10:05';
+                } else if (parseInt(hora_habilitada) >= 10) {
+                    hora_min_dia = `${hora_mayor}`;
+                }
+                if (parseInt(hora_habilitada) >= 12) {
+                    hora_min_dia = '10:05';
+                }
+            } else {
+                hora_min_dia = '10:05';
+            }
+            $('#hora_salida_' + counter).timepicker({
+                'step': 5,
+                'minTime': hora_min_dia,
+                'maxTime': hora_maxima_del_dia,
+                'disableTimeRanges': [
+                    ['10:45', '12:55']
+                ],
+                'timeFormat': 'H:i'
+            });
+            $('#hora_salida_' + counter).timepicker('show');
+        }
         if ($("#check_regreso_" + counter).prop('checked')) {
             $("#check_regreso_" + counter).click();
         }
         ids.push(el.id);
     }
-
     function mostrar_timepicker_regreso(el, counter, horario_permitido) {
         $(document.activeElement).filter(':input:focus').blur();
         if (!validar_fecha_vacia())
@@ -566,11 +638,14 @@ if (isset($authUrl)) {
         // de lunes a jueves
         if (fecha_permiso[0] !== "Viernes" && horario_permitido === "1") {
             var hora_minima_respecto_salida = `${parseInt($("#hora_salida_" + counter).val().split(":")[0]) + 1}:${$("#hora_salida_" + counter).val().split(":")[1]}`;
-            hora_maxima_del_dia = '14:50';
+            hora_maxima_del_dia = '12:55';
             $('#hora_regreso_' + counter).timepicker({
                 'step': 5,
                 'minTime': $("#hora_salida_" + counter).val().split(":")[0] === hora_maxima_del_dia.split(":")[0] ? $("#hora_salida_" + counter).val() : hora_minima_respecto_salida,
                 'maxTime': hora_maxima_del_dia,
+                'disableTimeRanges': [
+                    ['11:30', '12:10']
+                ],
                 'timeFormat': 'H:i'
             });
             $('#hora_regreso_' + counter).timepicker('show');
@@ -578,18 +653,20 @@ if (isset($authUrl)) {
         // los viernes
         else if (fecha_permiso[0] === "Viernes" && horario_permitido === "1") {
             var hora_minima_respecto_salida = `${parseInt($("#hora_salida_" + counter).val().split(":")[0]) + 1}:${$("#hora_salida_" + counter).val().split(":")[1]}`;
-            hora_maxima_del_dia = '14:00';
+            hora_maxima_del_dia = '12:55';
             $('#hora_regreso_' + counter).timepicker({
                 'step': 5,
                 'minTime': $("#hora_salida_" + counter).val().split(":")[0] === hora_maxima_del_dia.split(":")[0] ? $("#hora_salida_" + counter).val() : hora_minima_respecto_salida,
                 'maxTime': hora_maxima_del_dia,
+                'disableTimeRanges': [
+                    ['11:30', '12:10']
+                ],
                 'timeFormat': 'H:i'
             });
             $('#hora_regreso_' + counter).timepicker('show');
         }
         ids.push(el.id);
     }
-
     function remover_timepicker() {
         var ids_timepicker = [...new Set(ids)];
         for (var item in ids_timepicker) {
@@ -597,7 +674,6 @@ if (isset($authUrl)) {
             $("#" + ids_timepicker[item]).val("");
         }
     }
-
     function mostrar_ocultar_caja_horarios(id, id_alumno, idcursar) {
         if ($("#" + id).prop("hidden")) {
             $("#" + id).prop("hidden", false);
@@ -608,7 +684,6 @@ if (isset($authUrl)) {
             $('#hora_regreso_' + counter).timepicker('remove');
         }
     }
-
     function aviso_tercer_permiso(id_alumno, idcursar) {
         $.ajax({
             url: 'https://www.chmd.edu.mx/pruebascd/icloud/Especial/common/get_aviso_tercer_permiso.php',
@@ -628,7 +703,6 @@ if (isset($authUrl)) {
             $("#loading").fadeOut("slow");
         });
     }
-
     function opciones_select_padres(val, id) {
         var select = $(`#${id}`);
         var options = "<option value='0' selected>Seleccione una opción</option>";
@@ -637,7 +711,6 @@ if (isset($authUrl)) {
         }
         select.html(options);
     }
-
     function mostrar_nuevo_responsable() {
         if ($("#nuevo_responsable").prop("hidden")) {
             $("#nuevo_responsable").prop("hidden", false);
@@ -653,7 +726,6 @@ if (isset($authUrl)) {
             cargar_responsables();
         }
     }
-
     function post_nuevo_responsable() {
         var responsable = $("#responsable").val();
         var parentesco_responsable = $("#parentesco_responsable").val();
@@ -662,7 +734,6 @@ if (isset($authUrl)) {
             cargar_responsables();
         }
     }
-
     function seleccion_responsable(val) {
         if (val === "0") {
             $("#parentesco_responsable").val("");
@@ -681,15 +752,14 @@ if (isset($authUrl)) {
                 //$("#nuevo_responsable").prop("hidden", false);
                 /*se verifica el parentesco a través del tipo en tabla usuarios
                  y si no cumple con la condición se establece el parentesco en tabla Responsables*/
-                var parentesco = responsables[item].tipo === "3" ? "Padre" :
-                        responsables[item].tipo === "4" ? "Madre" : responsables[item].parentesco;
-                $("#parentesco_responsable").val(parentesco);
+                /*var parentesco = responsables[item].tipo === "3" ? "Padre" :
+                 responsables[item].tipo === "4" ? "Madre" : responsables[item].parentesco;*/
+                $("#parentesco_responsable").val(responsables[item].responsable);
                 $("#responsable").val(responsables[item].nombre);
                 //$("#check_nuevo_responsable").prop('checked', true);
             }
         }
     }
-
     function enviar_formulario(id, familia, tipo_permiso) {
         if ($("#fecha_permiso").val() === "") {
             M.toast({
@@ -806,7 +876,6 @@ if (isset($authUrl)) {
         }
         return true;
     }
-
     function validar_alumnos() {
         var selected = '';
         var id = '';
@@ -829,7 +898,6 @@ if (isset($authUrl)) {
             }
         }
     }
-
     function check_regresa(id_hora_regreso, id_caja_regresa) {
         if ($("#" + id_caja_regresa).prop('hidden')) {
             $("#" + id_caja_regresa).prop('hidden', false);
@@ -837,6 +905,16 @@ if (isset($authUrl)) {
             $("#" + id_caja_regresa).prop('hidden', true);
             $("#" + id_hora_regreso).val('')
         }
+    }
+    function asignar_hora(el) {
+        $.ajax({
+            url: 'https://www.chmd.edu.mx/pruebascd/icloud/Especial/common/post_obtener_hora.php',
+            type: 'GET',
+            dataType: 'json',
+            data: {hora: el.value}
+        }).done((res) => {
+            $('#' + el.id).timepicker('setTime', `${res}`);
+        });
     }
 </script>
 

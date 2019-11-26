@@ -60,49 +60,60 @@ if (isset($authUrl)) {
         $flag_evento_vencido = true;
     }
 }
+$user = $service->userinfo->get();
+$correo = $user->email;
+$hora_actual = getdate()["hours"];
+$time_fecha_actual = strtotime(date("Y-m-d"));
+$time_fecha_invitacion = strtotime($date_helper->formatear_fecha_calendario_formato_a_m_d_guion($control->select_fecha_invitaction($_GET['cod_evento'])));
 ?>
 
 <div class="row">
     <div class="col s12 l8 border-azul" style="margin: auto;float:none;padding: 1rem;">
-        <h5 class="c-azul text-center">Confirmación de invitación a evento</h5>
-        <span class="col s12"><br></span>
-        <div class="row">
-            <?php if ($flag_evento_vencido) : ?>            <div class="col s12 l6">
-                    <div class="card hoverable">
-                        <div class="card-image">
-                            <img src="../../../images/birthday.jpg">
-                            <span class="card-title">Invitación a cumpleaños</span>
-                            <a class="btn-floating btn-large halfway-fab waves-effect waves-light b-azul tooltipped"
-                               target="_blank"  
-                               data-position="bottom" data-tooltip="Puede verificar la información del evento aquí"
-                               href="https://www.chmd.edu.mx/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php?familia=<?php echo $familia; ?>&&codigo_evento=<?php echo $cod_evento; ?>">
-                                <i class="material-icons">info</i>
-                            </a>
-                        </div>
-                        <div class="card-content">
-                            <p><b><?php echo $alumno; ?></b>, ha sido invitado(a) a un evento de cumpleaños.</p>
-                        </div>
-                        <div class="card-action">
-                            <a class="waves-effect waves-light red-text" 
-                               onclick="confirmar_invitacion(false,<?php echo $id_permiso; ?>)">
-                                <i class="material-icons left">delete</i>Declinar
-                            </a>
-                            <a class="waves-effect waves-light green-text" 
-                               onclick="confirmar_invitacion(true,<?php echo $id_permiso; ?>)">
-                                <i class="material-icons right">done</i>Aceptar
-                            </a>
+        <?php if ($time_fecha_actual > $fecha_evento && $hora_actual >= 11): ?>
+            <span class="chip red white-text text-center col s12"><p>Ya no es posible confirmar la invitación</p></span>
+            <br>
+        <?php else: ?>
+            <h5 class="c-azul text-center">Confirmación de invitación a evento</h5>
+            <span class="col s12"><br></span>
+            <div class="row">
+                <?php if ($flag_evento_vencido) : ?>            
+                    <div class="col s12 l6">
+                        <div class="card hoverable">
+                            <div class="card-image">
+                                <img src="../../../images/birthday.jpg">
+                                <span class="card-title">Invitación a cumpleaños</span>
+                                <a class="btn-floating btn-large halfway-fab waves-effect waves-light b-azul tooltipped"
+                                   target="_blank"  
+                                   data-position="bottom" data-tooltip="Puede verificar la información del evento aquí"
+                                   href="https://www.chmd.edu.mx/pruebascd/icloud/Especial/Codigo/vistas/vista_inscritos_evento.php?familia=<?php echo $familia; ?>&&codigo_evento=<?php echo $cod_evento; ?>">
+                                    <i class="material-icons">info</i>
+                                </a>
+                            </div>
+                            <div class="card-content">
+                                <p><b><?php echo $alumno; ?></b>, ha sido invitado(a) a un evento de cumpleaños.</p>
+                            </div>
+                            <div class="card-action">
+                                <a class="waves-effect waves-light red-text" 
+                                   onclick="confirmar_invitacion(false,<?php echo $id_permiso; ?>)">
+                                    <i class="material-icons left">delete</i>Declinar
+                                </a>
+                                <a class="waves-effect waves-light green-text" 
+                                   onclick="confirmar_invitacion(true,<?php echo $id_permiso; ?>)">
+                                    <i class="material-icons right">done</i>Aceptar
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col s12 l6">
-                    <span class="chip <?php echo $color_estatus; ?>"><?php echo $estatus; ?></span>
-                </div>
-            <?php else: ?>            
-                <div class="text-center">
-                    <span class="col s12 chip red white-text">Evento vencido</span>
-                </div>
-            <?php endif; ?>
-        </div>
+                    <div class="col s12 l6">
+                        <span class="chip <?php echo $color_estatus; ?>"><?php echo $estatus; ?></span>
+                    </div>
+                <?php else: ?>            
+                    <div class="text-center">
+                        <span class="col s12 chip red white-text">Evento vencido</span>
+                    </div>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
     </div>
 </div>
 
@@ -121,6 +132,8 @@ if (isset($authUrl)) {
 </div>
 
 <script>
+    var cod_evento = '<?= $cod_evento; ?>';
+    var correo_destino = '<?=$correo;?>';
     $(document).ready(function () {
         $('.tooltipped').tooltip();
         $("#loading").fadeOut();
@@ -142,9 +155,10 @@ if (isset($authUrl)) {
                     html: 'Solicitud exitosa!',
                     classes: 'green accent-4 c-blanco'
                 });
-                setInterval(() => {
-                    window.location.reload();
-                }, 500);
+                setTimeout(() => {
+                    window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud'
+                }, 2000);
+                //enviar_mail(aceptar_declinar);
             } else {
                 M.toast({
                     html: 'Solicitud no realizada!',
@@ -152,6 +166,28 @@ if (isset($authUrl)) {
                 });
             }
         }).always(() => {
+            $("#loading").fadeOut();
+        });
+    }
+    function enviar_mail(aceptar_declinar) {
+        var asunto = aceptar_declinar === true ? "Ha confirmado la invitación a evento" : "Ha declinado la invitación a evento";
+        var cuerpo_correo = "";
+        if (aceptar_declinar) {
+            cuerpo_correo = `Ha confirmado la invitación al evento <span style='color:#00C2EE'><b>${cod_evento}</b></span>`;
+        } else {
+            cuerpo_correo = `Ha declinado la invitación al evento <span style='color:#00C2EE'><b>${cod_evento}</b></span>`;
+        }
+        $.ajax({
+            url: 'http://chmd.chmd.edu.mx:65083/demo/envia_mail.php',
+            type: 'POST',
+            dataType: 'json',
+            beforeSend: () => {
+                $("#loading").fadeIn();
+            },
+            data: {asunto: asunto, cuerpo_correo: cuerpo_correo, correo_destino:correo_destino}
+        }).done((res)=>{
+            
+        }).always(()=>{
             $("#loading").fadeOut();
         });
     }

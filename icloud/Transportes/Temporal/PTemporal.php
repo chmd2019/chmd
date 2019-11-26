@@ -54,24 +54,7 @@ if (isset($authUrl)) {
         $('.fixed-action-btn').floatingActionButton({
             hoverEnabled: false
         });
-        $('#tabla').DataTable({
-            "language": {
-                "lengthMenu": "_MENU_",
-                "zeroRecords": "<span class='chip red white-text'>Sin registros para mostrar</span>",
-                "info": "<span class='chip blue white-text'>Mostrando colección _PAGE_ de _PAGES_</span>",
-                "infoEmpty": "<span class='chip red white-text'>Sin registros disponibles</span>",
-                "infoFiltered": "(filtrado de _MAX_ total de registros)",
-                "loadingRecords": "Cargando...",
-                "processing": "Procesando...",
-                "search": "Buscar:",
-                "paginate": {
-                    "first": "Primero",
-                    "last": "Último",
-                    "next": "Siguiente",
-                    "previous": "Anterior"
-                }
-            }
-        });
+        set_table_desordenada('tabla');
         $("select").formSelect();
         $('.modal').modal();
         setInterval(function(){

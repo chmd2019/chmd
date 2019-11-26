@@ -284,6 +284,9 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
     color:white !important;
     padding: .7rem !important;
 }
+.margin-no-desktop{
+    
+}
 @media screen and (min-width: 280px) and (max-width:960px){
     .caja-login{
         width:90%;
@@ -313,5 +316,8 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
         height: 80vh;
         top: 5%;
         left: 4%;
+    }    
+    .margin-no-desktop{
+        margin-left: 1rem;
     }
 }

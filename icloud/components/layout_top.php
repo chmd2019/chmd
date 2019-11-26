@@ -46,6 +46,7 @@
         <!--Input autocomplete-->
         <script type="text/javascript" src="https://www.jqwidgets.com/jquery-widgets-demo/jqwidgets/jqxcore.js"></script>
         <script type="text/javascript" src="https://www.jqwidgets.com/jquery-widgets-demo/jqwidgets/jqxinput.js"></script>
+        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> 
     </head>
     <body>
 

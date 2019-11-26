@@ -76,10 +76,10 @@ if (isset($authUrl)) {
             $btn_fecha = true;
         }
         $rutas = $control_temporal->consulta_rutas();
-        header("Expires: Tue, 01 Jan 2000 00:00:00 GMT"); 
-        header("Last-Modified: " . gmdate("D, d MYH:i:s") . " GMT"); 
-        header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0"); 
-        header("Cache-Control: post-check=0, pre-check=0", false); 
+        header("Expires: Tue, 01 Jan 2000 00:00:00 GMT");
+        header("Last-Modified: " . gmdate("D, d MYH:i:s") . " GMT");
+        header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+        header("Cache-Control: post-check=0, pre-check=0", false);
         header("Pragma: no-cache");
         include "$root_icloud/components/navbar.php";
         ?>
@@ -139,7 +139,7 @@ if (isset($authUrl)) {
                                 class="datepicker"
                                 id="fecha_solicitud_nuevo"
                                 placeholder="Para el día"
-                                onchange="fecha_minusculas(this.value, 'fecha_solicitud_nuevo')">
+                                onchange="fecha_minusculas(this.value, 'fecha_solicitud_nuevo');asigna_ruta_viernes(this.value);">
                             <label for="fecha_solicitud_nuevo" style="margin-left: 1rem">Para el día</label>
                         </div>
                     </div>
@@ -234,13 +234,13 @@ if (isset($authUrl)) {
                                    value=""/>
                         </div>
                         <h5 class="center-align c-azul">Dirección de cambio</h5>
-                        
+
                         <label style="margin-left: 1rem">
                             <i class="material-icons c-azul prefix">person_pin_circle</i>Dirección Guardada
                         </label>
                         <div class="input-field col s12">
                             <select id="reside" 
-                                    class="browser-default" 
+                                    class="browser-default border-azul" 
                                     onchange="cambiar_direccion('<?php echo $id; ?>')">
                             </select>
                         </div>
@@ -297,16 +297,16 @@ if (isset($authUrl)) {
                             &nbsp;&nbsp;&nbsp;<i class="material-icons c-azul prefix">departure_board</i>Ruta
                         </label>
                         <div class="input-field col s12">
-                            <select class="browser-default" 
+                            <select class="browser-default border-azul" 
                                     id="ruta" 
-                                    title="Selecciona tu ruta">
-                                <option value="" selected>Selecciona tu ruta</option>
-                                <?php
-                                if (mysqli_num_rows($rutas)):
-                                    while ($row = mysqli_fetch_array($rutas)):
-                                        if ($row[2]):
-                                            ?>
-                                            <option value="<?php echo $row[0]; ?>"><?php echo $row[1]; ?></option>
+                                    title="Selecciona tu ruta"
+                                    disabled>
+                                        <?php
+                                        if (mysqli_num_rows($rutas)):
+                                            while ($row = mysqli_fetch_array($rutas)):
+                                                if ($row[2]):
+                                                    ?>
+                                            <option value="<?php echo $row[0]; ?>" selected><?php echo $row[1]; ?></option>
                                             <?php
                                         endif;
                                     endwhile;
@@ -319,7 +319,7 @@ if (isset($authUrl)) {
                             &nbsp;&nbsp;&nbsp;<i class="material-icons c-azul prefix">departure_board</i>Ruta
                         </label>   
                         <div class="input-field col s12">                      
-                            <select class="browser-default" 
+                            <select class="browser-default border-azul" 
                                     id="ruta">
                                 <option value="" selected>Selecciona tu ruta</option>
                                 <?php
@@ -625,6 +625,16 @@ echo $arrayDias[date('w')] . ", " . date('d') .
             return false;
         }
         return true;
+    }
+    function asigna_ruta_viernes(value) {
+        var ruta = $("#ruta");
+        if (value.indexOf('Viernes') === 0) {
+            ruta.prop('selectedIndex', 1);
+            ruta.prop('disabled', true);
+        } else {
+            ruta.prop('disabled', false);
+            ruta.prop('selectedIndex', 0);
+        }
     }
     function enviar_formulario(id, familia, tipo_permiso) {
         if (validar_formulario()) {
