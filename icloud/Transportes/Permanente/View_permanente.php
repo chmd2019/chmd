@@ -56,9 +56,9 @@ $url_home = dirname(dirname(dirname($_SERVER['REQUEST_URI']))) . "/index.php";
                     <table class="highlight" id="tabla">
                         <thead>
                             <tr class="b-azul white-text">
-                                <th scope="col" width="40%">Dias del permiso</th>
-                                <th scope="col" width="25%">Estatus</th>
-                                <th scope="col" width="35%">Acciones</th>
+                                <th scope="col" width="35%" style="padding: 3px;">Dias del permiso</th>
+                                <th scope="col" width="33%" style="padding: 3px;">Estatus</th>
+                                <th scope="col" width="32%" style="padding: 3px;">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>

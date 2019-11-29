@@ -48,7 +48,7 @@ if (isset($authUrl)) {
             hoverEnabled: false
         });
         $('.modal').modal();
-        set_table_desordenada('tabla');
+        //set_table_desordenada('tabla');
         $("select").formSelect();
         setInterval(function () {
             window.location.reload();

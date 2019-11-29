@@ -343,7 +343,7 @@ if (isset($authUrl)) {
                                   placeholder="Comentarios"></textarea>
                         <label>Comentarios</label>
                         <div class="col s12 l6" style="float: none;margin: 0 auto;">
-                            <button class="btn waves-effect waves-light b-azul white-text w-100"
+                            <button class="btn efecto-btn b-azul white-text w-100"
                                     id="btn_enviar_formulario"
                                     type="button"
                                     onclick="enviar_formulario('<?php echo $id; ?>', '<?php echo $familia; ?>', 1)">Enviar

@@ -51,8 +51,8 @@
         <p>¿Confirma cancelar este permiso?</p>
     </div>
     <div class="modal-footer" style="padding:1rem">
-        <a href="#!" class="modal-close waves-effect btn-flat red white-text">Cancelar</a>
-        <a href="#!" class="waves-effect btn-flat b-azul white-text" onclick="cancelar_permiso('<?php echo "$id_permiso"; ?>')">Aceptar</a>
+        <a href="#!" class="modal-close waves-effect btn-flat red white-text">No</a>
+        <a href="#!" class="waves-effect btn-flat b-azul white-text" onclick="cancelar_permiso('<?php echo "$id_permiso"; ?>')">Sí, cancelar permiso</a>
     </div>
     <br>
 </div>

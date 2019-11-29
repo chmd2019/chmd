@@ -280,7 +280,7 @@ if (isset($authUrl)) {
                         <label for="comentarios_nuevo_permiso_permanente">Comentarios</label>
                     </div>
                     <div class="col s12 l6" style="float: none;margin: 0 auto;">
-                        <button class="btn waves-effect waves-light b-azul white-text w-100"
+                        <button class="btn efecto-btn b-azul white-text w-100"
                                 id="btn_enviar_formulario"
                                 type="button"
                                 onclick="enviar_formulario('<?php echo $id; ?>', '<?php echo $familia; ?>', 3)">Enviar

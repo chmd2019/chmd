@@ -4,9 +4,11 @@ $root_icloud = $_SERVER['DOCUMENT_ROOT'] . "/pruebascd/icloud";
 
 require "$root_icloud/Model/DBManager.php";
 require "$root_icloud/Helpers/DateHelper.php";
+require "./ControlEspecial.php";
 
 $db_manager = new DBManager();
 $date_helper = new DateHelper();
+$controlEspecial = new ControlEspecial();
 //setea el uso horario para ciudad de mexico
 $date_helper->set_timezone();
 
@@ -59,7 +61,7 @@ if ($connection) {
         foreach ($alumnos as $key => $alumno) {
             
             //asigna semestre I o II de acuerdo al mes del año
-            $corte_semestral = intval(date("m")) <= 6 ? "-I" : "-II" ;
+            $corte_semestral = intval(date("m")) <= 7 ? "-II" : "-I" ;
             $anio = date("Y");
             $idcursar = $alumno['idcursar'];
             
@@ -67,7 +69,7 @@ if ($connection) {
                 $anio_creacion = "$anio"."$corte_semestral";
             }
             else{
-                $anio_creacion = $anio;
+                $anio_creacion = $controlEspecial->consulta_cicilo_escolar();;
             }
             $sql = "INSERT INTO Ventana_permisos_alumnos("
                     . "id_permiso,"

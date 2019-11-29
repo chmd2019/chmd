@@ -54,7 +54,7 @@ if (isset($authUrl)) {
         $('.fixed-action-btn').floatingActionButton({
             hoverEnabled: false
         });
-        set_table_desordenada('tabla');
+        //set_table_sin_paginacion_sin_buscar('tabla');
         $("select").formSelect();
         $('.modal').modal();
         setInterval(function(){

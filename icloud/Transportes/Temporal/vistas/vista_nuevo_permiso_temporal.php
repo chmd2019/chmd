@@ -370,7 +370,7 @@ if (isset($authUrl)) {
                         <label>Comentarios</label>
                     </div>
                     <div class="col s12 l6" style="float: none;margin: 0 auto;">
-                        <button class="btn waves-effect waves-light b-azul white-text w-100"
+                        <button class="btn efecto-btn b-azul white-text w-100"
                                 id="btn_enviar_formulario"
                                 type="button"
                                 onclick="enviar_formulario('<?php echo $id; ?>', '<?php echo $familia; ?>', 2)">Enviar
@@ -607,7 +607,7 @@ if (isset($authUrl)) {
         //valida calle
         var calle = $("#calle_nuevo_permiso_temporal");
         var regex_calle = "[A-Za-z ]+[0-9 ][A-Za-z0-9 ]{1, 40}";
-        if (!validar_regex(regex_calle, calle.val())) {
+        if (calle.val()==="") {
             M.toast({
                 html: '¡Agrega calle y número:TECAMACHALCO 370, sin acentos ni signos especiales!',
                 classes: 'deep-orange c-blanco'
@@ -617,7 +617,7 @@ if (isset($authUrl)) {
         //valida colonia*
         var colonia = $("#colonia_nuevo_permiso_temporal");
         var regex_colonia = "[A-Za-z ]{5, 30}";
-        if (!validar_regex(regex_colonia, colonia.val())) {
+        if (colonia.val()==="") {
             M.toast({
                 html: '¡Agrega colonia sin acentos ni signos especiales, mínimo 5 y máximo 30 caracteres!',
                 classes: 'deep-orange c-blanco'
@@ -627,7 +627,7 @@ if (isset($authUrl)) {
         //valida nombre*
         var nombre_nuevo_permiso_temporal = $("#responsable");
         var regex_nombre_nuevo_permiso_temporal = "[A-Za-z ]{1, 256}";
-        if (!validar_regex(regex_nombre_nuevo_permiso_temporal, nombre_nuevo_permiso_temporal.val())) {
+        if (nombre_nuevo_permiso_temporal.val()=== "") {
             M.toast({
                 html: '¡Agregue un responsable válido, sin acentos ni signos especiales!',
                 classes: 'deep-orange c-blanco'
@@ -637,7 +637,7 @@ if (isset($authUrl)) {
         //valida parentesco*
         var parentesco_nuevo_permiso_temporal = $("#parentesco_responsable");
         var regex_parentesco_nuevo_permiso_temporal = "[A-Za-z ]{1, 256}";
-        if (!validar_regex(regex_parentesco_nuevo_permiso_temporal, parentesco_nuevo_permiso_temporal.val())) {
+        if ( parentesco_nuevo_permiso_temporal.val()==="") {
             M.toast({
                 html: '¡Agregue parentesco sin acentos ni signos especiales!',
                 classes: 'deep-orange c-blanco'

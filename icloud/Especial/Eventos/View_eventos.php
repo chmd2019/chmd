@@ -55,8 +55,8 @@ $url_home = dirname(dirname(dirname($_SERVER['REQUEST_URI']))) . "/index.php";
             <thead>
                 <tr class="b-azul white-text">
                     <th scope="col" width="30%" style="padding: 3px;">Fecha programada</th>
-                    <th scope="col" width="40%" style="padding: 3px;">Estatus</th>
-                    <th scope="col" width="30%" style="padding: 3px;">Acciones</th>
+                    <th scope="col" width="35%" style="padding: 3px;">Estatus</th>
+                    <th scope="col" width="35%" style="padding: 3px;">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -117,7 +117,7 @@ $url_home = dirname(dirname(dirname($_SERVER['REQUEST_URI']))) . "/index.php";
                     if ($solicitud_vencida) {
                         ?>
                         <tr style="cursor:pointer;" onclick='window.location.href = "https://www.chmd.edu.mx/pruebascd/icloud/Especial/Eventos/vistas/vista_consulta_evento.php?id_permiso=<?php echo $id_permiso; ?>&&tipo_permiso=<?php echo $tipo_permiso; ?>&&idseccion=<?php echo $idseccion; ?>"'>
-                            <td scope="row"><?php echo $fecha_cambio; ?></td>
+                            <td><span style="font-size: .9rem;"><?= $fecha_cambio; ?></span></td>
                             <td class="alinear-flex-center">
                                 <span class="chip white-text" 
                                       style="font-size: .7rem;padding: 0px 3px;background-color: <?php echo $color_badge; ?>"><?php echo $status_detalle; ?></span>

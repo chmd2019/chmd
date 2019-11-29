@@ -57,9 +57,9 @@ $url_home = dirname(dirname(dirname($_SERVER['REQUEST_URI']))) . "/index.php";
         <table id="tabla">
             <thead>
                 <tr class="b-azul white-text">
-                    <th scope="col" width="25%" style="padding: 3px;">Fecha programada</th>
-                    <th scope="col" width="40%" style="padding: 3px;">Estatus</th>
-                    <th scope="col" width="20%" style="padding: 3px;">Acciones</th>
+                    <th scope="col" width="30%" style="padding: 3px;">Fecha programada</th>
+                    <th scope="col" width="35%" style="padding: 3px;">Estatus</th>
+                    <th scope="col" width="35%" style="padding: 3px;">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -113,7 +113,7 @@ $url_home = dirname(dirname(dirname($_SERVER['REQUEST_URI']))) . "/index.php";
                     if ($solicitud_vencida) {
                         ?>
                         <tr style="cursor:pointer;">
-                            <th scope="row"><?php echo $fecha_cambio; ?></th>
+                            <td><span style="font-size: .9rem;"><?= $fecha_cambio; ?></span></td>
                             <td class="alinear-flex-center">
                                 <span class="chip white-text" style="font-size: .9rem;padding: 0px 3px;background-color: <?php echo $color_badge; ?>"><?php echo $status_detalle; ?></span>
                                 <span class='chip green accent-4 c-blanco'><i class='material-icons' style='margin-top:.2rem'>face</i> <?= $i ?> de <?= $total_en_evento ?></span>

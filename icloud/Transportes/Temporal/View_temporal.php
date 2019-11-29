@@ -55,10 +55,10 @@ $url_home = dirname(dirname(dirname($_SERVER['REQUEST_URI']))) . "/index.php";
                     <table class="highlight" id="tabla">
                         <thead>
                             <tr class="b-azul white-text">
-                                <th scope="col" width="25%">Fecha inicial</th>
-                                <th scope="col"width="25%">Fecha final</th>
-                                <th scope="col" width="15%">Estatus</th>
-                                <th scope="col" width="35%">Acciones</th>
+                                <th scope="col" width="20%" style="padding: 1.5px;">F. inicial &nbsp;</th>
+                                <th scope="col"width="25%" style="padding: 1.5px;">F. final &nbsp;&nbsp;&nbsp;</th>
+                                <th scope="col" width="25%" style="padding: 1.5px;">Estatus</th>
+                                <th scope="col" width="40%" style="padding: 1.5px;">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -97,10 +97,10 @@ $url_home = dirname(dirname(dirname($_SERVER['REQUEST_URI']))) . "/index.php";
                                 if ($solicitud_vencida) {
                                     ?>
                                     <tr style="cursor:pointer;">
-                                        <th scope="row" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Temporal/vistas/vista_consulta_permiso_temporal.php?id=<?php echo $id_permiso; ?>&&tipo_permiso=2&&idseccion=<?php echo $idseccion; ?>'"><?php echo $fecha_inicial; ?></th>
-                                        <td onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Temporal/vistas/vista_consulta_permiso_temporal.php?id=<?php echo $id_permiso; ?>&&tipo_permiso=2&&idseccion=<?php echo $idseccion; ?>'"><?php echo $fecha_final; ?></td>
+                                        <th scope="row" onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Temporal/vistas/vista_consulta_permiso_temporal.php?id=<?php echo $id_permiso; ?>&&tipo_permiso=2&&idseccion=<?php echo $idseccion; ?>'"><span style="font-size: .8rem;"><?php echo $fecha_inicial; ?></span></th>
+                                        <td onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Temporal/vistas/vista_consulta_permiso_temporal.php?id=<?php echo $id_permiso; ?>&&tipo_permiso=2&&idseccion=<?php echo $idseccion; ?>'"><span style="font-size: .8rem;"><b><?php echo $fecha_final; ?></b></span></td>
                                         <td onclick="window.location.href = 'https://www.chmd.edu.mx/pruebascd/icloud/Transportes/Temporal/vistas/vista_consulta_permiso_temporal.php?id=<?php echo $id_permiso; ?>&&tipo_permiso=2&&idseccion=<?php echo $idseccion; ?>'">
-                                            <span class="chip white-text" style="font-size: .9rem;padding: 0px 3px;background-color: <?php echo $color_badge; ?>"><?php echo $status_detalle; ?></span>
+                                            <span class="chip white-text" style="font-size: .5rem;padding-top: 0px;background-color: <?php echo $color_badge; ?>"><?php echo $status_detalle; ?></span>
                                         </td>
                                         <td>
                                             <a class="waves-effect waves-light"

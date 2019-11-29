@@ -55,7 +55,8 @@ if (isset($authUrl)) {
         $('.fixed-action-btn').floatingActionButton({
             hoverEnabled: false
         });
-        set_table_desordenada('tabla');
+        $('.modal').modal();
+        //set_table_desordenada('tabla');
         $("select").formSelect();
         setInterval(function () {
             window.location.reload();

@@ -83,7 +83,7 @@ class ControlEspecial {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "SELECT COUNT(*) FROM Ventana_permisos_alumnos "
-                    . "WHERE id_alumno = '$id_alumno' && anio_creacion = '$anio'";
+                    . "WHERE id_alumno = {$id_alumno} AND anio_creacion = '{$anio}';";
             mysqli_set_charset($connection, 'utf8');
             return mysqli_query($connection, $sql);
         }
@@ -421,6 +421,14 @@ class ControlEspecial {
                     . "WHERE a.codigo_invitacion = '$codigo_invitacion' LIMIT 1;";
             mysqli_set_charset($connection, 'utf8');
             return mysqli_fetch_assoc(mysqli_query($connection, $sql))['fecha_cambio'];
+        }
+    }
+
+    public function consulta_cicilo_escolar() {
+        $connection = $this->con->conectar1();
+        if ($connection) {
+            $sql = "SELECT ciclo FROM Ciclo_escolar WHERE estatus = TRUE;";
+            return mysqli_fetch_assoc(mysqli_query($connection, $sql))['ciclo'];
         }
     }    
 

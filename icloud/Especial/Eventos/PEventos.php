@@ -45,7 +45,7 @@ $("td").css("text-align", "center");
         $('.fixed-action-btn').floatingActionButton({
             hoverEnabled: false
         });
-        set_table_desordenada('tabla'); 
+        //set_table_desordenada('tabla'); 
         $(".modal").modal();
     });    
     setInterval(()=>{window.location.reload();},30000);
