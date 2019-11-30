@@ -1,0 +1,33 @@
+.container-fluid {
+    padding: 0px !important;
+}
+.c-azul{
+    color: #12487E !important;
+}
+.b-azul{
+    background-color: #12487E !important;
+}
+.panel-personalizado{
+    box-shadow: none;
+    border-radius: 0px;
+}
+.alerta-top{
+    position: fixed;
+    right: 5%;
+    top: 5%;
+    display: none;
+    z-index: 1100;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: 0px !important;
+}
+.table thead tr th{
+    padding: 5px;
+}
+.primary-hover:hover{
+    color: red !important;
+}
+@font-face {
+    font-family: "Gotham Rounded Book";
+    src: url("fonts/Gotham Rounded Book.otf");
+}
