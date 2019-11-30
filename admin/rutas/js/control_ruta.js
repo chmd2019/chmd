@@ -6,40 +6,99 @@ $(function(){
   cupos_old = $("#cupos").val();
 });
 
-function  archivar_alumno(id){
-  let  nombre = $("td#nombret_"+id).text();
-  let  domicilio = $("td#domiciliot_"+id).text();
-  let  grupo = $("td#grupot_"+id).text();
-  let  grado = $("td#gradot_"+id).text();
+
+function  archivar_alumno(id , turno ){
+  var data = {
+     "summit" : 1 ,
+     "id_alumno": id,
+     "turno": turno
+  }
+  $.ajax({
+     url: 'common/post_dar_baja_alumno_ruta.php',
+     type: 'POST',
+     data: data,
+     beforeSend: function () {
+       // $("#btn_enviar_formulario").prop("disabled", true);
+       //  $("#loading").fadeIn("slow");
+     },
+     success: function (res) {
+      // alert(res);
+       res = JSON.parse(res);
+       if (res.estatus === true) {
+         alert('El alumno ha sido desvinculado de la ruta exitosamente.');
+         // location.reload();
+       }else{
+         alert('Ha ocurrido un Error.');
+         // $("#btn_enviar_formulario").prop("disabled", false);
+       }
+     }
+   });
+
+  let  nombre = $("td#nombre_"+turno+id).text();
+  let  domicilio = $("td#domicilio_"+turno+id).text();
+  let  grupo = $("td#grupo_"+turno+id).text();
+  let  grado  = $("td#grado_"+turno+id).text();
 //alert(nombre + grupo + grado + id);
   //agregar alumno al modal
   let text =
-'<tr style="border-bottom: 1px solid #eee" id="tr_'+id+'">'+
-'<td id="nombre_'+id+'">'+nombre+'</td>'+
-'<td id="domicilio_'+id+'">'+domicilio+'</td>'+
-'<td id="grado_'+id+'">'+grado+'</td>'+
-'<td id="grupo_'+id+'">'+grupo+'</td>'+
+'<tr style="border-bottom: 1px solid #eee" id="tr_modal_'+turno+id+'">'+
+'<td id="nombre_modal_'+turno+id+'">'+nombre+'</td>'+
+'<td id="domicilio_modal_'+turno+id+'">'+domicilio+'</td>'+
+'<td id="grado_modal_'+turno+id+'">'+grado+'</td>'+
+'<td id="grupo_modal_'+turno+id+'">'+grupo+'</td>'+
 '<td style="text-align:center">'+
-'<button type="button" class="btn btn-primary" onclick="enlistar_alumno('+id+')" style ="font-family: \'Varela Round\'" >'+
+'<button type="button" class="btn btn-primary" onclick="enlistar_alumno_'+turno+'('+id+')" style ="font-family: \'Varela Round\'" >'+
 '<span class="glyphicon glyphicon-plus"></span> AÑADIR'+
 '</button>'+
 '</td>'+
 '</tr>';
 //alert(text);
-$("#lista_alumnos_new").append(text);
+$("#lista_alumnos_new_"+turno).append(text);
 //Hay en lista
-$("#selected_" + id ).remove();
+$("#selected_"+turno + id ).remove();
 //Disminuye el numero de alumnos y mostrarlo
-let n_alumnos=parseInt($("#n_alumnos").text());
+let n_alumnos=parseInt($("#n_alumnos_"+turno).text());
 n_alumnos--;
-$("#n_alumnos").text(n_alumnos);
-//ordenar 
+$("#n_alumnos_"+turno).text(n_alumnos);
+//ordenar
 ordenar(1);
 }
 
-function enlistar_alumno(id){
+
+// function  archivar_alumno(id){
+//   let  nombre = $("td#nombret_"+id).text();
+//   let  domicilio = $("td#domiciliot_"+id).text();
+//   let  grupo = $("td#grupot_"+id).text();
+//   let  grado = $("td#gradot_"+id).text();
+// //alert(nombre + grupo + grado + id);
+//   //agregar alumno al modal
+//   let text =
+// '<tr style="border-bottom: 1px solid #eee" id="tr_'+id+'">'+
+// '<td id="nombre_'+id+'">'+nombre+'</td>'+
+// '<td id="domicilio_'+id+'">'+domicilio+'</td>'+
+// '<td id="grado_'+id+'">'+grado+'</td>'+
+// '<td id="grupo_'+id+'">'+grupo+'</td>'+
+// '<td style="text-align:center">'+
+// '<button type="button" class="btn btn-primary" onclick="enlistar_alumno('+id+')" style ="font-family: \'Varela Round\'" >'+
+// '<span class="glyphicon glyphicon-plus"></span> AÑADIR'+
+// '</button>'+
+// '</td>'+
+// '</tr>';
+// //alert(text);
+// $("#lista_alumnos_new").append(text);
+// //Hay en lista
+// $("#selected_" + id ).remove();
+// //Disminuye el numero de alumnos y mostrarlo
+// let n_alumnos=parseInt($("#n_alumnos").text());
+// n_alumnos--;
+// $("#n_alumnos").text(n_alumnos);
+// //ordenar
+// ordenar(1);
+// }
+
+function enlistar_alumno_m(id){
   //Tomar cupos
-  var n_alumnos = parseInt($("#n_alumnos").text());
+  var n_alumnos = parseInt($("#n_alumnos_m").text());
   var cupos = $("#cupos").val();
   if (n_alumnos>=cupos){
     alert('No existen cupos disponible para esta ruta.')
@@ -47,50 +106,95 @@ function enlistar_alumno(id){
   }
   //aumentar el numero de alumnos y mostrarlo
 n_alumnos++;
-$("#n_alumnos").text(n_alumnos);
+$("#n_alumnos_m").text(n_alumnos);
 //hay enlistados
-    if ($("#selected_" + id ).length){
+  if ($("#selected_m" + id ).length){
       //Hay en lista
-      $("#selected_" + id ).remove();
+      // $("#selected_" + id ).remove();
 //      $("#imagen_"+ id).css("background","white");
 //      $("#imagen_"+ id).css("background","white");
     }else{
       //no existe en lista
-      let nombre = $("#nombre_"+id).text();
-      let domicilio = $("#domicilio_"+id).text();
-      let grado = $("#grado_"+id).text();
-      let grupo = $("#grupo_"+id).text();
+      let nombre = $("#nombre_modal_m"+id).text();
+      let domicilio = $("#domicilio_modal_m"+id).text();
+      let grado = $("#grado_modal_m"+id).text();
+      let grupo = $("#grupo_modal_m"+id).text();
       //$("#imagen_"+ id).css("background","#8aff8e");
       // $("#imagen_"+ id).css("background","#8aff8e");
-      var text_button_archivar = '<a class="" id="btn_'+id+'" type="button" onclick="archivar_alumno('+ id +')"></a>';
-      var text = "<tr class='enlistado' id='selected_"+id+"' data-id='"+id+"' data-orden='"+n_alumnos+"' style='border-bottom: 1px solid #ddd;'>"+
+      var text_button_archivar = "<a class='' id='btn_"+id+"' type='button' onclick='archivar_alumno("+ id +", \"m\")'></a>";
+      var text = "<tr class='enlistado  enlistado_m view_m' id='selected_m"+id+"' data-id='"+id+"' data-orden='"+n_alumnos+"' style='border-bottom: 1px solid #ddd;'>"+
       "<td  id='orden_in"+id+"'>"+n_alumnos+"</td>"+
-      "<td  id='orden_out"+id+"'>"+n_alumnos+"</td>"+
-      "<td class='id_selected' hidden id='idt_"+id+"'>"+id+"</td>"+
-      "<td colspan='2' id ='nombret_"+id+"'>"+nombre+"</td>"+
-      "<td colspan='3' id ='domiciliot_"+id+"'>"+ domicilio +"</td>"+
-      "<td colspan='2' id ='gradot_"+id+"'' >"+ grado +"</td>"+
-      "<td colspan='2' id ='grupot_"+id+"'>"+ grupo +"</td>"+
-      "<td colspan='2' id ='hora_mananat_"+id+"'>"+
-      "<input id='hora_m"+id+"' type='text' class='form-control timepicker hora_m' data-id='"+id+"' data-orden='"+n_alumnos+"' placeholder='Mañana' onclick='mostrar_timepicker_ma(this,"+id+")' onKeyPress='return solo_select(event)' onchange='ordenar("+id+")'  maxlength='5' value=''>"+
-      "</td>"+
-      "<td colspan='2' id ='hora_lu_jut_"+id+"'>"+
-      "<input id='hora_lu_ju"+id+"' type='text' class='form-control timepicker hora_r'  data-id='"+id+"' data-orden='"+n_alumnos+"'  placeholder='Lunes-Jueves' onclick='mostrar_timepicker_lu_ju(this,"+id+")'   onKeyPress='return solo_select(event)' onchange='ordenar("+id+")'  maxlength='5' value=''>"+
-      "</td>"+
-      "<td colspan='2' id ='hora_viet_"+id+"'>"+
-      "<input id='hora_vie"+id+"' type='text' class='form-control timepicker'   placeholder='Viernes' onclick='mostrar_timepicker_vi(this,"+id+")'  onKeyPress='return solo_select(event)'  maxlength='5' value=''>"+
+      "<td hidden class='id_selected_m'  id='id_m"+id+"'>"+id+"</td>"+
+      "<td colspan='2' id ='nombre_m"+id+"'>"+nombre+"</td>"+
+      "<td colspan='3' id ='domicilio_m"+id+"'>"+ domicilio +"</td>"+
+      "<td colspan='2' id ='grado_m"+id+"'' >"+ grado +"</td>"+
+      "<td colspan='2' id ='grupo_m"+id+"'>"+ grupo +"</td>"+
+      "<td colspan='2' id ='hora_manana_m"+id+"'>"+
+      "<input id='hora_m"+id+"' type='text' class='form-control timepicker hora_m' data-id='"+id+
+      "' data-orden_in='"+n_alumnos+"' placeholder='Mañana' onclick='mostrar_timepicker_ma(this,"+id+
+      ")' onKeyPress='return solo_select(event)' onchange='ordenar_m("+id+")'  maxlength='5' value=''>"+
       "</td>"+
       "<td colspan='1'>"+text_button_archivar+"</td>"+
       "</tr>";
-      $("#lista_alumnos").append(text);
+      $("#lista_alumnos_m").append(text);
       }
       $.get('componentes/btn_cancelar.php', function (html){
         $("a#btn_"+id).html(html);
       });
+      //Eliminar de la Lista de adicion.
+      $('#tr_modal_m'+id).remove();
+
+}
 
 
-//Eliminar de la Lista de adicion.
-$('#tr_'+id).remove();
+function enlistar_alumno_t(id){
+  //Tomar cupos
+  var n_alumnos = parseInt($("#n_alumnos_t").text());
+  var cupos = $("#cupos").val();
+  if (n_alumnos>=cupos){
+    alert('No existen cupos disponible para esta ruta.')
+    return;
+  }
+  //aumentar el numero de alumnos y mostrarlo
+n_alumnos++;
+$("#n_alumnos_t").text(n_alumnos);
+//hay enlistados
+    if ($("#selected_t" + id ).length){
+      //Hay en lista
+      // $("#selected_" + id ).remove();
+//      $("#imagen_"+ id).css("background","white");
+//      $("#imagen_"+ id).css("background","white");
+    }else{
+      //no existe en lista
+      let nombre = $("#nombre_modal_t"+id).text();
+      let domicilio = $("#domicilio_modal_t"+id).text();
+      let grado = $("#grado_modal_t"+id).text();
+      let grupo = $("#grupo_modal_t"+id).text();
+      //$("#imagen_"+ id).css("background","#8aff8e");
+      // $("#imagen_"+ id).css("background","#8aff8e");
+      var text_button_archivar = '<a class="" id="btn_'+id+'" type="button" onclick="archivar_alumno('+ id +', \'t\')"></a>';
+      var text = "<tr class='enlistado enlistado_t view_t' id='selected_t"+id+"' data-id='"+id+"' data-orden='"+n_alumnos+"' style='border-bottom: 1px solid #ddd;'>"+
+      "<td  id='orden_out"+id+"'>"+n_alumnos+"</td>"+
+      "<td hidden class='id_selected_t'  id='id_t"+id+"'>"+id+"</td>"+
+      "<td colspan='2' id ='nombre_t"+id+"'>"+nombre+"</td>"+
+      "<td colspan='3' id ='domicilio_t"+id+"'>"+ domicilio +"</td>"+
+      "<td colspan='2' id ='grado_t"+id+"'>"+ grado +"</td>"+
+      "<td colspan='2' id ='grupo_t"+id+"'>"+ grupo +"</td>"+
+      "<td colspan='2' id ='hora_lu_ju_t"+id+"'>"+
+      "<input id='hora_lu_ju"+id+"' type='text' class='form-control timepicker hora_r'  data-id='"+id+"' data-orden_out='"+n_alumnos+"'  placeholder='Lunes-Jueves' onclick='mostrar_timepicker_lu_ju(this,"+id+")'   onKeyPress='return solo_select(event)' onchange='ordenar_t("+id+")'  maxlength='5' value=''>"+
+      "</td>"+
+      "<td colspan='2' id ='hora_vie_t"+id+"'>"+
+      "<input id='hora_vie"+id+"' type='text' class='form-control timepicker'   placeholder='Viernes' onclick='mostrar_timepicker_vi(this,"+id+")'  onKeyPress='return solo_select(event)'  maxlength='5' value=''>"+
+      "</td>"+
+      "<td colspan='1'>"+text_button_archivar+"</td>"+
+      "</tr>";
+      $("#lista_alumnos_t").append(text);
+      }
+      $.get('componentes/btn_cancelar.php', function (html){
+        $("a#btn_"+id).html(html);
+      });
+      //Eliminar de la Lista de adicion.
+      $('#tr_modal_t'+id).remove();
 
 }
 
@@ -122,18 +226,33 @@ function enviar_formulario(id_ruta) {
 if ($(".enlistado").length){
   //hay en lista, agregarlos a un array / Crear coleccion de alumnos
   //conseguir ids de alumnos registrados
-  var ids ='';
-  var coleccion_ids = [];
-  var coleccion_data_alumnos = [];
+  var ids_m ='';
+  var ids_t ='';
+  var coleccion_ids_m = [];
+  var coleccion_ids_t = [];
+  var coleccion_data_alumnos_m = [];
+  var coleccion_data_alumnos_t = [];
 
-  $(".id_selected").each(
+  //mañana
+  $(".id_selected_m").each(
     function(){
-      ids += $(this).text() + ',';
+      ids_m += $(this).text() + ',';
     });
-    var values = ids.split(",");
+    var values = ids_m.split(",");
     for (var item in values) {
         if (values[item] !== "") {
-            coleccion_ids.push(values[item]);
+            coleccion_ids_m.push(values[item]);
+        }
+    }
+    //Tarde
+  $(".id_selected_t").each(
+    function(){
+      ids_t += $(this).text() + ',';
+    });
+    var values = ids_t.split(",");
+    for (var item in values) {
+        if (values[item] !== "") {
+            coleccion_ids_t.push(values[item]);
         }
     }
 
@@ -158,23 +277,37 @@ if ($vacio){
 /**Fin de las validaciones*/
 
 //armar data
- for (var item in coleccion_ids) {
-   var counter_alumno = coleccion_ids[item];
-   var data_alumnos = {
-      "id_alumno": $("td#idt_" + counter_alumno).text(),
+
+  //armar data - mañana
+ for (var item in coleccion_ids_m) {
+   var counter_alumno = coleccion_ids_m[item];
+   var data_alumnos_m = {
+      "id_alumno": $("td#id_m" + counter_alumno).text(),
       "id_ruta": id_ruta,
-      "domicilio": $("td#domiciliot_" + counter_alumno).text(),
+      "domicilio": $("td#domicilio_m" + counter_alumno).text(),
       "hora_manana": $("input#hora_m" + counter_alumno).val(),
-      "hora_lu_ju": $("input#hora_lu_ju" + counter_alumno).val(),
+      "orden_in": $("td#orden_in"+ counter_alumno).text()
+    }
+    coleccion_data_alumnos_m.push(data_alumnos_m);
+  }
+//armar data - Tarde
+ for (var item in coleccion_ids_t) {
+   var counter_alumno = coleccion_ids_t[item];
+   var data_alumnos_t = {
+      "id_alumno": $("td#id_t" + counter_alumno).text(),
+      "id_ruta": id_ruta,
+      "domicilio": $("td#domicilio_t" + counter_alumno).text(),
+       "hora_lu_ju": $("input#hora_lu_ju" + counter_alumno).val(),
       "hora_vie": $("input#hora_vie" + counter_alumno).val(),
-      "orden_in": $("td#orden_in"+ counter_alumno).text(),
       "orden_out": $("td#orden_out"+ counter_alumno).text()
     }
-    coleccion_data_alumnos.push(data_alumnos);
+    coleccion_data_alumnos_t.push(data_alumnos_t);
   }
+
 var data = {
     "id_ruta": id_ruta,
-    "alumnos": coleccion_data_alumnos
+    "alumnos_m": coleccion_data_alumnos_m,
+    "alumnos_t": coleccion_data_alumnos_t
   };
 
  $.ajax({
@@ -459,6 +592,8 @@ $(".hora_m").each(function(){
     }
 
 
+
+
 //Ordena orden_out
 var array_orden_out = [];
 
@@ -493,3 +628,163 @@ $(".hora_r").each(function(){
     }
 
   }
+
+
+
+function ordenar_m(id){
+
+var id_edit = id;
+//Encuentra tabla
+var $table = $("#lista_alumnos_m");
+var $rows = $table.children('tr');
+//organizar tabla
+var sortList = Array.prototype.sort.bind($rows);
+sortList(function (a,b){
+   let id_a = $(a).data('id');
+   let id_b = $(b).data('id');
+   //coseguir la Hora
+   var hora_a = $('#hora_m'+id_a).val();
+   var hora_b = $('#hora_m'+id_b).val();
+   //analizo la hora y obtengo hora y minutos
+   let elements_a = hora_a.split(':');
+   let elements_b = hora_b.split(':');
+   //Llevo a minutos las horas y obtengo los minutos totales
+   let min_a= parseInt(elements_a[1]) + parseInt(elements_a[0])*60;
+   let min_b= parseInt(elements_b[1]) + parseInt(elements_b[0])*60;
+   //obtengo la difeencia de los minutos
+   let value = min_a - min_b;
+   //Verfico que no sea NaN
+   return  isNaN(value) ? 1 : value;
+     });
+
+$table.append($rows);
+
+//Ordena orden_in
+//cambiar las posiciones
+var array_orden = [];
+
+$(".hora_m").each(function(){
+     let hora = $(this).val();
+     let id = $(this).data('id');
+     let orden = $(this).data('orden_in');
+     // alert("hora-"+hora+" id-"+id);
+     //agregar a un array
+     let data = {"id" : id, "hora" : hora, "orden": orden };
+     array_orden.push(data);
+});
+array_orden.sort(function (a,b){
+  let element_a = a.hora.split(':');
+  let element_b = b.hora.split(':');
+  let hora_a = element_a[0];
+  let hora_b = element_b[0];
+  let min_a= parseInt(element_a[1]) + parseInt(hora_a)*60;
+  let min_b= parseInt(element_b[1]) + parseInt(hora_b)*60;
+  let value = min_a - min_b;
+  return isNaN(value) ? 1 : value;
+});
+
+// ordenar las posiciones
+var pos =0;
+ for (var item in array_orden) {
+       //cambiar las posiciones
+      pos++;
+      let id = array_orden[item].id;
+      let orden = array_orden[item].orden;
+      // if (orden<900 || id===id_edit){
+          $("#hora_m" + id ).attr('data-orden_in', pos);
+          $("#orden_in" + id).text( pos );
+      // }
+  }
+}
+
+
+
+function ordenar_t(id){
+var id_edit = id;
+//Encuentra tabla
+var $table = $("#lista_alumnos_t");
+var $rows = $table.children('tr');
+//organizar tabla
+var sortList = Array.prototype.sort.bind($rows);
+sortList(function (a,b){
+   let id_a = $(a).data('id');
+   let id_b = $(b).data('id');
+   //coseguir la Hora
+   var hora_a = $('#hora_lu_ju'+id_a).val();
+   var hora_b = $('#hora_lu_ju'+id_b).val();
+
+   //analizo la hora y obtengo hora y minutos
+   let elements_a = hora_a.split(':');
+   let elements_b = hora_b.split(':');
+   //Llevo a minutos las horas y obtengo los minutos totales
+   let min_a= parseInt(elements_a[1]) + parseInt(elements_a[0])*60;
+   let min_b= parseInt(elements_b[1]) + parseInt(elements_b[0])*60;
+   //obtengo la difeencia de los minutos
+   let value = min_a - min_b;
+   //Verfico que no sea NaN
+   return  isNaN(value) ? 1 : value;
+     });
+
+$table.append($rows);
+
+//cambiar las posiciones
+
+//Ordena orden_out
+var array_orden_out = [];
+
+$(".hora_r").each(function(){
+     let hora = $(this).val() ;
+     let id = $(this).data('id');
+     let orden = $(this).data('orden_out');
+     // alert("hora-"+hora+" id-"+id);
+     //agregar a un array
+     let data = {"id" : id, "hora" : hora, "orden": orden };
+     array_orden_out.push(data);
+});
+      array_orden_out.sort(function (a,b){
+      let element_a = a.hora.split(':');
+      let element_b = b.hora.split(':');
+      let hora_a = element_a[0];
+      let hora_b = element_b[0];
+      let min_a= parseInt(element_a[1]) + parseInt(hora_a)*60;
+      let min_b= parseInt(element_b[1]) + parseInt(hora_b)*60;
+      let value = min_a - min_b;
+        return isNaN(value) ? 1 : value;
+     });
+
+    // ordenar las posiciones
+    var pos = 0;
+     for (var item in array_orden_out) {
+           //cambiar las posiciones
+          pos++;
+          let id = array_orden_out[item].id;
+          let orden = array_orden_out[item].orden;
+           // if (id<900){
+              $("#hora_lu_ju"+id).attr('data-orden_out', pos);
+              $("#orden_out"+id).text(pos);
+            // }
+    }
+
+  }
+
+
+function view_table(){
+  var vista =  $("select#view").val();
+  // alert(vista);
+  if (vista==='1'){
+    //mañana
+    $('.view_m').show();
+    $('.view_t').hide();
+    // ordenar(0);
+  }else if(vista==='2'){
+    $('.view_m').hide();
+    $('.view_t').show();
+    // ordenar(0);
+  }else{
+    //mañana- tarde
+    $('.view_m').show();
+    $('.view_t').show();
+    $('.m_t').hide();
+    // ordenar(0);
+  }
+}

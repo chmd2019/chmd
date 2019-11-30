@@ -3,22 +3,26 @@ require '../../conexion.php';
 
 if (isset($_POST["summit"])){
   //Datos POST
-  $nombre_ruta = $_POST["nombre_ruta"];
-  $prefecta = $_POST["prefecta"];
+  $nombre_ruta = strtoupper($_POST["nombre_ruta"]);
+  $auxiliar = $_POST["auxiliar"];
   $camion = $_POST['camion'];
   $cupos = $_POST['cupos'];
+  $tipo_ruta = $_POST['tipo_ruta'];
 
   if ($conexion) {
     $sql = "INSERT INTO rutas(
       nombre_ruta,
-      prefecta,
+      auxiliar,
       camion,
-      cupos)
+      cupos,
+      tipo_ruta
+    )
       VALUES (
         '" . $nombre_ruta . "',
-        '" . $prefecta . "',
+        '" . $auxiliar . "',
         '" . $camion . "',
-        '" . $cupos . "'
+        '" . $cupos . "',
+        '" . $tipo_ruta . "'
       )";
       mysqli_set_charset($conexion, "utf8");
       $insertar = mysqli_query($conexion, $sql);
@@ -37,4 +41,3 @@ if (isset($_POST["summit"])){
 }
 
 ?>
-

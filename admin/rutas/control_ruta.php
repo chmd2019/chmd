@@ -3,7 +3,7 @@
 include '../sesion_admin.php';
 include '../conexion.php';
 
-if (!in_array('26', $capacidades)){
+if (!in_array('32', $capacidades)){
   header('Location: ../menu.php');
 }
 
@@ -27,11 +27,12 @@ if (isset($_POST['id_ruta'])){
   header('Location: Prutas.php');
 }
 
-$datos = mysqli_query ( $conexion, "SELECT * FROM rutas WHERE id_ruta='$id_ruta';");
+$datos = mysqli_query ( $conexion, " SELECT r.*, u.nombre FROM rutas r LEFT JOIN usuarios u ON u.id=r.auxiliar WHERE r.id_ruta='$id_ruta' ;");
 while ($r = mysqli_fetch_assoc($datos) ){
   $nombre_ruta= $r['nombre_ruta'];
   $camion = $r['camion'];
-  $prefecta = $r['prefecta'];
+  $auxiliar_id = $r['auxiliar'];
+  $auxiliar_nombre = $r['nombre'];
   $cupos = $r['cupos'] ;
 }
 
@@ -96,8 +97,8 @@ while ($r = mysqli_fetch_assoc($datos) ){
               <td class="col-sm" colspan="1" WIDTH="50%">Nombre de la Ruta:
                 <input name="nombre_ruta" id="nombre_ruta" type="text" class="form-control" placeholder="Agrege el Nombre de la Nueva ruta"  value="<?=$nombre_ruta?>" disabled="disabled">
               </td>
-              <td class="col-sm" colspan="1" WIDTH="50%">Prefecta:
-                <input name="prefecta" id="prefecta" type="text" class="form-control" placeholder="Agrege la Prefecta"  value="<?=$prefecta?>"  disabled="disabled">
+              <td class="col-sm" colspan="1" WIDTH="50%">Auxiliar:
+                <input name="auxiliar" id="auxiliar" type="text" class="form-control" placeholder="Agrege la Auxiliar"  value="<?=$auxiliar_nombre?>"  disabled="disabled">
               </td>
             </tr>
           </table>
@@ -110,14 +111,14 @@ while ($r = mysqli_fetch_assoc($datos) ){
                 <input name="cupos" id="cupos" type="number" class="form-control" placeholder="Agrege el Número de cupos"  value="<?=$cupos?>" max="99" step="1" min="01" disabled="disabled">
               </td>
             </tr>
-            <tr class="row">
+            <!-- <tr class="row">
               <td  class="col-sm" >
                 <input  type="checkbox" name="desabilita" onchange="desabilitar_inputs()" ><span> Editar Ruta</span>
               </td>
               <td  class="col-sm text-right p-3"  >
                 <button style="display: none" class="btn btn-primary" id="button_editar" onclick="editar_inputs(<?=$id_ruta?>)"><b><span class="glyphicon glyphicon-edit"></span>&nbsp;&nbsp;EDITAR</b></button>
               </td>
-            </tr>
+            </tr> -->
           </table>
     <center>
       <form id="eventos"  name="eventos" class="form-signin save-nivel"   >
@@ -127,76 +128,130 @@ while ($r = mysqli_fetch_assoc($datos) ){
             <td WIDTH="100%" colspan="3">
               <h4 class="">
                 <?php
-                $n_alumnos=0;  
-                $sql ="SELECT COUNT(*) FROM rutas_base_alumnos WHERE  id_ruta_base='$id_ruta';";
+                //mañana
+                $n_alumnos_m=0;
+                $sql ="SELECT COUNT(*) FROM rutas_base_alumnos WHERE  id_ruta_base_m='$id_ruta';";
                 $query = mysqli_query($conexion, $sql);
                 if($r = mysqli_fetch_array($query)){
-                  $n_alumnos= $r[0];
+                  $n_alumnos_m= $r[0];
+                }
+                //Tarde
+                $n_alumnos_t=0;
+                $sql ="SELECT COUNT(*) FROM rutas_base_alumnos WHERE  id_ruta_base_t='$id_ruta';";
+                $query = mysqli_query($conexion, $sql);
+                if($r = mysqli_fetch_array($query)){
+                  $n_alumnos_t= $r[0];
                 }
                  ?>
-                <b>Listado de Alumnos registrados: <i id="n_alumnos"><?=$n_alumnos?></i></b>
-                <?php include 'componentes/buscador_alumnos.php'; ?>
+
+                <b>Listado de Alumnos registrados: <i id="n_alumnos_m" class="view_m"><?=$n_alumnos_m?></i><i id="n_alumnos_t" class="view_t" style="display: none"><?=$n_alumnos_t?></i></b>
+                  <select id="view" class="form-control" style="width: 200px; display: initial; float: right;" onchange="view_table()" >
+                    <option value = '1' selected>Mañana</option>
+                    <option value = '2'>Tarde</option>
+                    <!-- <option value = '3'>Mañana-Tarde</option> -->
+                 </select>
+                <?php include 'componentes/buscador_alumnos_m.php'; ?>
+                 <?php include 'componentes/buscador_alumnos_t.php'; ?>
               </h4><br>
             </td>
           </tr>
         </table>
         <div class="table-responsive" >
-        <table class="table"  class="text-center"  WIDTH="100%" >
+        <table class="table view_m"  class="text-center"  WIDTH="100%" >
           <thead>
             <td  style="min-width: 10px;" colspan="1"><b>#M</b></td>
-            <td  style="min-width: 10px;" colspan="1"><b>#T</b></td>
             <td   colspan="2"><b>Nombre</b></td>
             <td   colspan="3"><b>Domicilio</b></td>
             <td   colspan="2"><b>Grado</b></td>
             <td   colspan="2"><b>Grupo</b></td>
             <td   colspan="2"><b>Hora(Mañana)</b></td>
-            <td   colspan="2"><b>Hora(Lu - Ju)</b></td>
-            <td   colspan="2"><b>Hora(Vie)</b></td>
             <td   colspan="1"><b>Acciones</b></td>
           </thead>
-          <tbody id="lista_alumnos">
+          <tbody id="lista_alumnos_m">
             <!-- Lista de alumnos-->
-            <?php 
+            <?php
             $c=-1;
-            $sql ="SELECT rb.id_alumno, rb.domicilio, rb.hora_manana, rb.hora_lu_ju, rb.hora_vie, ac.nombre, ac.grupo, ac.grado, rb.orden_in, rb.orden_out  FROM rutas_base_alumnos rb LEFT JOIN alumnoschmd ac ON ac.id = rb.id_alumno WHERE  rb.id_ruta_base='$id_ruta' ORDER BY rb.orden_in;";
+            $sql ="SELECT rb.id_alumno, rb.domicilio_m, rb.hora_manana, ac.nombre, ac.grupo, ac.grado, rb.orden_in FROM rutas_base_alumnos rb LEFT JOIN alumnoschmd ac ON ac.id = rb.id_alumno WHERE  rb.id_ruta_base_m='$id_ruta' ORDER BY rb.orden_in;";
             $query = mysqli_query ($conexion, $sql);
             while ($row = mysqli_fetch_assoc($query)){
               $id_alumno = $row['id_alumno'];
               $nombre = $row['nombre'];
               $grupo = $row['grupo'];
               $grado = $row['grado'];
-              $domicilio = $row['domicilio']; 
-              $hora_manana = $row['hora_manana']; 
-              $hora_lu_ju = $row['hora_lu_ju']; 
-              $hora_vie = $row['hora_vie'];
+              $domicilio = $row['domicilio_m'];
+              $hora_manana = $row['hora_manana'];
               $orden_in =$row['orden_in'];
-              $orden_out =$row['orden_out'];
               $c++;
              ?>
-               <tr class="enlistado" id="selected_<?=$id_alumno?>" data-id="<?=$id_alumno?>" data-orden="<?=$orden?>" style="border-bottom: 1px solid #ddd">
+               <tr class="enlistado enlistado_m view_m" id="selected_m<?=$id_alumno?>" data-id="<?=$id_alumno?>" data-orden="<?=$orden?>" style="border-bottom: 1px solid #ddd">
                 <td  id="orden_in<?=$id_alumno?>"><?=$orden_in?></td>
-                <td  id="orden_out<?=$id_alumno?>"><?=$orden_out?></td>
-                <td hidden class="id_selected"  id="idt_<?=$id_alumno?>"><?=$id_alumno?></td>
-                <td colspan="2" id ="nombret_<?=$id_alumno?>"><?=$nombre?></td>
-                <td colspan="3" id ="domiciliot_<?=$id_alumno?>"><?=$domicilio?></td>
-                <td colspan="2" id ="gradot_<?=$id_alumno?>" ><?=$grado?></td>
-                <td colspan="2" id ="grupot_<?=$id_alumno?>"><?=$grupo?></td>
-                <td colspan="2" id ="hora_mananat_<?=$id_alumno?>">
-                <input id="hora_m<?=$id_alumno?>" type="text" class="form-control timepicker hora_m" data-id="<?=$id_alumno?>" data-orden="<?=$orden_in?>" placeholder="Mañana" onclick="mostrar_timepicker_ma(this,<?=$id_alumno?>)" onKeyPress="return solo_select(event)" onchange="ordenar(<?=$id_alumno?>)"  maxlength="5" value="<?=$hora_manana?>">
-                </td>
-                <td colspan="2" id ="hora_lu_jut_<?=$id_alumno?>">
-                <input id="hora_lu_ju<?=$id_alumno?>" type="text" class="form-control timepicker hora_r"  data-id="<?=$id_alumno?>" data-orden="<?=$orden_out?>" placeholder="Lunes-Jueves" onclick="mostrar_timepicker_lu_ju(this,<?=$id_alumno?>)" onKeyPress="return solo_select(event)"  onchange="ordenar(<?=$id_alumno?>)"  maxlength="5" value="<?=$hora_lu_ju?>">
-                </td>
-                <td colspan="2" id ="hora_viet_<?=$id_alumno?>">
-                <input id="hora_vie<?=$id_alumno?>" type="text" class="form-control timepicker" placeholder="Viernes" onclick="mostrar_timepicker_vi(this,<?=$id_alumno?>)" onKeyPress="return solo_select(event)"  maxlength="5" value="<?=$hora_vie?>">
+                <td hidden class="id_selected_m"  id="id_m<?=$id_alumno?>"><?=$id_alumno?></td>
+                <td colspan="2" id ="nombre_m<?=$id_alumno?>"><?=$nombre?></td>
+                <td colspan="3" id ="domicilio_m<?=$id_alumno?>"><?=$domicilio?></td>
+                <td colspan="2" id ="grado_m<?=$id_alumno?>" ><?=$grado?></td>
+                <td colspan="2" id ="grupo_m<?=$id_alumno?>"><?=$grupo?></td>
+                <td colspan="2" id ="hora_manana_m<?=$id_alumno?>">
+                <input id="hora_m<?=$id_alumno?>" type="text" class="form-control timepicker hora_m" data-id="<?=$id_alumno?>" data-orden_in="<?=$orden_in?>" placeholder="Mañana" onclick="mostrar_timepicker_ma(this,<?=$id_alumno?>)" onKeyPress="return solo_select(event)" onchange="ordenar_m(<?=$id_alumno?>)"  maxlength="5" value="<?=$hora_manana?>">
                 </td>
                 <td colspan="1">
-                  <a class="" id="btn_<?=$id_alumno?>" type="button" onclick = "archivar_alumno(<?=$id_alumno?>)">
+                  <a class="" id="btn_<?=$id_alumno?>" type="button" onclick = "archivar_alumno(<?=$id_alumno?>,'m')">
                     <?php include 'componentes/btn_cancelar.php'; ?>
                   </a>
                 </td>
-            </tr> 
-            <?php 
+            </tr>
+            <?php
+            }
+            ?>
+          </tbody>
+        </table>
+          <table class="table view_t"  class="text-center"  WIDTH="100%" style="display: none">
+          <thead>
+            <td  style="min-width: 10px;" colspan="1"><b>#T</b></td>
+            <td   colspan="2"><b>Nombre</b></td>
+            <td   colspan="3"><b>Domicilio</b></td>
+            <td   colspan="2"><b>Grado</b></td>
+            <td   colspan="2"><b>Grupo</b></td>
+            <td   colspan="2"><b>Hora(Lu - Ju)</b></td>
+            <td   colspan="2"><b>Hora(Vie)</b></td>
+            <td   colspan="1"><b>Acciones</b></td>
+          </thead>
+          <tbody id="lista_alumnos_t">
+            <!-- Lista de alumnos-->
+            <?php
+            $c=-1;
+            $sql ="SELECT rb.id_alumno, rb.domicilio_t, rb.hora_lu_ju, rb.hora_vie, ac.nombre, ac.grupo, ac.grado, rb.orden_out  FROM rutas_base_alumnos rb LEFT JOIN alumnoschmd ac ON ac.id = rb.id_alumno WHERE  rb.id_ruta_base_t='$id_ruta' ORDER BY rb.orden_out;";
+            $query = mysqli_query ($conexion, $sql);
+            while ($row = mysqli_fetch_assoc($query)){
+              $id_alumno = $row['id_alumno'];
+              $nombre = $row['nombre'];
+              $grupo = $row['grupo'];
+              $grado = $row['grado'];
+              $domicilio = $row['domicilio_t'];
+              $hora_lu_ju = $row['hora_lu_ju'];
+              $hora_vie = $row['hora_vie'];
+              $orden_out =$row['orden_out'];
+              $c++;
+             ?>
+               <tr class="enlistado  enlistado_t view_t" id="selected_t<?=$id_alumno?>" data-id="<?=$id_alumno?>" data-orden="<?=$orden?>" style="border-bottom: 1px solid #ddd">
+                <td  id="orden_out<?=$id_alumno?>"><?=$orden_out?></td>
+                <td hidden class="id_selected_t"  id="id_t<?=$id_alumno?>"><?=$id_alumno?></td>
+                <td colspan="2" id ="nombre_t<?=$id_alumno?>"><?=$nombre?></td>
+                <td colspan="3" id ="domicilio_t<?=$id_alumno?>"><?=$domicilio?></td>
+                <td colspan="2" id ="grado_t<?=$id_alumno?>" ><?=$grado?></td>
+                <td colspan="2" id ="grupo_t<?=$id_alumno?>"><?=$grupo?></td>
+                <td colspan="2" id ="hora_lu_ju_t<?=$id_alumno?>">
+                <input id="hora_lu_ju<?=$id_alumno?>" type="text" class="form-control timepicker hora_r"  data-id="<?=$id_alumno?>" data-orden_out="<?=$orden_out?>" placeholder="Lunes-Jueves" onclick="mostrar_timepicker_lu_ju(this,<?=$id_alumno?>)" onKeyPress="return solo_select(event)"  onchange="ordenar_t(<?=$id_alumno?>)"  maxlength="5" value="<?=$hora_lu_ju?>">
+                </td>
+                <td colspan="2" id ="hora_vie_t<?=$id_alumno?>">
+                <input id="hora_vie<?=$id_alumno?>" type="text" class="form-control timepicker" placeholder="Viernes" onclick="mostrar_timepicker_vi(this,<?=$id_alumno?>)" onKeyPress="return solo_select(event)"  maxlength="5" value="<?=$hora_vie?>">
+                </td>
+                <td colspan="1">
+                  <a class="" id="btn_<?=$id_alumno?>" type="button" onclick = "archivar_alumno(<?=$id_alumno?>,'t')">
+                    <?php include 'componentes/btn_cancelar.php'; ?>
+                  </a>
+                </td>
+            </tr>
+            <?php
             }
             ?>
           </tbody>
@@ -251,4 +306,3 @@ while ($r = mysqli_fetch_assoc($datos) ){
 </script>
 </body>
 </html>
-

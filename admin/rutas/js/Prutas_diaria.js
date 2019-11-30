@@ -269,3 +269,27 @@ function deamon_rutas(){
                 }
               });
 }
+
+function deamon_rutas_generales(){
+  $.ajax({
+              url: 'common/deamon_rutas_generales.php',
+              type : 'GET',
+              success: function (res) {
+            //  alert(res);
+              data = JSON.parse(res);
+              //alert(data.estatus + 'Pendentes: ' + data.pendientes);
+                if (!data.error) {
+                  alert('Se ha ejecutado la salida general programada del día de Hoy');
+                  location.reload();
+                    // //colocar una x del lado der
+                    // let text_salida = "<p class='text-danger glyphicon glyphicon-remove'></p>"
+                    // $("#salida_"+i).html (text_salida);
+                    // //eliminar boton del lado izq
+                    // $("#cancelar_"+i).html('');
+                  } else {
+                    alert(data.error_doc);
+                    // alert('Ha ocurrido un error, Vuelva a intentarlo.');
+                  }
+              }
+            });
+}

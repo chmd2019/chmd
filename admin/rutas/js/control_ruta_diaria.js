@@ -25,7 +25,7 @@ function  archivar_alumno(id){
   //agregar alumno al modal
   let text =
 '<tr style="border-bottom: 1px solid #eee" id="tr_'+id+'">'+
-'<td id="nombre_'+id+'">'+nombre+'</td>'+ 
+'<td id="nombre_'+id+'">'+nombre+'</td>'+
 '<td id="domicilio_'+id+'">'+domicilio+'</td>'+
 '<td id="grado_'+id+'">'+grado+'</td>'+
 '<td id="grupo_'+id+'">'+grupo+'</td>'+
@@ -142,42 +142,61 @@ function enviar_formulario(id_ruta,fecha) {
 if ($(".enlistado").length){
   //hay en lista, agregarlos a un array / Crear coleccion de alumnos
   //conseguir ids de alumnos registrados
-  var ids ='';
-  var coleccion_ids = [];
-  var coleccion_data_alumnos = [];
-
-  $(".id_selected").each(
+  var ids_m ='';
+  var ids_t ='';
+  var coleccion_ids_m = [];
+  var coleccion_ids_t = [];
+  var coleccion_data_alumnos_m = [];
+  var coleccion_data_alumnos_t = [];
+  //mañana
+  $(".id_selected_m").each(
     function(){
-      ids += $(this).text() + ',';
+      ids_m += $(this).text() + ',';
     });
-    var values = ids.split(",");
+    var values = ids_m.split(",");
     for (var item in values) {
         if (values[item] !== "") {
-            coleccion_ids.push(values[item]);
+            coleccion_ids_m.push(values[item]);
+        }
+    }
+    //Tarde
+  $(".id_selected_t").each(
+    function(){
+      ids_t += $(this).text() + ',';
+    });
+    var values = ids_t.split(",");
+    for (var item in values) {
+        if (values[item] !== "") {
+            coleccion_ids_t.push(values[item]);
         }
     }
 
 }else{
   //no hay alumno
-  alert('Debe agregar al menos un alumno en la lista para continuar.');
+  alert('Debe agregar al menos un alumno en la lista para Guardar.');
   return;
 }
-
-//Validar que los alumnos cambiados fueron revisado y ordendos.
+//Validar que los alumnos cambiados fueron revisado y ordenados.
 var error=false;
   $(".enlistado").each(function(){
        let id = $(this).data('id');
-       let orden = $('td#orden_' + id).text();
+       let turno = $(this).data('turno');
+  if(turno==='m'){
+       let orden = $('td#orden_in' + id).text();
        if (orden >900){
           error=true;
        }
-  });
-
+  }else if (turno==='t'){
+       let orden = $('td#orden_in' + id).text();
+       if (orden >900){
+          error=true;
+       }
+  }
+});
 if(error){
     alert('Debe revisar todos los alumnos Cambiados por los Permisos.');
     return;
 }
-
 //Validar que todos los horarios fueron rellenados
 $vacio=false;
 $(".timepicker").each(function(){
@@ -192,25 +211,36 @@ if ($vacio){
 }
 
 /**Fin de las validaciones*/
-
-//armar data
- for (var item in coleccion_ids) {
-   var counter_alumno = coleccion_ids[item];
-   var data_alumnos = {
-      "id_alumno": $("td#idt_" + counter_alumno).text(),
+//armar data - mañana
+ for (var item in coleccion_ids_m) {
+   var counter_alumno = coleccion_ids_m[item];
+   var data_alumnos_m = {
+      "id_alumno": $("td#id_m" + counter_alumno).text(),
       "id_ruta": id_ruta,
-      "domicilio": $("td#domiciliot_" + counter_alumno).text(),
+      "domicilio": $("td#domicilio_m" + counter_alumno).text(),
       "hora_manana": $("input#hora_m" + counter_alumno).val(),
+      "orden_in": $("td#orden_in"+ counter_alumno).text()
+    }
+    coleccion_data_alumnos_m.push(data_alumnos_m);
+  }
+//armar data - Tarde
+ for (var item in coleccion_ids_t) {
+   var counter_alumno = coleccion_ids_t[item];
+   var data_alumnos_t = {
+      "id_alumno": $("td#id_t" + counter_alumno).text(),
+      "id_ruta": id_ruta,
+      "domicilio": $("td#domicilio_t" + counter_alumno).text(),
       "hora_regreso": $("input#hora_re" + counter_alumno).val(),
-      "orden_in": $("td#orden_in"+ counter_alumno).text(),
       "orden_out": $("td#orden_out"+ counter_alumno).text()
     }
-    coleccion_data_alumnos.push(data_alumnos);
+    coleccion_data_alumnos_t.push(data_alumnos_t);
   }
+
 var data = {
     "fecha": fecha,
     "id_ruta": id_ruta,
-    "alumnos": coleccion_data_alumnos
+    "alumnos_m": coleccion_data_alumnos_m,
+    "alumnos_t": coleccion_data_alumnos_t
   };
 
  $.ajax({
@@ -219,7 +249,7 @@ var data = {
     data: data,
     beforeSend: function () {
       $("#btn_enviar_formulario").prop("disabled", true);
-      //  $("#loading").fadeIn("slow");
+      //$("#loading").fadeIn("slow");
     },
     success: function (res) {
       // alert(res);
@@ -487,31 +517,20 @@ function mostrar_timepicker_re(el, id) {
 //   }
 
 
-function ordenar(id){
-
+function ordenar_m(id){
+var id_edit = id;
 //Encuentra tabla
-var $table = $("#lista_alumnos");
+var $table = $("#lista_alumnos_m");
 var $rows = $table.children('tr');
 //organizar tabla
-var vista =  $("select#view").val();  
+var vista =  $("select#view").val();
 var sortList = Array.prototype.sort.bind($rows);
 sortList(function (a,b){
    let id_a = $(a).data('id');
    let id_b = $(b).data('id');
    //coseguir la Hora
-   
-   if (vista==='2'){
-    //tarde
-   var hora_a = $('#hora_re'+id_a).val();
-   var hora_b = $('#hora_re'+id_b).val();
-   // alert('regreso');
-   }else{
-    //mañana o mañana-tarde
    var hora_a = $('#hora_m'+id_a).val();
    var hora_b = $('#hora_m'+id_b).val();
-   // alert('mañana');
-   }
-
    //analizo la hora y obtengo hora y minutos
    let elements_a = hora_a.split(':');
    let elements_b = hora_b.split(':');
@@ -533,7 +552,7 @@ var array_orden = [];
 $(".hora_m").each(function(){
      let hora = $(this).val();
      let id = $(this).data('id');
-     let orden = $(this).data('orden');
+     let orden = $(this).data('orden_in');
      // alert("hora-"+hora+" id-"+id);
      //agregar a un array
      let data = {"id" : id, "hora" : hora, "orden": orden };
@@ -556,10 +575,44 @@ var pos =0;
        //cambiar las posiciones
       pos++;
       let id = array_orden[item].id;
-      $("#hora_m"+id).data('orden', pos);
-      $("#orden_in"+id).text(pos);
+      let orden = array_orden[item].orden;
+      // if (orden<900 || id===id_edit){
+          $("#hora_m" + id ).attr('data-orden_in', pos);
+          $("#orden_in" + id).text( pos );
+      // }
+  }
 }
 
+
+function ordenar_t(id){
+var id_edit = id;
+//Encuentra tabla
+var $table = $("#lista_alumnos_t");
+var $rows = $table.children('tr');
+//organizar tabla
+var sortList = Array.prototype.sort.bind($rows);
+sortList(function (a,b){
+   let id_a = $(a).data('id');
+   let id_b = $(b).data('id');
+   //coseguir la Hora
+   var hora_a = $('#hora_re'+id_a).val();
+   var hora_b = $('#hora_re'+id_b).val();
+
+   //analizo la hora y obtengo hora y minutos
+   let elements_a = hora_a.split(':');
+   let elements_b = hora_b.split(':');
+   //Llevo a minutos las horas y obtengo los minutos totales
+   let min_a= parseInt(elements_a[1]) + parseInt(elements_a[0])*60;
+   let min_b= parseInt(elements_b[1]) + parseInt(elements_b[0])*60;
+   //obtengo la difeencia de los minutos
+   let value = min_a - min_b;
+   //Verfico que no sea NaN
+   return  isNaN(value) ? 1 : value;
+     });
+
+$table.append($rows);
+
+//cambiar las posiciones
 
 //Ordena orden_out
 var array_orden_out = [];
@@ -567,7 +620,7 @@ var array_orden_out = [];
 $(".hora_r").each(function(){
      let hora = $(this).val() ;
      let id = $(this).data('id');
-     let orden = $(this).data('orden');
+     let orden = $(this).data('orden_out');
      // alert("hora-"+hora+" id-"+id);
      //agregar a un array
      let data = {"id" : id, "hora" : hora, "orden": orden };
@@ -585,36 +638,57 @@ $(".hora_r").each(function(){
      });
 
     // ordenar las posiciones
-    var pos =0;
+    var pos = 0;
      for (var item in array_orden_out) {
            //cambiar las posiciones
           pos++;
           let id = array_orden_out[item].id;
-          $("#hora_r"+id).data('orden', pos);
-          $("#orden_out"+id).text(pos);
+          let orden = array_orden_out[item].orden;
+           // if (id<900){
+              $("#hora_r"+id).attr('data-orden_out', pos);
+              $("#orden_out"+id).text(pos);
+            // }
     }
 
   }
 
 
+
 $(".cambio_ruta").click(function (){
-  //tomar la data 
+  //tomar la data
    var id_alumno =  $(this).attr('data-id');
    var nombre_alumno   =  $(this).attr('data-nombre_alumno');
    var domicilio   =  $(this).attr('data-domicilio');
+   var turno   =  $(this).attr('data-turno');
   //enviarla al modal
   $("#id_alumno").val(id_alumno );
   $("#nombre_alumno").text(nombre_alumno);
   $("#domicilio_alumno").text(domicilio );
+  $("#modal_turno").val(turno);
+  if(turno==='manana'){
+    $("#titulo_turno").text('Mañana');
+  }else if (turno==='tarde'){
+    $("#titulo_turno").text('Tarde');
+  }
+
+
 });
 
-function cambiar_ruta(id_ruta){
-  //conseguir id_alumno a cambiar 
+function cambiar_ruta(id_ruta,fecha){
+  //conseguir id_alumno a cambiar
   var id_alumno = $("#id_alumno").val();
+  //busco el Turno a cambiar
+  var turno = $("#modal_turno").val();
+  if(turno==='tarde'){
+    turno = 't';
+  }else{
+    turno = 'm';
+  }
   // Solicitar cambio mediante ajax
  var data = {
     "id_ruta": id_ruta,
     "id_alumno": id_alumno,
+    "turno": turno,
     "summit": 1
   };
 
@@ -633,45 +707,61 @@ function cambiar_ruta(id_ruta){
         alert('El cambio ha sido exitoso.');
         // CERRAR MODAL
         $('#modal_cambio_ruta').modal('hide');
+        //depende del turno
+        if(turno=='m'){
         //Hay en lista
-        $("#selected_" + id_alumno ).remove();
+        $("#selected_m" + id_alumno ).remove();
         //Disminuye el numero de alumnos y mostrarlo
-        let n_alumnos=parseInt($("#n_alumnos").text());
+        let n_alumnos=parseInt($("#n_alumnos_m").text());
         n_alumnos--;
-        $("#n_alumnos").text(n_alumnos);
-        //incrementar cupos en 
-        let cupos_d = parseInt($("#cupos_disponibles"+id_ruta).text());
+        $("#n_alumnos_m").text(n_alumnos);
+        //incrementar cupos en
+        let cupos_d = parseInt($("#cupos_disponibles_m"+id_ruta).text());
         cupos_d++;
-        $("#cupos_disponibles"+ id_ruta).text(cupos_d);
-        //ordenar
-        ordenar(1);
+        $("#cupos_disponibles_m"+ id_ruta).text(cupos_d);
+        //ordenar - mañana
+        ordenar_m(0);
+        }else if ( turno=='t'){
+          //Hay en lista
+        $("#selected_t" + id_alumno ).remove();
+        //Disminuye el numero de alumnos y mostrarlo
+        let n_alumnos=parseInt($("#n_alumnos_t").text());
+        n_alumnos--;
+        $("#n_alumnos_t").text(n_alumnos);
+        //incrementar cupos en
+        let cupos_d = parseInt($("#cupos_disponibles_t"+id_ruta).text());
+        cupos_d++;
+        $("#cupos_disponibles_t"+ id_ruta).text(cupos_d);
+        //ordenar - tarde
+        ordenar_t(0);
+        }
+        //Almacenar Cambios de orden y ocupacion de espacios.
+        enviar_formulario(id_ruta,fecha)
         // location.reload();
       }else{
         alert('Ha ocurrido un Error.');
-
-        // $("#btn_enviar_formulario").prop("disabled", false);
       }
     }
   });
 }
 
 function view_table(){
-  var vista =  $("select#view").val();  
+  var vista =  $("select#view").val();
   // alert(vista);
   if (vista==='1'){
     //mañana
     $('.view_m').show();
-    $('.view_r').hide();
-    ordenar(0);
+    $('.view_t').hide();
+    // ordenar(0);
   }else if(vista==='2'){
     $('.view_m').hide();
-    $('.view_r').show();
-    ordenar(0);
+    $('.view_t').show();
+    // ordenar(0);
   }else{
     //mañana- tarde
     $('.view_m').show();
-    $('.view_r').show();
+    $('.view_t').show();
     $('.m_t').hide();
-    ordenar(0);
+    // ordenar(0);
   }
 }

@@ -61,9 +61,9 @@ $datos = mysqli_query ( $conexion,"SELECT vpa.id as idpermisoalumno, vpa.id_alum
         <div class="sidebar-header">
             <h3>EXTRAORDINARIOS</h3>
         </div>
-        
+
           <?php $perfil_actual='13'; include ('../menus_dinamicos/perfiles_dinamicos_extraordinarios.php'); ?>
-       
+
     </nav>
 
     <!-- Page Content  -->
@@ -79,7 +79,8 @@ $datos = mysqli_query ( $conexion,"SELECT vpa.id as idpermisoalumno, vpa.id_alum
 <!-- Button trigger modal -->
 <?php
 $_nivel='3';
-include 'componentes/nuevos_permisos.php'; ?>
+include 'componentes/nuevos_permisos.php';
+?>
 <a href="../menu.php" style="cursor: pointer; margin:2px;" class="pull-right">
   <!-- Boton de Atras -->
   <?php include 'componentes/btn_atras.php'; ?>
@@ -473,3 +474,23 @@ aria-labelledby="myModalLabel" aria-hidden="true">
 <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
+<?php
+if (in_array('33', $capacidades)){
+?>
+<!-- modal de eliminar ruta -->
+<div id="modal_reset" class="modal" tabindex="-1" role="dialog" >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p>¿Confirma que desea reiniciar los permisos Extraordinarios de BACHILLERATO?</p>
+      </div>
+      <div class="modal-footer" style="padding:1rem">
+        <button class="btn btn-danger" type="button" name="button" data-dismiss="modal">Cancelar</button>
+        <input type="hidden" id="modal_id_ruta" name="modal_id_ruta" value="">
+        <button class="btn btn-muted" type="button" name="button" data-dismiss="modal"  onclick="reset(3)">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<?php
+} ?>

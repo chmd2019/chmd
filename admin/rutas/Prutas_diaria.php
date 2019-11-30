@@ -1,14 +1,14 @@
 <?php
 include '../sesion_admin.php';
 include '../conexion.php';
-if (!in_array('26', $capacidades)){
+if (!in_array('32', $capacidades)){
     header('Location: ../menu.php');
 }
 require_once ('../FirePHPCore/FirePHP.class.php');
 $firephp = FirePHP::getInstance ( true );
 ob_start ();
 $fecha = date('Y-m-d');
-$datos = mysqli_query ( $conexion,"SELECT id_ruta_h as id_ruta, nombre_ruta, prefecta, camion, cupos FROM rutas_historica WHERE fecha = '$fecha'" );
+$datos = mysqli_query ( $conexion,"SELECT rh.id_ruta_h as id_ruta, rh.nombre_ruta, rh.camion, rh.cupos, u.nombre as auxiliar FROM rutas_historica rh LEFT JOIN usuarios u ON u.id=rh.auxiliar  WHERE rh.fecha = '$fecha' and rh.camion>0" );
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -65,6 +65,10 @@ $datos = mysqli_query ( $conexion,"SELECT id_ruta_h as id_ruta, nombre_ruta, pre
 <br>
 <center><?php echo isset($_POST['guardar'])?$verificar:''; ?></center>
 <!-- Button trigger modal -->
+<button type="button" style="cursor: pointer; margin:5px;outline: none" class="btn btn-primary btn-default pull-right" onclick="deamon_rutas_generales()">
+  <b><span class="glyphicon glyphicon-refresh"></span>&nbsp;&nbsp;SALIDA GENERAL</b>
+</button>
+<!-- Button trigger modal -->
 <button type="button" style="cursor: pointer; margin:5px;outline: none" class="btn btn-primary btn-default pull-right" onclick="deamon_rutas()">
 <b><span class="glyphicon glyphicon-refresh"></span>&nbsp;&nbsp;ACTUALIZAR</b>
 </button>
@@ -97,7 +101,7 @@ placeholder="Buscar Solicitud...">
     {
       $id_ruta= $dato['id_ruta'];
       $nombre_ruta= $dato ['nombre_ruta'];
-      $prefecta= $dato['prefecta'];
+      $auxiliar= $dato['auxiliar'];
       $camion= $dato['camion'];
       $cupos= $dato['cupos'];
       $fecha = date('Y-m-d');
@@ -113,33 +117,46 @@ placeholder="Buscar Solicitud...">
       while($r = mysqli_fetch_array($query) ){
         $cupos_disponibles_s = $r[0];
       }
-      //numero de alumnos por revisar 
-      $por_revisar=0;
-      $sql = "SELECT COUNT(*) FROM rutas_historica_alumnos WHERE id_ruta_h=$id_ruta and orden_in>900  and fecha='$fecha';";
+      //numero de alumnos por revisar  - mañana
+      $por_revisar_m=0;
+      $sql = "SELECT COUNT(*) FROM rutas_historica_alumnos WHERE id_ruta_h=$id_ruta and orden_in>900 and fecha='$fecha';";
       $query = mysqli_query($conexion, $sql);
       while($r = mysqli_fetch_array($query) ){
-        $por_revisar = $r[0];
+        $por_revisar_m = $r[0];
       }
-    
+
+    //numero de alumnos por revisar - Tarde
+      $por_revisar_t=0;
+      $sql = "SELECT COUNT(*) FROM rutas_historica_alumnos WHERE id_ruta_h_s=$id_ruta and orden_out>900 and fecha='$fecha';";
+      $query = mysqli_query($conexion, $sql);
+      while($r = mysqli_fetch_array($query) ){
+        $por_revisar_t = $r[0];
+      }
 
       ?>
       <tr class="fila_alumnos" id="fila_<?=$id_ruta?>" >
         <td><?php echo $nombre_ruta?></td>
-        <td><?php echo $prefecta?></td>
+        <td><?php echo $auxiliar?></td>
         <td><?php
-          if ($camion<=9) echo '0'.$camion ; else echo $camion;?>
+          if ($camion>900){
+            echo '';
+          } else{
+            if ($camion<=9) echo '0'.$camion ; else echo $camion;
+          }
+
+          ?>
         </td>
         <td ><?php echo $cupos_disponibles.'/'.$cupos?></td>
         <td ><?php echo $cupos_disponibles_s.'/'.$cupos?></td>
         <td class="text-center">
-          <?php if ($cupos_disponibles > $cupos || $por_revisar>0){
+          <?php if ($cupos_disponibles > $cupos || $por_revisar_m>0  || $por_revisar_t>0){
            ?>
              <span class="tag tag-revisar" >REVISAR</span>
-          <?php   
+          <?php
           }else{
              ?>
              <span class="tag tag-aprobado" >AUTORIZADO</span>
-          <?php 
+          <?php
           }?>
         </td>
         <td class="text-center">

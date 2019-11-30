@@ -4,10 +4,10 @@ require '../../conexion.php';
 if (isset($_POST["camion"])){
   //Datos POST
   $camion = $_POST['camion'];
-
+  $tipo_ruta = $_POST['tipo_ruta'];
   if ($conexion) {
       $existe=false;
-      $sql = "SELECT COUNT(*) as n FROM  rutas  WHERE  camion='$camion'";
+      $sql = "SELECT COUNT(*) as n FROM  rutas  WHERE  camion='$camion'  AND tipo_ruta='$tipo_ruta'";
       mysqli_set_charset($conexion, "utf8");
       $consulta = mysqli_query($conexion, $sql);
       if( $r = mysqli_fetch_assoc($consulta)) {

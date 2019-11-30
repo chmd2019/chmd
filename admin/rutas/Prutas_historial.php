@@ -2,7 +2,7 @@
 include '../sesion_admin.php';
 include '../conexion.php';
 
-if (!in_array('26', $capacidades)){
+if (!in_array('32', $capacidades)){
     header('Location: ../menu.php');
 }
 
@@ -10,10 +10,17 @@ require_once ('../FirePHPCore/FirePHP.class.php');
 $firephp = FirePHP::getInstance ( true );
 ob_start ();
 
-$datos = mysqli_query ( $conexion,"SELECT  ra.id_alumno, ra.id_ruta_h as id_ruta_base, rh.nombre_ruta, a.nombre, rh.prefecta, rh.camion, ra.domicilio, ra.fecha FROM rutas_historica_alumnos ra 
-  INNER JOIN rutas_historica rh ON rh.id_ruta_h  = ra.id_ruta_h and rh.fecha=ra.fecha  
-  INNER JOIN alumnoschmd a ON a.id  = ra.id_alumno  
-  ORDER BY ra.fecha;" );
+$datos_m = mysqli_query ( $conexion,"SELECT  ra.id_alumno, ra.id_ruta_h as id_ruta_base, rh.nombre_ruta, a.nombre, rh.auxiliar ,  rh.camion, ra.domicilio, ra.fecha, 'Mañana' as turno FROM rutas_historica_alumnos ra
+INNER JOIN rutas_historica rh ON rh.id_ruta_h  = ra.id_ruta_h and rh.fecha=ra.fecha
+INNER JOIN alumnoschmd a ON a.id = ra.id_alumno
+ORDER BY ra.fecha;" );
+
+$datos_t = mysqli_query ( $conexion,"SELECT  ra.id_alumno, ra.id_ruta_h_s as id_ruta_base, rh.nombre_ruta, a.nombre, rh.auxiliar ,  rh.camion, ra.domicilio_s, ra.fecha, 'Tarde' as turno FROM rutas_historica_alumnos ra
+INNER JOIN rutas_historica rh ON rh.id_ruta_h  = ra.id_ruta_h_s and rh.fecha=ra.fecha
+INNER JOIN alumnoschmd a ON a.id = ra.id_alumno
+ORDER BY ra.fecha;" );
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -65,22 +72,37 @@ $datos = mysqli_query ( $conexion,"SELECT  ra.id_alumno, ra.id_ruta_h as id_ruta
     <th>Alumno</th>
     <th>Domicilio</th>
     <th>Ruta</th>
-    <th>Prefecto(a)</th>
+    <th>Auxiliar</th>
     <th>Camión</th>
+    <th>Turno</th>
     <th>Fecha</th>
     <!-- <th class="text-center">Acciones</th> -->
   </thead>
   <tbody class="searchable" style="overflow: auto; max-height: 500px;">
-    <?php while ( $dato = mysqli_fetch_assoc ( $datos ) )
+    <?php while ( $dato = mysqli_fetch_assoc ( $datos_m ) )
     {
       $id_ruta= $dato['id_ruta_base'];
       $id_alumno = $dato ['id_alumno'];
       $nombre = $dato ['nombre'];
       $domicilio  = $dato['domicilio'];
       $nombre_ruta= $dato ['nombre_ruta'];
-      $prefecta= $dato['prefecta'];
+      $auxiliar= $dato['auxiliar'];
+      $turno= $dato['turno'];
+
+        $sql ="SELECT u.nombre FROM usuarios u WHERE u.id='$auxiliar' LIMIT 1";
+        $query = mysqli_query($conexion, $sql);
+        if($n = mysqli_fetch_array($query)){
+          $nombre_auxiliar = $n[0];
+        }
+
+        if ($nombre_auxiliar==NULL){
+          $nombre_auxiliar = '-';
+        }
+
+
+
       $camion= $dato['camion'];
-      $fecha = date('d/m/Y', strtotime($dato['fecha']));  
+      $fecha = date('d/m/Y', strtotime($dato['fecha']));
       // $cupos= $dato['cupos'];
       $fecha_actual = date('Y-m-d');
 
@@ -95,9 +117,10 @@ $datos = mysqli_query ( $conexion,"SELECT  ra.id_alumno, ra.id_ruta_h as id_ruta
         <td><?php echo $nombre?></td>
         <td><?php echo $domicilio?></td>
         <td><?php echo $nombre_ruta?></td>
-        <td><?php echo $prefecta?></td>
+        <td><?php echo $nombre_auxiliar?></td>
         <td><?php
         if ($camion<=9) echo '0'.$camion ; else echo $camion;?></td>
+        <td><?php echo $turno?> </td>
         <td><?php echo $fecha?></td>
 <!--         <td class="text-center">
       <a data-target="#agregarNivel" data-toggle="modal"
@@ -105,6 +128,58 @@ $datos = mysqli_query ( $conexion,"SELECT  ra.id_alumno, ra.id_ruta_h as id_ruta
       data-id="<?php echo $id_ruta?>">
       <?php include 'componentes/btn_ver.php'; ?>
     </a>
+</td> -->
+</tr>
+<?php } ?>
+
+<?php while ( $dato = mysqli_fetch_assoc ( $datos_t ) )
+{
+  $id_ruta= $dato['id_ruta_base'];
+  $id_alumno = $dato ['id_alumno'];
+  $nombre = $dato ['nombre'];
+  $domicilio  = $dato['domicilio_s'];
+  $nombre_ruta= $dato ['nombre_ruta'];
+  $auxiliar= $dato['auxiliar'];
+  $turno= $dato['turno'];
+    $sql ="SELECT u.nombre FROM usuarios u WHERE u.id='$auxiliar' LIMIT 1";
+    $query = mysqli_query($conexion, $sql);
+    if($n = mysqli_fetch_array($query)){
+      $nombre_auxiliar = $n[0];
+    }
+
+    if ($nombre_auxiliar==NULL){
+      $nombre_auxiliar = '-';
+    }
+
+
+
+  $camion= $dato['camion'];
+  $fecha = date('d/m/Y', strtotime($dato['fecha']));
+  // $cupos= $dato['cupos'];
+  $fecha_actual = date('Y-m-d');
+
+  //numero de cupos Disponibles
+  // $sql = "SELECT COUNT(*) FROM rutas_historica WHERE id_ruta_base=$id_ruta and fecha<$fecha";
+  // $query = mysqli_query($conexion, $sql);
+  // while($r = mysqli_fetch_array($query) ){
+  //   $cupos_disponibles = $r[0];
+  // }
+  ?>
+  <tr class="fila_alumnos" id="fila_<?=$id_ruta?>" >
+    <td><?php echo $nombre?></td>
+    <td><?php echo $domicilio?></td>
+    <td><?php echo $nombre_ruta?></td>
+    <td><?php echo $nombre_auxiliar?></td>
+    <td><?php
+    if ($camion<=9) echo '0'.$camion ; else echo $camion;?></td>
+          <td><?php echo $turno?> </td>
+    <td><?php echo $fecha?></td>
+<!--         <td class="text-center">
+  <a data-target="#agregarNivel" data-toggle="modal"
+  class="btn-editar" type="button"
+  data-id="<?php echo $id_ruta?>">
+  <?php include 'componentes/btn_ver.php'; ?>
+</a>
 </td> -->
 </tr>
 <?php } ?>
@@ -144,7 +219,7 @@ $datos = mysqli_query ( $conexion,"SELECT  ra.id_alumno, ra.id_ruta_h as id_ruta
       });
      // agregar paginacion
           $('#niveles_table').DataTable( {
-              "order": [[ 5, "desc" ]],
+              "order": [[ 5, "asc" ]],
               paging:true,
               ordering:  true,
               searching:true,

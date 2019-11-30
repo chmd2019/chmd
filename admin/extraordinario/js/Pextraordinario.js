@@ -199,8 +199,23 @@ $('.fila_alumnos').each( function(){
             });
           }
         }
-
-
-
-
       });
+
+function reset(nivel){
+  var _nivel = '';
+  switch (nivel) {
+    case 1:
+        _nivel = 'KINDER';
+      break;
+      case 2:
+          _nivel = 'PRIMARIA';
+        break;
+        case 3:
+            _nivel = 'BACHILLERATO';
+          break;
+    default:
+
+  }
+  alert('Prueba de Reset - Nivel: ' + _nivel);
+  return;
+}

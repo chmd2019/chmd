@@ -4,13 +4,14 @@ require '../../conexion.php';
 if (isset($_POST["summit"])){
   //Datos POST
   $id_ruta = $_POST["id_ruta"];
-  $nombre_ruta = $_POST["nombre_ruta"];
-  $prefecta = $_POST["prefecta"];
+  $nombre_ruta = strtoupper($_POST["nombre_ruta"]);
+  $auxiliar = $_POST["auxiliar"];
   $camion = $_POST['camion'];
   $cupos = $_POST['cupos'];
+  $tipo_ruta = $_POST['tipo_ruta'];
 
   if ($conexion) {
-    $sql = "UPDATE rutas SET nombre_ruta='$nombre_ruta', prefecta='$prefecta', camion ='$camion' , cupos= '$cupos' WHERE id_ruta='$id_ruta' ";
+    $sql = "UPDATE rutas SET nombre_ruta='$nombre_ruta', auxiliar='$auxiliar', camion ='$camion' , cupos= '$cupos', tipo_ruta='$tipo_ruta' WHERE id_ruta='$id_ruta' ";
       mysqli_set_charset($conexion, "utf8");
       $insertar = mysqli_query($conexion, $sql);
       if (!$insertar) {
@@ -29,4 +30,3 @@ if (isset($_POST["summit"])){
 }
 
 ?>
-

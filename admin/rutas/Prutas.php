@@ -2,7 +2,7 @@
 include '../sesion_admin.php';
 include '../conexion.php';
 
-if (!in_array('26', $capacidades)){
+if (!in_array('32', $capacidades)){
     header('Location: ../menu.php');
 }
 
@@ -10,7 +10,8 @@ require_once ('../FirePHPCore/FirePHP.class.php');
 $firephp = FirePHP::getInstance ( true );
 ob_start ();
 
-$datos = mysqli_query ( $conexion,"SELECT  * FROM rutas order by camion;" );
+$datos = mysqli_query ( $conexion,"SELECT  r.*, u.nombre FROM rutas r LEFT JOIN usuarios u ON u.id=r.auxiliar
+order by r.camion;" );
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -50,7 +51,7 @@ $datos = mysqli_query ( $conexion,"SELECT  * FROM rutas order by camion;" );
 <br>
 <center><?php echo isset($_POST['guardar'])?$verificar:''; ?></center>
 <!-- Button trigger modal -->
-<a href="alta_rutas.php" style="cursor: pointer; margin:2px" class="pull-right"><svg width="120px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+<a href="nuevo_control_ruta.php" style="cursor: pointer; margin:2px" class="pull-right"><svg width="120px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
              viewBox="0 0 600 209.54" style="enable-background:new 0 0 600 209.54;" xml:space="preserve">
           <style type="text/css">
             .sty0{fill:#6DC1EC;}
@@ -102,9 +103,11 @@ placeholder="Buscar Solicitud..."><br> -->
     <thead>
       <tr>
         <td><b>Ruta</b></td>
-        <td><b>Prefecto(a)</b></td>
+        <td><b>Auxiliar</b></td>
+        <td><b>Tipo Ruta</b></td>
         <td><b>Camión</b></td>
-        <td><b>Cupos(Ocupados/Total)</b></td>
+        <td><b>Cupos(Mañana/Total)</b></td>
+        <td><b>Cupos(Tarde/Total)</b></td>
         <td class="text-center"><b>Acciones</b></td>
       </tr>
   </thead>
@@ -113,31 +116,51 @@ placeholder="Buscar Solicitud..."><br> -->
     {
       $id_ruta= $dato['id_ruta'];
       $nombre_ruta= $dato ['nombre_ruta'];
-      $prefecta= $dato['prefecta'];
+     $auxiliar = $dato['nombre'];
       $camion= $dato['camion'];
       $cupos= $dato['cupos'];
+      $tipo_ruta = $dato['tipo_ruta'];
+
+      if ($tipo_ruta==1) $tipo_ruta='GENERAL';
+      else if ($tipo_ruta==2) $tipo_ruta ='KINDER';
+      else $tipo_ruta = '-';
       //numero de cupos Disponibles
-      $sql = "SELECT COUNT(*) FROM rutas_base_alumnos WHERE id_ruta_base=$id_ruta";
+      $sql = "SELECT COUNT(*) FROM rutas_base_alumnos WHERE id_ruta_base_m=$id_ruta";
       $query = mysqli_query($conexion, $sql);
       while($r = mysqli_fetch_array($query) ){
-        $cupos_disponibles = $r[0];
+        $cupos_disponibles_m = $r[0];
       }
-      ?>
-      <tr class="fila_alumnos" id="fila_<?=$id_ruta?>">
-        <td><?php echo $nombre_ruta?></td>
-        <td><?php echo $prefecta?></td>
-        <td><?php
-        if ($camion<=9) echo '0'.$camion ; else echo $camion;?></td>
-        <td><?php echo $cupos_disponibles.'/'.$cupos?></td>
-        <td class="text-center">
-          <a data-target="#agregarNivel" data-toggle="modal"
-          class="btn-editar" type="button"
-          data-id="<?php echo $id_ruta?>">
-          <?php include 'componentes/btn_ver.php'; ?>
+      //numero de cupos Disponibles - Tarde
+      $sql = "SELECT COUNT(*) FROM rutas_base_alumnos WHERE id_ruta_base_t=$id_ruta";
+      $query = mysqli_query($conexion, $sql);
+      while($r = mysqli_fetch_array($query) ){
+        $cupos_disponibles_t = $r[0];
+      }
+      $show=false;
+      if ($cupos_disponibles_m>0 || $cupos_disponibles_t>0 ) $show= true;
+      // if ($camion < 1) $show= false;
+      if($show){
+        ?>
+        <tr class="fila_alumnos" id="fila_<?=$id_ruta?>">
+          <td><?php echo $nombre_ruta?></td>
+          <td><?php echo $auxiliar?></td>
+          <td><?php echo  $tipo_ruta ?></td>
+          <td><?php
+          if ($camion<=9) echo '0'.$camion ; else echo $camion;?></td>
+          <td ><?php echo $cupos_disponibles_m.'/'.$cupos?></td>
+          <td ><?php echo $cupos_disponibles_t.'/'.$cupos?></td>
+          <td class="text-center">
+            <a data-target="#agregarNivel" data-toggle="modal"
+            class="btn-editar" type="button"
+            data-id="<?php echo $id_ruta?>">
+            <?php include 'componentes/btn_ver.php'; ?>
           </a>
         </td>
       </tr>
-<?php } ?>
+        <?php
+      }
+     }
+       ?>
 </tbody>
 </table>
 </div>
@@ -187,7 +210,6 @@ placeholder="Buscar Solicitud..."><br> -->
                           last:       "Ultimo"
                                 },
                   infoFiltered: "(filtrados de _MAX_ total de registros)"
-
               }
           } );
   });
@@ -196,6 +218,7 @@ placeholder="Buscar Solicitud..."><br> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
 <script type="text/javascript" src="../dist/js/bootstrap.js"></script>
   <script type="text/javascript" src="js/Prutas.js"></script>
+    <script type="text/javascript" src="../js/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
   <script type="text/javascript" src="../js/1min_inactivo.js" ></script>
 </body>
 </html>

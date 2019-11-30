@@ -83,7 +83,7 @@ class ControlEspecial {
         $connection = $this->con->conectar1();
         if ($connection) {
             $sql = "SELECT COUNT(*) FROM Ventana_permisos_alumnos "
-                    . "WHERE id_alumno = {$id_alumno} AND anio_creacion = '{$anio}';";
+                    . "WHERE id_alumno = {$id_alumno} AND anio_creacion = '{$anio}' AND Estatus=2;";
             mysqli_set_charset($connection, 'utf8');
             return mysqli_query($connection, $sql);
         }
@@ -387,7 +387,7 @@ class ControlEspecial {
             mysqli_set_charset($connection, 'utf8');
             return mysqli_query($connection, $sql);
         }
-    }    
+    }
 
     public function aprovacion_padre($estatus, $id_permiso_alumno) {
         $connection = $this->con->conectar1();
@@ -430,6 +430,6 @@ class ControlEspecial {
             $sql = "SELECT ciclo FROM Ciclo_escolar WHERE estatus = TRUE;";
             return mysqli_fetch_assoc(mysqli_query($connection, $sql))['ciclo'];
         }
-    }    
+    }
 
 }

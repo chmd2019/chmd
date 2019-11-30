@@ -9,7 +9,7 @@ $idcursar = $_GET['idcursar'];
 $corte_semestral = intval(date("m"));
 $control = new ControlEspecial();
 $respuesta = "";
-if ($idcursar >= 0 && $idcursar <= 13 ) {
+if ($idcursar >= 5 && $idcursar <= 13 ) {
     $anio = $control->consulta_cicilo_escolar();
     $num_permisos_este_anio = mysqli_fetch_array($control->aviso_tercer_permiso($id_alumno, $anio));
     $num_permisos_este_anio = $num_permisos_este_anio[0];

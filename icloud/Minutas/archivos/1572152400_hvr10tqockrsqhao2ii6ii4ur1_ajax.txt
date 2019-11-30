@@ -1,0 +1,44 @@
+$.ajax({
+    url: 'https://www.chmd.edu.mx/pruebascd/icloud/Minutas/common/post_guardar_invitado_tmp.php',
+    type: 'POST',
+    dataType: 'json',
+    data: {}
+}).done((res) => {
+});
+
+/*update Ventana_Permisos set notificacion1=1 where id_permiso = 1831*/
+
+/*SELECT vem.solicitante,vem.tipo_evento,vem.fecha_montaje,vem.horario_evento,vem.horario_final_evento, vem.nombre_evento, 
+vem.responsable_evento,vem.cantidad_invitados,vem.valet_parking, vem.anexa_programa,vem.tipo_repliegue,vem.requiere_ensayo, 
+vem.requerimientos_especiales, vem.solo_cafe,vem.evento_con_cafe, vem.tipo_montaje, vem.estatus, vl.descripcion AS lugar,
+vem.notificacion1, vem.notificacion2, vem.notificacion3, vem.notificacion4, vu.correo,vem.edicion,vem.notificacion5, vem.id, vc.`status`
+FROM Evento_montaje vem
+INNER JOIN Lugares_eventos vl ON vl.id = vem.id_lugar_evento
+INNER JOIN usuarios vu ON vu.nombre = vem.solicitante
+INNER JOIN Catalogo_status_acceso vc ON vc.id = vem.estatus
+ORDER BY vem.id DESC
+
+/*SELECT vp.id_permiso, vs.correo, vp.estatus, vp.notificacion1, vp.notificacion2, 
+vp.notificacion3, vp.comentarios, vp.mensaje, vp.fecha_cambio, vp.calle_numero, vp.colonia, 
+vp.ruta, vs.nombre, vs.responsable, vp.notificacion4 
+FROM Ventana_Permisos vp LEFT JOIN usuarios vs ON vp.idusuario = vs.id 
+WHERE vp.tipo_permiso = 1 ORDER BY id_permiso DESC*/
+
+/*SELECT a.id_permiso, b.id, b.nombre, a.estatus, a.codigo_invitacion, a.familia FROM Ventana_permisos_alumnos a
+INNER JOIN alumnoschmd b ON b.id = a.id_alumno
+WHERE a.codigo_invitacion = '0I9ZS5'
+
+SELECT c.correo,b.nombre 
+FROM Ventana_permisos_alumnos a
+INNER JOIN alumnoschmd b ON b.id = a.id_alumno 
+INNER JOIN usuarios c ON c.numero = b.idfamilia
+WHERE a.codigo_invitacion = '7SRVBT' AND (c.tipo = 3 OR c.tipo = 4)*/
+
+/*SELECT COUNT(*) FROM Evento_montaje WHERE archivado = 1 */
+/*SELECT a.id_permiso, a.fecha_cambio, a.nfamilia,a.tipo_evento, a.codigo_invitacion, c.status, c.color_estatus
+FROM Ventana_Permisos a 
+INNER JOIN Ventana_permisos_alumnos b ON b.codigo_invitacion = a.codigo_invitacion
+INNER JOIN Catalogo_status_evento_padres c ON c.id = b.estatus_padre
+WHERE a.codigo_invitacion = 'G3CE68' AND b.id_alumno =58*/
+
+../Eventos.php?idseccion=<?php echo $idseccion; ?>

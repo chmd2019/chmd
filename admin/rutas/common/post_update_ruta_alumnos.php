@@ -3,39 +3,59 @@ require '../../conexion.php';
 
 $error=false;
 $error_doc ='sin error';
-if (isset($_POST['alumnos'], $_POST['id_ruta'], $_POST['fecha'] )){
+if (isset( $_POST['id_ruta'], $_POST['fecha'] )){
 
 $id_ruta = $_POST['id_ruta']; 
 $fecha = $_POST['fecha']; 
 // echo 'id_ruta:' . $id_ruta;
 // echo ' fecha: ' . $fecha;
    if ($conexion) {
-    $alumnos = $_POST['alumnos'];
-    foreach ($alumnos as $key => $alumno) {
-      $id_alumno = $alumno['id_alumno'];
-      $id_ruta = $alumno['id_ruta'] ;
-      // $domicilio = $alumno['domicilio'];
-      $hora_ma =  $alumno['hora_manana'];
-      $hora_re =  $alumno['hora_regreso'];
-      $orden_in = $alumno['orden_in'];
-      $orden_out = $alumno['orden_out'];
+    //mañana
+    if (isset($_POST['alumnos_m'])){
+        $alumnos_m = $_POST['alumnos_m'];
+        foreach ($alumnos_m as $key => $alumno) {
+          $id_alumno = $alumno['id_alumno'];
+          $id_ruta = $alumno['id_ruta'] ;
+          $hora_ma =  $alumno['hora_manana'];
+          $orden_in = $alumno['orden_in'];
+          //SQL - Mañana     
+          $sql_update = "UPDATE rutas_historica_alumnos
+          SET hora_manana = '$hora_ma', orden_in = '$orden_in'
+          WHERE id_alumno = $id_alumno and fecha = '$fecha';"; 
+          mysqli_set_charset($conexion, "utf8");
+          $update = mysqli_query($conexion, $sql_update);
+            if (!$update) {
+               die("error:" . mysqli_error($conexion));
+              $error = true; $error_doc='01: Error al actualizar alumno de la mañana. ';
+            }else{
+              mysqli_query($conexion, 'COMMIT;');
+            }
+          }
+    }
 
-// echo '<br>id_alumno:' . $id_alumno. ' hora_m:'. $hora_ma. ' orden:'.$orden;
-
-      //SQL    
-      $sql_update = "UPDATE rutas_historica_alumnos
-      SET hora_manana = '$hora_ma', hora_regreso = '$hora_re', orden_in = '$orden_in', orden_out='$orden_out' 
-      WHERE id_alumno = $id_alumno and fecha = '$fecha';"; 
-      mysqli_set_charset($conexion, "utf8");
-      $update = mysqli_query($conexion, $sql_update);
-        if (!$update) {
-           die("error:" . mysqli_error($conexion));
-          $error = true; $error_doc='01: Error al actualizar alumno. ';
-        }else{
-          mysqli_query($conexion, 'COMMIT;');
-        }
-      }
- 
+      //tarde
+    if (isset($_POST['alumnos_t'])){
+        $alumnos_t = $_POST['alumnos_t'];
+        foreach ($alumnos_t as $key => $alumno) {
+          $id_alumno = $alumno['id_alumno'];
+          $id_ruta = $alumno['id_ruta'] ;
+          $hora_re =  $alumno['hora_regreso'];
+          $orden_out = $alumno['orden_out'];
+          //SQL - Tarde     
+          $sql_update = "UPDATE rutas_historica_alumnos
+          SET hora_regreso = '$hora_re', orden_out='$orden_out' 
+          WHERE id_alumno = $id_alumno and fecha = '$fecha'"; 
+          mysqli_set_charset($conexion, "utf8");
+          $update = mysqli_query($conexion, $sql_update);
+            if (!$update) {
+               die("error:" . mysqli_error($conexion));
+              $error = true; $error_doc='02: Error al actualizar alumno de la tarde. ';
+            }else{
+              mysqli_query($conexion, 'COMMIT;');
+            }
+          }
+    }
+     
      } else {
            $error = true;
           $error_doc='03: Error de Conexion. ';

@@ -151,10 +151,25 @@ $(function() {
                   }else{
                     var text_botones = "<button  type='button' class = 'btn btn-success glyphicon glyphicon-ok' onclick='set_estatus(2, " + id_permiso_alumno + ")' > </button> <button  type='button' class='btn btn-danger glyphicon glyphicon-remove' onclick= 'set_estatus(3, " + id_permiso_alumno + ")'> </button>";
                   }
+                  var estatus_padre = datos_alumno[6];
+                  if (estatus_padre=='1'){
+                    //pendiente
+                    var text_mail ="<p  style='margin:2px' class = 'text-info glyphicon glyphicon-time'> </p>";
+                  }else if (estatus_padre=='2'){
+                    //autorizado
+                    var text_mail = "<p style='margin:2px' class = 'text-success glyphicon glyphicon-ok'> </p>";
+                  }else if (estatus_padre=='4'){
+                    //cancelado
+                    var text_mail = "<p style='margin:2px' class = 'text-danger glyphicon glyphicon-remove'> </p>";
+                  }else {
+                    // declinado por administrador
+                    var text_mail = "<p style='margin:2px' class = 'text-danger glyphicon glyphicon-remove'> </p>";
+                  }
+
                   //Considerar el area o nivel
                   if (_nivel=== nivel || _nivel =='0'){
                     c++;
-                    var text= "<tr class='lista-alumnos'><td  WIDTH='45%' colspan='3' ><input name='alumno' id='alumno' type='text' class='form-control' placeholder='nombre' value='" + nombre + "'  readonly></td><td  WIDTH='40%' colspan='4'>  <input name='grado_grupo' id='grado_grupo' type='text' class='form-control' placeholder='grado' value='" + grado_grupo + "'  readonly></td><td  id='acciones_"+ id_permiso_alumno +"' WIDTH='15%' colspan='1' >"+text_botones+"</td></tr>'";
+                    var text= "<tr  class='lista-alumnos'><td WIDTH='5%'>"+text_mail+"</td> <td  WIDTH='45%' colspan='3' ><input name='alumno' id='alumno' type='text' class='form-control' placeholder='nombre' value='" + nombre + "'  readonly></td><td  WIDTH='35%' colspan='4'>  <input name='grado_grupo' id='grado_grupo' type='text' class='form-control' placeholder='grado' value='" + grado_grupo + "'  readonly></td><td  id='acciones_"+ id_permiso_alumno +"' WIDTH='15s%' colspan='1' >"+text_botones+"</td></tr>'";
                   }else{
                     var text = '';
                   }

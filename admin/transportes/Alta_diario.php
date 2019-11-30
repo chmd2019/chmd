@@ -96,7 +96,6 @@ echo 'Solicitud Guardada';
       <link href="../css/menu.css" rel="stylesheet">
           <!-- Dependencias Globales -->
     <?php include '../components/header.php'; ?>
-    <?php $perfil_actual='diario'; include ('../menus_dinamicos/perfiles_dinamicos_solicitudes.php'); ?>
     </head>
     <body>
        <div class="wrapper">
@@ -108,9 +107,9 @@ echo 'Solicitud Guardada';
         <div class="sidebar-header">
             <h3>TRANSPORTES</h3>
         </div>
-        
+
                 <?php $perfil_actual='-1'; include ('../menus_dinamicos/perfiles_dinamicos_solicitudes.php'); ?>
-    
+
     </nav>
 
     <!-- Page Content  -->
@@ -193,7 +192,7 @@ echo 'Solicitud Guardada';
                 </td>
               </tr>
             </table>
-            <table  style=""  WIDTH="100%" >
+            <table class="table" id="niveles_table"  WIDTH="100%" >
             <tr>
               <td WIDTH="100%" colspan="3">
                 <h4><b>Alumnos Solicitantes:</b></h4><br>

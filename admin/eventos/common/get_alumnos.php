@@ -8,6 +8,7 @@ while($id_alumno = mysqli_fetch_assoc ( $alumnos ) ){
   $id_permiso_alumno=$id_alumno['id'];
   $alu= $id_alumno['id_alumno'];
   $estatus = $id_alumno['estatus'];
+  $estatus_padre = $id_alumno['estatus_padre'];
   //Consulto la base de datos
   $alumnos2 = mysqli_query($conexion, "SELECT nombre, grupo, grado, id_nivel FROM alumnoschmd WHERE id=$alu");
   while ($alumno = mysqli_fetch_assoc( $alumnos2 ) ){
@@ -16,7 +17,7 @@ while($id_alumno = mysqli_fetch_assoc ( $alumnos ) ){
      $grado = $alumno['grado'];
      $nivel = $alumno['id_nivel'];
      //dento de alumnos nombre|grado|grupo.
-     array_push($array_alumnos, "$nombre|$grupo|$grado|$id_permiso_alumno|$estatus|$nivel");
+     array_push($array_alumnos, "$nombre|$grupo|$grado|$id_permiso_alumno|$estatus|$nivel|$estatus_padre");
   }
 }
 $set_alumnos = implode('!', $array_alumnos);

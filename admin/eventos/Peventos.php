@@ -223,7 +223,7 @@ $datos = mysqli_query ( $conexion,"SELECT  vp.id_permiso,vp.fecha_creacion,
               $_fecha_cambio= $mes.'/'.$dia.'/'.$anio . ' 23:00:00';
               $fecha_entrada = strtotime ($_fecha_cambio);
               if ($fecha_entrada>=$fecha_actual) $show=true; else $show=false;
-             
+
               if(1){
                 $otro_dia=false;
               }else{
@@ -431,8 +431,9 @@ aria-labelledby="myModalLabel" aria-hidden="true">
         </table>
         <table  border="0" WIDTH="700">
           <tr>
-            <td  WIDTH="40%" colspan="3">Alumno</td>
-            <td  WIDTH="45%" colspan="4">Grado - Grupo - Nivel</td>
+            <td  WIDTH="5%" colspan="3">c.e.</td>
+            <td  WIDTH="45%" colspan="3">Alumno</td>
+            <td  WIDTH="35%" colspan="4">Grado - Grupo - Nivel</td>
             <td  WIDTH="15%" colspan="3">Acciones</td>
           </tr>
         </table>

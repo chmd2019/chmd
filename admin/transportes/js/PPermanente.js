@@ -7,11 +7,14 @@ $(function() {
       var mensaje = $('#mensaje').val();
       var id_camion = $('select#id_camion').val();
       var estatus = $('#estatus').val();
-      if(estatus==0)
+      var fecha_inicial_permiso = $('#fecha_inicial_permiso').val();
+
+      if(fecha_inicial_permiso==='')
       {
-        alert("Seleciona el estatus");
+        alert("Debe seleccionar una Fecha de Inicio del Permiso");
         return false;
       }
+
 
       if(mensaje==null || mensaje.length<=5)
       {
@@ -19,8 +22,17 @@ $(function() {
         return false;
       }
 
-        // alert("id_ruta: " + id_ruta);
-        // return false;
+      if(id_camion==0 || id_camion==null)
+      {
+        alert("Selecciona una Ruta Valida.");
+        return false;
+      }
+
+      if(estatus==0)
+      {
+        alert("Seleciona el estatus");
+        return false;
+      }
 
       e.preventDefault();
       $
@@ -31,7 +43,8 @@ $(function() {
           nombre_nivel : nombre_nivel,
           mensaje : mensaje,
           id_camion : id_camion,
-          estatus : estatus
+          estatus : estatus,
+          fecha_inicial: fecha_inicial_permiso
         }
       })
       .done(
@@ -78,7 +91,8 @@ $(function() {
           $(this).attr('data-telefono'),
           $(this).attr('data-id_ruta'),
           $(this).attr('data-id_camion'),
-          $(this).attr('data-estatus')
+          $(this).attr('data-estatus'),
+          $(this).attr('data-fecha_inicial')
         );
         funcion = $(this).attr('data-id');
       });
@@ -99,7 +113,7 @@ $(function() {
       });
       /**********************************************************/
       function editarNivel(qwert,nombre,nombre1,calle_numero,colonia,cp,ruta,comentarios,
-        calle_numero1,colonia1,mensaje,lunes,martes,miercoles,jueves,viernes, celular, telefono,id_ruta, id_camion, estatus)
+        calle_numero1,colonia1,mensaje,lunes,martes,miercoles,jueves,viernes, celular, telefono,id_ruta, id_camion, estatus, fecha_inicial)
       {
         $("#modalNivelTitulo").text("Solicitud de Permanente");
         $("#folio").val(qwert);
@@ -108,7 +122,12 @@ $(function() {
         $("#calle_numero").val(calle_numero);
         $("#colonia").val(colonia);
         $("#cp").val(cp);
-        $("#ruta").val(ruta);
+        $("#fecha_inicial_permiso").val(fecha_inicial);
+        if(id_ruta==1){
+          $("#ruta").val('[General 2:50 PM]');
+        }else{
+          $("#ruta").val('[Taller 4:30 PM]');
+        }
          //Ruta
           // if (ruta === 'Taller 4:30 PM') {
           //   $("#ruta").css("background","mistyrose");
@@ -131,18 +150,38 @@ $(function() {
         if(id_camion>0){
           $('select#id_camion').val(id_camion);
         }else{
-          $('select#id_camion').val('0');
+          $('select#id_camion').val('99999'); //FALTA estar en PRODUCCION
+          $("#id_camion").prop('disabled',true);
+
+          // $('select#id_camion').val('0');
         }
+
         //estatus
+        $("#ruta_cancelada").hide();
+        $("#id_camion").prop('disabled',false);
         if (estatus==1 || estatus==4){
+          if(estatus==4){
+              $("#ruta_cancelada").show();
+              $("#id_camion").val(999);
+              $("#id_camion").prop('disabled',true);
+            }
           $("#estatus").val(0);
         }else {
+
           if( estatus==2 || estatus==3){
+
             $("#estatus").val(estatus);
+
           }else{
+
             $("#estatus").val(0);
+
           }
+
         }
+
+
+
         //funcion
         $("#funcion").val(qwert);
         //remover todos los alumnos de la lista

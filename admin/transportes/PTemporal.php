@@ -28,7 +28,8 @@ $datos = mysqli_query ( $conexion,"SELECT vp.id_permiso,vp.fecha_creacion,
   vp.ruta,
   vp.turno,
   vp.fecha_creacion,
-  vp.fecha_respuesta
+  vp.fecha_respuesta,
+  vp.id_camion
   from
   Ventana_Permisos vp
   LEFT JOIN usuarios usu on vp.idusuario=usu.id
@@ -39,6 +40,8 @@ $datos = mysqli_query ( $conexion,"SELECT vp.id_permiso,vp.fecha_creacion,
     $mensaje= $_POST ['mensaje'];
     $id_camion= $_POST ['id_camion'];
     $estatus= $_POST ['estatus'];
+    $turno = $_POST ['turno'];
+    $turno = strtolower($turno);
 
     if ($nombre) {
       header ( 'Content-type: application/json; charset=utf-8' );
@@ -49,6 +52,36 @@ $datos = mysqli_query ( $conexion,"SELECT vp.id_permiso,vp.fecha_creacion,
       {
         $query = "UPDATE Ventana_Permisos SET mensaje = '$mensaje',estatus=3, archivado=1 WHERE id_permiso=$funcion";
         mysqli_query ( $conexion, $query );
+        //Cambio de Ruta los alumnos del Permiso a la ruta de cancelados.
+        $fecha = date('Y-m-d');
+        $orden='995';
+        $id_ruta='999'; //ruta de Cancelados Pendientes
+        $sql ="SELECT  vpa.id_alumno, vp.nfamilia FROM Ventana_permisos_alumnos vpa
+              LEFT JOIN Ventana_Permisos vp ON vp.id_permiso=vpa.id_permiso
+              WHERE vpa.id_permiso='$funcion'";
+        $query_search = mysqli_query($conexion, $sql);
+        while($r = mysqli_fetch_array($query_search)){
+          $id_alumno = $r[0];
+          $nfamilia = $r[1];
+          $sql_domicilio ="SELECT  CONCAT(colonia, ', ', calle) as domicilio FROM usuarios WHERE numero='$nfamilia' and (responsable ='PADRE' or responsable='MADRE') LIMIT 1";
+          $query_domicilio = mysqli_query($conexion,  $sql_domicilio);
+          if ($w=mysqli_fetch_array($query_domicilio)){
+            $domicilio = $w[0];
+          }
+          //ejecuto la actualizacion
+                  //turno - mañana
+               if ($turno == 'mañana'){
+                 //realizar actualizacion
+                   $sql_update = "UPDATE rutas_historica_alumnos SET id_ruta_h='$id_ruta', orden_in='$orden', domicilio='$domicilio', estatus='4'  WHERE id_alumno='$id_alumno' and fecha='$fecha'" ;
+               }else if ($turno == 'tarde'){
+                  $sql_update = "UPDATE rutas_historica_alumnos SET id_ruta_h_s='$id_ruta', orden_out='$orden', domicilio_s='$domicilio', estatus='4'  WHERE id_alumno='$id_alumno' and fecha='$fecha'" ;
+               }else  if ($turno =='mañana-tarde'){
+                  $sql_update = "UPDATE rutas_historica_alumnos SET id_ruta_h='$id_ruta', orden_in='$orden', domicilio='$domicilio', id_ruta_h_s='$id_ruta', orden_out='$orden', domicilio_s='$domicilio', estatus='4'  WHERE id_alumno='$id_alumno' and fecha='$fecha'" ;
+               }
+          // $sql_update = "UPDATE rutas_historica_alumnos SET id_ruta_h_s='$id_ruta', orden_out='$orden' , domicilio_s='$domicilio', estatus='4'  WHERE id_alumno='$id_alumno' and fecha='$fecha'" ;
+          $query_update = mysqli_query($conexion, $sql_update);
+        }
+
         $json = array (
         'estatus' => '0'
         );
@@ -100,11 +133,11 @@ $datos = mysqli_query ( $conexion,"SELECT vp.id_permiso,vp.fecha_creacion,
         <div class="sidebar-header">
             <h3>TRANSPORTES</h3>
         </div>
-        
+
     <?php
       $perfil_actual='2';
       include ('../menus_dinamicos/perfiles_dinamicos_solicitudes.php'); ?>
-        
+
     </nav>
 
     <!-- Page Content  -->
@@ -139,10 +172,10 @@ placeholder="Buscar Solicitud..."><br> <br>
   <tbody class="searchable" style="overflow: auto; max-height: 500px;">
     <?php while ( $dato = mysqli_fetch_assoc ( $datos ) )
     {
-      $id= $dato['id_permiso'];
-      $fecha= $dato['fecha_creacion'];
-      $correo= $dato['correo'];
-      $estatus= $dato['estatus'];
+      $id = $dato['id_permiso'];
+      $fecha = $dato['fecha_creacion'];
+      $correo = $dato['correo'];
+      $estatus = $dato['estatus'];
       $calle_numero=$dato['calle_numero'];
       $colonia=$dato['colonia'];
       $cp=$dato['cp'];
@@ -156,6 +189,7 @@ placeholder="Buscar Solicitud..."><br> <br>
       $fecha_final=$dato['fecha_final'];
 
       $comentarios=$dato['comentarios'];
+      $id_camion=$dato['id_camion'];
 
       if($estatus==1){$staus1="Pendiente";}
       if($estatus==2){$staus1="Autorizado";}
@@ -284,6 +318,7 @@ placeholder="Buscar Solicitud..."><br> <br>
         data-telefono="<?php echo $telefono?>"
         data-ruta="<?php echo $ruta?>"
         data-estatus ="<?php echo $estatus?>"
+        data-id_camion="<?php echo $id_camion?>"
         data-id_ruta="<?php echo '0'?>"
         >
 
@@ -521,33 +556,70 @@ aria-labelledby="myModalLabel" aria-hidden="true">
     <textarea class="form-control"  id="mensaje" name="mensaje"  ></textarea>
     <input name="funcion" id="funcion" type="text"
     class="form-control" value="0" required style="display: none;"><br>
-     Rutas:
-                <select class="form-control" name="ruta" id="id_camion">
-                  <option value="0" disabled selected>Seleccione una Ruta</option>
-                  <?php
-                   $sql_rutas = "SELECT * FROM rutas WHERE id_ruta>0  ORDER BY camion";
-                   $query = mysqli_query($conexion, $sql_rutas);
-                   while ($r  = mysqli_fetch_array($query) ){
-                     $id_ruta= $r['id_ruta'];
-                     $nombre_ruta = $r['nombre_ruta'];
-                     $camion = $r['camion'];
-                     $cupos = $r['cupos'];
-                     $prefecta = $r['prefecta'];
-                     //numero de cupos Disponibles
-                     $sql = "SELECT COUNT(*) FROM rutas_base_alumnos WHERE id_ruta_base=$id_ruta";
-                     $query_disponibles = mysqli_query($conexion, $sql);
-                     while($r = mysqli_fetch_array($query_disponibles) ){
-                       $cupos_disponibles = $r[0];
-                     }
-                     ?>
-                     <option value="<?=$id_ruta?>"><?=strtoupper($nombre_ruta)?>(<?=$cupos_disponibles?>/<?=$cupos?>) - <?=strtoupper($prefecta)?></option>
-                     <?php
-                   }
-                   ?>
-                  <!-- <option value="">POLANCO(20/30) - VERONICA HERNANDEZ </option> -->
-                  <!-- <option value="" disabled>NAGUANAGUA(35/35) - LUISA PEREZ</option> -->
-                </select>
-                <br>
+    <span id="ruta_p">
+    Rutas:
+    </span>
+     <select class="form-control" name="ruta" id="id_camion">
+       <option value="99999" selected>EN ESPERA DE PRODUCCION...</option>
+       <!-- <option value="0" disabled selected>Seleccione una Ruta</option> -->
+       <?php
+        $sql_rutas = "SELECT r.*, u.nombre FROM rutas r INNER JOIN usuarios u ON u.id=r.auxiliar WHERE r.id_ruta>0  ORDER BY r.camion";
+        $query = mysqli_query($conexion, $sql_rutas);
+        while ($r  = mysqli_fetch_array($query) ){
+          $id_ruta= $r['id_ruta'];
+          $nombre_ruta = $r['nombre_ruta'];
+          $camion = $r['camion'];
+          $cupos = $r['cupos'];
+          $auxiliar = $r['nombre'];
+          //numero de cupos Disponibles
+          $sql = "SELECT COUNT(*) FROM rutas_base_alumnos WHERE id_ruta_base_m=$id_ruta ";
+          $query_disponibles = mysqli_query($conexion, $sql);
+          while($r = mysqli_fetch_array($query_disponibles) ){
+            $cupos_disponibles = $r[0];
+          }
+          ?>
+          ?>
+          <option value="<?=$id_ruta?>"><?=strtoupper($nombre_ruta)?>(<?=$cupos_disponibles?>/<?=$cupos?>) - <?=strtoupper($auxiliar)?></option>
+          <?php
+        }
+        ?>
+          <option id="ruta_cancelada"  value="999" style="display:none">RUTA CANCELADA</option>
+       <!-- <option value="" disabled>NAGUANAGUA(35/35) - LUISA PEREZ</option> -->
+     </select>
+   <br>
+ <div id="vista_s" style="display: none">
+   <span class="rutas_s" style="display: none">
+   Ruta(Tarde):
+   </span>
+   <select class="form-control rutas_s" name="ruta" id="id_camion_s" style="display: none">
+       <option value="0" disabled selected>Seleccione una Ruta</option>
+       <?php
+        $sql_rutas = "SELECT r.*, u.nombre FROM rutas r INNER JOIN usuarios u ON u.id=r.auxiliar WHERE r.id_ruta>0  ORDER BY r.camion";
+        $query = mysqli_query($conexion, $sql_rutas);
+        while ($r  = mysqli_fetch_array($query) ){
+          $id_ruta= $r['id_ruta'];
+          $nombre_ruta = $r['nombre_ruta'];
+          $camion = $r['camion'];
+          $cupos = $r['cupos'];
+          $auxiliar = $r['nombre'];
+          //numero de cupos Disponibles
+          $sql = "SELECT COUNT(*) FROM rutas_base_alumnos WHERE id_ruta_base_t=$id_ruta ";
+          $query_disponibles = mysqli_query($conexion, $sql);
+          while($r = mysqli_fetch_array($query_disponibles) ){
+            $cupos_disponibles = $r[0];
+          }
+          ?>
+          ?>
+          <option value="<?=$id_ruta?>"><?=strtoupper($nombre_ruta)?>(<?=$cupos_disponibles?>/<?=$cupos?>) - <?=strtoupper($auxiliar)?></option>
+          <?php
+        }
+        ?>
+       <!-- <option value="" disabled>NAGUANAGUA(35/35) - LUISA PEREZ</option> -->
+     </select>
+     <input type="checkbox" name="" id="dos_rutas" onchange="show_dos_rutas()"> La ruta de la Tarde es distinta a la Mañana.
+     <br>
+     <br>
+  </div>
     Accion:
     <select name="estatus" id="estatus">
       <option value="0">Selecciona</option>

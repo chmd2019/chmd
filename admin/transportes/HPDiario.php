@@ -132,9 +132,9 @@ if (isset ( $_POST ['nombre_nivel'] ))
         <div class="sidebar-header">
             <h3>TRANSPORTES</h3>
         </div>
-        
+
         <?php $perfil_actual='4'; include ("../menus_dinamicos/perfiles_dinamicos_solicitudes.php"); ?>
-       
+
     </nav>
 
     <!-- Page Content  -->
@@ -442,23 +442,23 @@ aria-labelledby="myModalLabel" aria-hidden="true">
         <select class="form-control" name="ruta" id="id_camion">
           <option value="0" disabled selected>Seleccione una Ruta</option>
           <?php
-           $sql_rutas = "SELECT * FROM rutas WHERE id_ruta>0  ORDER BY camion";
+           $sql_rutas = "SELECT r.*, u.nombre FROM rutas r INNER JOIN usuarios u ON u.id=r.auxiliar WHERE r.id_ruta>0  ORDER BY r.camion";
            $query = mysqli_query($conexion, $sql_rutas);
            while ($r  = mysqli_fetch_array($query) ){
              $id_ruta= $r['id_ruta'];
              $nombre_ruta = $r['nombre_ruta'];
              $camion = $r['camion'];
              $cupos = $r['cupos'];
-             $prefecta = $r['prefecta'];
+             $auxiliar = $r['nombre'];
              //numero de cupos Disponibles
-             $sql = "SELECT COUNT(*) FROM rutas_base_alumnos WHERE id_ruta_base=$id_ruta";
+             $sql = "SELECT COUNT(*) FROM rutas_base_alumnos WHERE id_ruta_base_t=$id_ruta";
              $query_disponibles = mysqli_query($conexion, $sql);
              while($r = mysqli_fetch_array($query_disponibles) ){
                $cupos_disponibles = $r[0];
              }
              ?>
              ?>
-             <option value="<?=$id_ruta?>"><?=strtoupper($nombre_ruta)?>(<?=$cupos_disponibles?>/<?=$cupos?>) - <?=strtoupper($prefecta)?></option>
+             <option value="<?=$id_ruta?>"><?=strtoupper($nombre_ruta)?>(<?=$cupos_disponibles?>/<?=$cupos?>) - <?=strtoupper($auxiliar)?></option>
              <?php
            }
            ?>

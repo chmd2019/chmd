@@ -13,7 +13,7 @@ class ControlCalendario {
     public function lista_ensayos() {
         $connection = $this->con->conectar1();
         if ($connection) {
-            $sql = "SELECT ee.fecha_ensayo_simple, em.nombre_evento, ee.horario_inicial, ee.horario_final FROM Evento_ensayos ee INNER JOIN  Evento_montaje em ON ee.id_montaje = em.id;";
+            $sql = "SELECT ee.fecha_ensayo_simple, em.nombre_evento, ee.horario_inicial, ee.horario_final FROM Evento_ensayos ee INNER JOIN  Evento_montaje em ON ee.id_montaje = em.id WHERE NOT em.estatus=3;";
             mysqli_set_charset($connection, "utf8");
             return mysqli_query($connection, $sql);
         }
@@ -22,7 +22,7 @@ class ControlCalendario {
     public function lista_montajes() {
         $connection = $this->con->conectar1();
         if ($connection) {
-            $sql = "SELECT fecha_montaje_simple, nombre_evento, horario_evento, horario_final_evento FROM Evento_montaje;";
+            $sql = "SELECT fecha_montaje_simple, nombre_evento, horario_evento, horario_final_evento FROM Evento_montaje WHERE not estatus=3;";
             mysqli_set_charset($connection, "utf8");
             return mysqli_query($connection, $sql);
         }
@@ -31,7 +31,7 @@ class ControlCalendario {
       public function lista_montajes_dia($fecha ) {
             $connection = $this->con->conectar1();
             if ($connection) {
-                $sql = "SELECT em.fecha_montaje_simple, em.nombre_evento, em.tipo_evento, em.horario_evento, em.horario_final_evento, le.descripcion, le.patio FROM Evento_montaje em INNER JOIN Lugares_eventos le  ON le.id = em.id_lugar_evento WHERE fecha_montaje_simple='$fecha';";
+                $sql = "SELECT em.fecha_montaje_simple, em.nombre_evento, em.tipo_evento, em.horario_evento, em.horario_final_evento, le.descripcion, le.patio FROM Evento_montaje em INNER JOIN Lugares_eventos le  ON le.id = em.id_lugar_evento WHERE fecha_montaje_simple='$fecha' AND NOT em.estatus=3 ;";
                 mysqli_set_charset($connection, "utf8");
                 return mysqli_query($connection, $sql);
             }
