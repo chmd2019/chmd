@@ -13,7 +13,7 @@ class ControlAdministrativos {
     }
 
     public function select_usuarios_administrativos() {
-        $sql = "SELECT id, nombre FROM usuarios WHERE tipo = 6 ORDER BY nombre;";
+        $sql = "SELECT id, nombre FROM usuarios ORDER BY nombre;";
         mysqli_set_charset($this->conexion, "utf8");
         return mysqli_query($this->conexion, $sql);
     }
@@ -60,6 +60,12 @@ class ControlAdministrativos {
             mysqli_rollback($this->conexion);
             return $ex->getMessage();
         }
+    }
+
+    public function insert_grupo_administrativo($grupo) {
+        $sql = "INSERT INTO `icloud`.`App_grupos_administrativos` (`grupo`) VALUES ('$grupo');";
+        mysqli_set_charset($this->conexion, "utf8");
+        return mysqli_query($this->conexion, $sql);
     }
 
 }

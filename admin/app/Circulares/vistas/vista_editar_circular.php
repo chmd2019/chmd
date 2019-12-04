@@ -5,15 +5,6 @@ include "{$root}/Persistence/session.php";
 $control_circulares = new ControlCirculares();
 $consulta_grados = $control_circulares->select_catalogo_grado();
 $consulta_grupos = $control_circulares->select_catalogo_grupos();
-$nivel_json = array();
-$grados_json = array();
-$grupos_json = array();
-while ($row = mysqli_fetch_array($consulta_grados)) {
-    array_push($grados_json, ["id_grado" => intval($row[0]), "grado" => $row[1], "id_nivel" => intval($row[2])]);
-}
-while ($row = mysqli_fetch_array($consulta_grupos)) {
-    array_push($grupos_json, ["id_grupo" => intval($row[0]), "grupo" => $row[1], "id_grado" => intval($row[2])]);
-}
 $id_circular = $_GET['id_circular'];
 $grados_json = json_encode($grados_json);
 $grupos_json = json_encode($grupos_json);
@@ -26,21 +17,21 @@ $color = $circular['color'];
 $id_estatus = $circular['id_estatus'];
 //url para botón atrás
 $url_btn_atras = "https://" . $_SERVER['HTTP_HOST'] . dirname(dirname($_SERVER['REQUEST_URI'])) . "/Circulares.php";
-//colecciones
-$nivel_json = array();
-$grados_json = array();
-$grupos_json = array();
-$coleccion_nivel_grado_grupo = array();
-//conjunto: {td_nivel, td_grado, td_grupo}., a. 
 $consulta_niveles_edicion = $control_circulares->select_niveles_edicion($id_circular);
+$aux_niveles = array();
 foreach ($consulta_niveles_edicion as $value) {
-    array_push($coleccion_nivel_grado_grupo, [
-        "id_nivel"=>$value['id_nivel'],
-        "id_grupo"=>$value['id_grupo'],
-        "id_grado"=>$value['id_grado']
-    ]);
+    array_push($aux_niveles, [
+        "id_nivel" => $value['id_nivel'],
+        "nivel" => $value['nivel'],
+        "id_grado" => $value['id_grado'],
+        "grado" => $value['grado'],
+        "id_grupo" => $value['id_grupo'],
+        "grupo" => $value['grupo']
+            ]
+    );
+    
 }
-$coleccion_nivel_grado_grupo = json_encode($coleccion_nivel_grado_grupo);
+$aux_niveles = json_encode($aux_niveles);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -91,7 +82,7 @@ $coleccion_nivel_grado_grupo = json_encode($coleccion_nivel_grado_grupo);
                     <div class="row justify-content-around">
                         <div class="card col-sm-12 col-md-7 border panel-personalizado">
                             <div class="card-body p-0 pt-3">
-                                <pre><?=$coleccion_nivel_grado_grupo;?></pre>
+                                <pre><?= $aux_niveles; ?></pre>
                                 <h6 class="text-primary border-bottom">
                                     <i class="material-icons">chat_bubble</i>&nbsp;&nbsp;CIRCULAR (EDICIÓN)
                                 </h6>
@@ -128,8 +119,7 @@ $coleccion_nivel_grado_grupo = json_encode($coleccion_nivel_grado_grupo);
                                                    name="descripcion"
                                                    class="form-control text-uppercase" 
                                                    placeholder="Descripción"
-                                                   autocomplete="off"
-                                                   required>
+                                                   autocomplete="off">
                                         </div>
                                     </div>       
                                     <div class="col-sm-12 col-md-6" hidden>
@@ -179,20 +169,17 @@ $coleccion_nivel_grado_grupo = json_encode($coleccion_nivel_grado_grupo);
                                                 multiple
                                                 data-actions-box="true">
                                                     <?php
-                                                    // id, nombre, numero, correo
+// id, nombre, numero, correo
                                                     $consulta_usuarios = $control_circulares->select_usuarios();
-                                                    $coleccion_usuarios = array();
                                                     while ($row = mysqli_fetch_array($consulta_usuarios)):
                                                         $id = $row[0];
                                                         $nombre = $row[1];
                                                         $numero = $row[2];
                                                         $correo = $row[3];
-                                                        array_push($coleccion_usuarios, ["id_usuario" => $id, "nombre" => $nombre]);
                                                         ?>
                                                 <option value="<?= $id; ?>"><?= $nombre; ?></option>
                                                 <?php
                                             endwhile;
-                                            $coleccion_usuarios_json = json_encode($coleccion_usuarios);
                                             ?>
                                         </select>
                                         <button type="button" 
@@ -247,12 +234,10 @@ $coleccion_nivel_grado_grupo = json_encode($coleccion_nivel_grado_grupo);
                                                         while ($row = mysqli_fetch_array($consulta_catalogo_nivel)):
                                                             $id_nivel = $row[0];
                                                             $descripcion_nivel = $row[1];
-                                                            array_push($nivel_json, ["id_nivel" => $id_nivel, "nivel" => $descripcion_nivel]);
                                                             ?>
                                                     <option value="<?php echo $id_nivel; ?>"><?php echo $descripcion_nivel; ?></option>
                                                     <?php
                                                 endwhile;
-                                                $nivel_json = json_encode($nivel_json);
                                                 ?>
                                             </select>
                                             <div class="invalid-feedback">
@@ -297,17 +282,14 @@ $coleccion_nivel_grado_grupo = json_encode($coleccion_nivel_grado_grupo);
                                                     multiple
                                                     onchange="add_grupo_especial_table();">
                                                         <?php
-                                                        $coleccion_grupos_especiales = array();
                                                         $consulta_grupos_especiales = $control_circulares->select_grupos_especiales();
                                                         while ($row = mysqli_fetch_array($consulta_grupos_especiales)):
                                                             $id_grupo = $row[0];
                                                             $grupo = $row[1];
-                                                            array_push($coleccion_grupos_especiales, ["id" => $id_grupo, "grupo" => $grupo]);
                                                             ?>
                                                     <option value="<?= $id_grupo; ?>"><?= $grupo; ?></option>
                                                     <?php
                                                 endwhile;
-                                                $coleccion_grupos_especiales = json_encode($coleccion_grupos_especiales);
                                                 ?>
                                             </select>
                                         </div>
@@ -323,17 +305,14 @@ $coleccion_nivel_grado_grupo = json_encode($coleccion_nivel_grado_grupo);
                                                     multiple
                                                     onchange="add_grupos_administrativos_table();">
                                                         <?php
-                                                        $coleccion_grupos_administrativos = array();
                                                         $consulta_grupos_administrativos = $control_circulares->select_grupos_administrativos();
                                                         while ($row = mysqli_fetch_array($consulta_grupos_administrativos)):
                                                             $id_grupo_adm = $row[0];
                                                             $grupo_adm = $row[1];
-                                                            array_push($coleccion_grupos_administrativos, ["id" => $id_grupo_adm, "grupo" => $grupo_adm]);
                                                             ?>
                                                     <option value="<?= $id_grupo_adm; ?>"><?= $grupo_adm; ?></option>
                                                     <?php
                                                 endwhile;
-                                                $coleccion_grupos_administrativos = json_encode($coleccion_grupos_administrativos);
                                                 ?>
                                             </select>
                                         </div>
@@ -410,8 +389,8 @@ $coleccion_nivel_grado_grupo = json_encode($coleccion_nivel_grado_grupo);
                                     <hr>
                                     <div class="form-row">
                                         <br>
-                                    </div>
-                                    <textarea id="editor"><?= $contenido; ?></textarea>
+                                    </div>                 
+                                    <div id="editor"></div>
                                     <span class="col-md-12"><hr></span>
                                     <button class="btn btn-primary" type="submit" id="btn_enviar">
                                         Enviar &nbsp;&nbsp;<i class="material-icons">send</i>
@@ -491,20 +470,6 @@ $coleccion_nivel_grado_grupo = json_encode($coleccion_nivel_grado_grupo);
                                             <?php
                                             $consulta_niveles = $control_circulares->select_nivel_circular($id_circular);
                                             while ($row = mysqli_fetch_assoc($consulta_niveles)):
-                                                array_push($nivel_json, [
-                                                    "id_nivel" => $row['id_nivel'],
-                                                    "nivel" => $row['nivel']
-                                                ]);
-                                                array_push($grados_json, [
-                                                    "id_grado" => intval($row['id_grado']),
-                                                    "grado" => $row['grado'],
-                                                    "id_nivel" => intval($row['id_nivel'])
-                                                ]);
-                                                array_push($grupos_json, [
-                                                    "id_grupo" => intval($row['id_grupo']),
-                                                    "grupo" => $row['grupo'],
-                                                    "id_grado" => intval($row['id_grado'])
-                                                ]);
                                                 ?>
                                                 <tr>
                                                     <td><?= $row['nivel']; ?></td>
@@ -519,9 +484,6 @@ $coleccion_nivel_grado_grupo = json_encode($coleccion_nivel_grado_grupo);
                                                 </tr>
                                                 <?php
                                             endwhile;
-                                            $nivel_json = json_encode($nivel_json);
-                                            $grados_json = json_encode($grados_json);
-                                            $grupos_json = json_encode($grupos_json);
                                             ?>
                                         </tbody>
                                     </table>
@@ -630,22 +592,13 @@ $coleccion_nivel_grado_grupo = json_encode($coleccion_nivel_grado_grupo);
         include "{$root}/Secciones/notificaciones.php";
         ?>
         <script type="text/javascript">
-            var catalogo_niveles = JSON.parse(<?= $nivel_json; ?>);
-            var catalogo_grados = <?= $grados_json; ?>;
-            var catalogo_grupos = <?= $grupos_json; ?>;
-            var coleccion_usuarios_json = <?= $coleccion_usuarios_json; ?>;
-            var coleccion_grupos_especiales_json = <?= $coleccion_grupos_especiales; ?>;
-            var coleccion_grupos_administrativos_json = <?= $coleccion_grupos_administrativos; ?>;
-            var coleccion_padres_camiones_json = <?= $padres_camiones; ?>;
-            var coleccion_padres_camiones_tarde_json = <?= $padres_camiones_tarde; ?>;
-            var coleccion_niveles = [];
-            var coleccion_grados = [];
-            var coleccion_grupos = [];
-            var set_padres_camiones = new Set();
-            var set_padres_camiones_tarde = new Set();
-            var suneditor = null;
+            var set_aux_nivel = new Set(<?= $aux_niveles; ?>);
+            var flag_guardar = false;
 
             $(document).ready(function () {
+                console.log(set_aux_nivel);
+                ckeditor();
+                CKEDITOR.instances.editor.setData(`<?= html_entity_decode($contenido); ?>`);
                 spinnerOut();
                 set_menu_hamburguer();
                 set_table('add_niveles_table');
@@ -662,358 +615,28 @@ $coleccion_nivel_grado_grupo = json_encode($coleccion_nivel_grado_grupo);
                     language: 'es',
                     startDate: new Date()
                 });
-                suneditor = SUNEDITOR.create((document.getElementById('editor') || 'editor'), {
-                    font: [
-                        'Arial',
-                        'Calibri',
-                        'Comic Sans',
-                        'Courier New,Courier',
-                        'Courier',
-                        'Georgia',
-                        'Gotham Rounded Book',
-                        'Gracia',
-                        'Helvetica',
-                        'Impact',
-                        'Script',
-                        'Tohoma',
-                        'Varela Round',
-                        'Verdana'
-                    ],
-                    showPathLabel: false,
-                    charCounter: true,
-                    width: 'auto',
-                    height: '350px',
-                    minHeight: '100px',
-                    maxHeight: '450px',
-                    buttonList: [
-                        ['undo', 'redo',
-                            'font', 'fontSize', 'formatBlock',
-                            'bold', 'underline', 'italic', 'strike', 'subscript', 'superscript',
-                            'removeFormat',
-                            'fontColor', 'hiliteColor',
-                            'outdent', 'indent',
-                            'align', 'horizontalRule', 'list', 'table',
-                            'link', 'image', 'video',
-                            'fullScreen', 'showBlocks', 'codeView',
-                            'preview', 'print', 'template']
-                    ],
-                    callBackSave: function (contents) {
-                        console.log(contents);
-                    }
-                });
-                (function () {
-                    'use strict';
-                    window.addEventListener('load', function () {
-                        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                        var forms = document.getElementsByClassName('needs-validation');
-                        // Loop over them and prevent submission
-                        var validation = Array.prototype.filter.call(forms, function (form) {
-                            form.addEventListener('submit', function (event) {
-                                if (form.checkValidity() === false) {
-                                    window.scroll(0, 0);
-                                } else {
-                                    enviar();
-                                }
-                                event.preventDefault();
-                                event.stopPropagation();
-                                form.classList.add('was-validated');
-                            }, false);
-                        });
-                    }, false);
-                })();
             });
-
-            function setGrado(id_nivel) {
-                var grados = [];
-                for (var item in catalogo_grados) {
-                    if (catalogo_grados[item].id_nivel === parseInt(id_nivel)) {
-                        grados.push(catalogo_grados[item]);
-                    }
-                }
-                $("#select_grupo").html('');
-                $("#select_grupo").selectpicker('refresh');
-                var options = "";
-                for (var item in grados) {
-                    options += `<option value="${grados[item].id_grado}">${grados[item].grado}</option>`;
-                }
-                $("#select_grado").html(options);
-                $("#select_grado").selectpicker('refresh');
-            }
-            function setGrupo(id_grado) {
-                var grupos = [];
-                for (var item in catalogo_grupos) {
-                    if (catalogo_grupos[item].id_grado === parseInt(id_grado)) {
-                        grupos.push(catalogo_grupos[item]);
-                    }
-                }
-                $("#select_grupo").html('');
-                var options = "";
-                for (var item in grupos) {
-                    options += `<option value="${grupos[item].id_grupo}">${grupos[item].grupo}</option>`;
-                }
-                $("#select_grupo").html(options);
-                $("#select_grupo").selectpicker('refresh');
-            }
-            function add_nivel() {
-                var select_nivel = $("#select_nivel").val();
-                var select_grado = $("#select_grado").val();
-                var select_grupo = $("#select_grupo").val();
-                var td_nivel = null;
-                var td_grado = null;
-                var td_grupo = null;
-
-                for (var item in catalogo_niveles) {
-                    if (catalogo_niveles[item].id_nivel === select_nivel) {
-                        var set = new Set([...coleccion_niveles]);
-                        if (!set.has(parseInt(catalogo_niveles[item].id_nivel))) {
-                            coleccion_niveles.push(parseInt(catalogo_niveles[item].id_nivel));
-                        }
-                        td_nivel = catalogo_niveles[item].nivel;
-                    }
-                }
-                for (var item in catalogo_grados) {
-                    if (catalogo_grados[item].id_grado === parseInt(select_grado)) {
-                        var set = new Set([...coleccion_grados]);
-                        if (!set.has(catalogo_grados[item].id_grado)) {
-                            coleccion_grados.push(catalogo_grados[item].id_grado);
-                        }
-                        td_grado = catalogo_grados[item].grado;
-                    }
-                }
-                for (var item in catalogo_grupos) {
-                    if (catalogo_grupos[item].id_grupo === parseInt(select_grupo)) {
-                        var set = new Set([...coleccion_grupos]);
-                        if (!set.has(catalogo_grupos[item].id_grupo)) {
-                            coleccion_grupos.push(catalogo_grupos[item].id_grupo);
-                        }
-                        td_grupo = catalogo_grupos[item].grupo;
-                    }
-                }
-                var set_coleccion = new Set(coleccion_nivel_grado_grupo);
-                set_coleccion.add({conjunto: {td_nivel, td_grado, td_grupo}});
-                coleccion_nivel_grado_grupo = Array.from(set_coleccion);
-
-                if (td_nivel !== null || td_grado !== null || td_grupo !== null) {
-                    select_nivel = select_nivel !== "" ? select_nivel : 0;
-                    select_grado = select_grado !== "" ? select_grado : 0;
-                    select_grupo = select_grupo !== "" ? select_grupo : 0;
-                    var objeto_nivel_grado_grupo = `{conjunto:{td_nivel:'${td_nivel}', td_grado:'${td_grado}', td_grupo:'${td_grupo}'}}`;
-                    var row = [
-                        td_nivel, td_grado, td_grupo,
-                        `<button type="button" 
-                            class="btn btn-danger btn-squared btn-sm" 
-                            onclick="remove_nivel(this, ${select_nivel}, ${select_grado}, ${select_grupo}, ${objeto_nivel_grado_grupo})"> 
-                            Quitar &nbsp;&nbsp;<i class="material-icons">remove</i>
-                        </button>`
-                    ];
-                    $("#add_niveles_table").DataTable().row.add(row).draw().node();
-                    $("#select_nivel").val('default').selectpicker("refresh");
-                    $("#select_grado").html('').selectpicker("refresh");
-                    $("#select_grupo").html('').selectpicker("refresh");
-                }
-            }
-            function remove_nivel(el, id_nivel, id_grado, id_grupo, objeto_nivel_grado_grupo) {
-                var td_nivel = objeto_nivel_grado_grupo.conjunto.td_nivel === "null" ? null : objeto_nivel_grado_grupo.conjunto.td_nivel;
-                var td_grado = objeto_nivel_grado_grupo.conjunto.td_grado === "null" ? null : objeto_nivel_grado_grupo.conjunto.td_grado;
-                var td_grupo = objeto_nivel_grado_grupo.conjunto.td_grupo === "null" ? null : objeto_nivel_grado_grupo.conjunto.td_grupo;
-                var set = new Set([...coleccion_nivel_grado_grupo]);
-                set.forEach((item) => {
-                    if (item.conjunto.td_nivel == td_nivel &&
-                            item.conjunto.td_grado == td_grado &&
-                            item.conjunto.td_grupo == td_grupo) {
-                        set.delete(item);
-                        coleccion_nivel_grado_grupo = Array.from(set);
-                    }
-                });
-                $("#add_niveles_table").DataTable().row($(el).parents('tr')).remove().draw();
-                var set_nivel = new Set([...coleccion_niveles]);
-                var set_grado = new Set([...coleccion_grados]);
-                var set_grupo = new Set([...coleccion_grupos]);
-                set_nivel.delete(id_nivel);
-                set_grado.delete(id_grado);
-                set_grupo.delete(id_grupo);
-                coleccion_niveles = Array.from(set_nivel);
-                coleccion_grados = Array.from(set_grado);
-                coleccion_grupos = Array.from(set_grupo);
-            }
             function enviar() {
-                if (!validaciones())
-                    return;
+//                if (!validaciones())
+//                    return;
                 $.ajax({
-                    url: $("#post_nuevo_administrativo").prop('action'),
+                    url: 'https://www.chmd.edu.mx/pruebascd/admin/app/Circulares/common/post_edicion_circular.php',
                     type: 'POST',
                     beforeSend: () => {
                         spinnerIn();
-                        $("#btn_enviar").prop("disabled", true);
+                        //$("#btn_enviar").prop("disabled", true);
                     },
                     dataType: 'json',
                     data: {
                         titulo: $("#input_titulo").val(),
-                        contenido: suneditor.getContents(),
+                        contenido: CKEDITOR.instances.editor.getData(),
                         descripcion: $("#input_descripcion").val(),
-                        estatus: $("#select_estatus").val(),
-                        envia_todos: $("#check_enviar_todos")[0].checked,
-                        usuarios: $("#select_usuarios").val(),
-                        coleccion_nivel_grado_grupo: coleccion_nivel_grado_grupo,
-                        grupos_especiales: $("#select_grupos_especiales").val(),
-                        grupos_administrativos: $("#select_grupos_administrativos").val(),
-                        fecha_programada: $("#id_fecha_programada").val(),
-                        coleccion_padres_camiones: Array.from(set_padres_camiones),
-                        coleccion_padres_camiones_tarde: Array.from(set_padres_camiones_tarde),
+                        nivel: Array.from(set_aux_nivel)
                     }
                 }).done((res) => {
-                    if (res === true) {
-                        success_alerta('Solicitud exitosa');
-                        setInterval(() => {
-                            window.location.href = '<?= $url_btn_atras; ?>';
-                        }, 2000);
-                    } else {
-                        fail_alerta(`¡Solicitud no realizada!, ${res}`);
-                        $("#btn_enviar").prop("disabled", false);
-                    }
                 }).always(() => {
                     spinnerOut();
                 });
-            }
-            function add_usuarios_table() {
-                //id_table_usuarios 
-                var select_usuarios = $("#select_usuarios").val();
-                if (select_usuarios.length > 0) {
-                    var select_usuarios = new Set([...select_usuarios]);
-                    var usuarios = new Set([...coleccion_usuarios_json]);
-                    if (select_usuarios.size > 0) {
-                        select_usuarios.forEach((item) => {
-                            usuarios.forEach((item_usuario) => {
-                                if (item === item_usuario.id_usuario) {
-                                    var row = [
-                                        `${item_usuario.nombre}`
-                                    ];
-                                    $("#id_table_usuarios").DataTable().row.add(row).draw().node();
-                                }
-                            });
-                        });
-                    }
-                } else {
-                    $("#id_table_usuarios").DataTable().clear().draw();
-                }
-            }
-            function add_grupo_especial_table() {
-                var select_grupos_especiales = $("#select_grupos_especiales").val();
-                var set_grupo = new Set([...coleccion_grupos_especiales_json]);
-                var tabla = $("#add_grupos_especiales_table").DataTable();
-                tabla.clear().draw();
-                for (var item in select_grupos_especiales) {
-                    set_grupo.forEach(element => {
-                        if (element.id === select_grupos_especiales[item]) {
-                            tabla.row.add([`${element.grupo}`]).draw().node();
-                        }
-                    });
-                }
-            }
-            function remove_grupo_especial_table() {
-                var tabla = $("#add_grupos_especiales_table").DataTable();
-                tabla.clear().draw();
-                $("#select_grupos_especiales").selectpicker('deselectAll');
-            }
-            function chk_enviar_todos(value) {
-                if (value) {
-                    $("#select_usuarios").selectpicker('selectAll');
-                } else {
-                    $("#select_usuarios").selectpicker('deselectAll');
-                }
-                $("#select_usuarios").selectpicker('render');
-            }
-            function add_grupos_administrativos_table() {
-                var select_grupos_administrativos = $("#select_grupos_administrativos").val();
-                var set = new Set([...coleccion_grupos_administrativos_json]);
-                var table = $("#add_grupos_administrativos_table").DataTable();
-                table.clear().draw();
-                for (var item in select_grupos_administrativos) {
-                    set.forEach(element => {
-                        if (element.id === select_grupos_administrativos[item]) {
-                            table.row.add([`${element.grupo}`]).draw().node();
-                        }
-                    });
-                }
-            }
-            function remove_grupo_administrativos_table() {
-                $("#select_grupos_administrativos").selectpicker('deselectAll');
-                $("#select_grupos_administrativos").selectpicker('render');
-                var table = $("#add_grupos_administrativos_table").DataTable();
-                table.clear().draw();
-            }
-            function validaciones() {
-                let select_usuarios = $("#select_usuarios").val(),
-                        select_grupos_especiales = $("#select_grupos_especiales").val(),
-                        select_grupos_administrativos = $("#select_grupos_administrativos").val(),
-                        id_select_camiones = $("#id_select_camiones").val(),
-                        select_camiones = $("#id_select_camiones_tarde").val();
-                if (select_usuarios.length === 0 &&
-                        select_grupos_especiales.length === 0 &&
-                        select_grupos_administrativos.length === 0 &&
-                        select_camiones.length === 0 &&
-                        coleccion_niveles.length === 0 &&
-                        coleccion_grados.length === 0 &&
-                        coleccion_grupos.length === 0 &&
-                        id_select_camiones.length === 0) {
-                    fail_alerta('Debe seleccionar al menos un grupo de usuarios');
-                    return false;
-                }
-                return true;
-            }
-            function add_camiones() {
-                var select_camiones = $("#id_select_camiones").val();
-                var set = new Set(coleccion_padres_camiones_json);
-                set_padres_camiones.clear();
-                var tabla_camiones = $("#add_camiones_table").DataTable();
-                tabla_camiones.clear().draw();
-                var camiones = new Set();
-                for (var item in select_camiones) {
-                    set.forEach(element => {
-                        if (select_camiones[item] === element.id_ruta) {
-                            camiones.add(`Camión: ${element.camion} | Ruta: ${element.nombre_ruta}`);
-                            set_padres_camiones.add({id_alumno: element.id_alumno, id_papa: element.id_papa});
-                        }
-                    });
-                }
-                camiones.forEach(element => {
-                    tabla_camiones.row.add([`${element}`]).draw().node();
-                });
-            }
-            function remove_camiones_table() {
-                var tabla_camiones = $("#add_camiones_table").DataTable();
-                tabla_camiones.clear().draw();
-                set_padres_camiones.clear();
-                $("#id_select_camiones").selectpicker('deselectAll');
-                $("#id_select_camiones").selectpicker('render');
-            }
-            function add_camiones_tarde() {
-                var select_camiones = $("#id_select_camiones_tarde").val();
-                var set = new Set(coleccion_padres_camiones_tarde_json);
-                set_padres_camiones_tarde.clear();
-                var tabla_camiones = $("#add_camiones_tarde_table").DataTable();
-                tabla_camiones.clear().draw();
-                var camiones = new Set();
-                for (var item in select_camiones) {
-                    set.forEach(element => {
-                        if (select_camiones[item] === element.id_ruta) {
-                            camiones.add(`Camión: ${element.camion} | Ruta: ${element.nombre_ruta}`);
-                            set_padres_camiones_tarde.add({id_alumno: element.id_alumno, id_papa: element.id_papa});
-                        }
-                    });
-                }
-                camiones.forEach(element => {
-                    tabla_camiones.row.add([`${element}`]).draw().node();
-                });
-            }
-            function remove_camiones_tarde_table() {
-                $("#id_select_camiones_tarde").selectpicker('deselectAll');
-                $("#id_select_camiones_tarde").selectpicker('render');
-                set_padres_camiones_tarde.clear();
-                var tabla_camiones = $("#add_camiones_tarde_table").DataTable();
-                tabla_camiones.clear().draw();
-            }
-            function add_nivel_load() {
             }
         </script>
     </body>

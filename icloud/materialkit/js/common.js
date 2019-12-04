@@ -392,3 +392,47 @@ function set_table_sin_paginacion_sin_buscar(id_table) {
         }
     });
 }
+
+var setearPickerRangoFechas = function () {
+    $('input[name="datefilter"]').daterangepicker({
+        "locale": {
+            "format": "DD/MM/YYYY",
+            "separator": " - ",
+            "applyLabel": "Ok",
+            "cancelLabel": "Limpiar",
+            "fromLabel": "desde",
+            "toLabel": "hasta",
+            "customRangeLabel": "Custom",
+            "weekLabel": "W",
+            "daysOfWeek": [
+                "Do",
+                "Lu",
+                "Ma",
+                "Mi",
+                "Ju",
+                "Vi",
+                "Sa"
+            ],
+            "monthNames": [
+                "Enero",
+                "Febrero",
+                "Marzo",
+                "Abril",
+                "Mayo",
+                "Junio",
+                "Julio",
+                "Agosto",
+                "Septiembre",
+                "Octubre",
+                "Noviembre",
+                "Diciembre"
+            ],
+            "firstDay": 1
+        },
+        "buttonClasses": "btn",
+        "applyButtonClasses": "green accent-4 c-blanco",
+        "cancelClass": "red c-blanco",
+    }, (start, end) => {
+        setearRango(start, end);
+    });
+};

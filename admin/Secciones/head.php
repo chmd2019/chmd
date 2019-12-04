@@ -35,3 +35,7 @@ crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/suneditor@latest/src/lang/ko.js"></script>
 <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
 <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+<!-- CKEDITOR LIBRARY -->
+<script type="text/javascript" src="/pruebascd/admin/Secciones/ckeditor/ckeditor.js"></script>
+<!-- CKEDITOR JQUERY ADAPTOR -->
+<script type="text/javascript" src="/pruebascd/admin/Secciones/ckeditor/adapters/jquery.js"></script>

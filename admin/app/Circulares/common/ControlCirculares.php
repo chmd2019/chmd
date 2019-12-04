@@ -65,7 +65,7 @@ class ControlCirculares {
     public function nueva_circular($titulo, $contenido, $descripcion, $envia_todos, $estatus,
             $usuarios, $grupos_especiales, $grupos_administrativos, $coleccion_nivel_grado_grupo, 
             $fecha_programada, $coleccion_padres_camiones, $coleccion_padres_camiones_tarde, $id_ciclo_escolar,
-            $adjunto, $tema_ics, $fecha_ics, $hora_inicial_ics, $hora_final_ics, $ubicacion_ics) {
+            $adjunto, $tema_ics, $fecha_ics, $hora_inicial_ics, $hora_final_ics, $ubicacion_ics, $hora_programada) {
         try {
             mysqli_autocommit($this->conexion, false);
             mysqli_set_charset($this->conexion, "utf8");
@@ -82,7 +82,8 @@ class ControlCirculares {
                     . "`fecha_ics`, "
                     . "`hora_inicial_ics`, "
                     . "`hora_final_ics`, "
-                    . "`ubicacion_ics`) VALUES ("
+                    . "`ubicacion_ics`, "
+                    . "`hora_programada`) VALUES ("
                     . "'{$titulo}', "
                     . "'{$contenido}', "
                     . "'{$descripcion}', "
@@ -95,7 +96,8 @@ class ControlCirculares {
                     . "{$fecha_ics}, "
                     . "{$hora_inicial_ics}, "
                     . "{$hora_final_ics}, "
-                    . "{$ubicacion_ics});";
+                    . "{$ubicacion_ics}, "
+                    . "{$hora_programada});";
                     
             if (!mysqli_query($this->conexion, $sql_insert)) {
                 throw new Exception(mysqli_error($this->conexion));
@@ -310,7 +312,8 @@ class ControlCirculares {
 
     public function select_circular($id_circular) {
         $sql = "SELECT a.titulo, a.descripcion, a.contenido, b.descripcion AS estatus, "
-                . "b.color, b.id AS id_estatus, c.ciclo "
+                . "b.color, b.id AS id_estatus, c.ciclo, a.fecha_programada, a.hora_programada,"
+                . "a.tema_ics, a.fecha_ics, a.hora_inicial_ics, a.hora_final_ics, a.ubicacion_ics "
                 . "FROM App_Circulares a "
                 . "INNER JOIN App_catalogo_estatus b ON b.id = a.id_estatus "
                 . "INNER JOIN Ciclo_escolar c ON c.id = a.ciclo_escolar_id "
@@ -336,11 +339,11 @@ class ControlCirculares {
     }
 
     public function select_niveles_edicion($id_circular) {
-        $sql = "SELECT a.id_nivel, b.nivel, a.id_grupo, c.grado, a.id_grado, d.grupo "
+        $sql = "SELECT a.id_nivel, b.nivel, a.id_grado, c.grado, a.id_grupo, d.grupo "
                 . "FROM App_nivel_grado_grupo_circulares a "
                 . "LEFT JOIN Catalogo_nivel b ON b.id = a.id_nivel "
                 . "LEFT JOIN catalogo_grado_cursar c ON c.idcursar = a.id_grado "
-                . "LEFT JOIN catalago_grupos_cch d ON d.id = a.id_grado "
+                . "LEFT JOIN catalago_grupos_cch d ON d.id = a.id_grupo "
                 . "WHERE a.id_circular = $id_circular;";        
         return mysqli_query($this->conexion, $sql);
     }
@@ -356,6 +359,12 @@ class ControlCirculares {
     }
 
     public function actualizar_estado_circular($id_estatus, $id_circular) {
+        $sql = "UPDATE `App_Circulares` SET `id_estatus`= $id_estatus WHERE `id`=$id_circular;"; 
+        mysqli_query($this->conexion, $sql);
+        return mysqli_affected_rows($this->conexion);
+    }
+
+    public function aditar_circular($id_circular) {
         $sql = "UPDATE `App_Circulares` SET `id_estatus`= $id_estatus WHERE `id`=$id_circular;"; 
         mysqli_query($this->conexion, $sql);
         return mysqli_affected_rows($this->conexion);

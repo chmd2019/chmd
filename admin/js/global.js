@@ -105,3 +105,82 @@ function set_menu_hamburguer() {
         deselectAllText: "Ninguno"
     };
 }
+
+if (CKEDITOR.env.ie && CKEDITOR.env.version < 9)
+    CKEDITOR.tools.enableHtml5Elements(document);
+
+// The trick to keep the editor in the sample quite small
+// unless user specified own height.
+CKEDITOR.config.height = 450;
+CKEDITOR.config.width = 'auto';
+CKEDITOR.config.extraPlugins = 'youtube,imagepaste,imageuploader';
+CKEDITOR.config.filebrowserBrowseUrl = "https://www.chmd.edu.mx/pruebascd/admin/Secciones/ckeditor/plugins/imageuploader/imgbrowser.php";
+CKEDITOR.config.youtube_responsive = true;
+
+var ckeditor = (function () {
+    var wysiwygareaAvailable = isWysiwygareaAvailable(),
+            isBBCodeBuiltIn = !!CKEDITOR.plugins.get('bbcode');
+
+    return function () {
+        var editorElement = CKEDITOR.document.getById('editor');
+
+        // :(((
+        if (isBBCodeBuiltIn) {
+            editorElement.setHtml(
+                    'Hello world!\n\n' +
+                    'I\'m an instance of [url=https://ckeditor.com]CKEditor[/url].'
+                    );
+        }
+
+        // Depending on the wysiwygarea plugin availability initialize classic or inline editor.
+        if (wysiwygareaAvailable) {
+            CKEDITOR.replace('editor');
+        } else {
+            editorElement.setAttribute('contenteditable', 'true');
+            CKEDITOR.inline('editor');
+
+            // TODO we can consider displaying some info box that
+            // without wysiwygarea the classic editor may not work.
+        }
+    };
+
+    function isWysiwygareaAvailable() {
+        // If in development mode, then the wysiwygarea must be available.
+        // Split REV into two strings so builder does not replace it :D.
+        if (CKEDITOR.revision == ('%RE' + 'V%')) {
+            return true;
+        }
+
+        return !!CKEDITOR.plugins.get('wysiwygarea');
+    }
+})();
+
+
+(function () {
+    'use strict';
+    window.addEventListener('load', function () {
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.getElementsByClassName('needs-validation');
+        // Loop over them and prevent submission
+        var validation = Array.prototype.filter.call(forms, function (form) {
+            form.addEventListener('submit', function (event) {
+                if (form.checkValidity() === false) {
+                    window.scroll(0, 0);
+                } else {
+                    switch (flag_guardar) {
+                        case true:
+                            //se envia el estatus 3 para guardad y 2 para enviada
+                            enviar(3);
+                            break;
+                        case false:
+                            enviar(2);
+                            break;
+                    }
+                }
+                event.preventDefault();
+                event.stopPropagation();
+                form.classList.add('was-validated');
+            }, false);
+        });
+    }, false);
+})();

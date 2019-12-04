@@ -39,10 +39,13 @@ $control_administrativo = new ControlAdministrativos();
                     <div class="p-3">
                         <ul class="nav nav-tabs border-0" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#administrativo" role="tab">Administrativo</a>
+                                <a class="nav-link active" data-toggle="tab" href="#administrativo" role="tab">Usuarios administrativos</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#nuevo_administrativo" role="tab">Nuevo administrativo</a>
+                                <a class="nav-link" data-toggle="tab" href="#nuevo_administrativo" role="tab">Nuevo usuario administrativo</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#grupos_administrativos" role="tab">Grupos administrativos</a>
                             </li>
                         </ul>
                         <div class="tab-content">
@@ -51,6 +54,9 @@ $control_administrativo = new ControlAdministrativos();
                             </div>
                             <div class="tab-pane fade" id="nuevo_administrativo" role="tabpanel">        
                                 <?php include "./secciones/nuevo_administrativo.php"; ?>
+                            </div>
+                            <div class="tab-pane fade" id="grupos_administrativos" role="tabpanel">        
+                                <?php include "./secciones/grupos_administrativos.php"; ?>
                             </div>
                         </div>
                     </div>

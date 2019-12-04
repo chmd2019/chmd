@@ -1,5 +1,5 @@
 <div class="table-responsive p-4 border">
-    <h2 class="text-primary">Administrativos</h2>
+    <h2 class="text-primary">Listado de usuarios administrativos</h2>
     <br>
     <table class="table table-striped table-bordered" id="admin_table">
         <thead>

@@ -466,11 +466,12 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                 <br>
                 <br>
                 <h5 class="text-primary"><i class="material-icons">info</i>&nbsp;&nbsp;Información de contenido</h5>
-                <hr>
                 <div class="form-row">
                     <br>
                 </div>
-                <textarea id="editor"></textarea>
+                <!--<textarea id="editor"></textarea>-->
+                <span class="col-md-12"><hr></span>                   
+                <div id="editor"></div>
                 <span class="col-md-12"><hr></span>
                 <button class="btn btn-primary btn-squared" type="submit" id="btn_enviar" onclick="flag_guardar = false;">
                     Guardar y Enviar &nbsp;&nbsp;<i class="material-icons">email</i>
@@ -537,10 +538,12 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                                 <button type="button" 
                                         class="btn btn-danger btn-squared" 
                                         data-dismiss="modal"
-                                        onclick="desprogramar();">
+                                        onclick="desprogramar();flag_programada=false;">
                                     <i class="material-icons left">highlight_off</i>&nbsp;&nbsp;Cancelar
                                 </button>
-                                <button type="button" class="btn btn-primary btn-squared" onclick="programar();">Ok 
+                                <button type="button" 
+                                        class="btn btn-primary btn-squared" 
+                                        onclick="programar();flag_programada=true;">Ok 
                                     &nbsp;&nbsp;<i class="material-icons right">done</i>
                                 </button>
                             </div>
@@ -684,9 +687,12 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
     var set_padres_camiones_tarde = new Set();
     var editor = null;
     var flag_guardar = false;
+    var flag_programada = false;
     var imageList = [];
 
     $(document).ready(function () {
+
+        ckeditor();        
         set_table('add_niveles_table');
         set_table('id_table_usuarios');
         set_table('add_grupos_especiales_table');
@@ -701,74 +707,6 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
             language: 'es',
             startDate: new Date()
         });
-        editor = SUNEDITOR.create((document.getElementById('editor') || 'editor'), {
-            font: [
-                'Arial',
-                'Calibri',
-                'Comic Sans',
-                'Courier New,Courier',
-                'Courier',
-                'Georgia',
-                'Gotham Rounded Book',
-                'Gracia',
-                'Helvetica',
-                'Impact',
-                'Script',
-                'Tohoma',
-                'Varela Round',
-                'Verdana'
-            ],
-            showPathLabel: false,
-            charCounter: true,
-            width: 'auto',
-            height: '350px',
-            minHeight: '100px',
-            maxHeight: '450px',
-            buttonList: [
-                ['undo', 'redo',
-                    'font', 'fontSize', 'formatBlock',
-                    'bold', 'underline', 'italic', 'strike', 'subscript', 'superscript',
-                    'removeFormat',
-                    'fontColor', 'hiliteColor',
-                    'outdent', 'indent',
-                    'align', 'horizontalRule', 'list', 'table',
-                    'link', 'image', 'video',
-                    'fullScreen', 'showBlocks', 'codeView',
-                    'preview', 'print', 'template']
-            ],
-            callBackSave: function (contents) {
-                console.log(contents);
-            }
-        });
-
-        (function () {
-            'use strict';
-            window.addEventListener('load', function () {
-                // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                var forms = document.getElementsByClassName('needs-validation');
-                // Loop over them and prevent submission
-                var validation = Array.prototype.filter.call(forms, function (form) {
-                    form.addEventListener('submit', function (event) {
-                        if (form.checkValidity() === false) {
-                            window.scroll(0, 0);
-                        } else {
-                            switch (flag_guardar) {
-                                case true:
-                                    //se envia el estatus 3 para guardad y 2 para enviada
-                                    enviar(3);
-                                    break;
-                                case false:
-                                    enviar(2);
-                                    break;
-                            }
-                        }
-                        event.preventDefault();
-                        event.stopPropagation();
-                        form.classList.add('was-validated');
-                    }, false);
-                });
-            }, false);
-        })();
     });
     function setGrado(id_nivel) {
         var grados = [];
@@ -887,18 +825,25 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
         if (!validaciones())
             return;
         var fecha_programada = $("#id_fecha_programada").val();
-        estatus = fecha_programada !== "" ? 1 : estatus;
+        var hora_programada = $("#id_time_hora_programada").val();
+        estatus = fecha_programada !== "" && hora_programada !== ""  ? 1 : estatus;
+        var data_editor = CKEDITOR.instances.editor.getData();
+        if(!flag_programada){
+            fecha_programada = null;
+            hora_programada = null;
+        }
+         
         $.ajax({
             url: $("#post_nuevo_administrativo").prop('action'),
             type: 'POST',
             beforeSend: () => {
                 spinnerIn();
-                //$("#btn_enviar").prop("disabled", true);
+                $("#btn_enviar").prop("disabled", true);
             },
             dataType: 'json',
             data: {
                 titulo: $("#input_titulo").val(),
-                contenido: editor.getContents(),
+                contenido:data_editor,
                 descripcion: $("#input_descripcion").val(),
                 estatus: estatus,
                 envia_todos: $("#check_enviar_todos")[0].checked,
@@ -914,8 +859,8 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                 fecha_ics: $("#id_cuando").val(),
                 hora_inicial_ics: $("#id_time_inicial").val(),
                 hora_final_ics: $("#id_time_final").val(),
-                ubicacion_ics: $("#id_ubicacion").val()
-
+                ubicacion_ics: $("#id_ubicacion").val(),
+                hora_programada:$('#id_time_hora_programada').val()
             }
         }).done((res) => {
             if (res === true) {
@@ -935,6 +880,7 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
         //id_table_usuarios 
         var select_usuarios = $("#select_usuarios").val();
         if (select_usuarios.length > 0) {
+            $("#id_table_usuarios").DataTable().clear().draw();
             var select_usuarios = new Set([...select_usuarios]);
             var usuarios = new Set([...coleccion_usuarios_json]);
             if (select_usuarios.size > 0) {

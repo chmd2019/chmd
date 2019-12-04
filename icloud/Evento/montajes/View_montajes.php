@@ -51,7 +51,14 @@ $url_home = dirname(dirname(dirname($_SERVER['REQUEST_URI']))) . "/index.php";
                 </a>
                 <a class="waves-effect waves-light" href="vistas/vista_nueva_solicitud_montaje.php?idseccion=<?php echo $idseccion; ?>">
                     <img src='../../images/Nuevo.svg' style="width: 110px">       
-                </a>      
+                </a>    
+                <?php if ($id_privilegio == 3): ?>      
+                <a class="waves-effect waves-light b-azul-claro" 
+                   href="vistas/vista_montaje_permanente.php"
+                   style="border-radius: 5px;padding: 0rem 1.5rem;margin-top: -.38rem;">
+                    <i class="material-icons c-azul" style="margin-top: .2rem;">date_range</i>
+                </a> 
+                <?php endif; ?>    
                 <a class="waves-effect waves-light b-azul-claro" 
                    href="<?= $url_home; ?>"
                    style="border-radius: 5px;padding: .05rem 1.5rem;margin-top: -.35rem;">

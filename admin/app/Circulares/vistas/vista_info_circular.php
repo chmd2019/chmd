@@ -158,13 +158,81 @@ $id_estatus = $circular['id_estatus'];
                                             </div>
                                         <?php endif; ?>
                                         <span class="clearfix"></span>
+                                        <?php if($id_estatus == 1):?>
+                                        <h4 class="text-primary">Información de programación</h4>
+                                        <hr>
+                                        <div class="form-group col-sm-12">
+                                            <label>Fecha programada</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="material-icons">calendar_today</i>
+                                                    </span>
+                                                </div>
+                                                <input type="text"
+                                                       class="form-control text-uppercase" 
+                                                       style="cursor: text;"
+                                                       value="<?= $circular['fecha_programada']; ?>"
+                                                       readonly>
+                                            </div>
+                                        </div> 
+                                        <div class="form-group col-sm-12">
+                                            <label>Hora programada</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="material-icons">access_time</i>
+                                                    </span>
+                                                </div>
+                                                <input type="text"
+                                                       class="form-control text-uppercase" 
+                                                       style="cursor: text;"
+                                                       value="<?= $circular['hora_programada']; ?>"
+                                                       readonly>
+                                            </div>
+                                        </div> 
+                                        <?php endif;
+                                        if(strlen($circular['tema_ics'])>0):?>
+                                        <h4 class="text-primary">Información de evento</h4>
+                                        <hr>
+                                        <div class="form-group col-sm-12">
+                                            <label>Fecha programada</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="material-icons">calendar_today</i>
+                                                    </span>
+                                                </div>
+                                                <input type="text"
+                                                       class="form-control text-uppercase" 
+                                                       style="cursor: text;"
+                                                       value="<?= $circular['fecha_programada']; ?>"
+                                                       readonly>
+                                            </div>
+                                        </div> 
+                                        <div class="form-group col-sm-12">
+                                            <label>Hora programada</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="material-icons">access_time</i>
+                                                    </span>
+                                                </div>
+                                                <input type="text"
+                                                       class="form-control text-uppercase" 
+                                                       style="cursor: text;"
+                                                       value="<?= $circular['hora_programada']; ?>"
+                                                       readonly>
+                                            </div>
+                                        </div> 
+                                        <?php endif; ?>
                                     </div>
 
                                     <?php if ($circular['contenido'] != '<p><br></p>'): ?>
                                         <article class="col-sm-6">
                                             <h4 class="text-primary">Contenido</h4>
                                             <hr>
-                                            <?= $circular['contenido']; ?>
+                                            <?= htmlspecialchars_decode($circular['contenido']); ?>
                                         </article>
                                     <?php endif; ?>
                                 </div>

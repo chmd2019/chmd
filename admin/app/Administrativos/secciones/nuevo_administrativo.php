@@ -6,7 +6,7 @@ $grupos = $control_administrativo->select_grupos_administrativos();
     <div class="card col-sm-12 col-md-6 border panel-personalizado">
         <div class="card-body p-0 pt-5">
             <h6 class="text-primary border-bottom">
-                <i class="material-icons">person_add</i>&nbsp;&nbsp;NUEVO ADMINISTRATIVO
+                <i class="material-icons">person_add</i>&nbsp;&nbsp;ASOCIAR USUARIO ADMINISTRATIVO
             </h6>
             <br>
             <div class="row justify-content-around">
@@ -22,7 +22,7 @@ $grupos = $control_administrativo->select_grupos_administrativos();
                 </select>
                 <button type="button" 
                         class="btn btn-primary"
-                        onclick="enviar()">
+                        onclick="enviar_administrativo()">
                     Guardar&nbsp;&nbsp;<i class="material-icons">save</i>
                 </button>
             </div>
@@ -124,7 +124,7 @@ $grupos = $control_administrativo->select_grupos_administrativos();
         usuarios_agregados = Array.from(set);
         coleccion_td_quitados = Array.from(set_td);
     }
-    function enviar() {
+    function enviar_administrativo() {
         var grupos = $("#grupos").val();
         var usuarios = usuarios_agregados;
         if (grupos.length === 0) {
