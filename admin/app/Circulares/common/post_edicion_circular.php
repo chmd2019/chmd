@@ -1,4 +1,7 @@
 <?php
+require './ControlCirculares.php';
+
+$controlCirculares = new ControlCirculares();
 $titulo = htmlspecialchars(trim($_POST['titulo']));
 $contenido = htmlspecialchars($_POST['contenido']);
 $descripcion = htmlspecialchars($_POST['descripcion']);
