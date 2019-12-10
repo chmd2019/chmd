@@ -248,10 +248,12 @@ $grupos_json = json_encode($grupos_json);
                                         while ($row = mysqli_fetch_array($consulta_catalogo_nivel)):
                                             $id_nivel = $row[0];
                                             $descripcion_nivel = $row[1];
+                                            array_push($nivel_json, ["id_nivel" => intval($id_nivel), "nivel" => $descripcion_nivel]);
                                             ?>
                                             <option value="<?php echo $id_nivel; ?>"><?php echo $descripcion_nivel; ?></option>
                                         <?php
                                         endwhile;
+                                        $nivel_json = json_encode($nivel_json);
                                         ?>
                                     </select>
                                     <div class="invalid-feedback">
@@ -449,7 +451,7 @@ $grupos_json = json_encode($grupos_json);
                                         <td><?= $row['grupo']; ?></td>
                                         <td>
                                             <button type="button" class="btn btn-danger btn-squared btn-sm"
-                                                    onclick="remove_nivel()">
+                                                    onclick="remove_nivel(this, <?= intval($row['id_nivel']); ?>,<?= intval($row['id_grado']); ?>,<?= intval($row['id_grupo']); ?>);">
                                                 Quitar &nbsp;&nbsp;<i class="material-icons">remove</i>
                                             </button>
                                         </td>
@@ -574,7 +576,6 @@ include "{$root}/Secciones/notificaciones.php";
     var id_circular = <?=$id_circular;?>;
 
     $(document).ready(function () {
-        console.log(set_nivel_grado_grupo);
         ckeditor();
         CKEDITOR.instances.editor.setData(`<?= html_entity_decode($contenido); ?>`);
         spinnerOut();
@@ -653,7 +654,67 @@ include "{$root}/Secciones/notificaciones.php";
     }
 
     function add_nivel_grado_grupo() {
+        let id_nivel = null;
+        let nivel = null;
+        let id_grado = null;
+        let grado = null;
+        let id_grupo = null;
+        let grupo = null;
+        let _catalogo_niveles = new Set(catalogo_niveles);
+        let _catalogo_grados = new Set(catalogo_grados);
+        let _catalogo_grupos = new Set(catalogo_grupos);
 
+        _catalogo_niveles.forEach(item => {
+            if (item.id_nivel == $("#select_nivel").val()) {
+                id_nivel = item.id_nivel;
+                nivel = item.nivel;
+            }
+        });
+        _catalogo_grados.forEach(item => {
+            if (item.id_grado == $("#select_grado").val()) {
+                id_grado = item.id_grado;
+                grado = item.grado;
+            }
+        });
+        _catalogo_grupos.forEach(item => {
+            if (item.id_grupo == $("#select_grupo").val()) {
+                id_grupo = item.id_grupo;
+                grupo = item.grupo;
+            }
+        });
+        let flag_tabla = true;
+        //id_nivel, nivel, id_grado, grado, id_grupo, grupo
+        set_nivel_grado_grupo.forEach(item => {
+            if (id_nivel === item.id_nivel && nivel === item.nivel &&
+                id_grado === item.id_grado && grado === item.grado &&
+                id_grupo === item.id_grupo && grupo === item.grupo) {
+                set_nivel_grado_grupo.delete(item);
+                flag_tabla = !flag_tabla;
+            }
+        });
+        set_nivel_grado_grupo.add({id_nivel, nivel, id_grado, grado, id_grupo, grupo});
+        if (flag_tabla) {
+            let tabla = $("#add_niveles_table").DataTable();
+            tabla.row.add([nivel, grado, grupo,
+                `<button type="button"
+                class="btn btn-danger btn-squared btn-sm"
+                onclick="remove_nivel(this,${id_nivel},${id_grado},${id_grupo})">
+                Quitar &nbsp;&nbsp;<i class="material-icons">remove</i>
+                </button>`]).draw().node();
+        }
+        console.log(set_nivel_grado_grupo);
+    }
+
+    function remove_nivel(el, id_nivel, id_grado, id_grupo) {
+        let tabla = $("#add_niveles_table").DataTable();
+        id_grado = id_grado === 0 ? null : id_grado;
+        id_grupo = id_grupo === 0 ? null : id_grupo;
+        set_nivel_grado_grupo.forEach(item => {
+            if (parseInt(item.id_nivel) === id_nivel && item.id_grado === id_grado && item.id_grupo === id_grupo) {
+                tabla.row($(el).parents('tr')).remove().draw();
+                set_nivel_grado_grupo.delete(item);
+            }
+        });
     }
 </script>
 </body>
