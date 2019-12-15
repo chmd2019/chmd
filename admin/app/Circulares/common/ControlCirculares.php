@@ -211,8 +211,8 @@ class ControlCirculares
                             $id_papa = $row[0];
                             $id_alumno = $row[1];
                             $insert_id_papa_alumno = "INSERT INTO `App_usuarios_circulares` "
-                                . "(`id_circular`, `id_usuario`, `id_alumno`) "
-                                . "VALUES ({$id_app_circulares}, {$id_papa}, {$id_alumno});";
+                                . "(`id_circular`, `id_usuario`, `id_alumno`, `por_curso`) "
+                                . "VALUES ({$id_app_circulares}, {$id_papa}, {$id_alumno}, true);";
                             if (!mysqli_query($this->conexion, $insert_id_papa_alumno)) {
                                 throw new Exception(mysqli_error($this->conexion));
                             }
@@ -393,37 +393,107 @@ class ControlCirculares
         return mysqli_affected_rows($this->conexion);
     }
 
-    public function aditar_circular($id_circular)
-    {
-        $sql = "UPDATE `App_Circulares` SET `id_estatus`= $id_estatus WHERE `id`=$id_circular;";
-        mysqli_query($this->conexion, $sql);
-        return mysqli_affected_rows($this->conexion);
-    }
-
-    public function update_circular($id_circular, $id_nivel, $id_grado, $id_grupo)
+    public function update_circular($titulo, $descripcion, $contenido, $tema_ics, $fecha_ics, $hora_inicial_ics,
+                                    $hora_final_ics, $ubicacion_ics, $adjunto, $id_circular, $niveles)
     {
         try {
-            //update circular
+            mysqli_autocommit($this->conexion, false);
+            $sql_update_circular = "UPDATE App_Circulares 
+                                    SET titulo='{$titulo}', contenido='{$contenido}', descripcion='{$descripcion}', 
+                                    adjunto = '{$adjunto}', tema_ics = '{$tema_ics}', fecha_ics = '{$fecha_ics}', hora_inicial_ics = '{$hora_inicial_ics}', hora_final_ics = '{$hora_final_ics}', ubicacion_ics = '{$ubicacion_ics}' 
+                                    WHERE id={$id_circular};";
+            $sql_delete_padres = "DELETE FROM App_usuarios_circulares WHERE id_circular = {$id_circular} AND por_curso = TRUE";
+            $sql_del_nivel_grado_grupo = "DELETE FROM App_nivel_grado_grupo_circulares WHERE id_circular = {$id_circular}";
 
-            //consulta de padres
-            $sql_consulta_padres = "SELECT a.id as id_usuario FROM usuarios a 
-                                    INNER JOIN alumnoschmd b ON b.idfamilia = a.numero 
-                                    INNER JOIN catalago_grupos_cch c ON c.grupo = b.grupo 
-                                    WHERE b.id_nivel = {$id_nivel} 
-                                    OR (b.id_nivel = {$id_nivel} AND b.idcursar = {$id_grado}) 
-                                    OR (b.id_nivel = {$id_nivel} AND b.idcursar = {$id_grado} AND c.id = {$id_grupo}) 
-                                    GROUP BY a.id";
-            $consulta_padres = mysqli_query($sql_consulta_padres);
-            if (!$consulta_padres) {
+            if (!mysqli_query($this->conexion, $sql_update_circular) ||
+                !mysqli_query($this->conexion, $sql_delete_padres) ||
+                !mysqli_query($this->conexion, $sql_del_nivel_grado_grupo)) {
                 throw new Exception(mysqli_error($this->conexion));
             }
 
-            foreach ($consulta_padres as $padre) {
+            foreach ($niveles as $value) {
+                $sql_select_padres = null;
+                //consulta de padres
+                //{$value['id_nivel']}-{$value['id_grado']}-{$value['id_grupo']}
 
+                if ($value['id_nivel'] != 0 && $value['id_grado'] != 0 && $value['id_grupo'] != 0) {
+                    $sql_select_padres = "SELECT a.id AS id_padre, b.id AS id_alumno
+                                            FROM usuarios a
+                                            INNER JOIN alumnoschmd b
+                                                ON b.idfamilia = a.numero
+                                            INNER JOIN catalago_grupos_cch c
+                                                ON c.grupo = b.grupo
+                                            WHERE b.id_nivel = '{$value['id_nivel']}'
+                                                    AND b.idcursar = {$value['id_grado']}
+                                                    AND c.id = {$value['id_grupo']}
+                                            ORDER BY  a.id;";
+                    $sql_insert_nivel_grado_grupo = "INSERT INTO `App_nivel_grado_grupo_circulares` 
+                                                    (`id_circular`, `id_nivel`, `id_grado`, `id_grupo`) 
+                                                    VALUES ({$id_circular}, {$value['id_nivel']}, {$value['id_grado']}, {$value['id_grupo']});";
+
+                } else if ($value['id_nivel'] != 0 && $value['id_grado'] != 0 && $value['id_grupo'] == 0) {
+                    $sql_select_padres = "SELECT a.id AS id_padre, b.id AS id_alumno
+                                            FROM usuarios a
+                                            INNER JOIN alumnoschmd b
+                                                ON b.idfamilia = a.numero
+                                            INNER JOIN catalago_grupos_cch c
+                                                ON c.grupo = b.grupo
+                                            WHERE b.id_nivel = {$value['id_nivel']}
+                                                    AND b.idcursar = {$value['id_grado']}
+                                            ORDER BY  a.id;";
+                    $sql_insert_nivel_grado_grupo = "INSERT INTO `App_nivel_grado_grupo_circulares` 
+                                                    (`id_circular`, `id_nivel`, `id_grado`) 
+                                                    VALUES ({$id_circular}, {$value['id_nivel']}, {$value['id_grado']});";
+
+                } else {
+                    $sql_select_padres = "SELECT a.id AS id_padre, b.id AS id_alumno
+                                            FROM usuarios a
+                                            INNER JOIN alumnoschmd b
+                                                ON b.idfamilia = a.numero
+                                            INNER JOIN catalago_grupos_cch c
+                                                ON c.grupo = b.grupo
+                                            WHERE b.id_nivel = {$value['id_nivel']}
+                                            ORDER BY  a.id;";
+                    $sql_insert_nivel_grado_grupo = "INSERT INTO `App_nivel_grado_grupo_circulares` 
+                                                    (`id_circular`, `id_nivel`) 
+                                                    VALUES ({$id_circular}, {$value['id_nivel']});";
+
+                }
+
+                //insert nivel grado grupo
+                if (!mysqli_query($this->conexion, $sql_insert_nivel_grado_grupo)) {
+                    throw new Exception(mysqli_error($this->conexion));
+                }
+
+                $padres = mysqli_query($this->conexion, $sql_select_padres);
+
+                if (!$padres) {
+                    throw new Exception(mysqli_error($this->conexion));
+                }
+                //insert de padres
+                while ($row = mysqli_fetch_assoc($padres)) {
+                    $sql_insert_padres = "INSERT INTO App_usuarios_circulares 
+                                            (id_circular, id_usuario, id_alumno, por_curso) 
+                                            VALUES ({$id_circular}, {$row['id_padre']}, {$row['id_alumno']}, TRUE);";
+                    if (!mysqli_query($this->conexion, $sql_insert_padres)) {
+                        throw new Exception(mysqli_error($this->conexion));
+                    }
+                }
             }
         } catch (Exception $ex) {
+            mysqli_rollback($this->conexion);
             return $ex->getMessage();
         }
+        return mysqli_commit($this->conexion);;
     }
 
+    public function select_grupos_especiales_x_circular($id_circular)
+    {
+        $sql = "SELECT DISTINCT a.id_grupo_espepcial, b.grupo
+                                    FROM App_usuarios_circulares a
+                                    INNER JOIN App_grupos_especiales b ON b.id = a.id_grupo_espepcial
+                                    WHERE a.id_circular = $id_circular";
+        mysqli_set_charset($this->conexion, "utf8");
+        return mysqli_query($this->conexion, $sql);
+    }
 }

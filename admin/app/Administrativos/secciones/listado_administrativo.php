@@ -89,10 +89,10 @@
                         Aceptar &nbsp;&nbsp;<i class="material-icons">add</i>
                     </button>
                 </div>
-            </div>
+            </div><!--
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
-            </div>
+            </div>-->
         </div>
     </div>
 </div>

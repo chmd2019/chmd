@@ -466,11 +466,7 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                 <br>
                 <br>
                 <h5 class="text-primary"><i class="material-icons">info</i>&nbsp;&nbsp;Información de contenido</h5>
-                <div class="form-row">
-                    <br>
-                </div>
-                <!--<textarea id="editor"></textarea>-->
-                <span class="col-md-12"><hr></span>                   
+                <hr>
                 <div id="editor"></div>
                 <span class="col-md-12"><hr></span>
                 <button class="btn btn-primary btn-squared" type="submit" id="btn_enviar" onclick="flag_guardar = false;">
