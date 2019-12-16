@@ -704,10 +704,10 @@ include "{$root}/Secciones/notificaciones.php";
     var catalogo_grupos = <?= $grupos_json; ?>;
     var catalogo_grp_especiales = new Set(<?= json_encode($catalogo_grp_especiales);?>);
     var set_nivel_grado_grupo = new Set(<?= $aux_niveles; ?>);
+    var set_grupos_especiales = new Set(<?=json_encode($aux_grupos_especiales);?>);
     var flag_guardar = false;
     var flag_programada = false;
     var id_circular = <?=$id_circular;?>;
-    var set_grupos_especiales = new Set(<?=json_encode($aux_grupos_especiales);?>);
 
     $(document).ready(function () {
         ckeditor();
@@ -735,7 +735,6 @@ include "{$root}/Secciones/notificaciones.php";
             language: 'es',
             startDate: new Date()
         });
-        console.log(catalogo_grp_especiales);
     });
 
     function setGrado(id_nivel) {
@@ -793,6 +792,7 @@ include "{$root}/Secciones/notificaciones.php";
                 hora_inicial_ics: $("#id_time_inicial").val(),
                 hora_final_ics: $("#id_time_final").val(),
                 ubicacion_ics: $("#id_ubicacion").val(),
+                grp_especiales: Array.from(set_grupos_especiales)
             }
         }).done((res) => {
         }).always(() => {
@@ -920,16 +920,31 @@ include "{$root}/Secciones/notificaciones.php";
     }
 
     function add_grupo_especial_table(el) {
-        var tabla = $("#add_grupos_especiales_table").DataTable();
+        let aux = new Set();
+        let tabla = $("#add_grupos_especiales_table").DataTable();
+        let set = new Set($(el).selectpicker('val'));
+        set_grupos_especiales.clear();
         tabla.clear().draw();
-        var set_grp_especiales = new Set($(el).selectpicker('val'));
-        //pendiente de comparar por catalogo
+        set.forEach(item => {
+            catalogo_grp_especiales.forEach(element => {
+                if (element.id_grp_especial === parseInt(item)) {
+                    set_grupos_especiales.forEach(value => {
+                        if (value.id_grp_especial === parseInt(item)) {
+                            set_grupos_especiales.delete(value);
+                        }
+                    });
+                    set_grupos_especiales.add({id_grp_especial: element.id_grp_especial, grupo: element.grupo});
+                    tabla.row.add([element.grupo]).draw().node();
+                }
+            });
+        });
     }
 
     function remove_grupo_especial_table() {
-        var tabla = $("#add_grupos_especiales_table").DataTable();
-        tabla.clear().draw();
+        let tabla = $("#add_grupos_especiales_table").DataTable();
         $("#select_grupos_especiales").selectpicker('deselectAll');
+        tabla.clear().draw();
+        set_grupos_especiales.clear();
     }
 
     //id_nivel, nivel, id_grado, grado, id_grupo, grupo

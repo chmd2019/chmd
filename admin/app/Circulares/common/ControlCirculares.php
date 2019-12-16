@@ -114,6 +114,7 @@ class ControlCirculares
                 throw new Exception(mysqli_error($this->conexion));
             }
             $id_app_circulares = mysqli_insert_id($this->conexion);
+
             foreach ($usuarios as $value) {
                 $sql_insert_usuario = "INSERT INTO `App_usuarios_circulares` "
                     . "(`id_circular`, "
@@ -127,27 +128,35 @@ class ControlCirculares
                     throw new Exception(mysqli_error($this->conexion));
                 }
             }
+
             foreach ($grupos_especiales as $value) {
-                $sql_alumnos_grupo_especial = "SELECT alumno_id FROM App_grupos_especiales_alumnos WHERE grupo_id = $value;";
+                $sql_alumnos_grupo_especial = "SELECT a.id AS id_padre,
+                                                                     b.id AS id_alumno,
+                                                                     c.grupo_id AS id_grupo_espepcial
+                                                            FROM usuarios a
+                                                            INNER JOIN alumnoschmd b
+                                                                ON b.idfamilia = a.numero
+                                                            INNER JOIN App_grupos_especiales_alumnos c
+                                                                ON c.alumno_id = b.id
+                                                            WHERE c.grupo_id = {$value}";
                 $alumnos_grupo_especial = mysqli_query($this->conexion, $sql_alumnos_grupo_especial);
                 if (!$alumnos_grupo_especial) {
                     throw new Exception(mysqli_error($this->conexion));
                 } else {
                     while ($alumno_grupo_especial = mysqli_fetch_array($alumnos_grupo_especial)) {
-                        $sql_insert_alumno_especial = "INSERT INTO `App_usuarios_circulares` "
-                            . "(`id_circular`, "
-                            . "`id_alumno`, "
-                            . "`id_grupo_espepcial`) "
-                            . "VALUES ("
-                            . "{$id_app_circulares}, "
-                            . "{$alumno_grupo_especial[0]}, "
-                            . "{$value});";
+                        $sql_insert_alumno_especial = "INSERT INTO App_usuarios_circulares 
+                                            (id_circular, id_usuario, id_alumno, id_grupo_espepcial) 
+                                            VALUES ({$id_app_circulares}, 
+                                            {$alumno_grupo_especial['id_padre']}, 
+                                            {$alumno_grupo_especial['id_alumno']}, 
+                                            {$alumno_grupo_especial['id_grupo_espepcial']});";
                         if (!mysqli_query($this->conexion, $sql_insert_alumno_especial)) {
                             throw new Exception(mysqli_error($this->conexion));
                         }
                     }
                 }
             }
+
             foreach ($grupos_administrativos as $value) {
                 $sql_usuarios_grupo = "SELECT id_usuario FROM App_usuarios_administrativos WHERE id_grupo = $value;";
                 $usuarios_grupos = mysqli_query($this->conexion, $sql_usuarios_grupo);
@@ -223,6 +232,7 @@ class ControlCirculares
                     }
                 }
             }
+
             foreach ($coleccion_padres_camiones as $value) {
                 $sql_insert_padre_camion = "INSERT INTO `App_usuarios_circulares` "
                     . "(`id_circular`, `id_usuario`, `id_alumno`) "
@@ -231,6 +241,7 @@ class ControlCirculares
                     throw new Exception(mysqli_error($this->conexion));
                 }
             }
+
             foreach ($coleccion_padres_camiones_tarde as $value) {
                 $sql_insert_padre_camion = "INSERT INTO `App_usuarios_circulares` "
                     . "(`id_circular`, `id_usuario`, `id_alumno`) "
@@ -239,6 +250,7 @@ class ControlCirculares
                     throw new Exception(mysqli_error($this->conexion));
                 }
             }
+
             return mysqli_commit($this->conexion);
         } catch (Exception $ex) {
             mysqli_rollback($this->conexion);
@@ -394,7 +406,7 @@ class ControlCirculares
     }
 
     public function update_circular($titulo, $descripcion, $contenido, $tema_ics, $fecha_ics, $hora_inicial_ics,
-                                    $hora_final_ics, $ubicacion_ics, $adjunto, $id_circular, $niveles)
+                                    $hora_final_ics, $ubicacion_ics, $adjunto, $id_circular, $niveles, $grp_especiales)
     {
         try {
             mysqli_autocommit($this->conexion, false);
@@ -410,7 +422,7 @@ class ControlCirculares
                 !mysqli_query($this->conexion, $sql_del_nivel_grado_grupo)) {
                 throw new Exception(mysqli_error($this->conexion));
             }
-
+            //recorre los niveles asignados por el usuario
             foreach ($niveles as $value) {
                 $sql_select_padres = null;
                 //consulta de padres
@@ -480,11 +492,45 @@ class ControlCirculares
                     }
                 }
             }
+
+            // se borran todos los usuarios asignados a traves de los grupos especiales
+            $sql_delete_padres_grp_especiales = "DELETE
+                                                    FROM App_usuarios_circulares
+                                                    WHERE id_circular = {$id_circular}
+                                                            AND id_grupo_espepcial IS NOT NULL;";
+            if (!mysqli_query($this->conexion, $sql_delete_padres_grp_especiales)) {
+                throw new Exception(mysqli_error($this->conexion));
+            }
+            //recorre los grupos especiales asignados por el usuario
+            foreach ($grp_especiales as $value) {
+                //consulta de padres segun el id del grupo especial al que pertenece
+                $sql_select_padres_grp_especiales = "SELECT a.id AS id_padre,
+                                                                     b.id AS id_alumno,
+                                                                     c.grupo_id AS id_grupo_espepcial
+                                                            FROM usuarios a
+                                                            INNER JOIN alumnoschmd b
+                                                                ON b.idfamilia = a.numero
+                                                            INNER JOIN App_grupos_especiales_alumnos c
+                                                                ON c.alumno_id = b.id
+                                                            WHERE c.grupo_id = {$value['id_grp_especial']};";
+                $consulta_padres = mysqli_query($this->conexion, $sql_select_padres_grp_especiales);
+                if (!$consulta_padres) {
+                    throw new Exception(mysqli_error($this->conexion));
+                }
+                while ($row = mysqli_fetch_assoc($consulta_padres)) {
+                    $sql_insert_padres_grp_especiales = "INSERT INTO App_usuarios_circulares 
+                                            (id_circular, id_usuario, id_alumno, id_grupo_espepcial) 
+                                            VALUES ({$id_circular}, {$row['id_padre']}, {$row['id_alumno']}, {$row['id_grupo_espepcial']});";
+                    if (!mysqli_query($this->conexion, $sql_insert_padres_grp_especiales)) {
+                        throw new Exception(mysqli_error($this->conexion));
+                    }
+                }
+            }
         } catch (Exception $ex) {
             mysqli_rollback($this->conexion);
             return $ex->getMessage();
         }
-        return mysqli_commit($this->conexion);;
+        return mysqli_commit($this->conexion);
     }
 
     public function select_grupos_especiales_x_circular($id_circular)
