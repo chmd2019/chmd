@@ -19,6 +19,7 @@ $id_estatus = $circular['id_estatus'];
 $url_btn_atras = "https://" . $_SERVER['HTTP_HOST'] . dirname(dirname($_SERVER['REQUEST_URI'])) . "/Circulares.php";
 $consulta_niveles_edicion = $control_circulares->select_niveles_edicion($id_circular);
 $aux_niveles = array();
+$aux_grupos_especiales = array();
 foreach ($consulta_niveles_edicion as $value) {
     array_push($aux_niveles, [
             "id_nivel" => intval($value['id_nivel']),
@@ -35,6 +36,11 @@ $aux_niveles = json_encode($aux_niveles);
 $nivel_json = array();
 $grados_json = array();
 $grupos_json = array();
+$catalogo_grp_especiales = array();
+$select_grp_especial = $control_circulares->select_grupos_especiales();
+while ($row = mysqli_fetch_assoc($select_grp_especial)) {
+    array_push($catalogo_grp_especiales, ["id_grp_especial" => intval($row['id']), "grupo" => $row['grupo']]);
+}
 while ($row = mysqli_fetch_array($consulta_grados)) {
     array_push($grados_json, ["id_grado" => intval($row[0]), "grado" => $row[1], "id_nivel" => intval($row[2])]);
 }
@@ -330,7 +336,7 @@ $grupos_json = json_encode($grupos_json);
                                             data-live-search="true"
                                             data-actions-box="true"
                                             multiple
-                                            onchange="add_grupo_especial_table();">
+                                            onchange="add_grupo_especial_table(this);">
                                         <?php
                                         $consulta_grupos_especiales = $control_circulares->select_grupos_especiales();
                                         while ($row = mysqli_fetch_array($consulta_grupos_especiales)):
@@ -584,7 +590,18 @@ $grupos_json = json_encode($grupos_json);
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>PPPP</tr>
+                                <?php
+                                $grupos_especiales = $control_circulares->select_grupos_especiales_x_circular($id_circular);
+                                while ($row = mysqli_fetch_assoc($grupos_especiales)):
+                                    array_push($aux_grupos_especiales, [
+                                        "id_grp_especial" => intval($row['id_grupo_espepcial']),
+                                        "grupo" => $row['grupo'],
+                                    ]);
+                                    ?>
+                                    <tr>
+                                        <td><?= $row['grupo']; ?></td>
+                                    </tr>
+                                <?php endwhile; ?>
                                 </tbody>
                                 <tfoot>
                                 <tr>
@@ -685,10 +702,12 @@ include "{$root}/Secciones/notificaciones.php";
     var catalogo_niveles = <?= $nivel_json; ?>;
     var catalogo_grados = <?= $grados_json; ?>;
     var catalogo_grupos = <?= $grupos_json; ?>;
+    var catalogo_grp_especiales = new Set(<?= json_encode($catalogo_grp_especiales);?>);
     var set_nivel_grado_grupo = new Set(<?= $aux_niveles; ?>);
     var flag_guardar = false;
     var flag_programada = false;
     var id_circular = <?=$id_circular;?>;
+    var set_grupos_especiales = new Set(<?=json_encode($aux_grupos_especiales);?>);
 
     $(document).ready(function () {
         ckeditor();
@@ -716,6 +735,7 @@ include "{$root}/Secciones/notificaciones.php";
             language: 'es',
             startDate: new Date()
         });
+        console.log(catalogo_grp_especiales);
     });
 
     function setGrado(id_nivel) {
@@ -899,18 +919,11 @@ include "{$root}/Secciones/notificaciones.php";
         $("#select_usuarios").selectpicker('render');
     }
 
-    function add_grupo_especial_table() {
-        var select_grupos_especiales = $("#select_grupos_especiales").val();
-        var set_grupo = new Set([...coleccion_grupos_especiales_json]);
+    function add_grupo_especial_table(el) {
         var tabla = $("#add_grupos_especiales_table").DataTable();
         tabla.clear().draw();
-        for (var item in select_grupos_especiales) {
-            set_grupo.forEach(element => {
-                if (element.id === select_grupos_especiales[item]) {
-                    tabla.row.add([`${element.grupo}`]).draw().node();
-                }
-            });
-        }
+        var set_grp_especiales = new Set($(el).selectpicker('val'));
+        //pendiente de comparar por catalogo
     }
 
     function remove_grupo_especial_table() {

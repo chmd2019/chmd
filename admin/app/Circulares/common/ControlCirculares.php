@@ -492,7 +492,7 @@ class ControlCirculares
         $sql = "SELECT DISTINCT a.id_grupo_espepcial, b.grupo
                                     FROM App_usuarios_circulares a
                                     INNER JOIN App_grupos_especiales b ON b.id = a.id_grupo_espepcial
-                                    WHERE a.id_circular = $id_circular";
+                                    WHERE a.id_circular = {$id_circular}";
         mysqli_set_charset($this->conexion, "utf8");
         return mysqli_query($this->conexion, $sql);
     }
