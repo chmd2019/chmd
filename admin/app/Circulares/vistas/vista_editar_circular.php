@@ -400,7 +400,18 @@ $grupos_json = json_encode($grupos_json);
                                                 $id_grupo = $row[0];
                                                 $grupo = $row[1];
                                                 ?>
-                                                <option value="<?= $id_grupo; ?>"><?= $grupo; ?></option>
+                                                <option value="<?= $id_grupo; ?>"
+                                                    <?php
+                                                    $grupos_especiales = $control_circulares->select_grupos_especiales_x_circular($id_circular);
+                                                    while ($row_grp_especial = mysqli_fetch_assoc($grupos_especiales)) {
+                                                        if ($row_grp_especial['id_grupo_espepcial'] == $id_grupo) {
+                                                            echo "selected";
+                                                        }
+                                                    }
+                                                    ?>
+                                                >
+                                                    <?= $grupo; ?>
+                                                </option>
                                             <?php
                                             endwhile;
                                             ?>
@@ -423,7 +434,18 @@ $grupos_json = json_encode($grupos_json);
                                                 $id_grupo_adm = $row[0];
                                                 $grupo_adm = $row[1];
                                                 ?>
-                                                <option value="<?= $id_grupo_adm; ?>"><?= $grupo_adm; ?></option>
+                                                <option value="<?= $id_grupo_adm; ?>"
+                                                    <?php
+                                                    $grupos_administrativos = $control_circulares->select_grupos_administrativos_x_circular($id_circular);
+                                                    while ($row_grp_adm = mysqli_fetch_assoc($grupos_administrativos)) {
+                                                        if ($row_grp_adm['id_grupo_administrativo'] == $id_grupo_adm) {
+                                                            echo "selected";
+                                                        }
+                                                    }
+                                                    ?>
+                                                >
+                                                    <?= $grupo_adm; ?>
+                                                </option>
                                             <?php
                                             endwhile;
                                             ?>
@@ -577,7 +599,8 @@ $grupos_json = json_encode($grupos_json);
                                                            id="id_table_usuarios">
                                                         <thead>
                                                         <tr>
-                                                            <th>Usuarios</th>
+                                                            <th class="w-75">Usuarios</th>
+                                                            <th class="w-25 text-center">Quitar</th>
                                                         </tr>
                                                         </thead>
                                                         <tbody>
@@ -586,6 +609,14 @@ $grupos_json = json_encode($grupos_json);
                                                         while ($row = mysqli_fetch_assoc($select_usuarios_sin_grupo)): ?>
                                                             <tr>
                                                                 <td><?= $row['nombre']; ?></td>
+                                                                <td>
+                                                                    <button type="button"
+                                                                            class="btn btn-danger btn-squared btn-sm ml-5"
+                                                                            onclick="remove_usuario_tabla(this, <?= intval($row['id_usuario']); ?>);">
+                                                                        X &nbsp;&nbsp;<i
+                                                                                class="material-icons">remove</i>
+                                                                    </button>
+                                                                </td>
                                                             </tr>
                                                         <?php endwhile; ?>
                                                         </tbody>
@@ -680,7 +711,7 @@ $grupos_json = json_encode($grupos_json);
                                             <td><?= strtoupper($row['grupo']); ?></td>
                                             <td>
                                                 <button type="button"
-                                                        class="btn btn-danger btn-squared btn-sm"
+                                                        class="btn btn-danger btn-squared btn-sm ml-2"
                                                         onclick="remove_grp_especial_tabla(this, <?= intval($row['id_grupo_espepcial']); ?>);">
                                                     X
                                                 </button>
@@ -693,7 +724,7 @@ $grupos_json = json_encode($grupos_json);
                                         <td>Quitar todos</td>
                                         <td>
                                             <button type="button"
-                                                    class="btn btn-danger btn-squared btn-sm float-right"
+                                                    class="btn btn-danger btn-squared btn-sm"
                                                     onclick="remove_grupo_especial_table();">
                                                 X
                                             </button>
@@ -831,7 +862,7 @@ include "{$root}/Secciones/notificaciones.php";
         spinnerOut();
         set_menu_hamburguer();
         set_table_sin_paginacion_sin_buscar('add_niveles_table');
-        set_table_sin_paginacion_sin_buscar('id_table_usuarios');
+        set_table('id_table_usuarios');
         set_table_sin_paginacion_sin_buscar('add_grupos_especiales_table');
         set_table_sin_paginacion_sin_buscar('add_grupos_administrativos_table');
         set_table_sin_paginacion_sin_buscar('add_camiones_table');
@@ -1117,18 +1148,31 @@ include "{$root}/Secciones/notificaciones.php";
         select_usuarios.forEach(item => {
             catalogo_usuarios.forEach(usuario => {
                 if (usuario.id_usuario == item) {
-                    tabla.row.add([usuario.nombre]).draw().node();
+                    tabla.row.add([usuario.nombre,
+                        `<button type="button" class="btn btn-danger btn-squared btn-sm ml-5"
+                                onclick="remove_usuario_tabla(this, ${usuario.id_usuario});">
+                            X
+                        </button>`
+                    ]).draw().node();
                 }
             });
         });
     }
 
-    //elimina items individuales de las tablas de grupos especiales y administrativos
+    //elimina items individuales de las tablas de grupos especiales y administrativos, y usaurios
     function remove_grp_especial_tabla(el, id_grp_especial) {
         set_grupos_especiales.forEach(item => {
             if (item.id_grp_especial === id_grp_especial) {
                 set_grupos_especiales.delete(item);
                 $("#add_grupos_especiales_table").DataTable().row($(el).parents('tr')).remove().draw();
+                let set_grp_especiales = new Set($("#select_grupos_especiales").val());
+                set_grp_especiales.forEach(item_grp_especial => {
+                    if (parseInt(item_grp_especial) === id_grp_especial) {
+                        set_grp_especiales.delete(item_grp_especial);
+                        $("#select_grupos_especiales").val(Array.from(set_grp_especiales));
+                        $("#select_grupos_especiales").selectpicker('refresh');
+                    }
+                });
             }
         });
     }
@@ -1138,6 +1182,27 @@ include "{$root}/Secciones/notificaciones.php";
             if (item.id_grp_administrativo === id_grp_administrativo) {
                 set_grupos_administrativos.delete(item);
                 $("#add_grupos_administrativos_table").DataTable().row($(el).parents('tr')).remove().draw();
+                let set = new Set($("#select_grupos_administrativos").val());
+                set.forEach(item_grp_adm => {
+                    if (parseInt(item_grp_adm) === id_grp_administrativo) {
+                        set.delete(item_grp_adm);
+                        $("#select_grupos_administrativos").val(Array.from(set));
+                        $("#select_grupos_administrativos").selectpicker('refresh');
+                    }
+                });
+            }
+        });
+    }
+
+    function remove_usuario_tabla(el, id_usuario) {
+        let set_usuarios = new Set($("#select_usuarios").val());
+        let tabla = $("#id_table_usuarios").DataTable();
+        set_usuarios.forEach(item => {
+            if (parseInt(item) === id_usuario) {
+                set_usuarios.delete(item);
+                $("#select_usuarios").val(Array.from(set_usuarios));
+                $('#select_usuarios').selectpicker('refresh');
+                tabla.row($(el).parents('tr')).remove().draw();
             }
         });
     }
