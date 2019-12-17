@@ -18,6 +18,7 @@ function obtener_calendario_escolar() {
     });
     return calendario;
 }
+
 function consultar_direcciones(id) {
     var data = [];
     $.ajax({
@@ -39,6 +40,7 @@ function consultar_direcciones(id) {
     });
     return data;
 }
+
 function formatear_fecha_calendario(fecha) {
     var dia = fecha.split(" ")[1];
     var mes = fecha.split(" ")[3];
@@ -69,6 +71,7 @@ function formatear_fecha_calendario(fecha) {
         mes = "12";
     return `${mes}/${dia}/${anio}`;
 }
+
 function formatear_fecha_calendario_formato_m_d_a(fecha) {
     var dia = fecha.split(" ")[1];
     var mes = fecha.split(" ")[3];
@@ -99,6 +102,7 @@ function formatear_fecha_calendario_formato_m_d_a(fecha) {
         mes = "12";
     return `${mes}-${dia}-${anio}`;
 }
+
 function formatear_fecha_calendario_formato_a_m_d_guion(fecha) {
     var dia = fecha.split(" ")[1];
     var mes = fecha.split(" ")[3];
@@ -129,6 +133,7 @@ function formatear_fecha_calendario_formato_a_m_d_guion(fecha) {
         mes = "12";
     return `${anio}-${mes}-${dia}`;
 }
+
 function validar_regex(reg, val) {
     var regex = new RegExp(reg);
     if (regex.test(val)) {
@@ -136,10 +141,11 @@ function validar_regex(reg, val) {
     }
     return false;
 }
+
 function validar_solo_numeros(num) {
     var charCode = (num.which) ? num.which : num.keyCode;
     if (charCode != 46 && charCode > 31
-            && (charCode < 48 || charCode > 57))
+        && (charCode < 48 || charCode > 57))
         return false;
 
     if ($("#cp").val().length > 4) {
@@ -147,10 +153,11 @@ function validar_solo_numeros(num) {
     }
     return true;
 }
+
 function validar_solo_numeros(num, id, limite) {
     var charCode = (num.which) ? num.which : num.keyCode;
     if (charCode != 46 && charCode > 31
-            && (charCode < 48 || charCode > 57))
+        && (charCode < 48 || charCode > 57))
         return false;
 
     if ($("#" + id).val().length > limite) {
@@ -158,21 +165,25 @@ function validar_solo_numeros(num, id, limite) {
     }
     return true;
 }
+
 function validar_max_caracteres(id, limite) {
     if ($("#" + id).val().length > limite) {
         return false;
     }
     return true;
 }
+
 function validar_maxima_cantidad(id, cantidad) {
     if ($("#" + id).val() > cantidad) {
         return false;
     }
     return true;
 }
+
 function fecha_minusculas(val, id) {
     $(`#${id}`).val(`${val.charAt(0)}${val.slice(1).toLowerCase()}`);
 }
+
 function obtener_responsables(familia) {
     var responsables = [];
     $.ajax({
@@ -192,6 +203,7 @@ function obtener_responsables(familia) {
     });
     return responsables;
 }
+
 function opciones_select(val, id) {
     var select = $(`#${id}`);
     var options = "";
@@ -200,6 +212,7 @@ function opciones_select(val, id) {
     }
     select.html(options);
 }
+
 function nuevo_responsable(nombre, parentesco, familia) {
     $.ajax({
         async: false,
@@ -222,10 +235,12 @@ function nuevo_responsable(nombre, parentesco, familia) {
         $("#loading").fadeOut("slow");
     });
 }
+
 function capitaliza_primer_letra(id) {
     var palabra = $("#" + id).val();
     $("#" + id).val(`${palabra.charAt(0).toUpperCase()}${palabra.slice(1).toLowerCase()}`);
 }
+
 function validar_horario_final_ensayo(el, id_hora_inicial) {
     var hora_inicial = $("#" + id_hora_inicial).val();
     var hora_final = el.value;
@@ -249,6 +264,7 @@ function validar_horario_final_ensayo(el, id_hora_inicial) {
         return;
     }
 }
+
 function calcular_position_time_picker() {
     var timepicker = $(".ui-timepicker-positioned-top");
     /*if (timepicker.length > 0) {
@@ -264,20 +280,24 @@ function calcular_position_time_picker() {
      });
      }*/
 }
+
 $(document).ready(function () {
     $(".modal-chmd-close").on('click', function () {
         $(".modal-chmd").fadeOut();
         $(".modal-chmd-fondo").fadeOut();
     });
 });
+
 function mostrar_modal_chmd() {
     $(".modal-chmd").fadeIn();
     $(".modal-chmd-fondo").fadeIn();
 }
+
 function ocultar_modal_chmd() {
     $(".modal-chmd").fadeOut();
     $(".modal-chmd-fondo").fadeOut();
 }
+
 /*function descargarPDF(nombre_pdf) {
  var elemento = document.getElementById("imprimir");
  html2canvas(elemento, {
@@ -294,10 +314,12 @@ function validaCorreo(correo) {
     var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     return regex.test(correo);
 }
+
 function validaNombre(nombre) {
     var regex = /^([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\']+[\s])+([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\'])+[\s]?([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\'])?$/g;
     return regex.test(nombre);
 }
+
 function set_table(id_table) {
     $('#' + id_table).DataTable({
         "processing": true,
@@ -319,14 +341,15 @@ function set_table(id_table) {
         }
     });
 }
+
 function set_table_desordenada(id_table) {
     $('#' + id_table).DataTable({
         "processing": true,
         "order": [],
         "columnDefs": [{
-                "targets": 'no-sort',
-                "orderable": false,
-            }],
+            "targets": 'no-sort',
+            "orderable": false,
+        }],
         "language": {
             "lengthMenu": "_MENU_",
             "zeroRecords": "<span class='chip red white-text'>Sin registros para mostrar</span>",
@@ -345,15 +368,16 @@ function set_table_desordenada(id_table) {
         }
     });
 }
+
 function set_table_sin_paginacion(id_table) {
     $('#' + id_table).DataTable({
         "paging": false,
         "processing": true,
         "order": [],
         "columnDefs": [{
-                "targets": 'no-sort',
-                "orderable": false
-            }],
+            "targets": 'no-sort',
+            "orderable": false
+        }],
         "language": {
             "lengthMenu": "_MENU_",
             "zeroRecords": "<span class='chip red white-text'>Sin registros para mostrar</span>",
@@ -372,15 +396,16 @@ function set_table_sin_paginacion(id_table) {
         }
     });
 }
+
 function set_table_sin_paginacion_sin_buscar(id_table) {
     $('#' + id_table).DataTable({
         "paging": false,
         "processing": true,
         "order": [],
         "columnDefs": [{
-                "targets": 'no-sort',
-                "orderable": false
-            }],
+            "targets": 'no-sort',
+            "orderable": false
+        }],
         "language": {
             "lengthMenu": "_MENU_",
             "zeroRecords": "<span class='chip red white-text'>Sin registros para mostrar</span>",

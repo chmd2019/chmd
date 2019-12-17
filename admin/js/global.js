@@ -1,14 +1,17 @@
 function upper(value) {
     return value.toUpperCase();
 }
+
 function spinnerIn() {
     $("#spinner").fadeIn();
 }
+
 function spinnerOut() {
     setInterval(function () {
         $("#spinner").fadeOut();
     }, 1500);
 }
+
 function success_alerta(msj) {
     $("#alerta_success_mensaje").text(msj);
     $('.alerta-success').fadeIn();
@@ -16,6 +19,7 @@ function success_alerta(msj) {
         $('.alerta-success').fadeOut();
     }, 5000);
 }
+
 function fail_alerta(msj) {
     $("#alerta_error_mensaje").text(msj);
     $('.alerta-error').fadeIn();
@@ -23,6 +27,7 @@ function fail_alerta(msj) {
         $('.alerta-error').fadeOut();
     }, 7000);
 }
+
 function set_table(id_table) {
     $('#' + id_table).DataTable({
         "processing": true,
@@ -44,14 +49,15 @@ function set_table(id_table) {
         }
     });
 }
+
 function set_table_desordenada(id_table) {
     $('#' + id_table).DataTable({
         "processing": true,
         "order": [],
         "columnDefs": [{
-                "targets": 'no-sort',
-                "orderable": false,
-            }],
+            "targets": 'no-sort',
+            "orderable": false,
+        }],
         "language": {
             "lengthMenu": "_MENU_",
             "zeroRecords": "<span class='chip red white-text'>Sin registros para mostrar</span>",
@@ -70,6 +76,58 @@ function set_table_desordenada(id_table) {
         }
     });
 }
+
+function set_table_sin_paginacion(id_table) {
+    $('#' + id_table).DataTable({
+        "paging": false,
+        "processing": true,
+        "order": [],
+        "columnDefs": [{
+            "targets": 'no-sort',
+            "orderable": false
+        }],
+        "language": {
+            "lengthMenu": "_MENU_",
+            "zeroRecords": "<span class='chip red white-text'>Sin registros para mostrar</span>",
+            "info": "<span class='chip blue white-text'>Mostrando colección _PAGE_ de _PAGES_</span>",
+            "infoEmpty": "<span class='chip red white-text'>Sin registros disponibles</span>",
+            "infoFiltered": "(filtrado de _MAX_ total de registros)",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "paginate": {
+                "first": "Primero",
+                "last": "Último",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        }
+    });
+}
+
+function set_table_sin_paginacion_sin_buscar(id_table) {
+    $('#' + id_table).DataTable({
+        "paging": false,
+        "searching": false,
+        "processing": true,
+        "order": [],
+        "columnDefs": [{
+            "targets": 'no-sort',
+            "orderable": false
+        }],
+        "language": {
+            "lengthMenu": "_MENU_",
+            "zeroRecords": "<span class='chip red white-text'>Sin registros para mostrar</span>",
+            "info": "<span class='chip blue white-text'>Mostrando colección _PAGE_ de _PAGES_</span>",
+            "infoEmpty": "<span class='chip red white-text'>Sin registros disponibles</span>",
+            "infoFiltered": "(filtrado de _MAX_ total de registros)",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search":"Buscar"
+        }
+    });
+}
+
 function datepicker_es() {
     return $.fn.datepicker.dates['es'] = {
         days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
@@ -83,6 +141,7 @@ function datepicker_es() {
         weekStart: 0,
     };
 }
+
 function set_menu_hamburguer() {
 
     $("#sidebar").mCustomScrollbar({
@@ -119,7 +178,7 @@ CKEDITOR.config.youtube_responsive = true;
 
 var ckeditor = (function () {
     var wysiwygareaAvailable = isWysiwygareaAvailable(),
-            isBBCodeBuiltIn = !!CKEDITOR.plugins.get('bbcode');
+        isBBCodeBuiltIn = !!CKEDITOR.plugins.get('bbcode');
 
     return function () {
         var editorElement = CKEDITOR.document.getById('editor');
@@ -127,9 +186,9 @@ var ckeditor = (function () {
         // :(((
         if (isBBCodeBuiltIn) {
             editorElement.setHtml(
-                    'Hello world!\n\n' +
-                    'I\'m an instance of [url=https://ckeditor.com]CKEditor[/url].'
-                    );
+                'Hello world!\n\n' +
+                'I\'m an instance of [url=https://ckeditor.com]CKEditor[/url].'
+            );
         }
 
         // Depending on the wysiwygarea plugin availability initialize classic or inline editor.

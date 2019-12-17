@@ -663,7 +663,8 @@ $grupos_json = json_encode($grupos_json);
                                 <table class="stripe row-border order-column" id="add_grupos_especiales_table">
                                     <thead>
                                     <tr>
-                                        <th>Grupo</th>
+                                        <th class="w-75">Grupo</th>
+                                        <th class="text-center w-25">Quitar</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -677,14 +678,22 @@ $grupos_json = json_encode($grupos_json);
                                         ?>
                                         <tr>
                                             <td><?= strtoupper($row['grupo']); ?></td>
+                                            <td>
+                                                <button type="button"
+                                                        class="btn btn-danger btn-squared btn-sm"
+                                                        onclick="remove_grp_especial_tabla(this, <?= intval($row['id_grupo_espepcial']); ?>);">
+                                                    X
+                                                </button>
+                                            </td>
                                         </tr>
                                     <?php endwhile; ?>
                                     </tbody>
                                     <tfoot>
                                     <tr>
-                                        <td class="right">
+                                        <td>Quitar todos</td>
+                                        <td>
                                             <button type="button"
-                                                    class="btn btn-danger btn-squared btn-sm"
+                                                    class="btn btn-danger btn-squared btn-sm float-right"
                                                     onclick="remove_grupo_especial_table();">
                                                 X
                                             </button>
@@ -698,7 +707,8 @@ $grupos_json = json_encode($grupos_json);
                                 <table class="stripe row-border order-column" id="add_grupos_administrativos_table">
                                     <thead>
                                     <tr>
-                                        <th>Administrativo</th>
+                                        <th class="w-75">Administrativo</th>
+                                        <th class="w-25">Quitar</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -712,11 +722,19 @@ $grupos_json = json_encode($grupos_json);
                                         ?>
                                         <tr>
                                             <td><?= strtoupper($row['grupo']); ?></td>
+                                            <td>
+                                                <button type="button"
+                                                        class="btn btn-danger btn-squared btn-sm ml-2"
+                                                        onclick="remove_grp_adm_tabla(this, <?= intval($row['id_grupo_administrativo']); ?>);">
+                                                    X
+                                                </button>
+                                            </td>
                                         </tr>
                                     <?php endwhile; ?>
                                     </tbody>
                                     <tfoot>
                                     <tr>
+                                        <td>Quitar todos</td>
                                         <td class="right">
                                             <button type="button"
                                                     class="btn btn-danger btn-squared btn-sm"
@@ -812,12 +830,12 @@ include "{$root}/Secciones/notificaciones.php";
         <?php endif; ?>
         spinnerOut();
         set_menu_hamburguer();
-        set_table('add_niveles_table');
-        set_table('id_table_usuarios');
-        set_table('add_grupos_especiales_table');
-        set_table('add_grupos_administrativos_table');
-        set_table('add_camiones_table');
-        set_table('add_camiones_tarde_table');
+        set_table_sin_paginacion_sin_buscar('add_niveles_table');
+        set_table_sin_paginacion_sin_buscar('id_table_usuarios');
+        set_table_sin_paginacion_sin_buscar('add_grupos_especiales_table');
+        set_table_sin_paginacion_sin_buscar('add_grupos_administrativos_table');
+        set_table_sin_paginacion_sin_buscar('add_camiones_table');
+        set_table_sin_paginacion_sin_buscar('add_camiones_tarde_table');
         datepicker_es();
         $('#id_fecha_programada').datepicker({
             calendarWeeks: true,
@@ -1020,7 +1038,7 @@ include "{$root}/Secciones/notificaciones.php";
     }
 
     function add_grupo_especial_table(el) {
-        let tabla = $("#add_grupos_especiales_table").DataTable();
+        let tabla = $('#add_grupos_especiales_table').DataTable();
         let set = new Set($(el).selectpicker('val'));
         set_grupos_especiales.clear();
         tabla.clear().draw();
@@ -1036,7 +1054,14 @@ include "{$root}/Secciones/notificaciones.php";
                         id_grp_especial: itemCatalogo.id_grp_especial,
                         grupo: itemCatalogo.grupo
                     });
-                    tabla.row.add([itemCatalogo.grupo.toUpperCase()]).draw().node();
+                    tabla.row.add([
+                        itemCatalogo.grupo.toUpperCase(),
+                        `<button type="button"
+                                class="btn btn-danger btn-squared btn-sm ml-2"
+                                onclick="remove_grp_especial_tabla(this, ${itemCatalogo.id_grp_especial});">
+                            X
+                        </button>`
+                    ]).draw().node();
                 }
             });
         });
@@ -1066,7 +1091,13 @@ include "{$root}/Secciones/notificaciones.php";
                         id_grp_administrativo: itemCatalogo.id_grp_administrativo,
                         grupo: itemCatalogo.grupo
                     });
-                    tabla.row.add([itemCatalogo.grupo.toUpperCase()]).draw().node();
+                    tabla.row.add([itemCatalogo.grupo.toUpperCase(),
+                        `<button type="button"
+                                class="btn btn-danger btn-squared btn-sm ml-2"
+                                onclick="remove_grp_adm_tabla(this, ${itemCatalogo.id_grp_administrativo});">
+                            X
+                        </button>`
+                    ]).draw().node();
                 }
             });
         });
@@ -1089,6 +1120,25 @@ include "{$root}/Secciones/notificaciones.php";
                     tabla.row.add([usuario.nombre]).draw().node();
                 }
             });
+        });
+    }
+
+    //elimina items individuales de las tablas de grupos especiales y administrativos
+    function remove_grp_especial_tabla(el, id_grp_especial) {
+        set_grupos_especiales.forEach(item => {
+            if (item.id_grp_especial === id_grp_especial) {
+                set_grupos_especiales.delete(item);
+                $("#add_grupos_especiales_table").DataTable().row($(el).parents('tr')).remove().draw();
+            }
+        });
+    }
+
+    function remove_grp_adm_tabla(el, id_grp_administrativo) {
+        set_grupos_administrativos.forEach(item => {
+            if (item.id_grp_administrativo === id_grp_administrativo) {
+                set_grupos_administrativos.delete(item);
+                $("#add_grupos_administrativos_table").DataTable().row($(el).parents('tr')).remove().draw();
+            }
         });
     }
 
