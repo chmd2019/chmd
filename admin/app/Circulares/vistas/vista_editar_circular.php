@@ -15,11 +15,22 @@ $contenido = $circular['contenido'];
 $estatus = $circular['estatus'];
 $color = $circular['color'];
 $id_estatus = $circular['id_estatus'];
+$tema_ics = $circular['tema_ics'];
+$fecha_ics = $circular['fecha_ics'];
+$hora_inicial_ics = $circular['hora_inicial_ics'];
+$hora_final_ics = $circular['hora_final_ics'];
+$ubicacion_ics = $circular['ubicacion_ics'];
+$flag_evento = false;
+if (strlen($tema_ics) > 0 && strlen($fecha_ics) > 0 && strlen($hora_inicial_ics) > 0 &&
+    strlen($hora_final_ics) > 0 && strlen($ubicacion_ics) > 0) {
+    $flag_evento = true;
+}
 //url para botón atrás
 $url_btn_atras = "https://" . $_SERVER['HTTP_HOST'] . dirname(dirname($_SERVER['REQUEST_URI'])) . "/Circulares.php";
 $consulta_niveles_edicion = $control_circulares->select_niveles_edicion($id_circular);
 $aux_niveles = array();
 $aux_grupos_especiales = array();
+$aux_grupos_administrativos = array();
 foreach ($consulta_niveles_edicion as $value) {
     array_push($aux_niveles, [
             "id_nivel" => intval($value['id_nivel']),
@@ -37,16 +48,41 @@ $nivel_json = array();
 $grados_json = array();
 $grupos_json = array();
 $catalogo_grp_especiales = array();
+$catalogo_grp_administrativos = array();
+$catalogo_usuarios = array();
 $select_grp_especial = $control_circulares->select_grupos_especiales();
+$select_grp_administrativos = $control_circulares->select_grupos_administrativos();
+$select_usuarios = $control_circulares->select_usuarios();
+
 while ($row = mysqli_fetch_assoc($select_grp_especial)) {
-    array_push($catalogo_grp_especiales, ["id_grp_especial" => intval($row['id']), "grupo" => $row['grupo']]);
+    array_push($catalogo_grp_especiales, [
+        "id_grp_especial" => intval($row['id']),
+        "grupo" => $row['grupo']
+    ]);
 }
+
+while ($row = mysqli_fetch_assoc($select_grp_administrativos)) {
+    array_push($catalogo_grp_administrativos, [
+        "id_grp_administrativo" => intval($row['id']),
+        "grupo" => $row['grupo']
+    ]);
+}
+
+while ($row = mysqli_fetch_assoc($select_usuarios)) {
+    array_push($catalogo_usuarios, [
+        "id_usuario" => intval($row['id']),
+        "nombre" => $row['nombre']
+    ]);
+}
+
 while ($row = mysqli_fetch_array($consulta_grados)) {
     array_push($grados_json, ["id_grado" => intval($row[0]), "grado" => $row[1], "id_nivel" => intval($row[2])]);
 }
+
 while ($row = mysqli_fetch_array($consulta_grupos)) {
     array_push($grupos_json, ["id_grupo" => intval($row[0]), "grupo" => $row[1], "id_grado" => intval($row[2])]);
 }
+
 $grados_json = json_encode($grados_json);
 $grupos_json = json_encode($grupos_json);
 ?>
@@ -88,604 +124,661 @@ $grupos_json = json_encode($grupos_json);
             </a>
             <div class="clearfix"></div>
             <br>
-            <div class="p-4">
-                <div class="alert alert-warning m-auto" role="alert">
+            <?php if (count($circular) == 0): ?>
+                <div class="alert alert-danger m-auto" role="alert">
+                    <span>
+                        <i class="material-icons">danger</i>
+                        &nbsp;&nbsp;Circular no existe
+                    </span>
+                </div>
+                <br>
+                <br>
+            <?php else: ?>
+                <div class="p-4">
+                    <div class="alert alert-warning m-auto" role="alert">
                             <span>
                                 <i class="material-icons">warning</i>
                                 &nbsp;&nbsp;Edición de la circular &quot;<?= $titulo; ?>&quot;
                             </span>
+                    </div>
                 </div>
-            </div>
-            <div class="row justify-content-around">
-                <div class="card col-sm-12 col-md-7 border panel-personalizado">
-                    <div class="card-body p-0 pt-3">
-                        <pre><?= $aux_niveles; ?></pre>
-                        <h6 class="text-primary border-bottom">
-                            <i class="material-icons">chat_bubble</i>&nbsp;&nbsp;CIRCULAR (EDICIÓN)
-                        </h6>
-                        <br>
-                        <form id="post_nuevo_administrativo"
-                              action="/pruebascd/admin/app/Circulares/common/post_nueva_circular.php"
-                              class="needs-validation" novalidate>
-                            <div class="form-group col-md-6">
-                                <label>Título</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fa fa-bookmark"></i></span>
+                <div class="row justify-content-around">
+                    <div class="card col-sm-12 col-md-7 border panel-personalizado">
+                        <div class="card-body p-0 pt-3">
+                            <h6 class="text-primary border-bottom">
+                                <i class="material-icons">chat_bubble</i>&nbsp;&nbsp;CIRCULAR (EDICIÓN)
+                            </h6>
+                            <br>
+                            <form id="post_nuevo_administrativo"
+                                  action="/pruebascd/admin/app/Circulares/common/post_nueva_circular.php"
+                                  class="needs-validation" novalidate>
+                                <div class="form-group col-md-6">
+                                    <label>Título</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-bookmark"></i></span>
+                                        </div>
+                                        <input type="text"
+                                               value="<?= $titulo ?>"
+                                               id="input_titulo"
+                                               name="titulo"
+                                               class="form-control text-uppercase"
+                                               placeholder="Título"
+                                               autocomplete="off"
+                                               autofocus
+                                               required>
                                     </div>
-                                    <input type="text"
-                                           value="<?= $titulo ?>"
-                                           id="input_titulo"
-                                           name="titulo"
-                                           class="form-control text-uppercase"
-                                           placeholder="Título"
-                                           autocomplete="off"
-                                           autofocus
-                                           required>
                                 </div>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label>Descripción</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fa fa-book-open"></i></span>
+                                <div class="form-group col-md-6">
+                                    <label>Descripción</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-book-open"></i></span>
+                                        </div>
+                                        <input type="text"
+                                               value="<?= $descripcion ?>"
+                                               id="input_descripcion"
+                                               name="descripcion"
+                                               class="form-control text-uppercase"
+                                               placeholder="Descripción"
+                                               autocomplete="off">
                                     </div>
-                                    <input type="text"
-                                           value="<?= $descripcion ?>"
-                                           id="input_descripcion"
-                                           name="descripcion"
-                                           class="form-control text-uppercase"
-                                           placeholder="Descripción"
-                                           autocomplete="off">
                                 </div>
-                            </div>
-                            <div class="form-group col-md-6 d-flex">
-                                <a href="#!"
-                                   class="btn btn-primary btn-squared"
-                                   data-toggle="modal" data-target="#modal_adjuntar">
-                                    &nbsp;Adjuntar evento
-                                    <i class="material-icons">event</i>
-                                </a>
-                                &nbsp;&nbsp;
-                                <i class="material-icons text-success"
-                                   style="font-size: 1.5rem;"
-                                   id="id_icon_done_adjuntado"
-                                   hidden>
-                                    done
-                                </i>
-                                <!-- Modal -->
-                                <div class="modal fade" id="modal_adjuntar" tabindex="-1" role="dialog">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title text-info">
-                                                    <i class="material-icons">help</i>
-                                                    &nbsp;Información del evento
-                                                </h5>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="form-group col-md-12">
-                                                    <label>Tema del evento</label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
+                                <div class="form-group col-md-6">
+                                    <?php if ($flag_evento): ?>
+                                        <div class="alert alert-info" role="alert">
+                                            <i class="material-icons">info</i> &nbsp; Ésta circular tiene eventos
+                                            relacionados
+                                        </div>
+                                    <?php endif; ?>
+                                    <a href="#!"
+                                       class="btn btn-primary btn-squared"
+                                       data-toggle="modal" data-target="#modal_adjuntar">
+                                        &nbsp;Adjuntar evento
+                                        <i class="material-icons">event</i>
+                                    </a>
+                                    &nbsp;&nbsp;
+                                    <i class="material-icons text-success"
+                                       style="font-size: 1.5rem;"
+                                       id="id_icon_done_adjuntado"
+                                       <?php if (!$flag_evento): ?>hidden<?php endif; ?>>
+                                        done
+                                    </i>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="modal_adjuntar" tabindex="-1" role="dialog">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title text-info">
+                                                        <i class="material-icons">help</i>
+                                                        &nbsp;Información del evento
+                                                    </h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="form-group col-md-12">
+                                                        <label>Tema del evento</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
                                                             <span class="input-group-text"><i
                                                                         class="fa fa-bookmark"></i></span>
+                                                            </div>
+                                                            <input type="text"
+                                                                   id="id_tema_evento"
+                                                                   class="form-control text-uppercase"
+                                                                   placeholder="Tema del evento"
+                                                                   value="<?= $tema_ics; ?>"
+                                                                   autocomplete="off">
                                                         </div>
-                                                        <input type="text"
-                                                               id="id_tema_evento"
-                                                               class="form-control text-uppercase"
-                                                               placeholder="Tema del evento"
-                                                               autocomplete="off">
                                                     </div>
-                                                </div>
-                                                <div class="form-group col-md-12">
-                                                    <label>Cuándo</label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
+                                                    <div class="form-group col-md-12">
+                                                        <label>Cuándo</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
                                                 <span class="input-group-text">
                                                     <i class="material-icons">calendar_today</i>
                                                 </span>
+                                                            </div>
+                                                            <input type="text"
+                                                                   id="id_cuando"
+                                                                   class="form-control _datepicker"
+                                                                   placeholder="Cuándo"
+                                                                   autocomplete="off"
+                                                                   value="<?= $fecha_ics; ?>"
+                                                                   onclick="blur();">
                                                         </div>
-                                                        <input type="text"
-                                                               id="id_cuando"
-                                                               class="form-control _datepicker"
-                                                               placeholder="Cuándo"
-                                                               autocomplete="off"
-                                                               onclick="blur();">
                                                     </div>
-                                                </div>
-                                                <div class="form-group col-md-12">
-                                                    <label>Hora inicial</label>
-                                                    <div class="input-group">
-                                                        <input type="text"
-                                                               id="id_time_inicial"
-                                                               class="form-control"
-                                                               placeholder="Hora inicial"
-                                                               autocomplete="off"
-                                                               onchange="validar_horario_ics();"
-                                                               onclick="blur();">
-                                                    </div>
-                                                    <script>
-                                                        $('#id_time_inicial').timepicker({
-                                                            uiLibrary: 'bootstrap4',
-                                                            mode: '24hr'
-                                                        });
-                                                    </script>
-                                                </div>
-                                                <div class="form-group col-md-12">
-                                                    <label>Hora final</label>
-                                                    <div class="input-group">
-                                                        <input type="text"
-                                                               id="id_time_final"
-                                                               class="form-control"
-                                                               placeholder="Hora final"
-                                                               autocomplete="off"
-                                                               onchange="validar_horario_ics();"
-                                                               onclick="blur();">
-                                                    </div>
-                                                    <script>
-                                                        $('#id_time_final').timepicker({
-                                                            uiLibrary: 'bootstrap4',
-                                                            mode: '24hr'
-                                                        });
-                                                    </script>
-                                                </div>
-                                                <div class="form-group col-md-12">
-                                                    <label>Ubicación</label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text"><i class="material-icons">near_me</i></span>
+                                                    <div class="form-group col-md-12">
+                                                        <label>Hora inicial</label>
+                                                        <div class="input-group">
+                                                            <input type="text"
+                                                                   id="id_time_inicial"
+                                                                   class="form-control"
+                                                                   placeholder="Hora inicial"
+                                                                   autocomplete="off"
+                                                                   onchange="validar_horario_ics();"
+                                                                   value="<?= $hora_inicial_ics; ?>"
+                                                                   onclick="blur();">
                                                         </div>
-                                                        <input type="text"
-                                                               id="id_ubicacion"
-                                                               class="form-control text-uppercase"
-                                                               placeholder="Ubicación"
-                                                               autocomplete="off">
+                                                        <script>
+                                                            $('#id_time_inicial').timepicker({
+                                                                uiLibrary: 'bootstrap4',
+                                                                mode: '24hr'
+                                                            });
+                                                        </script>
+                                                    </div>
+                                                    <div class="form-group col-md-12">
+                                                        <label>Hora final</label>
+                                                        <div class="input-group">
+                                                            <input type="text"
+                                                                   id="id_time_final"
+                                                                   class="form-control"
+                                                                   placeholder="Hora final"
+                                                                   autocomplete="off"
+                                                                   onchange="validar_horario_ics();"
+                                                                   value="<?= $hora_final_ics; ?>"
+                                                                   onclick="blur();">
+                                                        </div>
+                                                        <script>
+                                                            $('#id_time_final').timepicker({
+                                                                uiLibrary: 'bootstrap4',
+                                                                mode: '24hr'
+                                                            });
+                                                        </script>
+                                                    </div>
+                                                    <div class="form-group col-md-12">
+                                                        <label>Ubicación</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text"><i
+                                                                            class="material-icons">near_me</i></span>
+                                                            </div>
+                                                            <input type="text"
+                                                                   id="id_ubicacion"
+                                                                   class="form-control text-uppercase"
+                                                                   placeholder="Ubicación"
+                                                                   value="<?= $ubicacion_ics; ?>"
+                                                                   autocomplete="off">
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button"
-                                                        class="btn btn-danger btn-squared"
-                                                        data-dismiss="modal"
-                                                        onclick="cancelar_adjuntar_ics();">
-                                                    <i class="material-icons">cancel</i>
-                                                    &nbsp;Cancelar
-                                                </button>
-                                                <button type="button"
-                                                        class="btn btn-primary btn-squared"
-                                                        onclick="adjuntar_ics();">
-                                                    Ok
-                                                    &nbsp;<i class="material-icons">done</i>
-                                                </button>
+                                                <div class="modal-footer">
+                                                    <button type="button"
+                                                            class="btn btn-danger btn-squared"
+                                                            data-dismiss="modal"
+                                                            onclick="cancelar_adjuntar_ics();">
+                                                        <i class="material-icons">cancel</i>
+                                                        &nbsp;Cancelar
+                                                    </button>
+                                                    <button type="button"
+                                                            class="btn btn-primary btn-squared"
+                                                            onclick="adjuntar_ics();">
+                                                        Ok
+                                                        &nbsp;<i class="material-icons">done</i>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <span class="clearfix"></span>
+                                <span class="clearfix"></span>
 
-                            <br>
-                            <h5 class="text-primary"><i class="material-icons">group_add</i>&nbsp;&nbsp;Selección de
-                                grupos y usuarios</h5>
-                            <hr>
-                            <div class="row col-sm-12 justify-content-between">
-                                <div class="">
-                                    <label>Nivel</label>
-                                    <br>
-                                    <select class="selectpicker form-control text-uppercase"
-                                            title="Seleccione nivel"
-                                            onchange="setGrado(this.value)"
-                                            id="select_nivel">
-                                        <?php
-                                        $consulta_catalogo_nivel = $control_circulares->select_catalogo_nivel();
-                                        while ($row = mysqli_fetch_array($consulta_catalogo_nivel)):
-                                            $id_nivel = $row[0];
-                                            $descripcion_nivel = $row[1];
-                                            array_push($nivel_json, ["id_nivel" => intval($id_nivel), "nivel" => $descripcion_nivel]);
+                                <br>
+                                <h5 class="text-primary"><i class="material-icons">group_add</i>&nbsp;&nbsp;Selección de
+                                    grupos y usuarios</h5>
+                                <hr>
+                                <div class="row col-sm-12 justify-content-between">
+                                    <div class="">
+                                        <label>Nivel</label>
+                                        <br>
+                                        <select class="selectpicker form-control text-uppercase"
+                                                title="Seleccione nivel"
+                                                onchange="setGrado(this.value)"
+                                                id="select_nivel">
+                                            <?php
+                                            $consulta_catalogo_nivel = $control_circulares->select_catalogo_nivel();
+                                            while ($row = mysqli_fetch_array($consulta_catalogo_nivel)):
+                                                $id_nivel = $row[0];
+                                                $descripcion_nivel = $row[1];
+                                                array_push($nivel_json, ["id_nivel" => intval($id_nivel), "nivel" => $descripcion_nivel]);
+                                                ?>
+                                                <option value="<?php echo $id_nivel; ?>"><?php echo $descripcion_nivel; ?></option>
+                                            <?php
+                                            endwhile;
+                                            $nivel_json = json_encode($nivel_json);
                                             ?>
-                                            <option value="<?php echo $id_nivel; ?>"><?php echo $descripcion_nivel; ?></option>
-                                        <?php
-                                        endwhile;
-                                        $nivel_json = json_encode($nivel_json);
-                                        ?>
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        ¡Seleccione un nivel válido!
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            ¡Seleccione un nivel válido!
+                                        </div>
+                                    </div>
+                                    <div class="">
+                                        <label>Grado</label>
+                                        <br>
+                                        <select class="selectpicker text-uppercase"
+                                                title="Seleccione grado"
+                                                id="select_grado"
+                                                data-live-search="true"
+                                                onchange="setGrupo(this.value)"></select>
+                                    </div>
+                                    <div class="">
+                                        <label>Grupo</label>
+                                        <br>
+                                        <select class="selectpicker text-uppercase"
+                                                title="Seleccione grupo"
+                                                data-live-search="true"
+                                                id="select_grupo"></select>
+                                    </div>
+                                    <div>
+                                        <label>&nbsp;</label>
+                                        <br>
+                                        <button type="button"
+                                                class="btn btn-success btn-squared"
+                                                onclick="add_nivel_grado_grupo();">
+                                            Agregar &nbsp;&nbsp;<i class="material-icons">add</i>
+                                        </button>
                                     </div>
                                 </div>
-                                <div class="">
-                                    <label>Grado</label>
-                                    <br>
-                                    <select class="selectpicker text-uppercase"
-                                            title="Seleccione grado"
-                                            id="select_grado"
-                                            data-live-search="true"
-                                            onchange="setGrupo(this.value)"></select>
-                                </div>
-                                <div class="">
-                                    <label>Grupo</label>
-                                    <br>
-                                    <select class="selectpicker text-uppercase"
-                                            title="Seleccione grupo"
-                                            data-live-search="true"
-                                            id="select_grupo"></select>
-                                </div>
-                                <div>
-                                    <label>&nbsp;</label>
-                                    <br>
-                                    <button type="button"
-                                            class="btn btn-success btn-squared"
-                                            onclick="add_nivel_grado_grupo();">
-                                        Agregar &nbsp;&nbsp;<i class="material-icons">add</i>
-                                    </button>
-                                </div>
-                            </div>
-                            <br>
-                            <div class="row justify-content-start col-sm-12">
-                                <div>
-                                    <label>Grupos especiales</label>
-                                    <br>
-                                    <select class="selectpicker text-uppercase"
-                                            id="select_grupos_especiales"
-                                            title="Seleccione grupo especial"
-                                            data-live-search="true"
-                                            data-actions-box="true"
-                                            multiple
-                                            onchange="add_grupo_especial_table(this);">
-                                        <?php
-                                        $consulta_grupos_especiales = $control_circulares->select_grupos_especiales();
-                                        while ($row = mysqli_fetch_array($consulta_grupos_especiales)):
-                                            $id_grupo = $row[0];
-                                            $grupo = $row[1];
-                                            ?>
-                                            <option value="<?= $id_grupo; ?>"><?= $grupo; ?></option>
-                                        <?php
-                                        endwhile;
-                                        ?>
-                                    </select>
-                                </div>
-                                &nbsp;&nbsp;&nbsp;
-                                <div>
-                                    <label>Grupos administrativos</label>
-                                    <br>
-                                    <select class="selectpicker text-uppercase"
-                                            id="select_grupos_administrativos"
-                                            title="Seleccione grupo administrativo"
-                                            data-live-search="true"
-                                            data-actions-box="true"
-                                            multiple
-                                            onchange="add_grupos_administrativos_table();">
-                                        <?php
-                                        $consulta_grupos_administrativos = $control_circulares->select_grupos_administrativos();
-                                        while ($row = mysqli_fetch_array($consulta_grupos_administrativos)):
-                                            $id_grupo_adm = $row[0];
-                                            $grupo_adm = $row[1];
-                                            ?>
-                                            <option value="<?= $id_grupo_adm; ?>"><?= $grupo_adm; ?></option>
-                                        <?php
-                                        endwhile;
-                                        ?>
-                                    </select>
-                                </div>
-                                <span class="col-sm-12"><br></span>
-                                <div>
-                                    <label>Camiones (Mañana)</label>
-                                    <br>
-                                    <select class="selectpicker"
-                                            id="id_select_camiones"
-                                            title="Seleccione camiones"
-                                            data-live-search="true"
-                                            data-actions-box="true"
-                                            onchange="add_camiones();"
-                                            multiple>
-                                        <?php
-                                        $consulta_camiones = $control_circulares->select_camiones('2019-11-16');
-                                        $consulta_padres = $control_circulares->select_alumnos_ruta('2019-11-16');
-                                        $padres_camiones = array();
-                                        while ($row = mysqli_fetch_assoc($consulta_padres)):
-                                            array_push($padres_camiones, [
-                                                "id_ruta" => $row['id_ruta_h'],
-                                                "id_alumno" => $row['id_alumno'],
-                                                "id_papa" => $row['id_papa'],
-                                                "camion" => $row['camion'],
-                                                "nombre_ruta" => $row['nombre_ruta']
-                                            ]);
-                                        endwhile;
-                                        $padres_camiones = json_encode($padres_camiones);
-                                        while ($row = mysqli_fetch_assoc($consulta_camiones)):
-                                            ?>
-                                            <option value="<?= $row['id_ruta_h']; ?>">
-                                                Camión: <?= str_pad($row['camion'], 2, "0", STR_PAD_LEFT); ?> |
-                                                Ruta: <?= $row['nombre_ruta']; ?>
-                                            </option>
-                                        <?php endwhile; ?>
-                                    </select>
-                                </div>
-                                &nbsp;&nbsp;&nbsp;
-                                <div>
-                                    <label>Camiones (Tarde)</label>
-                                    <br>
-                                    <select class="selectpicker"
-                                            id="id_select_camiones_tarde"
-                                            title="Seleccione camiones"
-                                            data-live-search="true"
-                                            data-actions-box="true"
-                                            onchange="add_camiones_tarde();"
-                                            multiple>
-                                        <?php
-                                        $consulta_camiones_tarde = $control_circulares->select_camiones_tarde('2019-11-16');
-                                        $consulta_padres_tarde = $control_circulares->select_alumnos_ruta_tarde('2019-11-16');
-                                        $padres_camiones_tarde = array();
-                                        while ($row = mysqli_fetch_assoc($consulta_padres_tarde)):
-                                            array_push($padres_camiones_tarde, [
-                                                "id_ruta" => $row['id_ruta_h_s'],
-                                                "id_alumno" => $row['id_alumno'],
-                                                "id_papa" => $row['id_papa'],
-                                                "camion" => $row['camion'],
-                                                "nombre_ruta" => $row['nombre_ruta']
-                                            ]);
-                                        endwhile;
-                                        $padres_camiones_tarde = json_encode($padres_camiones_tarde);
-                                        while ($row = mysqli_fetch_assoc($consulta_camiones_tarde)):
-                                            ?>
-                                            <option value="<?= $row['id_ruta_h_s']; ?>">
-                                                Camión: <?= str_pad($row['camion'], 2, "0", STR_PAD_LEFT); ?> |
-                                                Ruta: <?= $row['nombre_ruta']; ?>
-                                            </option>
-                                        <?php endwhile; ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <br>
-                            <br>
-                            <h5 class="text-primary">
-                                <i class="material-icons">group_add</i>&nbsp;&nbsp;Adicionales
-                            </h5>
-                            <hr>
-                            <div class="row col-sm-12 justify-content-start">
-                                <div class="custom-control custom-checkbox mb-3">
-                                    <input type="checkbox"
-                                           class="custom-control-input"
-                                           id="check_enviar_todos"
-                                           name="enviar_todos"
-                                           onchange="chk_enviar_todos(this.checked);">
-                                    <label class="custom-control-label" for="check_enviar_todos">Enviar a todos</label>
-                                </div>
-                            </div>
-                            <div class="col-sm-12">
-                                <label>Usuarios</label>
                                 <br>
-                                <select class="selectpicker text-uppercase"
-                                        id="select_usuarios"
-                                        title="Seleccione usuario"
-                                        name="usuarios"
-                                        data-live-search="true"
-                                        multiple
-                                        data-actions-box="true">
-                                    <?php
-                                    // id, nombre, numero, correo
-                                    $consulta_usuarios = $control_circulares->select_usuarios();
-                                    $coleccion_usuarios = array();
-                                    while ($row = mysqli_fetch_array($consulta_usuarios)):
-                                        $id = $row[0];
-                                        $nombre = $row[1];
-                                        $numero = $row[2];
-                                        $correo = $row[3];
-                                        array_push($coleccion_usuarios, ["id_usuario" => $id, "nombre" => $nombre]);
+                                <div class="row justify-content-start col-sm-12">
+                                    <div>
+                                        <label>Grupos especiales</label>
+                                        <br>
+                                        <select class="selectpicker text-uppercase"
+                                                id="select_grupos_especiales"
+                                                title="Seleccione grupo especial"
+                                                data-live-search="true"
+                                                data-actions-box="true"
+                                                multiple
+                                                onchange="add_grupo_especial_table(this);">
+                                            <?php
+                                            $consulta_grupos_especiales = $control_circulares->select_grupos_especiales();
+                                            while ($row = mysqli_fetch_array($consulta_grupos_especiales)):
+                                                $id_grupo = $row[0];
+                                                $grupo = $row[1];
+                                                ?>
+                                                <option value="<?= $id_grupo; ?>"><?= $grupo; ?></option>
+                                            <?php
+                                            endwhile;
+                                            ?>
+                                        </select>
+                                    </div>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <div>
+                                        <label>Grupos administrativos</label>
+                                        <br>
+                                        <select class="selectpicker text-uppercase"
+                                                id="select_grupos_administrativos"
+                                                title="Seleccione grupo administrativo"
+                                                data-live-search="true"
+                                                data-actions-box="true"
+                                                multiple
+                                                onchange="add_grupos_administrativos_table(this);">
+                                            <?php
+                                            $consulta_grupos_administrativos = $control_circulares->select_grupos_administrativos();
+                                            while ($row = mysqli_fetch_array($consulta_grupos_administrativos)):
+                                                $id_grupo_adm = $row[0];
+                                                $grupo_adm = $row[1];
+                                                ?>
+                                                <option value="<?= $id_grupo_adm; ?>"><?= $grupo_adm; ?></option>
+                                            <?php
+                                            endwhile;
+                                            ?>
+                                        </select>
+                                    </div>
+                                    <span class="col-sm-12"><br></span>
+                                    <div>
+                                        <label>Camiones (Mañana)</label>
+                                        <br>
+                                        <select class="selectpicker"
+                                                id="id_select_camiones"
+                                                title="Seleccione camiones"
+                                                data-live-search="true"
+                                                data-actions-box="true"
+                                                onchange="add_camiones();"
+                                                multiple>
+                                            <?php
+                                            $fecha_actual = date("Y-m-d");
+                                            $consulta_camiones = $control_circulares->select_camiones($fecha_actual);
+                                            $consulta_padres = $control_circulares->select_alumnos_ruta($fecha_actual);
+                                            $padres_camiones = array();
+                                            while ($row = mysqli_fetch_assoc($consulta_padres)):
+                                                array_push($padres_camiones, [
+                                                    "id_ruta" => $row['id_ruta_h'],
+                                                    "id_alumno" => $row['id_alumno'],
+                                                    "id_papa" => $row['id_papa'],
+                                                    "camion" => $row['camion'],
+                                                    "nombre_ruta" => $row['nombre_ruta']
+                                                ]);
+                                            endwhile;
+                                            $padres_camiones = json_encode($padres_camiones);
+                                            while ($row = mysqli_fetch_assoc($consulta_camiones)):
+                                                ?>
+                                                <option value="<?= $row['id_ruta_h']; ?>">
+                                                    Camión: <?= str_pad($row['camion'], 2, "0", STR_PAD_LEFT); ?> |
+                                                    Ruta: <?= $row['nombre_ruta']; ?>
+                                                </option>
+                                            <?php endwhile; ?>
+                                        </select>
+                                    </div>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <div>
+                                        <label>Camiones (Tarde)</label>
+                                        <br>
+                                        <select class="selectpicker"
+                                                id="id_select_camiones_tarde"
+                                                title="Seleccione camiones"
+                                                data-live-search="true"
+                                                data-actions-box="true"
+                                                onchange="add_camiones_tarde();"
+                                                multiple>
+                                            <?php
+                                            $fecha_actual = date("Y-m-d");
+                                            $consulta_camiones_tarde = $control_circulares->select_camiones_tarde($fecha_actual);
+                                            $consulta_padres_tarde = $control_circulares->select_alumnos_ruta_tarde($fecha_actual);
+                                            $padres_camiones_tarde = array();
+                                            while ($row = mysqli_fetch_assoc($consulta_padres_tarde)):
+                                                array_push($padres_camiones_tarde, [
+                                                    "id_ruta" => $row['id_ruta_h_s'],
+                                                    "id_alumno" => $row['id_alumno'],
+                                                    "id_papa" => $row['id_papa'],
+                                                    "camion" => $row['camion'],
+                                                    "nombre_ruta" => $row['nombre_ruta']
+                                                ]);
+                                            endwhile;
+                                            $padres_camiones_tarde = json_encode($padres_camiones_tarde);
+                                            while ($row = mysqli_fetch_assoc($consulta_camiones_tarde)):
+                                                ?>
+                                                <option value="<?= $row['id_ruta_h_s']; ?>">
+                                                    Camión: <?= str_pad($row['camion'], 2, "0", STR_PAD_LEFT); ?> |
+                                                    Ruta: <?= $row['nombre_ruta']; ?>
+                                                </option>
+                                            <?php endwhile; ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <br>
+                                <br>
+                                <h5 class="text-primary">
+                                    <i class="material-icons">group_add</i>&nbsp;&nbsp;Adicionales
+                                </h5>
+                                <hr>
+                                <div class="row col-sm-12 justify-content-start">
+                                    <div class="custom-control custom-checkbox mb-3">
+                                        <input type="checkbox"
+                                               class="custom-control-input"
+                                               id="check_enviar_todos"
+                                               name="enviar_todos"
+                                               onchange="chk_enviar_todos(this.checked);">
+                                        <label class="custom-control-label" for="check_enviar_todos">Enviar a
+                                            todos</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <label>Usuarios</label>
+                                    <br>
+                                    <select class="selectpicker text-uppercase"
+                                            id="select_usuarios"
+                                            title="Seleccione usuario"
+                                            name="usuarios"
+                                            data-live-search="true"
+                                            multiple
+                                            data-actions-box="true">
+                                        <?php
+                                        // id, nombre, numero, correo
+                                        $consulta_usuarios = $control_circulares->select_usuarios();
+                                        $coleccion_usuarios = array();
+                                        while ($row = mysqli_fetch_array($consulta_usuarios)):
+                                            $id = $row[0];
+                                            $nombre = $row[1];
+                                            $numero = $row[2];
+                                            $correo = $row[3];
+                                            array_push($coleccion_usuarios, ["id_usuario" => $id, "nombre" => $nombre]);
+                                            ?>
+                                            <option value="<?= $id; ?>"
+                                                <?php
+                                                $select_usuarios_sin_grupo = $control_circulares->select_usuarios_sin_grupo($id_circular);
+                                                while ($row_usuario = mysqli_fetch_assoc($select_usuarios_sin_grupo)) {
+                                                    if ($id == $row_usuario['id_usuario']) echo "selected";
+                                                }
+                                                ?>
+                                            >
+                                                <?= $nombre; ?>
+                                            </option>
+                                        <?php
+                                        endwhile;
+                                        $coleccion_usuarios_json = json_encode($coleccion_usuarios);
                                         ?>
-                                        <option value="<?= $id; ?>"><?= $nombre; ?></option>
+                                    </select>
+                                    <button type="button"
+                                            class="btn btn-primary btn-squared"
+                                            data-toggle="modal"
+                                            data-target="#modal_usuarios"
+                                            onclick="add_usuarios_table();">
+                                        <i class="material-icons">search</i>
+                                    </button>
+                                    <div class="modal fade" id="modal_usuarios" tabindex="-1" role="dialog"
+                                         aria-hidden="true">
+                                        <div class="modal-dialog modal-lg p-0" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title text-primary">Usuarios</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body p-1">
+                                                    <br>
+                                                    <table class="stripe row-border order-column"
+                                                           id="id_table_usuarios">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Usuarios</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <?php
+                                                        $select_usuarios_sin_grupo = $control_circulares->select_usuarios_sin_grupo($id_circular);
+                                                        while ($row = mysqli_fetch_assoc($select_usuarios_sin_grupo)): ?>
+                                                            <tr>
+                                                                <td><?= $row['nombre']; ?></td>
+                                                            </tr>
+                                                        <?php endwhile; ?>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-primary btn-squared"
+                                                            data-dismiss="modal">
+                                                        Ok &nbsp;&nbsp;<i class="material-icons right">done</i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <br>
+                                <h5 class="text-primary"><i class="material-icons">info</i>&nbsp;&nbsp;Información de
+                                    contenido</h5>
+                                <hr>
+                                <br>
+                                <div id="editor"></div>
+                                <span class="col-md-12"><hr></span>
+                                <button class="btn btn-primary" type="submit" id="btn_enviar">
+                                    Actualizar &nbsp;&nbsp;<i class="material-icons">send</i>
+                                </button>
+                                <div class="form-row">
+                                    <br>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card col-sm-12 col-md-4 border panel-personalizado">
+                        <div class="card-body p-0 pt-3">
+                            <h6 class="text-primary border-bottom">
+                                <i class="material-icons">add_box</i>&nbsp;
+                                NIVELES, GRADOS Y GRUPOS AGREGADOS
+                            </h6>
+                            <br>
+                            <h6 class="text-primary"><i class="material-icons">school</i>&nbsp;&nbsp;Alumnos</h6>
+                            <div class="table-responsive">
+                                <table class="stripe row-border order-column" id="add_niveles_table">
+                                    <thead>
+                                    <tr>
+                                        <th>Nivel</th>
+                                        <th>Grado</th>
+                                        <th>Grupo</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php
+                                    $consulta_niveles = $control_circulares->select_nivel_circular($id_circular);
+                                    while ($row = mysqli_fetch_assoc($consulta_niveles)):
+                                        ?>
+                                        <tr>
+                                            <td><?= $row['nivel']; ?></td>
+                                            <td><?= $row['grado']; ?></td>
+                                            <td><?= $row['grupo']; ?></td>
+                                            <td>
+                                                <button type="button" class="btn btn-danger btn-squared btn-sm"
+                                                        onclick="remove_nivel(this, <?= intval($row['id_nivel']); ?>,<?= intval($row['id_grado']); ?>,<?= intval($row['id_grupo']); ?>);">
+                                                    Quitar &nbsp;&nbsp;<i class="material-icons">remove</i>
+                                                </button>
+                                            </td>
+                                        </tr>
                                     <?php
                                     endwhile;
-                                    $coleccion_usuarios_json = json_encode($coleccion_usuarios);
                                     ?>
-                                </select>
-                                <button type="button"
-                                        class="btn btn-primary btn-squared"
-                                        data-toggle="modal"
-                                        data-target="#modal_usuarios"
-                                        onclick="add_usuarios_table();">
-                                    <i class="material-icons">search</i>
-                                </button>
-                                <div class="modal fade" id="modal_usuarios" tabindex="-1" role="dialog"
-                                     aria-hidden="true">
-                                    <div class="modal-dialog modal-lg p-0" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title text-primary">Usuarios</h5>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body p-1">
-                                                <br>
-                                                <table class="stripe row-border order-column" id="id_table_usuarios">
-                                                    <thead>
-                                                    <tr>
-                                                        <th>Usuarios</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-primary btn-squared"
-                                                        data-dismiss="modal">
-                                                    Ok &nbsp;&nbsp;<i class="material-icons right">done</i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <br>
-                            <br>
-                            <h5 class="text-primary"><i class="material-icons">info</i>&nbsp;&nbsp;Información de
-                                contenido</h5>
-                            <hr>
-                            <br>
-                            <div id="editor"></div>
-                            <span class="col-md-12"><hr></span>
-                            <button class="btn btn-primary" type="submit" id="btn_enviar">
-                                Actualizar &nbsp;&nbsp;<i class="material-icons">send</i>
-                            </button>
-                            <div class="form-row">
-                                <br>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="card col-sm-12 col-md-4 border panel-personalizado">
-                    <div class="card-body p-0 pt-3">
-                        <h6 class="text-primary border-bottom">
-                            <i class="material-icons">add_box</i>&nbsp;
-                            NIVELES, GRADOS Y GRUPOS AGREGADOS
-                        </h6>
-                        <br>
-                        <h6 class="text-primary"><i class="material-icons">school</i>&nbsp;&nbsp;Alumnos</h6>
-                        <div class="table-responsive">
-                            <table class="stripe row-border order-column" id="add_niveles_table">
-                                <thead>
-                                <tr>
-                                    <th>Nivel</th>
-                                    <th>Grado</th>
-                                    <th>Grupo</th>
-                                    <th>Acciones</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <?php
-                                $consulta_niveles = $control_circulares->select_nivel_circular($id_circular);
-                                while ($row = mysqli_fetch_assoc($consulta_niveles)):
-                                    ?>
+                                    </tbody>
+                                </table>
+                                <hr>
+                                <h6 class="text-primary"><i class="material-icons">group_add</i>&nbsp;&nbsp;Grupos
+                                    especiales</h6>
+                                <table class="stripe row-border order-column" id="add_grupos_especiales_table">
+                                    <thead>
                                     <tr>
-                                        <td><?= $row['nivel']; ?></td>
-                                        <td><?= $row['grado']; ?></td>
-                                        <td><?= $row['grupo']; ?></td>
-                                        <td>
-                                            <button type="button" class="btn btn-danger btn-squared btn-sm"
-                                                    onclick="remove_nivel(this, <?= intval($row['id_nivel']); ?>,<?= intval($row['id_grado']); ?>,<?= intval($row['id_grupo']); ?>);">
-                                                Quitar &nbsp;&nbsp;<i class="material-icons">remove</i>
+                                        <th>Grupo</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php
+                                    $grupos_especiales = $control_circulares->select_grupos_especiales_x_circular($id_circular);
+                                    while ($row = mysqli_fetch_assoc($grupos_especiales)):
+                                        array_push($aux_grupos_especiales, [
+                                            "id_grp_especial" => intval($row['id_grupo_espepcial']),
+                                            "grupo" => $row['grupo'],
+                                        ]);
+                                        ?>
+                                        <tr>
+                                            <td><?= strtoupper($row['grupo']); ?></td>
+                                        </tr>
+                                    <?php endwhile; ?>
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <td class="right">
+                                            <button type="button"
+                                                    class="btn btn-danger btn-squared btn-sm"
+                                                    onclick="remove_grupo_especial_table();">
+                                                X
                                             </button>
                                         </td>
                                     </tr>
-                                <?php
-                                endwhile;
-                                ?>
-                                </tbody>
-                            </table>
-                            <hr>
-                            <h6 class="text-primary"><i class="material-icons">group_add</i>&nbsp;&nbsp;Grupos
-                                especiales</h6>
-                            <table class="stripe row-border order-column" id="add_grupos_especiales_table">
-                                <thead>
-                                <tr>
-                                    <th>Grupo</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <?php
-                                $grupos_especiales = $control_circulares->select_grupos_especiales_x_circular($id_circular);
-                                while ($row = mysqli_fetch_assoc($grupos_especiales)):
-                                    array_push($aux_grupos_especiales, [
-                                        "id_grp_especial" => intval($row['id_grupo_espepcial']),
-                                        "grupo" => $row['grupo'],
-                                    ]);
-                                    ?>
+                                    </tfoot>
+                                </table>
+                                <hr>
+                                <h6 class="text-primary"><i class="material-icons">group_add</i>&nbsp;&nbsp;Grupos
+                                    administrativos</h6>
+                                <table class="stripe row-border order-column" id="add_grupos_administrativos_table">
+                                    <thead>
                                     <tr>
-                                        <td><?= $row['grupo']; ?></td>
+                                        <th>Administrativo</th>
                                     </tr>
-                                <?php endwhile; ?>
-                                </tbody>
-                                <tfoot>
-                                <tr>
-                                    <td class="right">
-                                        <button type="button"
-                                                class="btn btn-danger btn-squared btn-sm"
-                                                onclick="remove_grupo_especial_table();">
-                                            X
-                                        </button>
-                                    </td>
-                                </tr>
-                                </tfoot>
-                            </table>
-                            <hr>
-                            <h6 class="text-primary"><i class="material-icons">group_add</i>&nbsp;&nbsp;Grupos
-                                administrativos</h6>
-                            <table class="stripe row-border order-column" id="add_grupos_administrativos_table">
-                                <thead>
-                                <tr>
-                                    <th>Administrativo</th>
-                                </tr>
-                                </thead>
-                                <tfoot>
-                                <tr>
-                                    <td class="right">
-                                        <button type="button"
-                                                class="btn btn-danger btn-squared btn-sm"
-                                                onclick="remove_grupo_administrativos_table();">
-                                            X
-                                        </button>
-                                    </td>
-                                </tr>
-                                </tfoot>
-                                <tbody>
-                                </tbody>
-                            </table>
-                            <hr>
-                            <h6 class="text-primary"><i class="material-icons">group_add</i>&nbsp;&nbsp;Camiones</h6>
-                            <table class="stripe row-border order-column" id="add_camiones_table">
-                                <thead>
-                                <tr>
-                                    <th>Camión (Mañana)</th>
-                                </tr>
-                                </thead>
-                                <tfoot>
-                                <tr>
-                                    <td class="right">
-                                        <button type="button"
-                                                class="btn btn-danger btn-squared btn-sm"
-                                                onclick="remove_camiones_table();">
-                                            X
-                                        </button>
-                                    </td>
-                                </tr>
-                                </tfoot>
-                                <tbody>
-                                </tbody>
-                            </table>
-                            <hr>
-                            <h6 class="text-primary"><i class="material-icons">group_add</i>&nbsp;&nbsp;Camiones</h6>
-                            <table class="stripe row-border order-column" id="add_camiones_tarde_table">
-                                <thead>
-                                <tr>
-                                    <th>Camión (Tarde)</th>
-                                </tr>
-                                </thead>
-                                <tfoot>
-                                <tr>
-                                    <td class="right">
-                                        <button type="button"
-                                                class="btn btn-danger btn-squared btn-sm"
-                                                onclick="remove_camiones_tarde_table();">
-                                            X
-                                        </button>
-                                    </td>
-                                </tr>
-                                </tfoot>
-                                <tbody>
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                    <?php
+                                    $grupos_administrativos = $control_circulares->select_grupos_administrativos_x_circular($id_circular);
+                                    while ($row = mysqli_fetch_assoc($grupos_administrativos)):
+                                        array_push($aux_grupos_administrativos, [
+                                            "id_grp_administrativo" => intval($row['id_grupo_administrativo']),
+                                            "grupo" => $row['grupo']
+                                        ]);
+                                        ?>
+                                        <tr>
+                                            <td><?= strtoupper($row['grupo']); ?></td>
+                                        </tr>
+                                    <?php endwhile; ?>
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <td class="right">
+                                            <button type="button"
+                                                    class="btn btn-danger btn-squared btn-sm"
+                                                    onclick="remove_grupo_administrativos_table();">
+                                                X
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                                <hr>
+                                <h6 class="text-primary"><i class="material-icons">group_add</i>&nbsp;&nbsp;Camiones
+                                </h6>
+                                <table class="stripe row-border order-column" id="add_camiones_table">
+                                    <thead>
+                                    <tr>
+                                        <th>Camión (Mañana)</th>
+                                    </tr>
+                                    </thead>
+                                    <tfoot>
+                                    <tr>
+                                        <td class="right">
+                                            <button type="button"
+                                                    class="btn btn-danger btn-squared btn-sm"
+                                                    onclick="remove_camiones_table();">
+                                                X
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tfoot>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                                <hr>
+                                <h6 class="text-primary"><i class="material-icons">group_add</i>&nbsp;&nbsp;Camiones
+                                </h6>
+                                <table class="stripe row-border order-column" id="add_camiones_tarde_table">
+                                    <thead>
+                                    <tr>
+                                        <th>Camión (Tarde)</th>
+                                    </tr>
+                                    </thead>
+                                    <tfoot>
+                                    <tr>
+                                        <td class="right">
+                                            <button type="button"
+                                                    class="btn btn-danger btn-squared btn-sm"
+                                                    onclick="remove_camiones_tarde_table();">
+                                                X
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tfoot>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+
+            <?php endif; ?>
         </div>
         <?php
         include "{$root}/Secciones/scripts.php";
@@ -703,15 +796,20 @@ include "{$root}/Secciones/notificaciones.php";
     var catalogo_grados = <?= $grados_json; ?>;
     var catalogo_grupos = <?= $grupos_json; ?>;
     var catalogo_grp_especiales = new Set(<?= json_encode($catalogo_grp_especiales);?>);
+    var catalogo_grp_administrativos = new Set(<?=json_encode($catalogo_grp_administrativos);?>);
+    var catalogo_usuarios = new Set(<?=json_encode($catalogo_usuarios);?>);
     var set_nivel_grado_grupo = new Set(<?= $aux_niveles; ?>);
     var set_grupos_especiales = new Set(<?=json_encode($aux_grupos_especiales);?>);
+    var set_grupos_administrativos = new Set(<?=json_encode($aux_grupos_administrativos);?>);
     var flag_guardar = false;
     var flag_programada = false;
     var id_circular = <?=$id_circular;?>;
 
     $(document).ready(function () {
         ckeditor();
+        <?php if (count($circular) != 0): ?>
         CKEDITOR.instances.editor.setData(`<?= html_entity_decode($contenido); ?>`);
+        <?php endif; ?>
         spinnerOut();
         set_menu_hamburguer();
         set_table('add_niveles_table');
@@ -792,7 +890,9 @@ include "{$root}/Secciones/notificaciones.php";
                 hora_inicial_ics: $("#id_time_inicial").val(),
                 hora_final_ics: $("#id_time_final").val(),
                 ubicacion_ics: $("#id_ubicacion").val(),
-                grp_especiales: Array.from(set_grupos_especiales)
+                grp_especiales: Array.from(set_grupos_especiales),
+                grp_administrativos: Array.from(set_grupos_administrativos),
+                usuarios: $("#select_usuarios").selectpicker('val')
             }
         }).done((res) => {
         }).always(() => {
@@ -920,21 +1020,23 @@ include "{$root}/Secciones/notificaciones.php";
     }
 
     function add_grupo_especial_table(el) {
-        let aux = new Set();
         let tabla = $("#add_grupos_especiales_table").DataTable();
         let set = new Set($(el).selectpicker('val'));
         set_grupos_especiales.clear();
         tabla.clear().draw();
         set.forEach(item => {
-            catalogo_grp_especiales.forEach(element => {
-                if (element.id_grp_especial === parseInt(item)) {
-                    set_grupos_especiales.forEach(value => {
-                        if (value.id_grp_especial === parseInt(item)) {
-                            set_grupos_especiales.delete(value);
+            catalogo_grp_especiales.forEach(itemCatalogo => {
+                if (itemCatalogo.id_grp_especial === parseInt(item)) {
+                    set_grupos_especiales.forEach(itemAsignado => {
+                        if (itemAsignado.id_grp_especial === parseInt(item)) {
+                            set_grupos_especiales.delete(itemAsignado);
                         }
                     });
-                    set_grupos_especiales.add({id_grp_especial: element.id_grp_especial, grupo: element.grupo});
-                    tabla.row.add([element.grupo]).draw().node();
+                    set_grupos_especiales.add({
+                        id_grp_especial: itemCatalogo.id_grp_especial,
+                        grupo: itemCatalogo.grupo
+                    });
+                    tabla.row.add([itemCatalogo.grupo.toUpperCase()]).draw().node();
                 }
             });
         });
@@ -947,7 +1049,49 @@ include "{$root}/Secciones/notificaciones.php";
         set_grupos_especiales.clear();
     }
 
-    //id_nivel, nivel, id_grado, grado, id_grupo, grupo
+    function add_grupos_administrativos_table(el) {
+        let tabla = $("#add_grupos_administrativos_table").DataTable();
+        let set = new Set($(el).selectpicker('val'));
+        set_grupos_administrativos.clear();
+        tabla.clear().draw();
+        set.forEach(item => {
+            catalogo_grp_administrativos.forEach(itemCatalogo => {
+                if (itemCatalogo.id_grp_administrativo === parseInt(item)) {
+                    set_grupos_administrativos.forEach(itemAsignado => {
+                        if (itemAsignado.id_grp_administrativo === parseInt(item)) {
+                            set_grupos_administrativos.delete(itemAsignado);
+                        }
+                    });
+                    set_grupos_administrativos.add({
+                        id_grp_administrativo: itemCatalogo.id_grp_administrativo,
+                        grupo: itemCatalogo.grupo
+                    });
+                    tabla.row.add([itemCatalogo.grupo.toUpperCase()]).draw().node();
+                }
+            });
+        });
+    }
+
+    function remove_grupo_administrativos_table() {
+        let tabla = $("#add_grupos_administrativos_table").DataTable();
+        $("#select_grupos_administrativos").selectpicker('deselectAll');
+        tabla.clear().draw();
+        set_grupos_administrativos.clear();
+    }
+
+    function add_usuarios_table() {
+        let select_usuarios = new Set($("#select_usuarios").val());
+        let tabla = $("#id_table_usuarios").DataTable();
+        tabla.clear().draw();
+        select_usuarios.forEach(item => {
+            catalogo_usuarios.forEach(usuario => {
+                if (usuario.id_usuario == item) {
+                    tabla.row.add([usuario.nombre]).draw().node();
+                }
+            });
+        });
+    }
+
 </script>
 </body>
 </html>

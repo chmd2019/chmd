@@ -19,13 +19,13 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
     <div class="card col-sm-12 col-md-7 border panel-personalizado">
         <div class="card-body p-0 pt-3">
             <h6 class="text-primary border-bottom">
-                <i class="material-icons">chat_bubble</i>&nbsp;&nbsp;NUEVA CIRCULAR 
+                <i class="material-icons">chat_bubble</i>&nbsp;&nbsp;NUEVA CIRCULAR
                 &nbsp;&nbsp;
                 <span class="badge badge-info mb-2">Ciclo escolar: <?= $ciclo_escolar; ?></span>
             </h6>
             <br>
             <form id="post_nuevo_administrativo"
-                  action="/pruebascd/admin/app/Circulares/common/post_nueva_circular.php" 
+                  action="/pruebascd/admin/app/Circulares/common/post_nueva_circular.php"
                   class="needs-validation" novalidate>
                 <div class="form-group col-md-6">
                     <label>Título</label>
@@ -36,13 +36,13 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                         <input type="text"
                                id="input_titulo"
                                name="titulo"
-                               class="form-control text-uppercase" 
+                               class="form-control text-uppercase"
                                placeholder="Título"
                                autocomplete="off"
                                autofocus
                                required>
                     </div>
-                </div>                
+                </div>
                 <div class="form-group col-md-6">
                     <label>Descripción</label>
                     <div class="input-group">
@@ -52,20 +52,20 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                         <input type="text"
                                id="input_descripcion"
                                name="descripcion"
-                               class="form-control text-uppercase" 
+                               class="form-control text-uppercase"
                                placeholder="Descripción"
                                autocomplete="off">
                     </div>
-                </div>                 
-                <div class="form-group col-md-6 d-flex">     
-                    <a href="#!" 
+                </div>
+                <div class="form-group col-md-6 d-flex">
+                    <a href="#!"
                        class="btn btn-primary btn-squared"
                        data-toggle="modal" data-target="#modal_adjuntar">
                         &nbsp;Adjuntar evento
                         <i class="material-icons">event</i>
                     </a>
                     &nbsp;&nbsp;
-                    <i class="material-icons text-success" 
+                    <i class="material-icons text-success"
                        style="font-size: 1.5rem;"
                        id="id_icon_done_adjuntado"
                        hidden>
@@ -93,7 +93,7 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                                             </div>
                                             <input type="text"
                                                    id="id_tema_evento"
-                                                   class="form-control text-uppercase" 
+                                                   class="form-control text-uppercase"
                                                    placeholder="Tema del evento"
                                                    autocomplete="off">
                                         </div>
@@ -108,7 +108,7 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                                             </div>
                                             <input type="text"
                                                    id="id_cuando"
-                                                   class="form-control _datepicker" 
+                                                   class="form-control _datepicker"
                                                    placeholder="Cuándo"
                                                    autocomplete="off"
                                                    onclick="blur();">
@@ -119,7 +119,7 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                                         <div class="input-group">
                                             <input type="text"
                                                    id="id_time_inicial"
-                                                   class="form-control" 
+                                                   class="form-control"
                                                    placeholder="Hora inicial"
                                                    autocomplete="off"
                                                    onchange="validar_horario_ics();"
@@ -137,7 +137,7 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                                         <div class="input-group">
                                             <input type="text"
                                                    id="id_time_final"
-                                                   class="form-control" 
+                                                   class="form-control"
                                                    placeholder="Hora final"
                                                    autocomplete="off"
                                                    onchange="validar_horario_ics();"
@@ -154,25 +154,26 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                                         <label>Ubicación</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text"><i class="material-icons">near_me</i></span>
+                                                <span class="input-group-text"><i
+                                                            class="material-icons">near_me</i></span>
                                             </div>
                                             <input type="text"
                                                    id="id_ubicacion"
-                                                   class="form-control text-uppercase" 
+                                                   class="form-control text-uppercase"
                                                    placeholder="Ubicación"
                                                    autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" 
-                                            class="btn btn-danger btn-squared" 
+                                    <button type="button"
+                                            class="btn btn-danger btn-squared"
                                             data-dismiss="modal"
                                             onclick="cancelar_adjuntar_ics();">
                                         <i class="material-icons">cancel</i>
                                         &nbsp;Cancelar
                                     </button>
-                                    <button type="button" 
+                                    <button type="button"
                                             class="btn btn-primary btn-squared"
                                             onclick="adjuntar_ics();">
                                         Ok
@@ -187,17 +188,17 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                 <div class="col-sm-12 col-md-6" hidden>
                     <label>Estatus</label>
                     <br>
-                    <select class="selectpicker form-control text-uppercase" 
+                    <select class="selectpicker form-control text-uppercase"
                             id="select_estatus"
                             title="Seleccione estatus"
                             name="estatus">
-                                <?php
-                                $consulta_catalogo_estatus = $control_circulares->select_catalogo_estatus();
-                                while ($row = mysqli_fetch_array($consulta_catalogo_estatus)):
-                                    $id_estatus = $row[0];
-                                    $descripcion_estatus = $row[1];
-                                    $color_estatus = $row[2];
-                                    ?>
+                        <?php
+                        $consulta_catalogo_estatus = $control_circulares->select_catalogo_estatus();
+                        while ($row = mysqli_fetch_array($consulta_catalogo_estatus)):
+                            $id_estatus = $row[0];
+                            $descripcion_estatus = $row[1];
+                            $color_estatus = $row[2];
+                            ?>
                             <option value="<?php echo $id_estatus; ?>"><?php echo $descripcion_estatus; ?></option>
                         <?php endwhile; ?>
                     </select>
@@ -208,25 +209,26 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                     <br>
                 </div>
                 <br>
-                <h5 class="text-primary"><i class="material-icons">group_add</i>&nbsp;&nbsp;Selección de grupos y usuarios</h5>
-                <hr>   
+                <h5 class="text-primary"><i class="material-icons">group_add</i>&nbsp;&nbsp;Selección de grupos y
+                    usuarios</h5>
+                <hr>
                 <div class="row col-sm-12 justify-content-between">
                     <div class="">
                         <label>Nivel</label>
                         <br>
-                        <select class="selectpicker form-control text-uppercase" 
-                                title="Seleccione nivel" 
+                        <select class="selectpicker form-control text-uppercase"
+                                title="Seleccione nivel"
                                 onchange="setGrado(this.value)"
                                 id="select_nivel">
-                                    <?php
-                                    $consulta_catalogo_nivel = $control_circulares->select_catalogo_nivel();
-                                    while ($row = mysqli_fetch_array($consulta_catalogo_nivel)):
-                                        $id_nivel = $row[0];
-                                        $descripcion_nivel = $row[1];
-                                        array_push($nivel_json, ["id_nivel" => $id_nivel, "nivel" => $descripcion_nivel]);
-                                        ?>
+                            <?php
+                            $consulta_catalogo_nivel = $control_circulares->select_catalogo_nivel();
+                            while ($row = mysqli_fetch_array($consulta_catalogo_nivel)):
+                                $id_nivel = $row[0];
+                                $descripcion_nivel = $row[1];
+                                array_push($nivel_json, ["id_nivel" => $id_nivel, "nivel" => $descripcion_nivel]);
+                                ?>
                                 <option value="<?php echo $id_nivel; ?>"><?php echo $descripcion_nivel; ?></option>
-                                <?php
+                            <?php
                             endwhile;
                             $nivel_json = json_encode($nivel_json);
                             ?>
@@ -238,8 +240,8 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                     <div class="">
                         <label>Grado</label>
                         <br>
-                        <select class="selectpicker text-uppercase" 
-                                title="Seleccione grado" 
+                        <select class="selectpicker text-uppercase"
+                                title="Seleccione grado"
                                 id="select_grado"
                                 data-live-search="true"
                                 onchange="setGrupo(this.value)"></select>
@@ -247,8 +249,8 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                     <div class="">
                         <label>Grupo</label>
                         <br>
-                        <select class="selectpicker text-uppercase" 
-                                title="Seleccione grupo" 
+                        <select class="selectpicker text-uppercase"
+                                title="Seleccione grupo"
                                 data-live-search="true"
                                 id="select_grupo"></select>
                     </div>
@@ -261,27 +263,27 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                     </div>
                 </div>
                 <br>
-                <div class="row justify-content-start col-sm-12">                    
+                <div class="row justify-content-start col-sm-12">
                     <div>
                         <label>Grupos especiales</label>
                         <br>
-                        <select class="selectpicker text-uppercase" 
+                        <select class="selectpicker text-uppercase"
                                 id="select_grupos_especiales"
                                 title="Seleccione grupo especial"
                                 data-live-search="true"
                                 data-actions-box="true"
                                 multiple
                                 onchange="add_grupo_especial_table();">
-                                    <?php
-                                    $coleccion_grupos_especiales = array();
-                                    $consulta_grupos_especiales = $control_circulares->select_grupos_especiales();
-                                    while ($row = mysqli_fetch_array($consulta_grupos_especiales)):
-                                        $id_grupo = $row[0];
-                                        $grupo = $row[1];
-                                        array_push($coleccion_grupos_especiales, ["id" => $id_grupo, "grupo" => $grupo]);
-                                        ?>
+                            <?php
+                            $coleccion_grupos_especiales = array();
+                            $consulta_grupos_especiales = $control_circulares->select_grupos_especiales();
+                            while ($row = mysqli_fetch_array($consulta_grupos_especiales)):
+                                $id_grupo = $row[0];
+                                $grupo = $row[1];
+                                array_push($coleccion_grupos_especiales, ["id" => $id_grupo, "grupo" => $grupo]);
+                                ?>
                                 <option value="<?= $id_grupo; ?>"><?= $grupo; ?></option>
-                                <?php
+                            <?php
                             endwhile;
                             $coleccion_grupos_especiales = json_encode($coleccion_grupos_especiales);
                             ?>
@@ -291,29 +293,29 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                     <div>
                         <label>Grupos administrativos</label>
                         <br>
-                        <select class="selectpicker text-uppercase" 
+                        <select class="selectpicker text-uppercase"
                                 id="select_grupos_administrativos"
                                 title="Seleccione grupo administrativo"
                                 data-live-search="true"
                                 data-actions-box="true"
                                 multiple
                                 onchange="add_grupos_administrativos_table();">
-                                    <?php
-                                    $coleccion_grupos_administrativos = array();
-                                    $consulta_grupos_administrativos = $control_circulares->select_grupos_administrativos();
-                                    while ($row = mysqli_fetch_array($consulta_grupos_administrativos)):
-                                        $id_grupo_adm = $row[0];
-                                        $grupo_adm = $row[1];
-                                        array_push($coleccion_grupos_administrativos, ["id" => $id_grupo_adm, "grupo" => $grupo_adm]);
-                                        ?>
+                            <?php
+                            $coleccion_grupos_administrativos = array();
+                            $consulta_grupos_administrativos = $control_circulares->select_grupos_administrativos();
+                            while ($row = mysqli_fetch_array($consulta_grupos_administrativos)):
+                                $id_grupo_adm = $row[0];
+                                $grupo_adm = $row[1];
+                                array_push($coleccion_grupos_administrativos, ["id" => $id_grupo_adm, "grupo" => $grupo_adm]);
+                                ?>
                                 <option value="<?= $id_grupo_adm; ?>"><?= $grupo_adm; ?></option>
-                                <?php
+                            <?php
                             endwhile;
                             $coleccion_grupos_administrativos = json_encode($coleccion_grupos_administrativos);
                             ?>
                         </select>
                     </div>
-                    <span class="col-sm-12"><br></span>                     
+                    <span class="col-sm-12"><br></span>
                     <div>
                         <label>Camiones (Mañana)</label>
                         <br>
@@ -324,27 +326,28 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                                 data-actions-box="true"
                                 onchange="add_camiones();"
                                 multiple>
-                                    <?php
-                                    $fecha_actual = date("Y-m-d");
-                                    $consulta_camiones = $control_circulares->select_camiones($fecha_actual);
-                                    $consulta_padres = $control_circulares->select_alumnos_ruta($fecha_actual);
-                                    $padres_camiones = array();
-                                    while ($row = mysqli_fetch_assoc($consulta_padres)):
-                                        array_push($padres_camiones, [
-                                            "id_ruta" => $row['id_ruta_h'],
-                                            "id_alumno" => $row['id_alumno'],
-                                            "id_papa" => $row['id_papa'],
-                                            "camion" => $row['camion'],
-                                            "nombre_ruta" => $row['nombre_ruta']
-                                        ]);
-                                    endwhile;
-                                    $padres_camiones = json_encode($padres_camiones);
-                                    while ($row = mysqli_fetch_assoc($consulta_camiones)):
-                                        ?>
+                            <?php
+                            $fecha_actual = date("Y-m-d");
+                            $consulta_camiones = $control_circulares->select_camiones($fecha_actual);
+                            $consulta_padres = $control_circulares->select_alumnos_ruta($fecha_actual);
+                            $padres_camiones = array();
+                            while ($row = mysqli_fetch_assoc($consulta_padres)):
+                                array_push($padres_camiones, [
+                                    "id_ruta" => $row['id_ruta_h'],
+                                    "id_alumno" => $row['id_alumno'],
+                                    "id_papa" => $row['id_papa'],
+                                    "camion" => $row['camion'],
+                                    "nombre_ruta" => $row['nombre_ruta']
+                                ]);
+                            endwhile;
+                            $padres_camiones = json_encode($padres_camiones);
+                            while ($row = mysqli_fetch_assoc($consulta_camiones)):
+                                ?>
                                 <option value="<?= $row['id_ruta_h']; ?>">
-                                    Camión: <?= str_pad($row['camion'], 2, "0", STR_PAD_LEFT); ?> | Ruta: <?= $row['nombre_ruta']; ?>
+                                    Camión: <?= str_pad($row['camion'], 2, "0", STR_PAD_LEFT); ?> |
+                                    Ruta: <?= $row['nombre_ruta']; ?>
                                 </option>
-                            <?php endwhile; ?>   
+                            <?php endwhile; ?>
                         </select>
                     </div>
                     &nbsp;&nbsp;&nbsp;
@@ -358,26 +361,27 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                                 data-actions-box="true"
                                 onchange="add_camiones_tarde();"
                                 multiple>
-                                    <?php
-                                    $consulta_camiones_tarde = $control_circulares->select_camiones_tarde($fecha_actual);
-                                    $consulta_padres_tarde = $control_circulares->select_alumnos_ruta_tarde($fecha_actual);
-                                    $padres_camiones_tarde = array();
-                                    while ($row = mysqli_fetch_assoc($consulta_padres_tarde)):
-                                        array_push($padres_camiones_tarde, [
-                                            "id_ruta" => $row['id_ruta_h_s'],
-                                            "id_alumno" => $row['id_alumno'],
-                                            "id_papa" => $row['id_papa'],
-                                            "camion" => $row['camion'],
-                                            "nombre_ruta" => $row['nombre_ruta']
-                                        ]);
-                                    endwhile;
-                                    $padres_camiones_tarde = json_encode($padres_camiones_tarde);
-                                    while ($row = mysqli_fetch_assoc($consulta_camiones_tarde)):
-                                        ?>
+                            <?php
+                            $consulta_camiones_tarde = $control_circulares->select_camiones_tarde($fecha_actual);
+                            $consulta_padres_tarde = $control_circulares->select_alumnos_ruta_tarde($fecha_actual);
+                            $padres_camiones_tarde = array();
+                            while ($row = mysqli_fetch_assoc($consulta_padres_tarde)):
+                                array_push($padres_camiones_tarde, [
+                                    "id_ruta" => $row['id_ruta_h_s'],
+                                    "id_alumno" => $row['id_alumno'],
+                                    "id_papa" => $row['id_papa'],
+                                    "camion" => $row['camion'],
+                                    "nombre_ruta" => $row['nombre_ruta']
+                                ]);
+                            endwhile;
+                            $padres_camiones_tarde = json_encode($padres_camiones_tarde);
+                            while ($row = mysqli_fetch_assoc($consulta_camiones_tarde)):
+                                ?>
                                 <option value="<?= $row['id_ruta_h_s']; ?>">
-                                    Camión: <?= str_pad($row['camion'], 2, "0", STR_PAD_LEFT); ?> | Ruta: <?= $row['nombre_ruta']; ?>
+                                    Camión: <?= str_pad($row['camion'], 2, "0", STR_PAD_LEFT); ?> |
+                                    Ruta: <?= $row['nombre_ruta']; ?>
                                 </option>
-                            <?php endwhile; ?>   
+                            <?php endwhile; ?>
                         </select>
                     </div>
                     <span class="col-sm-12">
@@ -387,12 +391,12 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                 <br>
                 <h5 class="text-primary">
                     <i class="material-icons">group_add</i>&nbsp;&nbsp;Adicionales
-                </h5>   
+                </h5>
                 <hr>
                 <div class="row col-sm-12 justify-content-start">
                     <div class="custom-control custom-checkbox mb-3">
-                        <input type="checkbox" 
-                               class="custom-control-input" 
+                        <input type="checkbox"
+                               class="custom-control-input"
                                id="check_enviar_todos"
                                name="enviar_todos"
                                onchange="chk_enviar_todos(this.checked);">
@@ -402,33 +406,33 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                 <div class="col-sm-12">
                     <label>Usuarios</label>
                     <br>
-                    <select class="selectpicker text-uppercase" 
+                    <select class="selectpicker text-uppercase"
                             id="select_usuarios"
                             title="Seleccione usuario"
                             name="usuarios"
                             data-live-search="true"
                             multiple
                             data-actions-box="true">
-                                <?php
-                                // id, nombre, numero, correo
-                                $consulta_usuarios = $control_circulares->select_usuarios();
-                                $coleccion_usuarios = array();
-                                while ($row = mysqli_fetch_array($consulta_usuarios)):
-                                    $id = $row[0];
-                                    $nombre = $row[1];
-                                    $numero = $row[2];
-                                    $correo = $row[3];
-                                    array_push($coleccion_usuarios, ["id_usuario" => $id, "nombre" => $nombre]);
-                                    ?>
+                        <?php
+                        // id, nombre, numero, correo
+                        $consulta_usuarios = $control_circulares->select_usuarios();
+                        $coleccion_usuarios = array();
+                        while ($row = mysqli_fetch_array($consulta_usuarios)):
+                            $id = $row[0];
+                            $nombre = $row[1];
+                            $numero = $row[2];
+                            $correo = $row[3];
+                            array_push($coleccion_usuarios, ["id_usuario" => $id, "nombre" => $nombre]);
+                            ?>
                             <option value="<?= $id; ?>"><?= $nombre; ?></option>
-                            <?php
+                        <?php
                         endwhile;
                         $coleccion_usuarios_json = json_encode($coleccion_usuarios);
                         ?>
                     </select>
-                    <button type="button" 
-                            class="btn btn-primary btn-squared" 
-                            data-toggle="modal" 
+                    <button type="button"
+                            class="btn btn-primary btn-squared"
+                            data-toggle="modal"
                             data-target="#modal_usuarios"
                             onclick="add_usuarios_table();">
                         <i class="material-icons">search</i>
@@ -446,9 +450,9 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                                     <br>
                                     <table class="stripe row-border order-column" id="id_table_usuarios">
                                         <thead>
-                                            <tr>
-                                                <th>Usuarios</th>
-                                            </tr>
+                                        <tr>
+                                            <th>Usuarios</th>
+                                        </tr>
                                         </thead>
                                         <tbody>
                                         </tbody>
@@ -469,7 +473,8 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                 <hr>
                 <div id="editor"></div>
                 <span class="col-md-12"><hr></span>
-                <button class="btn btn-primary btn-squared" type="submit" id="btn_enviar" onclick="flag_guardar = false;">
+                <button class="btn btn-primary btn-squared" type="submit" id="btn_enviar"
+                        onclick="flag_guardar = false;">
                     Guardar y Enviar &nbsp;&nbsp;<i class="material-icons">email</i>
                 </button>
                 &nbsp;
@@ -478,9 +483,9 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                 </button>
                 &nbsp;
                 <!-- Trigger -->
-                <button type="button" 
-                        class="btn btn-primary btn-squared" 
-                        data-toggle="modal" 
+                <button type="button"
+                        class="btn btn-primary btn-squared"
+                        data-toggle="modal"
                         data-target="#modal_programar_para">
                     Programar
                     <i class="material-icons right">alarm</i>
@@ -503,12 +508,12 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fa fa-calendar-check"></i></span>
                                         </div>
-                                        <input type="text" 
+                                        <input type="text"
                                                name="fecha_programada"
-                                               class="form-control _datepicker" 
+                                               class="form-control _datepicker"
                                                placeholder="Escoja fecha..."
                                                autocomplete="off"
-                                               id="id_fecha_programada" 
+                                               id="id_fecha_programada"
                                                onkeypress="blur();">
                                     </div>
                                 </div>
@@ -517,7 +522,7 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                                     <div class="input-group">
                                         <input type="text"
                                                id="id_time_hora_programada"
-                                               class="form-control" 
+                                               class="form-control"
                                                placeholder="Hora"
                                                autocomplete="off"
                                                onclick="blur();">
@@ -531,15 +536,15 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" 
-                                        class="btn btn-danger btn-squared" 
+                                <button type="button"
+                                        class="btn btn-danger btn-squared"
                                         data-dismiss="modal"
                                         onclick="desprogramar();flag_programada=false;">
                                     <i class="material-icons left">highlight_off</i>&nbsp;&nbsp;Cancelar
                                 </button>
-                                <button type="button" 
-                                        class="btn btn-primary btn-squared" 
-                                        onclick="programar();flag_programada=true;">Ok 
+                                <button type="button"
+                                        class="btn btn-primary btn-squared"
+                                        onclick="programar();flag_programada=true;">Ok
                                     &nbsp;&nbsp;<i class="material-icons right">done</i>
                                 </button>
                             </div>
@@ -563,12 +568,12 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
             <div class="table-responsive">
                 <table class="stripe row-border order-column" id="add_niveles_table">
                     <thead>
-                        <tr>
-                            <th>Nivel</th>
-                            <th>Grado</th>
-                            <th>Grupo</th>
-                            <th>Acciones</th>
-                        </tr>
+                    <tr>
+                        <th>Nivel</th>
+                        <th>Grado</th>
+                        <th>Grupo</th>
+                        <th>Acciones</th>
+                    </tr>
                     </thead>
                     <tbody>
                     </tbody>
@@ -577,20 +582,20 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                 <h6 class="text-primary"><i class="material-icons">group_add</i>&nbsp;&nbsp;Grupos especiales</h6>
                 <table class="stripe row-border order-column" id="add_grupos_especiales_table">
                     <thead>
-                        <tr>
-                            <th>Grupo</th>
-                        </tr>
+                    <tr>
+                        <th>Grupo</th>
+                    </tr>
                     </thead>
                     <tfoot>
-                        <tr>
-                            <td class="right">
-                                <button type="button" 
-                                        class="btn btn-danger btn-squared btn-sm"
-                                        onclick="remove_grupo_especial_table();">
-                                    X
-                                </button>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td class="right">
+                            <button type="button"
+                                    class="btn btn-danger btn-squared btn-sm"
+                                    onclick="remove_grupo_especial_table();">
+                                X
+                            </button>
+                        </td>
+                    </tr>
                     </tfoot>
                     <tbody>
                     </tbody>
@@ -599,20 +604,20 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                 <h6 class="text-primary"><i class="material-icons">group_add</i>&nbsp;&nbsp;Grupos administrativos</h6>
                 <table class="stripe row-border order-column" id="add_grupos_administrativos_table">
                     <thead>
-                        <tr>
-                            <th>Administrativo</th>
-                        </tr>
+                    <tr>
+                        <th>Administrativo</th>
+                    </tr>
                     </thead>
                     <tfoot>
-                        <tr>
-                            <td class="right">
-                                <button type="button" 
-                                        class="btn btn-danger btn-squared btn-sm"
-                                        onclick="remove_grupo_administrativos_table();">
-                                    X
-                                </button>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td class="right">
+                            <button type="button"
+                                    class="btn btn-danger btn-squared btn-sm"
+                                    onclick="remove_grupo_administrativos_table();">
+                                X
+                            </button>
+                        </td>
+                    </tr>
                     </tfoot>
                     <tbody>
                     </tbody>
@@ -621,20 +626,20 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                 <h6 class="text-primary"><i class="material-icons">group_add</i>&nbsp;&nbsp;Camiones</h6>
                 <table class="stripe row-border order-column" id="add_camiones_table">
                     <thead>
-                        <tr>
-                            <th>Camión (Mañana)</th>
-                        </tr>
+                    <tr>
+                        <th>Camión (Mañana)</th>
+                    </tr>
                     </thead>
                     <tfoot>
-                        <tr>
-                            <td class="right">
-                                <button type="button" 
-                                        class="btn btn-danger btn-squared btn-sm"
-                                        onclick="remove_camiones_table();">
-                                    X
-                                </button>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td class="right">
+                            <button type="button"
+                                    class="btn btn-danger btn-squared btn-sm"
+                                    onclick="remove_camiones_table();">
+                                X
+                            </button>
+                        </td>
+                    </tr>
                     </tfoot>
                     <tbody>
                     </tbody>
@@ -643,20 +648,20 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                 <h6 class="text-primary"><i class="material-icons">group_add</i>&nbsp;&nbsp;Camiones</h6>
                 <table class="stripe row-border order-column" id="add_camiones_tarde_table">
                     <thead>
-                        <tr>
-                            <th>Camión (Tarde)</th>
-                        </tr>
+                    <tr>
+                        <th>Camión (Tarde)</th>
+                    </tr>
                     </thead>
                     <tfoot>
-                        <tr>
-                            <td class="right">
-                                <button type="button" 
-                                        class="btn btn-danger btn-squared btn-sm"
-                                        onclick="remove_camiones_tarde_table();">
-                                    X
-                                </button>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td class="right">
+                            <button type="button"
+                                    class="btn btn-danger btn-squared btn-sm"
+                                    onclick="remove_camiones_tarde_table();">
+                                X
+                            </button>
+                        </td>
+                    </tr>
                     </tfoot>
                     <tbody>
                     </tbody>
@@ -688,7 +693,7 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
 
     $(document).ready(function () {
 
-        ckeditor();        
+        ckeditor();
         set_table('add_niveles_table');
         set_table('id_table_usuarios');
         set_table('add_grupos_especiales_table');
@@ -704,6 +709,7 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
             startDate: new Date()
         });
     });
+
     function setGrado(id_nivel) {
         var grados = [];
         for (var item in catalogo_grados) {
@@ -720,6 +726,7 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
         $("#select_grado").html(options);
         $("#select_grado").selectpicker('refresh');
     }
+
     function setGrupo(id_grado) {
         var grupos = [];
         for (var item in catalogo_grupos) {
@@ -735,6 +742,7 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
         $("#select_grupo").html(options);
         $("#select_grupo").selectpicker('refresh');
     }
+
     function add_nivel() {
         var select_nivel = $("#select_nivel").val();
         var select_grado = $("#select_grado").val();
@@ -793,6 +801,7 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
             $("#select_grupo").html('').selectpicker("refresh");
         }
     }
+
     function remove_nivel(el, id_nivel, id_grado, id_grupo, objeto_nivel_grado_grupo) {
         var td_nivel = objeto_nivel_grado_grupo.conjunto.td_nivel === "null" ? null : objeto_nivel_grado_grupo.conjunto.td_nivel;
         var td_grado = objeto_nivel_grado_grupo.conjunto.td_grado === "null" ? null : objeto_nivel_grado_grupo.conjunto.td_grado;
@@ -800,8 +809,8 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
         var set = new Set([...coleccion_nivel_grado_grupo]);
         set.forEach((item) => {
             if (item.conjunto.td_nivel == td_nivel &&
-                    item.conjunto.td_grado == td_grado &&
-                    item.conjunto.td_grupo == td_grupo) {
+                item.conjunto.td_grado == td_grado &&
+                item.conjunto.td_grupo == td_grupo) {
                 set.delete(item);
                 coleccion_nivel_grado_grupo = Array.from(set);
             }
@@ -817,18 +826,19 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
         coleccion_grados = Array.from(set_grado);
         coleccion_grupos = Array.from(set_grupo);
     }
+
     function enviar(estatus) {
         if (!validaciones())
             return;
         var fecha_programada = $("#id_fecha_programada").val();
         var hora_programada = $("#id_time_hora_programada").val();
-        estatus = fecha_programada !== "" && hora_programada !== ""  ? 1 : estatus;
+        estatus = fecha_programada !== "" && hora_programada !== "" ? 1 : estatus;
         var data_editor = CKEDITOR.instances.editor.getData();
-        if(!flag_programada){
+        if (!flag_programada) {
             fecha_programada = null;
             hora_programada = null;
         }
-         
+
         $.ajax({
             url: $("#post_nuevo_administrativo").prop('action'),
             type: 'POST',
@@ -839,7 +849,7 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
             dataType: 'json',
             data: {
                 titulo: $("#input_titulo").val(),
-                contenido:data_editor,
+                contenido: data_editor,
                 descripcion: $("#input_descripcion").val(),
                 estatus: estatus,
                 envia_todos: $("#check_enviar_todos")[0].checked,
@@ -856,7 +866,7 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                 hora_inicial_ics: $("#id_time_inicial").val(),
                 hora_final_ics: $("#id_time_final").val(),
                 ubicacion_ics: $("#id_ubicacion").val(),
-                hora_programada:$('#id_time_hora_programada').val()
+                hora_programada: $('#id_time_hora_programada').val()
             }
         }).done((res) => {
             if (res === true) {
@@ -872,6 +882,7 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
             spinnerOut();
         });
     }
+
     function add_usuarios_table() {
         //id_table_usuarios 
         var select_usuarios = $("#select_usuarios").val();
@@ -895,6 +906,7 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
             $("#id_table_usuarios").DataTable().clear().draw();
         }
     }
+
     function add_grupo_especial_table() {
         var select_grupos_especiales = $("#select_grupos_especiales").val();
         var set_grupo = new Set([...coleccion_grupos_especiales_json]);
@@ -908,11 +920,13 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
             });
         }
     }
+
     function remove_grupo_especial_table() {
         var tabla = $("#add_grupos_especiales_table").DataTable();
         tabla.clear().draw();
         $("#select_grupos_especiales").selectpicker('deselectAll');
     }
+
     function chk_enviar_todos(value) {
         if (value) {
             $("#select_usuarios").selectpicker('selectAll');
@@ -922,6 +936,7 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
         $("#select_usuarios").selectpicker('render');
         success_alerta('Ha seleccionado enviar a todos los usuarios disponibles');
     }
+
     function add_grupos_administrativos_table() {
         var select_grupos_administrativos = $("#select_grupos_administrativos").val();
         var set = new Set([...coleccion_grupos_administrativos_json]);
@@ -935,31 +950,34 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
             });
         }
     }
+
     function remove_grupo_administrativos_table() {
         $("#select_grupos_administrativos").selectpicker('deselectAll');
         $("#select_grupos_administrativos").selectpicker('render');
         var table = $("#add_grupos_administrativos_table").DataTable();
         table.clear().draw();
     }
+
     function validaciones() {
         let select_usuarios = $("#select_usuarios").val(),
-                select_grupos_especiales = $("#select_grupos_especiales").val(),
-                select_grupos_administrativos = $("#select_grupos_administrativos").val(),
-                id_select_camiones = $("#id_select_camiones").val(),
-                select_camiones = $("#id_select_camiones_tarde").val();
+            select_grupos_especiales = $("#select_grupos_especiales").val(),
+            select_grupos_administrativos = $("#select_grupos_administrativos").val(),
+            id_select_camiones = $("#id_select_camiones").val(),
+            select_camiones = $("#id_select_camiones_tarde").val();
         if (select_usuarios.length === 0 &&
-                select_grupos_especiales.length === 0 &&
-                select_grupos_administrativos.length === 0 &&
-                select_camiones.length === 0 &&
-                coleccion_niveles.length === 0 &&
-                coleccion_grados.length === 0 &&
-                coleccion_grupos.length === 0 &&
-                id_select_camiones.length === 0) {
+            select_grupos_especiales.length === 0 &&
+            select_grupos_administrativos.length === 0 &&
+            select_camiones.length === 0 &&
+            coleccion_niveles.length === 0 &&
+            coleccion_grados.length === 0 &&
+            coleccion_grupos.length === 0 &&
+            id_select_camiones.length === 0) {
             fail_alerta('Debe seleccionar al menos un grupo de usuarios');
             return false;
         }
         return true;
     }
+
     function add_camiones() {
         var select_camiones = $("#id_select_camiones").val();
         var set = new Set(coleccion_padres_camiones_json);
@@ -979,6 +997,7 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
             tabla_camiones.row.add([`${element}`]).draw().node();
         });
     }
+
     function remove_camiones_table() {
         var tabla_camiones = $("#add_camiones_table").DataTable();
         tabla_camiones.clear().draw();
@@ -986,6 +1005,7 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
         $("#id_select_camiones").selectpicker('deselectAll');
         $("#id_select_camiones").selectpicker('render');
     }
+
     function add_camiones_tarde() {
         var select_camiones = $("#id_select_camiones_tarde").val();
         var set = new Set(coleccion_padres_camiones_tarde_json);
@@ -1005,6 +1025,7 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
             tabla_camiones.row.add([`${element}`]).draw().node();
         });
     }
+
     function remove_camiones_tarde_table() {
         $("#id_select_camiones_tarde").selectpicker('deselectAll');
         $("#id_select_camiones_tarde").selectpicker('render');
@@ -1012,13 +1033,15 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
         var tabla_camiones = $("#add_camiones_tarde_table").DataTable();
         tabla_camiones.clear().draw();
     }
+
     function programar() {
-        if ($("#id_fecha_programada").val() !== "" && $("#id_time_hora_programada").val()!=="") {
+        if ($("#id_fecha_programada").val() !== "" && $("#id_time_hora_programada").val() !== "") {
             $("#modal_programar_para").modal('hide');
             return;
         }
         fail_alerta('¡Datos inválidos, por favor revisar!');
     }
+
     function adjuntar_ics() {
         var tema_ics = $("#id_tema_evento").val();
         var fecha_ics = $("#id_cuando").val();
@@ -1027,7 +1050,7 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
         var ubicacion_ics = $("#id_ubicacion").val();
 
         if (tema_ics === "" || fecha_ics === "" || hora_inicial_ics === "" ||
-                hora_final_ics === "" || ubicacion_ics === "") {
+            hora_final_ics === "" || ubicacion_ics === "") {
             fail_alerta('Debe asignar todos los campos');
             $("#id_icon_done_adjuntado").prop("hidden", true);
             return;
@@ -1035,6 +1058,7 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
         $("#id_icon_done_adjuntado").prop("hidden", false);
         $("#modal_adjuntar").modal('hide');
     }
+
     function cancelar_adjuntar_ics() {
         $("#id_tema_evento").val("");
         $("#id_cuando").val("");
@@ -1043,12 +1067,14 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
         $("#id_ubicacion").val("");
         $("#id_icon_done_adjuntado").prop("hidden", true);
     }
+
     function validar_horario_ics() {
         if (parseInt($("#id_time_inicial").val().split(":")[0]) > parseInt($("#id_time_final").val().split(":")[0])) {
             $("#id_time_final").val("");
             fail_alerta('¡La hora final debe ser mayor a la hora inicial!');
         }
     }
+
     function desprogramar() {
         $("#id_fecha_programada").val('');
     }

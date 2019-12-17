@@ -346,13 +346,26 @@ class ControlCirculares
 
     public function select_circular($id_circular)
     {
-        $sql = "SELECT a.titulo, a.descripcion, a.contenido, b.descripcion AS estatus, "
-            . "b.color, b.id AS id_estatus, c.ciclo, a.fecha_programada, a.hora_programada,"
-            . "a.tema_ics, a.fecha_ics, a.hora_inicial_ics, a.hora_final_ics, a.ubicacion_ics "
-            . "FROM App_Circulares a "
-            . "INNER JOIN App_catalogo_estatus b ON b.id = a.id_estatus "
-            . "INNER JOIN Ciclo_escolar c ON c.id = a.ciclo_escolar_id "
-            . "WHERE a.id = $id_circular;";
+        $sql = "SELECT a.titulo,
+                     a.descripcion,
+                     a.contenido,
+                     b.descripcion AS estatus,
+                     b.color,
+                     b.id AS id_estatus,
+                     c.ciclo,
+                     a.fecha_programada,
+                     a.hora_programada,
+                     a.tema_ics,
+                     a.fecha_ics,
+                     a.hora_inicial_ics,
+                     a.hora_final_ics,
+                     a.ubicacion_ics
+            FROM App_Circulares a
+            INNER JOIN App_catalogo_estatus b
+                ON b.id = a.id_estatus
+            INNER JOIN Ciclo_escolar c
+                ON c.id = a.ciclo_escolar_id
+            WHERE a.id = {$id_circular};";
         mysqli_set_charset($this->conexion, "utf8");
         return mysqli_query($this->conexion, $sql);
     }
@@ -406,7 +419,8 @@ class ControlCirculares
     }
 
     public function update_circular($titulo, $descripcion, $contenido, $tema_ics, $fecha_ics, $hora_inicial_ics,
-                                    $hora_final_ics, $ubicacion_ics, $adjunto, $id_circular, $niveles, $grp_especiales)
+                                    $hora_final_ics, $ubicacion_ics, $adjunto, $id_circular, $niveles,
+                                    $grp_especiales, $grp_administrativos, $usuarios)
     {
         try {
             mysqli_autocommit($this->conexion, false);
@@ -492,7 +506,7 @@ class ControlCirculares
                     }
                 }
             }
-
+            //actualizacion de grupos especiales
             // se borran todos los usuarios asignados a traves de los grupos especiales
             $sql_delete_padres_grp_especiales = "DELETE
                                                     FROM App_usuarios_circulares
@@ -514,9 +528,11 @@ class ControlCirculares
                                                                 ON c.alumno_id = b.id
                                                             WHERE c.grupo_id = {$value['id_grp_especial']};";
                 $consulta_padres = mysqli_query($this->conexion, $sql_select_padres_grp_especiales);
+                //insert padres
                 if (!$consulta_padres) {
                     throw new Exception(mysqli_error($this->conexion));
                 }
+
                 while ($row = mysqli_fetch_assoc($consulta_padres)) {
                     $sql_insert_padres_grp_especiales = "INSERT INTO App_usuarios_circulares 
                                             (id_circular, id_usuario, id_alumno, id_grupo_espepcial) 
@@ -526,6 +542,54 @@ class ControlCirculares
                     }
                 }
             }
+            //actualizacion de grupos administrativos
+            //se borran todos los usuarios asignados a traves de los grupos administrativos
+            $sql_delete_padres_grp_administrativos = "DELETE
+                                                    FROM App_usuarios_circulares
+                                                    WHERE id_circular = {$id_circular}
+                                                            AND id_grupo_administrativo IS NOT NULL;";
+            if (!mysqli_query($this->conexion, $sql_delete_padres_grp_administrativos)) {
+                throw new Exception(mysqli_error($this->conexion));
+            }
+            //recorre los grupos administrativos asignados por el usuario
+            foreach ($grp_administrativos as $value) {
+                //consulta de padres segun el id del grupo administrativo al que pertenece
+                $sql_select_padres_grp_administrativos = "SELECT a.id_usuario,
+                                                                     a.id_grupo
+                                                            FROM App_usuarios_administrativos a
+                                                            WHERE a.id_grupo = {$value['id_grp_administrativo']}";
+                $consulta_padres_adm = mysqli_query($this->conexion, $sql_select_padres_grp_administrativos);
+                //insert padres
+                if (!$consulta_padres_adm) {
+                    throw new Exception(mysqli_error($this->conexion));
+                }
+
+                while ($row = mysqli_fetch_assoc($consulta_padres_adm)) {
+                    $sql_insert_padres_grp_administrativos = "INSERT INTO App_usuarios_circulares 
+                                            (id_circular, id_usuario, id_grupo_administrativo) 
+                                            VALUES ({$id_circular}, {$row['id_usuario']}, {$row['id_grupo']});";
+                    if (!mysqli_query($this->conexion, $sql_insert_padres_grp_administrativos)) {
+                        throw new Exception(mysqli_error($this->conexion));
+                    }
+                }
+            }
+            //actualizacion de usuarios sin grupos
+            //se borran todos los usuarios asignados anteriormente
+            $sql_delete_usuarios_sin_grupo = "DELETE FROM App_usuarios_circulares 
+                                                WHERE id_circular = {$id_circular} AND usuarios_sin_grupo = TRUE;";
+            if (!mysqli_query($this->conexion, $sql_delete_usuarios_sin_grupo)) {
+                throw new Exception(mysqli_error($this->conexion));
+            }
+            //se actializan usuarios asignados por el usuario
+            foreach ($usuarios as $value) {
+                $sql_insert_usuarios_sin_grupo = "INSERT INTO App_usuarios_circulares 
+                                                (`id_circular`, `id_usuario`, `usuarios_sin_grupo`) 
+                                                VALUES ({$id_circular}, {$value}, TRUE);";
+                if (!mysqli_query($this->conexion, $sql_insert_usuarios_sin_grupo)) {
+                    throw new Exception(mysqli_error($this->conexion));
+                }
+            }
+
         } catch (Exception $ex) {
             mysqli_rollback($this->conexion);
             return $ex->getMessage();
@@ -535,11 +599,34 @@ class ControlCirculares
 
     public function select_grupos_especiales_x_circular($id_circular)
     {
-        $sql = "SELECT DISTINCT a.id_grupo_espepcial, b.grupo
-                                    FROM App_usuarios_circulares a
-                                    INNER JOIN App_grupos_especiales b ON b.id = a.id_grupo_espepcial
-                                    WHERE a.id_circular = {$id_circular}";
+        $sql = "SELECT DISTINCT a.id_grupo_espepcial,
+                         b.grupo
+                FROM App_usuarios_circulares a
+                INNER JOIN App_grupos_especiales b
+                    ON b.id = a.id_grupo_espepcial
+                WHERE a.id_circular = {$id_circular}";
         mysqli_set_charset($this->conexion, "utf8");
+        return mysqli_query($this->conexion, $sql);
+    }
+
+    public function select_grupos_administrativos_x_circular($id_circular)
+    {
+        $sql = "SELECT DISTINCT a.id_grupo_administrativo,
+                         b.grupo
+                FROM App_usuarios_circulares a
+                INNER JOIN App_grupos_administrativos b
+                    ON b.id = a.id_grupo_administrativo
+                WHERE a.id_circular = {$id_circular}";
+        mysqli_set_charset($this->conexion, "utf8");
+        return mysqli_query($this->conexion, $sql);
+    }
+
+    public function select_usuarios_sin_grupo($id_circular)
+    {
+        $sql = "SELECT a.id_usuario, b.nombre
+                FROM App_usuarios_circulares a
+                INNER JOIN usuarios b ON b.id = a.id_usuario
+                WHERE a.id_circular = {$id_circular} AND a.usuarios_sin_grupo = TRUE;";
         return mysqli_query($this->conexion, $sql);
     }
 }

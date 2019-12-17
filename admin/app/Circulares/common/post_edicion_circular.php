@@ -18,10 +18,13 @@ if (strlen($tema_ics) > 0 && strlen($fecha_ics) > 0 && strlen($hora_inicial_ics)
     strlen($hora_final_ics) > 0 && strlen($ubicacion_ics) > 0) {
     $adjunto = true;
 }
-//arreglo de grupos especiales
+//arreglo de grupos especiales, administrativos
 $grp_especiales = $_POST['grp_especiales'];
+$grp_administrativos = $_POST['grp_administrativos'];
+//arreglo de usuarios
+$usuarios = $_POST['usuarios'];
 
 $update = $controlCirculares->update_circular($titulo, $descripcion, $contenido,
     $tema_ics, $fecha_ics, $hora_inicial_ics, $hora_final_ics, $ubicacion_ics, $adjunto, $id_circular, $niveles,
-    $grp_especiales);
+    $grp_especiales, $grp_administrativos, $usuarios);
 echo json_encode($update);
