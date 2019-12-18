@@ -1088,7 +1088,7 @@ include "{$root}/Secciones/notificaciones.php";
                     tabla.row.add([
                         itemCatalogo.grupo.toUpperCase(),
                         `<button type="button"
-                                class="btn btn-danger btn-squared btn-sm ml-2"
+                                class="btn btn-warning text-white btn-squared btn-sm ml-2"
                                 onclick="remove_grp_especial_tabla(this, ${itemCatalogo.id_grp_especial});">
                             X
                         </button>`
@@ -1124,7 +1124,7 @@ include "{$root}/Secciones/notificaciones.php";
                     });
                     tabla.row.add([itemCatalogo.grupo.toUpperCase(),
                         `<button type="button"
-                                class="btn btn-danger btn-squared btn-sm ml-2"
+                                class="btn btn-warning text-white btn-squared btn-sm ml-2"
                                 onclick="remove_grp_adm_tabla(this, ${itemCatalogo.id_grp_administrativo});">
                             X
                         </button>`
@@ -1149,7 +1149,7 @@ include "{$root}/Secciones/notificaciones.php";
             catalogo_usuarios.forEach(usuario => {
                 if (usuario.id_usuario == item) {
                     tabla.row.add([usuario.nombre,
-                        `<button type="button" class="btn btn-danger btn-squared btn-sm ml-5"
+                        `<button type="button" class="btn btn-warning text-white btn-squared btn-sm ml-5"
                                 onclick="remove_usuario_tabla(this, ${usuario.id_usuario});">
                             X
                         </button>`

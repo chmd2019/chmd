@@ -451,7 +451,8 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                                     <table class="stripe row-border order-column" id="id_table_usuarios">
                                         <thead>
                                         <tr>
-                                            <th>Usuarios</th>
+                                            <th class="w-75">Usuarios</th>
+                                            <th class="w-25 text-center">Quitar</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -583,11 +584,13 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                 <table class="stripe row-border order-column" id="add_grupos_especiales_table">
                     <thead>
                     <tr>
-                        <th>Grupo</th>
+                        <th class="w-75">Grupo</th>
+                        <th class="w-75">Quitar</th>
                     </tr>
                     </thead>
                     <tfoot>
                     <tr>
+                        <td>Quitar todo</td>
                         <td class="right">
                             <button type="button"
                                     class="btn btn-danger btn-squared btn-sm"
@@ -605,11 +608,13 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                 <table class="stripe row-border order-column" id="add_grupos_administrativos_table">
                     <thead>
                     <tr>
-                        <th>Administrativo</th>
+                        <th class="w-75">Administrativo</th>
+                        <th class="w-25">Quitar</th>
                     </tr>
                     </thead>
                     <tfoot>
                     <tr>
+                        <td>Quitar todos</td>
                         <td class="right">
                             <button type="button"
                                     class="btn btn-danger btn-squared btn-sm"
@@ -694,12 +699,12 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
     $(document).ready(function () {
 
         ckeditor();
-        set_table('add_niveles_table');
+        set_table_sin_paginacion_sin_buscar('add_niveles_table');
         set_table('id_table_usuarios');
-        set_table('add_grupos_especiales_table');
-        set_table('add_grupos_administrativos_table');
-        set_table('add_camiones_table');
-        set_table('add_camiones_tarde_table');
+        set_table_sin_paginacion_sin_buscar('add_grupos_especiales_table');
+        set_table_sin_paginacion_sin_buscar('add_grupos_administrativos_table');
+        set_table_sin_paginacion_sin_buscar('add_camiones_table');
+        set_table_sin_paginacion_sin_buscar('add_camiones_tarde_table');
         datepicker_es();
         $('._datepicker').datepicker({
             calendarWeeks: true,
@@ -895,7 +900,12 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                     usuarios.forEach((item_usuario) => {
                         if (item === item_usuario.id_usuario) {
                             var row = [
-                                `${item_usuario.nombre}`
+                                `${item_usuario.nombre}`,
+                                `&nbsp;&nbsp;&nbsp;&nbsp;<button type="button"
+                                class="btn btn-warning text-white btn-squared btn-sm ml-5"
+                                onclick="remove_usuario_uni_tabla(this, ${item});">
+                                    X
+                                </button>`
                             ];
                             $("#id_table_usuarios").DataTable().row.add(row).draw().node();
                         }
@@ -915,7 +925,14 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
         for (var item in select_grupos_especiales) {
             set_grupo.forEach(element => {
                 if (element.id === select_grupos_especiales[item]) {
-                    tabla.row.add([`${element.grupo}`]).draw().node();
+                    tabla.row.add([
+                        `${element.grupo}`,
+                        `<button type="button"
+                                class="btn btn-warning text-white btn-squared btn-sm ml-2"
+                                onclick="remove_grp_especial_tabla(this, ${element.id});">
+                            X
+                        </button>`
+                    ]).draw().node();
                 }
             });
         }
@@ -945,7 +962,12 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
         for (var item in select_grupos_administrativos) {
             set.forEach(element => {
                 if (element.id === select_grupos_administrativos[item]) {
-                    table.row.add([`${element.grupo}`]).draw().node();
+                    table.row.add([`${element.grupo}`,
+                        `<button type="button"
+                                class="btn btn-warning text-white btn-squared btn-sm ml-2"
+                                onclick="remove_grp_adm_tabla(this, ${element.id});">
+                            X
+                        </button>`]).draw().node();
                 }
             });
         }
@@ -1077,5 +1099,43 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
 
     function desprogramar() {
         $("#id_fecha_programada").val('');
+    }
+
+    //funciones para remover items individuales de las tablas de usuarios, y grupos
+    function remove_grp_especial_tabla(el, id_grp_especial) {
+        let set = new Set($("#select_grupos_especiales").val());
+        set.forEach(item => {
+            if (parseInt(item) === id_grp_especial) {
+                set.delete(item);
+                $("#select_grupos_especiales").val(Array.from(set));
+                $("#select_grupos_especiales").selectpicker('refresh');
+                $("#add_grupos_especiales_table").DataTable().row($(el).parents('tr')).remove().draw();
+            }
+        });
+    }
+
+    function remove_grp_adm_tabla(el, id_grp_adm) {
+        let set = new Set($("#select_grupos_administrativos").val());
+        set.forEach(item => {
+            if (parseInt(item) === id_grp_adm) {
+                set.delete(item);
+                $("#select_grupos_administrativos").val(Array.from(set));
+                $("#select_grupos_administrativos").selectpicker('refresh');
+                $("#add_grupos_administrativos_table").DataTable().row($(el).parents('tr')).remove().draw();
+            }
+        });
+    }
+
+    function remove_usuario_uni_tabla(el, id_usuario) {
+        let set = new Set($("#select_usuarios").val());
+        set.forEach(item => {
+            if (parseInt(item) === id_usuario) {
+                set.delete(item);
+                $("#select_usuarios").val(Array.from(set));
+                $("#select_usuarios").selectpicker('refresh');
+                $("#id_table_usuarios").DataTable().row($(el).parents('tr')).remove().draw();
+            }
+        });
+        console.log($("#select_usuarios").val())
     }
 </script>
