@@ -711,7 +711,7 @@ $grupos_json = json_encode($grupos_json);
                                             <td><?= strtoupper($row['grupo']); ?></td>
                                             <td>
                                                 <button type="button"
-                                                        class="btn btn-danger btn-squared btn-sm ml-2"
+                                                        class="btn btn-warning text-white btn-squared btn-sm ml-2"
                                                         onclick="remove_grp_especial_tabla(this, <?= intval($row['id_grupo_espepcial']); ?>);">
                                                     X
                                                 </button>
@@ -755,7 +755,7 @@ $grupos_json = json_encode($grupos_json);
                                             <td><?= strtoupper($row['grupo']); ?></td>
                                             <td>
                                                 <button type="button"
-                                                        class="btn btn-danger btn-squared btn-sm ml-2"
+                                                        class="btn btn-warning text-white btn-squared btn-sm ml-2"
                                                         onclick="remove_grp_adm_tabla(this, <?= intval($row['id_grupo_administrativo']); ?>);">
                                                     X
                                                 </button>

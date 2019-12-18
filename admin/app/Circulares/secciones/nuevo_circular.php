@@ -632,11 +632,13 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                 <table class="stripe row-border order-column" id="add_camiones_table">
                     <thead>
                     <tr>
-                        <th>Camión (Mañana)</th>
+                        <th class="w-75">Camión (Mañana)</th>
+                        <th class="w-25">Quitar</th>
                     </tr>
                     </thead>
                     <tfoot>
                     <tr>
+                        <td>Quitar todos</td>
                         <td class="right">
                             <button type="button"
                                     class="btn btn-danger btn-squared btn-sm"
@@ -655,10 +657,12 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                     <thead>
                     <tr>
                         <th>Camión (Tarde)</th>
+                        <td>Quitar</td>
                     </tr>
                     </thead>
                     <tfoot>
                     <tr>
+                        <td>Quitar todos</td>
                         <td class="right">
                             <button type="button"
                                     class="btn btn-danger btn-squared btn-sm"
@@ -1010,13 +1014,33 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
         for (var item in select_camiones) {
             set.forEach(element => {
                 if (select_camiones[item] === element.id_ruta) {
-                    camiones.add(`Camión: ${element.camion} | Ruta: ${element.nombre_ruta}`);
-                    set_padres_camiones.add({id_alumno: element.id_alumno, id_papa: element.id_papa});
+                    camiones.forEach(element_camion => {
+                        if (element_camion.id_ruta === element.id_ruta) {
+                            camiones.delete(element_camion);
+                        }
+                    });
+                    camiones.add({
+                        ruta: `Camión: ${element.camion} | Ruta: ${element.nombre_ruta}`,
+                        id_ruta: element.id_ruta
+                    });
+                    set_padres_camiones.add({
+                        id_alumno: element.id_alumno,
+                        id_papa: element.id_papa,
+                        id_ruta: element.id_ruta
+                    });
                 }
             });
         }
+
         camiones.forEach(element => {
-            tabla_camiones.row.add([`${element}`]).draw().node();
+            tabla_camiones.row.add([
+                `${element.ruta}`,
+                `<button type="button"
+                    class="btn btn-warning text-white btn-squared btn-sm ml-2"
+                    onclick="remove_camion_tabla(this, ${element.id_ruta});">
+                    X
+                </button>`
+            ]).draw().node();
         });
     }
 
@@ -1038,13 +1062,30 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
         for (var item in select_camiones) {
             set.forEach(element => {
                 if (select_camiones[item] === element.id_ruta) {
-                    camiones.add(`Camión: ${element.camion} | Ruta: ${element.nombre_ruta}`);
-                    set_padres_camiones_tarde.add({id_alumno: element.id_alumno, id_papa: element.id_papa});
+                    camiones.forEach(element_camion => {
+                        if (element_camion.id_ruta === element.id_ruta) {
+                            camiones.delete(element_camion);
+                        }
+                    });
+                    camiones.add({
+                        ruta: `Camión: ${element.camion} | Ruta: ${element.nombre_ruta}`,
+                        id_ruta: element.id_ruta
+                    });
+                    set_padres_camiones_tarde.add({
+                        id_alumno: element.id_alumno,
+                        id_papa: element.id_papa,
+                        id_ruta: element.id_ruta
+                    });
                 }
             });
         }
         camiones.forEach(element => {
-            tabla_camiones.row.add([`${element}`]).draw().node();
+            tabla_camiones.row.add([`${element.ruta}`,
+                `<button type="button"
+                    class="btn btn-warning text-white btn-squared btn-sm ml-2"
+                    onclick="remove_camion_tarde_tabla(this, ${element.id_ruta});">
+                    X
+                </button>`]).draw().node();
         });
     }
 
@@ -1137,5 +1178,23 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
             }
         });
         console.log($("#select_usuarios").val())
+    }
+
+    function remove_camion_tabla(el, id_ruta) {
+        set_padres_camiones.forEach(item => {
+            if (parseInt(item.id_ruta) === id_ruta) {
+                set_padres_camiones.delete(item);
+                $("#add_camiones_table").DataTable().row($(el).parents('tr')).remove().draw();
+            }
+        });
+    }
+
+    function remove_camion_tarde_tabla(el, id_ruta) {
+        set_padres_camiones_tarde.forEach(item => {
+            if (parseInt(item.id_ruta) === id_ruta) {
+                set_padres_camiones_tarde.delete(item);
+                $("#add_camiones_tarde_table").DataTable().row($(el).parents('tr')).remove().draw();
+            }
+        });
     }
 </script>
