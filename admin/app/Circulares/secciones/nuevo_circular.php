@@ -656,8 +656,8 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                 <table class="stripe row-border order-column" id="add_camiones_tarde_table">
                     <thead>
                     <tr>
-                        <th>Camión (Tarde)</th>
-                        <td>Quitar</td>
+                        <th class="w-75">Camión (Tarde)</th>
+                        <td class="w-25">Quitar</td>
                     </tr>
                     </thead>
                     <tfoot>
@@ -1185,6 +1185,14 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
             if (parseInt(item.id_ruta) === id_ruta) {
                 set_padres_camiones.delete(item);
                 $("#add_camiones_table").DataTable().row($(el).parents('tr')).remove().draw();
+                let set = new Set($("#id_select_camiones").val());
+                set.forEach(el => {
+                    if (parseInt(el) === id_ruta) {
+                        set.delete(el);
+                        $("#id_select_camiones").val(Array.from(set));
+                        $("#id_select_camiones").selectpicker('refresh');
+                    }
+                });
             }
         });
     }
@@ -1194,6 +1202,14 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
             if (parseInt(item.id_ruta) === id_ruta) {
                 set_padres_camiones_tarde.delete(item);
                 $("#add_camiones_tarde_table").DataTable().row($(el).parents('tr')).remove().draw();
+                let set = new Set($("#id_select_camiones_tarde").val());
+                set.forEach(el => {
+                    if (parseInt(el) === id_ruta) {
+                        set.delete(el);
+                        $("#id_select_camiones_tarde").val(Array.from(set));
+                        $("#id_select_camiones_tarde").selectpicker('refresh');
+                    }
+                });
             }
         });
     }

@@ -31,6 +31,7 @@ $consulta_niveles_edicion = $control_circulares->select_niveles_edicion($id_circ
 $aux_niveles = array();
 $aux_grupos_especiales = array();
 $aux_grupos_administrativos = array();
+$aux_camiones_manana = array();
 foreach ($consulta_niveles_edicion as $value) {
     array_push($aux_niveles, [
             "id_nivel" => intval($value['id_nivel']),
@@ -782,11 +783,13 @@ $grupos_json = json_encode($grupos_json);
                                 <table class="stripe row-border order-column" id="add_camiones_table">
                                     <thead>
                                     <tr>
-                                        <th>Camión (Mañana)</th>
+                                        <th class="w-75">Camión (Mañana)</th>
+                                        <th class="w-25">Quitar</th>
                                     </tr>
                                     </thead>
                                     <tfoot>
                                     <tr>
+                                        <td>Quitar todo</td>
                                         <td class="right">
                                             <button type="button"
                                                     class="btn btn-danger btn-squared btn-sm"
@@ -797,6 +800,25 @@ $grupos_json = json_encode($grupos_json);
                                     </tr>
                                     </tfoot>
                                     <tbody>
+                                    <?php
+                                    $consulta_ruta_manana = $control_circulares->select_ruta_manana_x_circular($id_circular);
+                                    while ($row = mysqli_fetch_assoc($consulta_ruta_manana)):
+                                        array_push($aux_camiones_manana, [
+                                            "id_ruta" => $row['id_ruta'],
+                                            "nombre_ruta" => $row['nombre_ruta']
+                                        ]);
+                                        ?>
+                                        <tr>
+                                            <td><?= "Camión: {$row['camion']} | Ruta: {$row['nombre_ruta']}"; ?></td>
+                                            <td>
+                                                <button type="button"
+                                                        class="btn btn-warning text-white btn-squared btn-sm ml-2"
+                                                        onclick="remove_camion_manana_tabla(this, <?= $row['id_ruta'] ?>);">
+                                                    X
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    <?php endwhile; ?>
                                     </tbody>
                                 </table>
                                 <hr>
@@ -850,6 +872,9 @@ include "{$root}/Secciones/notificaciones.php";
     var set_nivel_grado_grupo = new Set(<?= $aux_niveles; ?>);
     var set_grupos_especiales = new Set(<?=json_encode($aux_grupos_especiales);?>);
     var set_grupos_administrativos = new Set(<?=json_encode($aux_grupos_administrativos);?>);
+    var set_camiones_manana = new Set(<?=json_encode($aux_camiones_manana);?>);
+    var catalogo_padres_manana = new Set(<?=json_encode($padres_camiones)?>);
+    var catalogo_padres_tarde = new Set(<?=json_encode($padres_camiones_tarde)?>);
     var flag_guardar = false;
     var flag_programada = false;
     var id_circular = <?=$id_circular;?>;
@@ -1205,6 +1230,15 @@ include "{$root}/Secciones/notificaciones.php";
                 tabla.row($(el).parents('tr')).remove().draw();
             }
         });
+    }
+
+    function add_camiones(){
+        let set = new Set($("#id_select_camiones").val());
+        set.forEach(item=>{
+            //if (parseInt(item) === )
+        });
+        // set_camiones_manana - los que vienen con la circular
+        //console.log(catalogo_padres_manana); faltaria comprobar id_ruta_h con las rutas listadas
     }
 
 </script>
