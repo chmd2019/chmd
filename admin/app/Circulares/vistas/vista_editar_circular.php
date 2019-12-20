@@ -86,6 +86,27 @@ while ($row = mysqli_fetch_array($consulta_grupos)) {
 
 $grados_json = json_encode($grados_json);
 $grupos_json = json_encode($grupos_json);
+//consulta de rutas del dia (manana)
+$rutas_manana = array();
+$consulta_rutas_manana = $control_circulares->select_camiones(date('Y-m-d'));
+while ($row = mysqli_fetch_assoc($consulta_rutas_manana)) {
+    array_push($rutas_manana, [
+        "id_ruta_h" => $row['id_ruta_h'],
+        "camion" => $row['camion'],
+        "nombre_ruta" => $row['nombre_ruta'],
+    ]);
+}
+//consulta de usuarios de ruta
+$usuarios_ruta = array();
+$consulta_usuarios_ruta = $control_circulares->select_usuarios_rutas();
+while ($row = mysqli_fetch_assoc($consulta_usuarios_ruta)) {
+    array_push($usuarios_ruta, [
+        "id_ruta_manana" => $row['id_ruta_manana'],
+        "id_ruta_tarde" => $row['id_ruta_tarde'],
+        "id_alumno" => $row['id_alumno'],
+        "id_usuario" => $row['id_usuario']
+    ]);
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -480,7 +501,16 @@ $grupos_json = json_encode($grupos_json);
                                             $padres_camiones = json_encode($padres_camiones);
                                             while ($row = mysqli_fetch_assoc($consulta_camiones)):
                                                 ?>
-                                                <option value="<?= $row['id_ruta_h']; ?>">
+                                                <option value="<?= $row['id_ruta_h']; ?>"
+                                                    <?php
+                                                    $_rutas_manana = $control_circulares->select_ruta_manana_x_circular($id_circular);
+                                                    while ($row_ruta = mysqli_fetch_assoc($_rutas_manana)):
+                                                        if ($row_ruta['id_ruta'] == $row['id_ruta_h']) {
+                                                            echo " selected";
+                                                        }
+                                                        ?>
+                                                    <?php endwhile; ?>
+                                                >
                                                     Camión: <?= str_pad($row['camion'], 2, "0", STR_PAD_LEFT); ?> |
                                                     Ruta: <?= $row['nombre_ruta']; ?>
                                                 </option>
@@ -813,7 +843,7 @@ $grupos_json = json_encode($grupos_json);
                                             <td>
                                                 <button type="button"
                                                         class="btn btn-warning text-white btn-squared btn-sm ml-2"
-                                                        onclick="remove_camion_manana_tabla(this, <?= $row['id_ruta'] ?>);">
+                                                        onclick="remove_ruta_manana(this, <?= $row['id_ruta'] ?>);">
                                                     X
                                                 </button>
                                             </td>
@@ -848,7 +878,6 @@ $grupos_json = json_encode($grupos_json);
                         </div>
                     </div>
                 </div>
-
             <?php endif; ?>
         </div>
         <?php
@@ -873,8 +902,10 @@ include "{$root}/Secciones/notificaciones.php";
     var set_grupos_especiales = new Set(<?=json_encode($aux_grupos_especiales);?>);
     var set_grupos_administrativos = new Set(<?=json_encode($aux_grupos_administrativos);?>);
     var set_camiones_manana = new Set(<?=json_encode($aux_camiones_manana);?>);
-    var catalogo_padres_manana = new Set(<?=json_encode($padres_camiones)?>);
-    var catalogo_padres_tarde = new Set(<?=json_encode($padres_camiones_tarde)?>);
+    var set_rutas_manana = new Set(<?=json_encode($rutas_manana);?>);
+    var catalogo_padres_manana = new Set(<?=json_encode($padres_camiones);?>);
+    var catalogo_padres_tarde = new Set(<?=json_encode($padres_camiones_tarde);?>);
+    var catalogo_usuario_ruta = new Set(<?= json_encode($usuarios_ruta);?>);
     var flag_guardar = false;
     var flag_programada = false;
     var id_circular = <?=$id_circular;?>;
@@ -943,8 +974,8 @@ include "{$root}/Secciones/notificaciones.php";
     }
 
     function enviar() {
-//                if (!validaciones())
-//                    return;
+        /*if (!validaciones())
+        return;*/
         $.ajax({
             url: 'https://www.chmd.edu.mx/pruebascd/admin/app/Circulares/common/post_edicion_circular.php',
             type: 'POST',
@@ -958,7 +989,7 @@ include "{$root}/Secciones/notificaciones.php";
                 titulo: $("#input_titulo").val(),
                 contenido: CKEDITOR.instances.editor.getData(),
                 descripcion: $("#input_descripcion").val(),
-                nivel: Array.from(set_nivel_grado_grupo),
+                nivel: coleccion_nivel(),
                 tema_ics: $("#id_tema_evento").val(),
                 fecha_ics: $("#id_cuando").val(),
                 hora_inicial_ics: $("#id_time_inicial").val(),
@@ -966,7 +997,8 @@ include "{$root}/Secciones/notificaciones.php";
                 ubicacion_ics: $("#id_ubicacion").val(),
                 grp_especiales: Array.from(set_grupos_especiales),
                 grp_administrativos: Array.from(set_grupos_administrativos),
-                usuarios: $("#select_usuarios").selectpicker('val')
+                usuarios: $("#select_usuarios").selectpicker('val'),
+                coleccion_usuarios_manana: coleccion_usuarios_manana()
             }
         }).done((res) => {
         }).always(() => {
@@ -1232,15 +1264,77 @@ include "{$root}/Secciones/notificaciones.php";
         });
     }
 
-    function add_camiones(){
+    function add_camiones() {
         let set = new Set($("#id_select_camiones").val());
-        set.forEach(item=>{
-            //if (parseInt(item) === )
+        let tabla = $("#add_camiones_table").DataTable();
+        tabla.clear().draw();
+        set_camiones_manana.clear();
+        set.forEach(item_select => {
+            set_rutas_manana.forEach(item_ruta => {
+                if (item_ruta.id_ruta_h === item_select) {
+                    let ruta = `Camión: ${item_ruta.camion} | Ruta: ${item_ruta.nombre_ruta.toUpperCase()}`;
+                    tabla.row.add([
+                        ruta,
+                        `<button type="button" class="btn btn-warning text-white btn-squared btn-sm ml-5"
+                                onclick="remove_ruta_manana(this, ${item_ruta.id_ruta_h});">
+                            X
+                        </button>`
+                    ]).draw().node();
+                    set_camiones_manana.forEach(item => {
+                        if (item.id_ruta === item_select) {
+                            set_camiones_manana.delete(item);
+                        }
+                    });
+                    set_camiones_manana.add({id_ruta: item_ruta.id_ruta_h, nombre_ruta: item_ruta.nombre_ruta});
+                }
+            });
         });
-        // set_camiones_manana - los que vienen con la circular
-        //console.log(catalogo_padres_manana); faltaria comprobar id_ruta_h con las rutas listadas
     }
 
+    function remove_ruta_manana(el, id_ruta) {
+        set_camiones_manana.forEach(item => {
+            if (parseInt(item.id_ruta) === id_ruta) {
+                set_camiones_manana.delete(item);
+                $("#add_camiones_table").DataTable().row($(el).parents('tr')).remove().draw();
+                let set = new Set($("#id_select_camiones").val());
+                set.forEach(element => {
+                    if (parseInt(element) === id_ruta) {
+                        set.delete(element);
+                    }
+                });
+                $("#id_select_camiones").val(Array.from(set));
+                $("#id_select_camiones").selectpicker('refresh');
+            }
+        });
+    }
+
+    function coleccion_usuarios_manana() {
+        let set = new Set($("#id_select_camiones").val());
+        let usuarios = new Set();
+        set.forEach(item => {
+            catalogo_usuario_ruta.forEach(el => {
+                if (el.id_ruta_manana === item) {
+                    usuarios.add({
+                        id_usuario: parseInt(el.id_usuario),
+                        id_alumno: parseInt(el.id_alumno),
+                        id_ruta_manana: parseInt(el.id_ruta_manana)
+                    });
+                }
+            });
+        });
+        return Array.from(usuarios);
+    }
+
+    function coleccion_nivel() {
+        set_nivel_grado_grupo.forEach(item => {
+            if (item.id_nivel === 0) {
+                set_nivel_grado_grupo.delete(item);
+            }
+        })
+        return Array.from(set_nivel_grado_grupo)
+    }
+
+    //catalogo_usuario_ruta, set_camiones_manana
 </script>
 </body>
 </html>

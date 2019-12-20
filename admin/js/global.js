@@ -172,7 +172,7 @@ if (CKEDITOR.env.ie && CKEDITOR.env.version < 9)
 // unless user specified own height.
 CKEDITOR.config.height = 450;
 CKEDITOR.config.width = 'auto';
-CKEDITOR.config.extraPlugins = 'youtube,imagepaste,imageuploader';
+CKEDITOR.config.extraPlugins = 'youtube,videodetector,imagepaste,imageuploader';
 CKEDITOR.config.filebrowserBrowseUrl = "https://www.chmd.edu.mx/pruebascd/admin/Secciones/ckeditor/plugins/imageuploader/imgbrowser.php";
 CKEDITOR.config.youtube_responsive = true;
 
