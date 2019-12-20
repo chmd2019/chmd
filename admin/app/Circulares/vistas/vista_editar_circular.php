@@ -31,7 +31,6 @@ $consulta_niveles_edicion = $control_circulares->select_niveles_edicion($id_circ
 $aux_niveles = array();
 $aux_grupos_especiales = array();
 $aux_grupos_administrativos = array();
-$aux_camiones_manana = array();
 foreach ($consulta_niveles_edicion as $value) {
     array_push($aux_niveles, [
             "id_nivel" => intval($value['id_nivel']),
@@ -88,7 +87,7 @@ $grados_json = json_encode($grados_json);
 $grupos_json = json_encode($grupos_json);
 //consulta de rutas del dia (manana)
 $rutas_manana = array();
-$consulta_rutas_manana = $control_circulares->select_camiones(date('Y-m-d'));
+$consulta_rutas_manana = $control_circulares->select_camiones_tarde(date('Y-m-d'));
 while ($row = mysqli_fetch_assoc($consulta_rutas_manana)) {
     array_push($rutas_manana, [
         "id_ruta_h" => $row['id_ruta_h'],
@@ -96,6 +95,18 @@ while ($row = mysqli_fetch_assoc($consulta_rutas_manana)) {
         "nombre_ruta" => $row['nombre_ruta'],
     ]);
 }
+$rutas_tarde = array();
+$consulta_rutas_tarde = $control_circulares->select_camiones_tarde(date('Y-m-d'));
+while ($row = mysqli_fetch_assoc($consulta_rutas_tarde)) {
+    array_push($rutas_tarde, [
+        "id_ruta_h_s" => $row['id_ruta_h_s'],
+        "camion" => $row['camion'],
+        "nombre_ruta" => $row['nombre_ruta'],
+    ]);
+}
+//manejo de camiones y rutas
+$aux_camiones_manana = array();
+$aux_camiones_tarde = array();
 //consulta de usuarios de ruta
 $usuarios_ruta = array();
 $consulta_usuarios_ruta = $control_circulares->select_usuarios_rutas();
@@ -858,10 +869,12 @@ while ($row = mysqli_fetch_assoc($consulta_usuarios_ruta)) {
                                     <thead>
                                     <tr>
                                         <th>Camión (Tarde)</th>
+                                        <th>Quitar</th>
                                     </tr>
                                     </thead>
                                     <tfoot>
                                     <tr>
+                                        <td>Quitar todos</td>
                                         <td class="right">
                                             <button type="button"
                                                     class="btn btn-danger btn-squared btn-sm"
@@ -872,6 +885,25 @@ while ($row = mysqli_fetch_assoc($consulta_usuarios_ruta)) {
                                     </tr>
                                     </tfoot>
                                     <tbody>
+                                    <?php
+                                    $consulta_ruta_tarde = $control_circulares->select_ruta_tarde_x_circular($id_circular);
+                                    while ($row = mysqli_fetch_assoc($consulta_ruta_tarde)):
+                                        array_push($aux_camiones_tarde, [
+                                            "id_ruta" => $row['id_ruta'],
+                                            "nombre_ruta" => $row['nombre_ruta']
+                                        ]);
+                                        ?>
+                                        <tr>
+                                            <td><?= "Camión: {$row['camion']} | Ruta: {$row['nombre_ruta']}"; ?></td>
+                                            <td>
+                                                <button type="button"
+                                                        class="btn btn-warning text-white btn-squared btn-sm ml-2"
+                                                        onclick="remove_ruta_tarde(this, <?= $row['id_ruta'] ?>);">
+                                                    X
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    <?php endwhile; ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -901,11 +933,16 @@ include "{$root}/Secciones/notificaciones.php";
     var set_nivel_grado_grupo = new Set(<?= $aux_niveles; ?>);
     var set_grupos_especiales = new Set(<?=json_encode($aux_grupos_especiales);?>);
     var set_grupos_administrativos = new Set(<?=json_encode($aux_grupos_administrativos);?>);
+    //manejo de camiones
+    //manana
     var set_camiones_manana = new Set(<?=json_encode($aux_camiones_manana);?>);
     var set_rutas_manana = new Set(<?=json_encode($rutas_manana);?>);
-    var catalogo_padres_manana = new Set(<?=json_encode($padres_camiones);?>);
-    var catalogo_padres_tarde = new Set(<?=json_encode($padres_camiones_tarde);?>);
+    //tarde
+    var set_camiones_tarde = new Set(<?=json_encode($aux_camiones_tarde);?>);
+    var set_rutas_tarde = new Set(<?=json_encode($rutas_tarde);?>);
+    //todos los usuarios de las rutas del dia
     var catalogo_usuario_ruta = new Set(<?= json_encode($usuarios_ruta);?>);
+    //
     var flag_guardar = false;
     var flag_programada = false;
     var id_circular = <?=$id_circular;?>;
@@ -937,7 +974,7 @@ include "{$root}/Secciones/notificaciones.php";
             todayHighlight: true,
             language: 'es',
             startDate: new Date()
-        });
+        });console.log(catalogo_padres_manana);
     });
 
     function setGrado(id_nivel) {
@@ -1332,6 +1369,36 @@ include "{$root}/Secciones/notificaciones.php";
             }
         })
         return Array.from(set_nivel_grado_grupo)
+    }
+    //pendiente por cambiar lo copiado
+    function add_camiones_tarde() {
+        let set = new Set($("#id_select_camiones").val());
+        let tabla = $("#add_camiones_table").DataTable();
+        tabla.clear().draw();
+        set_camiones_manana.clear();
+        set.forEach(item_select => {
+            set_rutas_manana.forEach(item_ruta => {
+                if (item_ruta.id_ruta_h === item_select) {
+                    let ruta = `Camión: ${item_ruta.camion} | Ruta: ${item_ruta.nombre_ruta.toUpperCase()}`;
+                    tabla.row.add([
+                        ruta,
+                        `<button type="button" class="btn btn-warning text-white btn-squared btn-sm ml-5"
+                                onclick="remove_ruta_manana(this, ${item_ruta.id_ruta_h});">
+                            X
+                        </button>`
+                    ]).draw().node();
+                    set_camiones_manana.forEach(item => {
+                        if (item.id_ruta === item_select) {
+                            set_camiones_manana.delete(item);
+                        }
+                    });
+                    set_camiones_manana.add({id_ruta: item_ruta.id_ruta_h, nombre_ruta: item_ruta.nombre_ruta});
+                }
+            });
+        });
+    }
+
+    function remove_camiones_tarde_table() {
     }
 
     //catalogo_usuario_ruta, set_camiones_manana

@@ -656,6 +656,8 @@ class ControlCirculares
         return mysqli_query($this->conexion, $sql);
     }
 
+    //manejo de camiones
+    //manana
     public function select_ruta_manana_x_circular($id_circular)
     {
         $fecha_actual = date("Y-m-d");
@@ -677,6 +679,18 @@ class ControlCirculares
                 WHERE a.fecha = '{$fecha_actual}' AND (a.id_ruta_h !=0 AND a.id_ruta_h != 999) 
                 AND (a.id_ruta_h_s !=0 AND a.id_ruta_h_s != 999)
                 GROUP BY c.id";
+        mysqli_set_charset($this->conexion, "utf8");
+        return mysqli_query($this->conexion, $sql);
+    }
+
+    //tarde
+    public function select_ruta_tarde_x_circular($id_circular)
+    {
+        $fecha_actual = date("Y-m-d");
+        $sql = "SELECT DISTINCT a.id_ruta, b.nombre_ruta, b.camion
+                FROM App_nivel_grado_grupo_circulares a
+                INNER JOIN rutas_historica b ON b.id_ruta_h = a.id_ruta
+                WHERE a.id_circular = {$id_circular} AND b.turno = 2 AND b.fecha = '{$fecha_actual}'";
         mysqli_set_charset($this->conexion, "utf8");
         return mysqli_query($this->conexion, $sql);
     }
