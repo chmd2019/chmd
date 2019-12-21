@@ -424,7 +424,8 @@ class ControlCirculares
 
     public function update_circular($titulo, $descripcion, $contenido, $tema_ics, $fecha_ics, $hora_inicial_ics,
                                     $hora_final_ics, $ubicacion_ics, $adjunto, $id_circular, $niveles,
-                                    $grp_especiales, $grp_administrativos, $usuarios, $coleccion_usuarios_manana)
+                                    $grp_especiales, $grp_administrativos, $usuarios, $coleccion_usuarios_manana,
+                                    $coleccion_usuarios_tarde)
     {
         try {
             mysqli_autocommit($this->conexion, false);
@@ -475,7 +476,7 @@ class ControlCirculares
                                                     (`id_circular`, `id_nivel`, `id_grado`) 
                                                     VALUES ({$id_circular}, {$value['id_nivel']}, {$value['id_grado']});";
 
-                } else if($value['id_nivel'] != 0){
+                } else if ($value['id_nivel'] != 0) {
                     $sql_select_padres = "SELECT a.id AS id_padre, b.id AS id_alumno
                                             FROM usuarios a
                                             INNER JOIN alumnoschmd b
@@ -612,6 +613,27 @@ class ControlCirculares
 
                 if (!mysqli_query($this->conexion, $sql_insert_ruta) ||
                     !mysqli_query($this->conexion, $sql_insert_usuario_manana)) {
+                    throw new Exception(mysqli_error($this->conexion));
+                }
+            }
+            //ruta de tarde
+            $sql_delete_ruta_tarde = "DELETE FROM App_nivel_grado_grupo_circulares  WHERE id_circular = {$id_circular} AND turno = 2";
+            $sql_delete_usuarios_tarde = "DELETE FROM App_usuarios_circulares WHERE id_circular = {$id_circular} AND turno = 2";
+
+            if (!mysqli_query($this->conexion, $sql_delete_ruta_tarde) ||
+                !mysqli_query($this->conexion, $sql_delete_usuarios_tarde)) {
+                throw new Exception(mysqli_error($this->conexion));
+            }
+            foreach ($coleccion_usuarios_tarde as $usuario) {
+                $sql_insert_ruta_tarde = "INSERT INTO `App_nivel_grado_grupo_circulares` 
+                                                (`id_circular`, `turno`, `id_ruta`) 
+                                                VALUES ({$id_circular}, 2, {$usuario['id_ruta_tarde']});";
+                $sql_insert_usuario_tarde = "INSERT INTO App_usuarios_circulares 
+                                                (`id_circular`, `id_usuario`, `id_alumno`, `turno`) 
+                                                VALUES ({$id_circular}, {$usuario['id_usuario']}, {$usuario['id_alumno']},2);";
+
+                if (!mysqli_query($this->conexion, $sql_insert_ruta_tarde) ||
+                    !mysqli_query($this->conexion, $sql_insert_usuario_tarde)) {
                     throw new Exception(mysqli_error($this->conexion));
                 }
             }

@@ -974,7 +974,7 @@ include "{$root}/Secciones/notificaciones.php";
             todayHighlight: true,
             language: 'es',
             startDate: new Date()
-        });console.log(catalogo_padres_manana);
+        });
     });
 
     function setGrado(id_nivel) {
@@ -1035,7 +1035,8 @@ include "{$root}/Secciones/notificaciones.php";
                 grp_especiales: Array.from(set_grupos_especiales),
                 grp_administrativos: Array.from(set_grupos_administrativos),
                 usuarios: $("#select_usuarios").selectpicker('val'),
-                coleccion_usuarios_manana: coleccion_usuarios_manana()
+                coleccion_usuarios_manana: coleccion_usuarios_manana(),
+                coleccion_usuarios_tarde:coleccion_usuarios_tarde()
             }
         }).done((res) => {
         }).always(() => {
@@ -1370,38 +1371,68 @@ include "{$root}/Secciones/notificaciones.php";
         })
         return Array.from(set_nivel_grado_grupo)
     }
+
     //pendiente por cambiar lo copiado
     function add_camiones_tarde() {
-        let set = new Set($("#id_select_camiones").val());
-        let tabla = $("#add_camiones_table").DataTable();
+        let set = new Set($("#id_select_camiones_tarde").val());
+        let tabla = $("#add_camiones_tarde_table").DataTable();
         tabla.clear().draw();
-        set_camiones_manana.clear();
+        set_camiones_tarde.clear();
         set.forEach(item_select => {
-            set_rutas_manana.forEach(item_ruta => {
-                if (item_ruta.id_ruta_h === item_select) {
+            set_rutas_tarde.forEach(item_ruta => {
+                if (item_ruta.id_ruta_h_s === item_select) {
                     let ruta = `Camión: ${item_ruta.camion} | Ruta: ${item_ruta.nombre_ruta.toUpperCase()}`;
                     tabla.row.add([
                         ruta,
                         `<button type="button" class="btn btn-warning text-white btn-squared btn-sm ml-5"
-                                onclick="remove_ruta_manana(this, ${item_ruta.id_ruta_h});">
+                                onclick="remove_ruta_tarde(this, ${item_ruta.id_ruta_h_s});">
                             X
                         </button>`
                     ]).draw().node();
-                    set_camiones_manana.forEach(item => {
+                    set_camiones_tarde.forEach(item => {
                         if (item.id_ruta === item_select) {
-                            set_camiones_manana.delete(item);
+                            set_camiones_tarde.delete(item);
                         }
                     });
-                    set_camiones_manana.add({id_ruta: item_ruta.id_ruta_h, nombre_ruta: item_ruta.nombre_ruta});
+                    set_camiones_tarde.add({id_ruta: item_ruta.id_ruta_h_s, nombre_ruta: item_ruta.nombre_ruta});
                 }
             });
         });
     }
 
-    function remove_camiones_tarde_table() {
+    function remove_ruta_tarde(el, id_ruta) {
+        set_camiones_tarde.forEach(item => {
+            if (parseInt(item.id_ruta) === id_ruta) {
+                set_camiones_tarde.delete(item);
+                $("#add_camiones_tarde_table").DataTable().row($(el).parents('tr')).remove().draw();
+                let set = new Set($("#id_select_camiones_tarde").val());
+                set.forEach(element => {
+                    if (parseInt(element) === id_ruta) {
+                        set.delete(element);
+                    }
+                });
+                $("#id_select_camiones_tarde").val(Array.from(set));
+                $("#id_select_camiones_tarde").selectpicker('refresh');
+            }
+        });
     }
 
-    //catalogo_usuario_ruta, set_camiones_manana
+    function coleccion_usuarios_tarde() {
+        let set = new Set($("#id_select_camiones_tarde").val());
+        let usuarios = new Set();
+        set.forEach(item => {
+            catalogo_usuario_ruta.forEach(el => {
+                if (el.id_ruta_tarde === item) {
+                    usuarios.add({
+                        id_usuario: parseInt(el.id_usuario),
+                        id_alumno: parseInt(el.id_alumno),
+                        id_ruta_tarde: parseInt(el.id_ruta_tarde)
+                    });
+                }
+            });
+        });
+        return Array.from(usuarios);
+    }
 </script>
 </body>
 </html>
