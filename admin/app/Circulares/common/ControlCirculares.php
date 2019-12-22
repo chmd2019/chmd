@@ -394,7 +394,8 @@ class ControlCirculares
 
     public function update_circular($titulo, $descripcion, $contenido, $tema_ics, $fecha_ics, $hora_inicial_ics,
                                     $hora_final_ics, $ubicacion_ics, $adjunto, $id_circular, $niveles,
-                                    $grp_especiales, $grp_administrativos, $usuarios)
+                                    $grp_especiales, $grp_administrativos, $usuarios,
+                                    $coleccion_usuarios_ruta_manana, $coleccion_usuarios_ruta_tarde)
     {
         try {
             mysqli_autocommit($this->conexion, false);
@@ -682,6 +683,16 @@ class ControlCirculares
                 FROM App_nivel_grado_grupo_circulares a
                 INNER JOIN rutas_historica b ON b.id_ruta_h = a.id_ruta AND b.fecha = a.fecha_ruta
                 WHERE a.id_circular = {$circular} AND a.turno = 1";
+        mysqli_set_charset($this->conexion, "utf8");
+        return mysqli_query($this->conexion, $sql);
+    }
+
+    public function select_ruta_tarde_circular($circular)
+    {
+        $sql = "SELECT b.id_ruta_h, b.nombre_ruta, b.camion, b.cupos, b.fecha AS fecha_ruta
+                FROM App_nivel_grado_grupo_circulares a
+                INNER JOIN rutas_historica b ON b.id_ruta_h = a.id_ruta AND b.fecha = a.fecha_ruta
+                WHERE a.id_circular = {$circular} AND a.turno = 2";
         mysqli_set_charset($this->conexion, "utf8");
         return mysqli_query($this->conexion, $sql);
     }

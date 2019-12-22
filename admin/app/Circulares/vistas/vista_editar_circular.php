@@ -93,6 +93,15 @@ if ($fecha_ruta == date("2019-12-21")) {
     $flag_ruta = true;
 }
 
+//catalogo de rutas
+$catalogo_rutas_manana = array();
+$catalogo_rutas_tarde = array();
+//usuarios de cada ruta
+$usuarios_ruta_manana = $control_circulares->select_usuarios_ruta_manana(date("2019-12-21"));
+$usuarios_ruta_tarde = $control_circulares->select_usuarios_ruta_tarde(date("2019-12-21"));
+//rutas asignadas de la circular por el usuario al momento de crear
+$set_rutas_manana_asignadas = array();
+$set_rutas_tarde_asignada = array();
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -468,9 +477,33 @@ if ($fecha_ruta == date("2019-12-21")) {
                                                 title="Seleccione camiones"
                                                 data-live-search="true"
                                                 data-actions-box="true"
-                                                onchange=""
+                                                onchange="add_ruta_manana();"
                                                 multiple>
-
+                                            <?php
+                                            if ($flag_ruta):
+                                                $fecha_actual = date("2019-12-21");
+                                                $consulta_ruta_manana_circular = $control_circulares->select_ruta_manana_circular($id_circular);
+                                                $consulta_rutas_manana = $control_circulares->select_ruta_manana($fecha_actual);
+                                                while ($row = mysqli_fetch_assoc($consulta_rutas_manana)):
+                                                    //id_ruta_manana, b.nombre_ruta, camion
+                                                    array_push($catalogo_rutas_manana, [
+                                                        "id_ruta_manana" => $row['id_ruta_manana'],
+                                                        "nombre_ruta" => $row['nombre_ruta'],
+                                                        "camion" => $row['camion']
+                                                    ]); ?>
+                                                    <option value="<?= $row['id_ruta_manana']; ?>"
+                                                        <?php
+                                                        while ($row_ruta = mysqli_fetch_assoc($consulta_ruta_manana_circular)) {
+                                                            if ($row_ruta['id_ruta_h'] == $row['id_ruta_manana']) {
+                                                                echo " selected";
+                                                            }
+                                                        }
+                                                        ?>
+                                                    >
+                                                        Ruta: <?= strtoupper($row['nombre_ruta']); ?> |
+                                                        Camión: <?= $row['camion']; ?></option>
+                                                <?php endwhile;
+                                            endif; ?>
                                         </select>
                                     </div>
                                     &nbsp;&nbsp;&nbsp;
@@ -482,21 +515,96 @@ if ($fecha_ruta == date("2019-12-21")) {
                                                 title="Seleccione camiones"
                                                 data-live-search="true"
                                                 data-actions-box="true"
-                                                onchange=""
+                                                onchange="add_ruta_tarde();"
                                                 multiple>
-
+                                            <?php
+                                            if ($flag_ruta):
+                                                $fecha_actual = date("2019-12-21");
+                                                $consulta_ruta_tarde_circular = $control_circulares->select_ruta_tarde_circular($id_circular);
+                                                $consulta_rutas_tarde = $control_circulares->select_ruta_tarde($fecha_actual);
+                                                while ($row = mysqli_fetch_assoc($consulta_rutas_tarde)):
+                                                    //id_ruta_manana, b.nombre_ruta, camion
+                                                    array_push($catalogo_rutas_tarde, [
+                                                        "id_ruta_tarde" => $row['id_ruta_tarde'],
+                                                        "nombre_ruta" => $row['nombre_ruta'],
+                                                        "camion" => $row['camion']
+                                                    ]); ?>
+                                                    <option value="<?= $row['id_ruta_tarde']; ?>"
+                                                        <?php
+                                                        while ($row_ruta = mysqli_fetch_assoc($consulta_ruta_tarde_circular)) {
+                                                            if ($row_ruta['id_ruta_h'] == $row['id_ruta_tarde']) {
+                                                                echo " selected";
+                                                            }
+                                                        }
+                                                        ?>
+                                                    >
+                                                        Ruta: <?= strtoupper($row['nombre_ruta']); ?> |
+                                                        Camión: <?= $row['camion']; ?></option>
+                                                <?php endwhile;
+                                            endif; ?>
                                         </select>
                                     </div>
                                 </div>
                                 <br>
                                 <?php
-                                if ($flag_ruta):
+                                if (!$flag_ruta):
                                     ?>
                                     <div class="container">
                                         <div class="alert alert-info" role="alert">
                                             <i class="material-icons">info</i>&nbsp;&nbsp;
-                                            Ésta circular tiene rutas seleccionadas
+                                            Ésta circular tiene rutas seleccionadas editables.
                                         </div>
+                                    </div>
+                                <?php else: ?>
+                                    <div class="container">
+                                        <div class="alert alert-warning" role="alert">
+                                            <button type="button" class="close text-white" data-dismiss="alert"
+                                                    aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            <i class="material-icons">info</i>&nbsp;&nbsp;
+                                            Al momento de actualizar esta circular, las rutas se asignaran
+                                            de la selección actual ya que la circular fue creada en una fecha
+                                            diferente a la actual.
+                                        </div>
+                                        <p></p>
+                                        <?php
+                                        $consulta_rutas_manana = $control_circulares->select_ruta_manana_circular($id_circular);
+                                        $consulta_rutas_tarde = $control_circulares->select_ruta_tarde_circular($id_circular);
+                                        if (count($consulta_rutas_manana) > 0):
+                                            ?>
+                                            <div class="alert alert-info" role="alert">
+                                                <button type="button" class="close text-white" data-dismiss="alert"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <i class="material-icons">info</i>&nbsp;&nbsp;
+                                                Rutas para la mañana asignadas anteriormente en ésta circular:
+                                                <?php foreach ($consulta_rutas_manana as $ruta): ?>
+                                                    <div>Ruta: <?= $ruta['nombre_ruta']; ?> |
+                                                        Camión: <?= $ruta['camion']; ?></div>
+                                                <?php endforeach; ?>
+                                            </div>
+                                            <p></p>
+                                        <?php
+                                        endif;
+                                        if (count($consulta_rutas_tarde) > 0):
+                                            ?>
+                                            <div class="alert alert-info" role="alert">
+                                                <button type="button" class="close text-white" data-dismiss="alert"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <i class="material-icons">info</i>&nbsp;&nbsp;
+                                                Rutas para la tarde asignadas anteriormente en ésta circular:
+                                                <?php foreach ($consulta_rutas_manana as $ruta): ?>
+                                                    <div>Ruta: <?= $ruta['nombre_ruta']; ?> |
+                                                        Camión: <?= $ruta['camion']; ?></div>
+                                                <?php endforeach; ?>
+                                            </div>
+                                            <p></p>
+                                        <?php endif; ?>
+
                                     </div>
                                 <?php endif; ?>
                                 <br>
@@ -776,7 +884,32 @@ if ($fecha_ruta == date("2019-12-21")) {
                                     </tr>
                                     </tfoot>
                                     <tbody>
-
+                                    <?php
+                                    if ($flag_ruta):
+                                        $consulta_rutas_manana = $control_circulares->select_ruta_manana_circular($id_circular);
+                                        while ($row = mysqli_fetch_assoc($consulta_rutas_manana)):
+                                            array_push($set_rutas_manana_asignadas, [
+                                                "id_ruta_manana" => $row['id_ruta_h'],
+                                                "nombre_ruta" => $row['nombre_ruta'],
+                                                "camion" => $row['camion']
+                                            ])
+                                            ?>
+                                            <tr>
+                                                <td>Ruta: <?= $row['nombre_ruta']; ?> |
+                                                    Camión: <?= $row['camion']; ?>
+                                                </td>
+                                                <td>
+                                                    <a href="#!"
+                                                       class="btn btn-sm btn-warning btn-squared text-white ml-2"
+                                                       onclick="remover_ruta_manana(this, <?= $row['id_ruta_h']; ?>)">
+                                                        X
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        <?php
+                                        endwhile;
+                                    endif;
+                                    ?>
                                     </tbody>
                                 </table>
                                 <hr>
@@ -786,10 +919,12 @@ if ($fecha_ruta == date("2019-12-21")) {
                                     <thead>
                                     <tr>
                                         <th>Camión (Tarde)</th>
+                                        <th>Quitar</th>
                                     </tr>
                                     </thead>
                                     <tfoot>
                                     <tr>
+                                        <td>Quitar todo</td>
                                         <td class="right">
                                             <button type="button"
                                                     class="btn btn-danger btn-squared btn-sm"
@@ -800,6 +935,9 @@ if ($fecha_ruta == date("2019-12-21")) {
                                     </tr>
                                     </tfoot>
                                     <tbody>
+                                    <?php ?>
+
+                                    <?php ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -832,6 +970,15 @@ include "{$root}/Secciones/notificaciones.php";
     var flag_guardar = false;
     var flag_programada = false;
     var id_circular = <?=$id_circular;?>;
+    //catalogo de usuarios
+    var set_catalogo_usuarios_ruta_manana = new Set(<?= json_encode($usuarios_ruta_manana);?>);
+    var set_catalogo_usuarios_ruta_tarde = new Set(<?= json_encode($usuarios_ruta_tarde);?>);
+    //rutas asignadas por el usuario
+    var set_rutas_manana_asignadas = new Set(<?=json_encode($set_rutas_manana_asignadas);?>);
+    var set_rutas_tarde_asignada = new Set();
+    //catalogo de rutas del dia
+    var set_catalogo_rutas_manana = new Set(<?= json_encode($catalogo_rutas_manana);?>);
+    var set_catalogo_rutas_tarde = new Set(<?= json_encode($catalogo_rutas_tarde);?>);
 
     $(document).ready(function () {
         ckeditor();
@@ -921,6 +1068,8 @@ include "{$root}/Secciones/notificaciones.php";
                 grp_especiales: Array.from(set_grupos_especiales),
                 grp_administrativos: Array.from(set_grupos_administrativos),
                 usuarios: $("#select_usuarios").selectpicker('val'),
+                coleccion_usuarios_ruta_manana: coleccion_usuarios_ruta_manana(),
+                coleccion_usuarios_ruta_tarde: coleccion_usuarios_ruta_tarde()
             }
         }).done((res) => {
         }).always(() => {
@@ -1195,6 +1344,118 @@ include "{$root}/Secciones/notificaciones.php";
         return Array.from(set_nivel_grado_grupo)
     }
 
+    function add_ruta_manana() {
+        let set = new Set($("#id_select_camiones").val());
+        let tabla = $("#add_camiones_table").DataTable();
+        set_rutas_manana_asignadas.clear();
+        tabla.clear().draw();
+        set.forEach(ruta => {
+            set_catalogo_rutas_manana.forEach(catalogo => {
+                if (catalogo.id_ruta_manana === ruta) {
+                    let td = `Ruta: ${catalogo.nombre_ruta} | Camión: ${catalogo.camion}`;
+                    let btn = `<a href="#!"
+                                   class="btn btn-sm btn-warning btn-squared text-white ml-2"
+                                   onclick="remover_ruta_manana(this, ${catalogo.id_ruta_manana});"> X
+                               </a>`;
+                    //comprueba si ruta existe en lista de asignados para no hacer duplicados
+                    set_rutas_manana_asignadas.forEach(item => {
+                        if (item.id_ruta_manana === ruta) {
+                            set_rutas_manana_asignadas.delete(item);
+                        }
+                    });
+                    set_rutas_manana_asignadas.add({
+                        id_ruta_manana: catalogo.id_ruta_manana,
+                        nombre_ruta: catalogo.nombre_ruta,
+                        camion: catalogo.camion
+                    });
+                    tabla.row.add([td, btn]).draw().node();
+                }
+            });
+        });
+    }
+
+    function add_ruta_tarde() {
+        let set = new Set($("#id_select_camiones_tarde").val());
+        let tabla = $("#add_camiones_tarde_table").DataTable();
+        set_rutas_tarde_asignada.clear();
+        tabla.clear().draw();
+        set.forEach(ruta => {
+            set_catalogo_rutas_tarde.forEach(catalogo => {
+                if (catalogo.id_ruta_tarde === ruta) {
+                    let td = `Ruta: ${catalogo.nombre_ruta} | Camión: ${catalogo.camion}`;
+                    let btn = `<a href="#!"
+                                   class="btn btn-sm btn-warning btn-squared text-white ml-2"
+                                   onclick="remover_ruta_tarde(this, ${catalogo.id_ruta_tarde});"> X
+                               </a>`;
+                    //comprueba si ruta existe en lista de asignados para no hacer duplicados
+                    set_rutas_tarde_asignada.forEach(item => {
+                        if (item.id_ruta_tarde === ruta) {
+                            set_rutas_tarde_asignada.delete(item);
+                        }
+                    });
+                    set_rutas_tarde_asignada.add({
+                        id_ruta_tarde: catalogo.id_ruta_tarde,
+                        nombre_ruta: catalogo.nombre_ruta,
+                        camion: catalogo.camion
+                    });
+                    tabla.row.add([td, btn]).draw().node();
+                }
+            });
+        });
+    }
+
+    function remover_ruta_manana(el, id_ruta_manana) {
+        set_rutas_manana_asignadas.forEach(item => {
+            if (parseInt(item.id_ruta_manana) === id_ruta_manana) {
+                set_rutas_manana_asignadas.delete(item);
+                $("#add_camiones_table").DataTable().row($(el).parents('tr')).remove().draw();
+            }
+        });
+    }
+
+    function remover_ruta_tarde(el, id_ruta_tarde) {
+        set_rutas_tarde_asignada.forEach(item => {
+            if (parseInt(item.id_ruta_tarde) === id_ruta_tarde) {
+                set_rutas_tarde_asignada.delete(item);
+                $("#add_camiones_tarde_table").DataTable().row($(el).parents('tr')).remove().draw();
+            }
+        });
+    }
+
+    function coleccion_usuarios_ruta_manana() {
+        let usuarios_ruta_manana = new Set();
+        set_rutas_manana_asignadas.forEach(asignado => {
+            set_catalogo_usuarios_ruta_manana.forEach(item => {
+                if (asignado.id_ruta_manana === item.id_ruta_manana) {
+                    usuarios_ruta_manana.add({
+                        id_usuario: item.id_usuario,
+                        id_alumno: item.id_alumno,
+                        turno: 1,
+                        id_ruta_manana: asignado.id_ruta_manana
+                    });
+                }
+            });
+        });
+        return Array.from(usuarios_ruta_manana);
+    }
+
+    function coleccion_usuarios_ruta_tarde() {
+        let usuarios_ruta_tarde = new Set();
+        set_rutas_tarde_asignada.forEach(asignado => {
+            set_catalogo_usuarios_ruta_tarde.forEach(item => {
+                if (asignado.id_ruta_tarde === item.id_ruta_tarde) {
+                    usuarios_ruta_tarde.add({
+                        id_usuario: item.id_usuario,
+                        id_alumno: item.id_alumno,
+                        turno: 2,
+                        id_ruta_tarde: asignado.id_ruta_tarde
+                    });
+                }
+            });
+        });
+        console.log(usuarios_ruta_tarde)
+        return Array.from(usuarios_ruta_tarde);
+    }
 
     //catalogo_usuario_ruta, set_camiones_manana
 </script>
