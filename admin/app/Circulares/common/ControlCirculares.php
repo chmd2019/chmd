@@ -675,4 +675,21 @@ class ControlCirculares
         }
         return $usuarios_ruta_tarde;
     }
+
+    public function select_ruta_manana_circular($circular)
+    {
+        $sql = "SELECT b.id_ruta_h, b.nombre_ruta, b.camion, b.cupos, b.fecha AS fecha_ruta
+                FROM App_nivel_grado_grupo_circulares a
+                INNER JOIN rutas_historica b ON b.id_ruta_h = a.id_ruta AND b.fecha = a.fecha_ruta
+                WHERE a.id_circular = {$circular} AND a.turno = 1";
+        mysqli_set_charset($this->conexion, "utf8");
+        return mysqli_query($this->conexion, $sql);
+    }
+
+    public function select_fecha_ruta_grabada($circular)
+    {
+        $sql = "SELECT a.fecha_ruta FROM App_nivel_grado_grupo_circulares a 
+                WHERE a.id_circular = {$circular} AND a.fecha_ruta IS NOT NULL GROUP BY a.fecha_ruta ";
+        return mysqli_fetch_assoc(mysqli_query($this->conexion, $sql))['fecha_ruta'];
+    }
 }

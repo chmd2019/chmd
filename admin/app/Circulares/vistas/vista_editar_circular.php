@@ -31,6 +31,7 @@ $consulta_niveles_edicion = $control_circulares->select_niveles_edicion($id_circ
 $aux_niveles = array();
 $aux_grupos_especiales = array();
 $aux_grupos_administrativos = array();
+$aux_camiones_manana = array();
 foreach ($consulta_niveles_edicion as $value) {
     array_push($aux_niveles, [
             "id_nivel" => intval($value['id_nivel']),
@@ -85,6 +86,12 @@ while ($row = mysqli_fetch_array($consulta_grupos)) {
 
 $grados_json = json_encode($grados_json);
 $grupos_json = json_encode($grupos_json);
+//consulta de rutas del dia (manana)
+$fecha_ruta = $control_circulares->select_fecha_ruta_grabada($id_circular);
+$flag_ruta = false;
+if ($fecha_ruta == date("2019-12-21")) {
+    $flag_ruta = true;
+}
 
 ?>
 <!DOCTYPE html>
@@ -463,6 +470,7 @@ $grupos_json = json_encode($grupos_json);
                                                 data-actions-box="true"
                                                 onchange=""
                                                 multiple>
+
                                         </select>
                                     </div>
                                     &nbsp;&nbsp;&nbsp;
@@ -476,10 +484,21 @@ $grupos_json = json_encode($grupos_json);
                                                 data-actions-box="true"
                                                 onchange=""
                                                 multiple>
+
                                         </select>
                                     </div>
                                 </div>
                                 <br>
+                                <?php
+                                if ($flag_ruta):
+                                    ?>
+                                    <div class="container">
+                                        <div class="alert alert-info" role="alert">
+                                            <i class="material-icons">info</i>&nbsp;&nbsp;
+                                            Ésta circular tiene rutas seleccionadas
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
                                 <br>
                                 <h5 class="text-primary">
                                     <i class="material-icons">group_add</i>&nbsp;&nbsp;Adicionales
@@ -736,6 +755,7 @@ $grupos_json = json_encode($grupos_json);
                                 <hr>
                                 <h6 class="text-primary"><i class="material-icons">group_add</i>&nbsp;&nbsp;Camiones
                                 </h6>
+
                                 <table class="stripe row-border order-column" id="add_camiones_table">
                                     <thead>
                                     <tr>
@@ -756,6 +776,7 @@ $grupos_json = json_encode($grupos_json);
                                     </tr>
                                     </tfoot>
                                     <tbody>
+
                                     </tbody>
                                 </table>
                                 <hr>
@@ -765,12 +786,10 @@ $grupos_json = json_encode($grupos_json);
                                     <thead>
                                     <tr>
                                         <th>Camión (Tarde)</th>
-                                        <th>Quitar</th>
                                     </tr>
                                     </thead>
                                     <tfoot>
                                     <tr>
-                                        <td>Quitar todos</td>
                                         <td class="right">
                                             <button type="button"
                                                     class="btn btn-danger btn-squared btn-sm"
@@ -810,7 +829,6 @@ include "{$root}/Secciones/notificaciones.php";
     var set_nivel_grado_grupo = new Set(<?= $aux_niveles; ?>);
     var set_grupos_especiales = new Set(<?=json_encode($aux_grupos_especiales);?>);
     var set_grupos_administrativos = new Set(<?=json_encode($aux_grupos_administrativos);?>);
-    //
     var flag_guardar = false;
     var flag_programada = false;
     var id_circular = <?=$id_circular;?>;
@@ -902,7 +920,7 @@ include "{$root}/Secciones/notificaciones.php";
                 ubicacion_ics: $("#id_ubicacion").val(),
                 grp_especiales: Array.from(set_grupos_especiales),
                 grp_administrativos: Array.from(set_grupos_administrativos),
-                usuarios: $("#select_usuarios").selectpicker('val')
+                usuarios: $("#select_usuarios").selectpicker('val'),
             }
         }).done((res) => {
         }).always(() => {
@@ -1167,6 +1185,18 @@ include "{$root}/Secciones/notificaciones.php";
             }
         });
     }
+
+    function coleccion_nivel() {
+        set_nivel_grado_grupo.forEach(item => {
+            if (item.id_nivel === 0) {
+                set_nivel_grado_grupo.delete(item);
+            }
+        })
+        return Array.from(set_nivel_grado_grupo)
+    }
+
+
+    //catalogo_usuario_ruta, set_camiones_manana
 </script>
 </body>
 </html>
