@@ -23,11 +23,8 @@ $grp_especiales = $_POST['grp_especiales'];
 $grp_administrativos = $_POST['grp_administrativos'];
 //arreglo de usuarios
 $usuarios = $_POST['usuarios'];
-//usuarios por ruta
-$coleccion_usuarios_manana = $_POST['coleccion_usuarios_manana'];
-$coleccion_usuarios_tarde = $_POST['coleccion_usuarios_tarde'];
 
 $update = $controlCirculares->update_circular($titulo, $descripcion, $contenido,
     $tema_ics, $fecha_ics, $hora_inicial_ics, $hora_final_ics, $ubicacion_ics, $adjunto, $id_circular, $niveles,
-    $grp_especiales, $grp_administrativos, $usuarios, $coleccion_usuarios_manana, $coleccion_usuarios_tarde);
+    $grp_especiales, $grp_administrativos, $usuarios);
 echo json_encode($update);

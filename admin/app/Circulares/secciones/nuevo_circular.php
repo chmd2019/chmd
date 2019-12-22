@@ -14,6 +14,12 @@ while ($row = mysqli_fetch_array($consulta_grupos)) {
 $grados_json = json_encode($grados_json);
 $grupos_json = json_encode($grupos_json);
 $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
+//catalogo de rutas
+$catalogo_rutas_manana = array();
+$catalogo_rutas_tarde = array();
+//usuarios de cada ruta
+$usuarios_ruta_manana = $control_circulares->select_usuarios_ruta_manana(date("2019-12-21"));
+$usuarios_ruta_tarde = $control_circulares->select_usuarios_ruta_tarde(date("2019-12-21"));
 ?>
 <div class="row justify-content-around">
     <div class="card col-sm-12 col-md-7 border panel-personalizado">
@@ -324,29 +330,22 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                                 title="Seleccione camiones"
                                 data-live-search="true"
                                 data-actions-box="true"
-                                onchange="add_camiones();"
+                                onchange="add_ruta_manana();"
                                 multiple>
                             <?php
-                            $fecha_actual = date("Y-m-d");
-                            $consulta_camiones = $control_circulares->select_camiones($fecha_actual);
-                            $consulta_padres = $control_circulares->select_alumnos_ruta($fecha_actual);
-                            $padres_camiones = array();
-                            while ($row = mysqli_fetch_assoc($consulta_padres)):
-                                array_push($padres_camiones, [
-                                    "id_ruta" => $row['id_ruta_h'],
-                                    "id_alumno" => $row['id_alumno'],
-                                    "id_papa" => $row['id_papa'],
-                                    "camion" => $row['camion'],
-                                    "nombre_ruta" => $row['nombre_ruta']
+                            $fecha_actual = date("2019-12-21");
+                            $consulta_rutas_manana = $control_circulares->select_ruta_manana($fecha_actual);
+                            while ($row = mysqli_fetch_assoc($consulta_rutas_manana)):
+                                //id_ruta_manana, b.nombre_ruta, camion
+                                array_push($catalogo_rutas_manana, [
+                                    "id_ruta_manana" => $row['id_ruta_manana'],
+                                    "nombre_ruta" => $row['nombre_ruta'],
+                                    "camion" => $row['camion']
                                 ]);
-                            endwhile;
-                            $padres_camiones = json_encode($padres_camiones);
-                            while ($row = mysqli_fetch_assoc($consulta_camiones)):
                                 ?>
-                                <option value="<?= $row['id_ruta_h']; ?>">
-                                    Camión: <?= str_pad($row['camion'], 2, "0", STR_PAD_LEFT); ?> |
-                                    Ruta: <?= $row['nombre_ruta']; ?>
-                                </option>
+                                <option value="<?= $row['id_ruta_manana']; ?>">
+                                    Ruta: <?= strtoupper($row['nombre_ruta']); ?> |
+                                    Camión: <?= $row['camion']; ?></option>
                             <?php endwhile; ?>
                         </select>
                     </div>
@@ -359,28 +358,22 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                                 title="Seleccione camiones"
                                 data-live-search="true"
                                 data-actions-box="true"
-                                onchange="add_camiones_tarde();"
+                                onchange="add_ruta_tarde();"
                                 multiple>
                             <?php
-                            $consulta_camiones_tarde = $control_circulares->select_camiones_tarde($fecha_actual);
-                            $consulta_padres_tarde = $control_circulares->select_alumnos_ruta_tarde($fecha_actual);
-                            $padres_camiones_tarde = array();
-                            while ($row = mysqli_fetch_assoc($consulta_padres_tarde)):
-                                array_push($padres_camiones_tarde, [
-                                    "id_ruta" => $row['id_ruta_h_s'],
-                                    "id_alumno" => $row['id_alumno'],
-                                    "id_papa" => $row['id_papa'],
-                                    "camion" => $row['camion'],
-                                    "nombre_ruta" => $row['nombre_ruta']
+                            $fecha_actual = date("2019-12-21");
+                            $consulta_rutas_tarde = $control_circulares->select_ruta_tarde($fecha_actual);
+                            while ($row = mysqli_fetch_assoc($consulta_rutas_tarde)):
+                                //id_ruta_tarde, b.nombre_ruta, camion
+                                array_push($catalogo_rutas_tarde, [
+                                    "id_ruta_tarde" => $row['id_ruta_tarde'],
+                                    "nombre_ruta" => $row['nombre_ruta'],
+                                    "camion" => $row['camion']
                                 ]);
-                            endwhile;
-                            $padres_camiones_tarde = json_encode($padres_camiones_tarde);
-                            while ($row = mysqli_fetch_assoc($consulta_camiones_tarde)):
                                 ?>
-                                <option value="<?= $row['id_ruta_h_s']; ?>">
-                                    Camión: <?= str_pad($row['camion'], 2, "0", STR_PAD_LEFT); ?> |
-                                    Ruta: <?= $row['nombre_ruta']; ?>
-                                </option>
+                                <option value="<?= $row['id_ruta_tarde']; ?>">
+                                    Ruta: <?= strtoupper($row['nombre_ruta']); ?> |
+                                    Camión: <?= $row['camion']; ?></option>
                             <?php endwhile; ?>
                         </select>
                     </div>
@@ -678,6 +671,7 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
             </div>
         </div>
     </div>
+    <a href="#!" onclick="coleccion_usuarios_ruta_tarde();">AQUI</a>
 </div>
 
 <script>
@@ -687,18 +681,24 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
     var coleccion_usuarios_json = <?= $coleccion_usuarios_json; ?>;
     var coleccion_grupos_especiales_json = <?= $coleccion_grupos_especiales; ?>;
     var coleccion_grupos_administrativos_json = <?= $coleccion_grupos_administrativos; ?>;
-    var coleccion_padres_camiones_json = <?= $padres_camiones; ?>;
-    var coleccion_padres_camiones_tarde_json = <?= $padres_camiones_tarde; ?>;
     var coleccion_niveles = [];
     var coleccion_grados = [];
     var coleccion_grupos = [];
     var coleccion_nivel_grado_grupo = [];
-    var set_padres_camiones = new Set();
-    var set_padres_camiones_tarde = new Set();
     var editor = null;
     var flag_guardar = false;
     var flag_programada = false;
     var imageList = [];
+    //manejo de camiones
+    //catalogo de usuarios
+    var set_catalogo_usuarios_ruta_manana = new Set(<?= json_encode($usuarios_ruta_manana);?>);
+    var set_catalogo_usuarios_ruta_tarde = new Set(<?= json_encode($usuarios_ruta_tarde);?>);
+    //rutas asignadas por el usuario
+    var set_rutas_manana_asignadas = new Set();
+    var set_rutas_tarde_asignada = new Set();
+    //catalogo de rutas del dia
+    var set_catalogo_rutas_manana = new Set(<?= json_encode($catalogo_rutas_manana);?>);
+    var set_catalogo_tarde_asignada = new Set(<?= json_encode($catalogo_rutas_tarde);?>);
 
     $(document).ready(function () {
 
@@ -798,9 +798,9 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
             var objeto_nivel_grado_grupo = `{conjunto:{td_nivel:'${td_nivel}', td_grado:'${td_grado}', td_grupo:'${td_grupo}'}}`;
             var row = [
                 td_nivel, td_grado, td_grupo,
-                `<button type="button" 
-                class="btn btn-danger btn-squared btn-sm" 
-                onclick="remove_nivel(this, ${select_nivel}, ${select_grado}, ${select_grupo}, ${objeto_nivel_grado_grupo})"> 
+                `<button type="button"
+                class="btn btn-danger btn-squared btn-sm"
+                onclick="remove_nivel(this, ${select_nivel}, ${select_grado}, ${select_grupo}, ${objeto_nivel_grado_grupo})">
                 Quitar &nbsp;&nbsp;<i class="material-icons">remove</i>
                 </button>`
             ];
@@ -867,15 +867,15 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
                 grupos_especiales: $("#select_grupos_especiales").val(),
                 grupos_administrativos: $("#select_grupos_administrativos").val(),
                 fecha_programada: fecha_programada,
-                coleccion_padres_camiones: Array.from(set_padres_camiones),
-                coleccion_padres_camiones_tarde: Array.from(set_padres_camiones_tarde),
                 flag_edicion: false,
                 tema_ics: $("#id_tema_evento").val(),
                 fecha_ics: $("#id_cuando").val(),
                 hora_inicial_ics: $("#id_time_inicial").val(),
                 hora_final_ics: $("#id_time_final").val(),
                 ubicacion_ics: $("#id_ubicacion").val(),
-                hora_programada: $('#id_time_hora_programada').val()
+                hora_programada: $('#id_time_hora_programada').val(),
+                coleccion_usuarios_ruta_manana: coleccion_usuarios_ruta_manana(),
+                coleccion_usuarios_ruta_tarde: coleccion_usuarios_ruta_tarde()
             }
         }).done((res) => {
             if (res === true) {
@@ -893,7 +893,7 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
     }
 
     function add_usuarios_table() {
-        //id_table_usuarios 
+        //id_table_usuarios
         var select_usuarios = $("#select_usuarios").val();
         if (select_usuarios.length > 0) {
             $("#id_table_usuarios").DataTable().clear().draw();
@@ -1004,99 +1004,6 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
         return true;
     }
 
-    function add_camiones() {
-        var select_camiones = $("#id_select_camiones").val();
-        var set = new Set(coleccion_padres_camiones_json);
-        set_padres_camiones.clear();
-        var tabla_camiones = $("#add_camiones_table").DataTable();
-        tabla_camiones.clear().draw();
-        var camiones = new Set();
-        for (var item in select_camiones) {
-            set.forEach(element => {
-                if (select_camiones[item] === element.id_ruta) {
-                    camiones.forEach(element_camion => {
-                        if (element_camion.id_ruta === element.id_ruta) {
-                            camiones.delete(element_camion);
-                        }
-                    });
-                    camiones.add({
-                        ruta: `Camión: ${element.camion} | Ruta: ${element.nombre_ruta}`,
-                        id_ruta: element.id_ruta
-                    });
-                    set_padres_camiones.add({
-                        id_alumno: element.id_alumno,
-                        id_papa: element.id_papa,
-                        id_ruta: element.id_ruta
-                    });
-                }
-            });
-        }
-
-        camiones.forEach(element => {
-            tabla_camiones.row.add([
-                `${element.ruta}`,
-                `<button type="button"
-                    class="btn btn-warning text-white btn-squared btn-sm ml-2"
-                    onclick="remove_camion_tabla(this, ${element.id_ruta});">
-                    X
-                </button>`
-            ]).draw().node();
-        });
-    }
-
-    function remove_camiones_table() {
-        var tabla_camiones = $("#add_camiones_table").DataTable();
-        tabla_camiones.clear().draw();
-        set_padres_camiones.clear();
-        $("#id_select_camiones").selectpicker('deselectAll');
-        $("#id_select_camiones").selectpicker('render');
-    }
-
-    function add_camiones_tarde() {
-        var select_camiones = $("#id_select_camiones_tarde").val();
-        var set = new Set(coleccion_padres_camiones_tarde_json);
-        set_padres_camiones_tarde.clear();
-        var tabla_camiones = $("#add_camiones_tarde_table").DataTable();
-        tabla_camiones.clear().draw();
-        var camiones = new Set();
-        for (var item in select_camiones) {
-            set.forEach(element => {
-                if (select_camiones[item] === element.id_ruta) {
-                    camiones.forEach(element_camion => {
-                        if (element_camion.id_ruta === element.id_ruta) {
-                            camiones.delete(element_camion);
-                        }
-                    });
-                    camiones.add({
-                        ruta: `Camión: ${element.camion} | Ruta: ${element.nombre_ruta}`,
-                        id_ruta: element.id_ruta
-                    });
-                    set_padres_camiones_tarde.add({
-                        id_alumno: element.id_alumno,
-                        id_papa: element.id_papa,
-                        id_ruta: element.id_ruta
-                    });
-                }
-            });
-        }
-        camiones.forEach(element => {
-            tabla_camiones.row.add([`${element.ruta}`,
-                `<button type="button"
-                    class="btn btn-warning text-white btn-squared btn-sm ml-2"
-                    onclick="remove_camion_tarde_tabla(this, ${element.id_ruta});">
-                    X
-                </button>`]).draw().node();
-        });
-    }
-
-    function remove_camiones_tarde_table() {
-        $("#id_select_camiones_tarde").selectpicker('deselectAll');
-        $("#id_select_camiones_tarde").selectpicker('render');
-        set_padres_camiones_tarde.clear();
-        var tabla_camiones = $("#add_camiones_tarde_table").DataTable();
-        tabla_camiones.clear().draw();
-    }
-
     function programar() {
         if ($("#id_fecha_programada").val() !== "" && $("#id_time_hora_programada").val() !== "") {
             $("#modal_programar_para").modal('hide');
@@ -1167,50 +1074,117 @@ $ciclo_escolar = $control_circulares->select_ciclo_escolar_ciclo();
         });
     }
 
-    function remove_usuario_uni_tabla(el, id_usuario) {
-        let set = new Set($("#select_usuarios").val());
-        set.forEach(item => {
-            if (parseInt(item) === id_usuario) {
-                set.delete(item);
-                $("#select_usuarios").val(Array.from(set));
-                $("#select_usuarios").selectpicker('refresh');
-                $("#id_table_usuarios").DataTable().row($(el).parents('tr')).remove().draw();
-            }
+    function add_ruta_manana() {
+        let set = new Set($("#id_select_camiones").val());
+        let tabla = $("#add_camiones_table").DataTable();
+        set_rutas_manana_asignadas.clear();
+        tabla.clear().draw();
+        set.forEach(ruta => {
+            set_catalogo_rutas_manana.forEach(catalogo => {
+                if (catalogo.id_ruta_manana === ruta) {
+                    let td = `Ruta: ${catalogo.nombre_ruta} | Camión: ${catalogo.camion}`;
+                    let btn = `<a href="#!"
+                                   class="btn btn-sm btn-warning btn-squared text-white"
+                                   onclick="remover_ruta_manana(this, ${catalogo.id_ruta_manana});"> X
+                               </a>`;
+                    //comprueba si ruta existe en lista de asignados para no hacer duplicados
+                    set_rutas_manana_asignadas.forEach(item => {
+                        if (item.id_ruta_manana === ruta) {
+                            set_rutas_manana_asignadas.delete(item);
+                        }
+                    });
+                    set_rutas_manana_asignadas.add({
+                        id_ruta_manana: catalogo.id_ruta_manana,
+                        nombre_ruta: catalogo.nombre_ruta,
+                        camion: catalogo.camion
+                    });
+                    tabla.row.add([td, btn]).draw().node();
+                }
+            });
         });
-        console.log($("#select_usuarios").val())
     }
 
-    function remove_camion_tabla(el, id_ruta) {
-        set_padres_camiones.forEach(item => {
-            if (parseInt(item.id_ruta) === id_ruta) {
-                set_padres_camiones.delete(item);
+    function add_ruta_tarde() {
+        let set = new Set($("#id_select_camiones_tarde").val());
+        let tabla = $("#add_camiones_tarde_table").DataTable();
+        set_rutas_tarde_asignada.clear();
+        tabla.clear().draw();
+        set.forEach(ruta => {
+            set_catalogo_tarde_asignada.forEach(catalogo => {
+                if (catalogo.id_ruta_tarde === ruta) {
+                    let td = `Ruta: ${catalogo.nombre_ruta} | Camión: ${catalogo.camion}`;
+                    let btn = `<a href="#!"
+                                   class="btn btn-sm btn-warning btn-squared text-white"
+                                   onclick="remover_ruta_tarde(this, ${catalogo.id_ruta_tarde});"> X
+                               </a>`;
+                    //comprueba si ruta existe en lista de asignados para no hacer duplicados
+                    set_rutas_tarde_asignada.forEach(item => {
+                        if (item.id_ruta_tarde === ruta) {
+                            set_rutas_tarde_asignada.delete(item);
+                        }
+                    });
+                    set_rutas_tarde_asignada.add({
+                        id_ruta_tarde: catalogo.id_ruta_tarde,
+                        nombre_ruta: catalogo.nombre_ruta,
+                        camion: catalogo.camion
+                    });
+                    tabla.row.add([td, btn]).draw().node();
+                }
+            });
+        });
+    }
+
+    function remover_ruta_manana(el, id_ruta_manana) {
+        set_rutas_manana_asignadas.forEach(item => {
+            if (parseInt(item.id_ruta_manana) === id_ruta_manana) {
+                set_rutas_manana_asignadas.delete(item);
                 $("#add_camiones_table").DataTable().row($(el).parents('tr')).remove().draw();
-                let set = new Set($("#id_select_camiones").val());
-                set.forEach(el => {
-                    if (parseInt(el) === id_ruta) {
-                        set.delete(el);
-                        $("#id_select_camiones").val(Array.from(set));
-                        $("#id_select_camiones").selectpicker('refresh');
-                    }
-                });
             }
         });
     }
 
-    function remove_camion_tarde_tabla(el, id_ruta) {
-        set_padres_camiones_tarde.forEach(item => {
-            if (parseInt(item.id_ruta) === id_ruta) {
-                set_padres_camiones_tarde.delete(item);
+    function remover_ruta_tarde(el, id_ruta_tarde) {
+        set_rutas_tarde_asignada.forEach(item => {
+            if (parseInt(item.id_ruta_tarde) === id_ruta_tarde) {
+                set_rutas_tarde_asignada.delete(item);
                 $("#add_camiones_tarde_table").DataTable().row($(el).parents('tr')).remove().draw();
-                let set = new Set($("#id_select_camiones_tarde").val());
-                set.forEach(el => {
-                    if (parseInt(el) === id_ruta) {
-                        set.delete(el);
-                        $("#id_select_camiones_tarde").val(Array.from(set));
-                        $("#id_select_camiones_tarde").selectpicker('refresh');
-                    }
-                });
             }
         });
     }
+
+    function coleccion_usuarios_ruta_manana() {
+        let usuarios_ruta_manana = new Set();
+        set_rutas_manana_asignadas.forEach(asignado => {
+            set_catalogo_usuarios_ruta_manana.forEach(item => {
+                if (asignado.id_ruta_manana === item.id_ruta_manana) {
+                    usuarios_ruta_manana.add({
+                        id_usuario: item.id_usuario,
+                        id_alumno: item.id_alumno,
+                        turno: 1,
+                        id_ruta_manana:asignado.id_ruta_manana
+                    });
+                }
+            });
+        });
+        return Array.from(usuarios_ruta_manana);
+    }
+
+    function coleccion_usuarios_ruta_tarde() {
+        let usuarios_ruta_tarde = new Set();
+        set_rutas_tarde_asignada.forEach(asignado => {
+            set_catalogo_usuarios_ruta_tarde.forEach(item => {
+                if (asignado.id_ruta_tarde === item.id_ruta_tarde) {
+                    usuarios_ruta_tarde.add({
+                        id_usuario: item.id_usuario,
+                        id_alumno: item.id_alumno,
+                        turno: 2,
+                        id_ruta_tarde:asignado.id_ruta_tarde
+                    });
+                }
+            });
+        });
+        console.log(usuarios_ruta_tarde)
+        return Array.from(usuarios_ruta_tarde);
+    }
+
 </script>

@@ -85,39 +85,7 @@ while ($row = mysqli_fetch_array($consulta_grupos)) {
 
 $grados_json = json_encode($grados_json);
 $grupos_json = json_encode($grupos_json);
-//consulta de rutas del dia (manana)
-$rutas_manana = array();
-$consulta_rutas_manana = $control_circulares->select_camiones_tarde(date('Y-m-d'));
-while ($row = mysqli_fetch_assoc($consulta_rutas_manana)) {
-    array_push($rutas_manana, [
-        "id_ruta_h" => $row['id_ruta_h'],
-        "camion" => $row['camion'],
-        "nombre_ruta" => $row['nombre_ruta'],
-    ]);
-}
-$rutas_tarde = array();
-$consulta_rutas_tarde = $control_circulares->select_camiones_tarde(date('Y-m-d'));
-while ($row = mysqli_fetch_assoc($consulta_rutas_tarde)) {
-    array_push($rutas_tarde, [
-        "id_ruta_h_s" => $row['id_ruta_h_s'],
-        "camion" => $row['camion'],
-        "nombre_ruta" => $row['nombre_ruta'],
-    ]);
-}
-//manejo de camiones y rutas
-$aux_camiones_manana = array();
-$aux_camiones_tarde = array();
-//consulta de usuarios de ruta
-$usuarios_ruta = array();
-$consulta_usuarios_ruta = $control_circulares->select_usuarios_rutas();
-while ($row = mysqli_fetch_assoc($consulta_usuarios_ruta)) {
-    array_push($usuarios_ruta, [
-        "id_ruta_manana" => $row['id_ruta_manana'],
-        "id_ruta_tarde" => $row['id_ruta_tarde'],
-        "id_alumno" => $row['id_alumno'],
-        "id_usuario" => $row['id_usuario']
-    ]);
-}
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -493,39 +461,8 @@ while ($row = mysqli_fetch_assoc($consulta_usuarios_ruta)) {
                                                 title="Seleccione camiones"
                                                 data-live-search="true"
                                                 data-actions-box="true"
-                                                onchange="add_camiones();"
+                                                onchange=""
                                                 multiple>
-                                            <?php
-                                            $fecha_actual = date("Y-m-d");
-                                            $consulta_camiones = $control_circulares->select_camiones($fecha_actual);
-                                            $consulta_padres = $control_circulares->select_alumnos_ruta($fecha_actual);
-                                            $padres_camiones = array();
-                                            while ($row = mysqli_fetch_assoc($consulta_padres)):
-                                                array_push($padres_camiones, [
-                                                    "id_ruta" => $row['id_ruta_h'],
-                                                    "id_alumno" => $row['id_alumno'],
-                                                    "id_papa" => $row['id_papa'],
-                                                    "camion" => $row['camion'],
-                                                    "nombre_ruta" => $row['nombre_ruta']
-                                                ]);
-                                            endwhile;
-                                            $padres_camiones = json_encode($padres_camiones);
-                                            while ($row = mysqli_fetch_assoc($consulta_camiones)):
-                                                ?>
-                                                <option value="<?= $row['id_ruta_h']; ?>"
-                                                    <?php
-                                                    $_rutas_manana = $control_circulares->select_ruta_manana_x_circular($id_circular);
-                                                    while ($row_ruta = mysqli_fetch_assoc($_rutas_manana)):
-                                                        if ($row_ruta['id_ruta'] == $row['id_ruta_h']) {
-                                                            echo " selected";
-                                                        }
-                                                        ?>
-                                                    <?php endwhile; ?>
-                                                >
-                                                    Camión: <?= str_pad($row['camion'], 2, "0", STR_PAD_LEFT); ?> |
-                                                    Ruta: <?= $row['nombre_ruta']; ?>
-                                                </option>
-                                            <?php endwhile; ?>
                                         </select>
                                     </div>
                                     &nbsp;&nbsp;&nbsp;
@@ -537,30 +474,8 @@ while ($row = mysqli_fetch_assoc($consulta_usuarios_ruta)) {
                                                 title="Seleccione camiones"
                                                 data-live-search="true"
                                                 data-actions-box="true"
-                                                onchange="add_camiones_tarde();"
+                                                onchange=""
                                                 multiple>
-                                            <?php
-                                            $fecha_actual = date("Y-m-d");
-                                            $consulta_camiones_tarde = $control_circulares->select_camiones_tarde($fecha_actual);
-                                            $consulta_padres_tarde = $control_circulares->select_alumnos_ruta_tarde($fecha_actual);
-                                            $padres_camiones_tarde = array();
-                                            while ($row = mysqli_fetch_assoc($consulta_padres_tarde)):
-                                                array_push($padres_camiones_tarde, [
-                                                    "id_ruta" => $row['id_ruta_h_s'],
-                                                    "id_alumno" => $row['id_alumno'],
-                                                    "id_papa" => $row['id_papa'],
-                                                    "camion" => $row['camion'],
-                                                    "nombre_ruta" => $row['nombre_ruta']
-                                                ]);
-                                            endwhile;
-                                            $padres_camiones_tarde = json_encode($padres_camiones_tarde);
-                                            while ($row = mysqli_fetch_assoc($consulta_camiones_tarde)):
-                                                ?>
-                                                <option value="<?= $row['id_ruta_h_s']; ?>">
-                                                    Camión: <?= str_pad($row['camion'], 2, "0", STR_PAD_LEFT); ?> |
-                                                    Ruta: <?= $row['nombre_ruta']; ?>
-                                                </option>
-                                            <?php endwhile; ?>
                                         </select>
                                     </div>
                                 </div>
@@ -841,25 +756,6 @@ while ($row = mysqli_fetch_assoc($consulta_usuarios_ruta)) {
                                     </tr>
                                     </tfoot>
                                     <tbody>
-                                    <?php
-                                    $consulta_ruta_manana = $control_circulares->select_ruta_manana_x_circular($id_circular);
-                                    while ($row = mysqli_fetch_assoc($consulta_ruta_manana)):
-                                        array_push($aux_camiones_manana, [
-                                            "id_ruta" => $row['id_ruta'],
-                                            "nombre_ruta" => $row['nombre_ruta']
-                                        ]);
-                                        ?>
-                                        <tr>
-                                            <td><?= "Camión: {$row['camion']} | Ruta: {$row['nombre_ruta']}"; ?></td>
-                                            <td>
-                                                <button type="button"
-                                                        class="btn btn-warning text-white btn-squared btn-sm ml-2"
-                                                        onclick="remove_ruta_manana(this, <?= $row['id_ruta'] ?>);">
-                                                    X
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    <?php endwhile; ?>
                                     </tbody>
                                 </table>
                                 <hr>
@@ -885,25 +781,6 @@ while ($row = mysqli_fetch_assoc($consulta_usuarios_ruta)) {
                                     </tr>
                                     </tfoot>
                                     <tbody>
-                                    <?php
-                                    $consulta_ruta_tarde = $control_circulares->select_ruta_tarde_x_circular($id_circular);
-                                    while ($row = mysqli_fetch_assoc($consulta_ruta_tarde)):
-                                        array_push($aux_camiones_tarde, [
-                                            "id_ruta" => $row['id_ruta'],
-                                            "nombre_ruta" => $row['nombre_ruta']
-                                        ]);
-                                        ?>
-                                        <tr>
-                                            <td><?= "Camión: {$row['camion']} | Ruta: {$row['nombre_ruta']}"; ?></td>
-                                            <td>
-                                                <button type="button"
-                                                        class="btn btn-warning text-white btn-squared btn-sm ml-2"
-                                                        onclick="remove_ruta_tarde(this, <?= $row['id_ruta'] ?>);">
-                                                    X
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    <?php endwhile; ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -933,15 +810,6 @@ include "{$root}/Secciones/notificaciones.php";
     var set_nivel_grado_grupo = new Set(<?= $aux_niveles; ?>);
     var set_grupos_especiales = new Set(<?=json_encode($aux_grupos_especiales);?>);
     var set_grupos_administrativos = new Set(<?=json_encode($aux_grupos_administrativos);?>);
-    //manejo de camiones
-    //manana
-    var set_camiones_manana = new Set(<?=json_encode($aux_camiones_manana);?>);
-    var set_rutas_manana = new Set(<?=json_encode($rutas_manana);?>);
-    //tarde
-    var set_camiones_tarde = new Set(<?=json_encode($aux_camiones_tarde);?>);
-    var set_rutas_tarde = new Set(<?=json_encode($rutas_tarde);?>);
-    //todos los usuarios de las rutas del dia
-    var catalogo_usuario_ruta = new Set(<?= json_encode($usuarios_ruta);?>);
     //
     var flag_guardar = false;
     var flag_programada = false;
@@ -1034,9 +902,7 @@ include "{$root}/Secciones/notificaciones.php";
                 ubicacion_ics: $("#id_ubicacion").val(),
                 grp_especiales: Array.from(set_grupos_especiales),
                 grp_administrativos: Array.from(set_grupos_administrativos),
-                usuarios: $("#select_usuarios").selectpicker('val'),
-                coleccion_usuarios_manana: coleccion_usuarios_manana(),
-                coleccion_usuarios_tarde:coleccion_usuarios_tarde()
+                usuarios: $("#select_usuarios").selectpicker('val')
             }
         }).done((res) => {
         }).always(() => {
@@ -1300,138 +1166,6 @@ include "{$root}/Secciones/notificaciones.php";
                 tabla.row($(el).parents('tr')).remove().draw();
             }
         });
-    }
-
-    function add_camiones() {
-        let set = new Set($("#id_select_camiones").val());
-        let tabla = $("#add_camiones_table").DataTable();
-        tabla.clear().draw();
-        set_camiones_manana.clear();
-        set.forEach(item_select => {
-            set_rutas_manana.forEach(item_ruta => {
-                if (item_ruta.id_ruta_h === item_select) {
-                    let ruta = `Camión: ${item_ruta.camion} | Ruta: ${item_ruta.nombre_ruta.toUpperCase()}`;
-                    tabla.row.add([
-                        ruta,
-                        `<button type="button" class="btn btn-warning text-white btn-squared btn-sm ml-5"
-                                onclick="remove_ruta_manana(this, ${item_ruta.id_ruta_h});">
-                            X
-                        </button>`
-                    ]).draw().node();
-                    set_camiones_manana.forEach(item => {
-                        if (item.id_ruta === item_select) {
-                            set_camiones_manana.delete(item);
-                        }
-                    });
-                    set_camiones_manana.add({id_ruta: item_ruta.id_ruta_h, nombre_ruta: item_ruta.nombre_ruta});
-                }
-            });
-        });
-    }
-
-    function remove_ruta_manana(el, id_ruta) {
-        set_camiones_manana.forEach(item => {
-            if (parseInt(item.id_ruta) === id_ruta) {
-                set_camiones_manana.delete(item);
-                $("#add_camiones_table").DataTable().row($(el).parents('tr')).remove().draw();
-                let set = new Set($("#id_select_camiones").val());
-                set.forEach(element => {
-                    if (parseInt(element) === id_ruta) {
-                        set.delete(element);
-                    }
-                });
-                $("#id_select_camiones").val(Array.from(set));
-                $("#id_select_camiones").selectpicker('refresh');
-            }
-        });
-    }
-
-    function coleccion_usuarios_manana() {
-        let set = new Set($("#id_select_camiones").val());
-        let usuarios = new Set();
-        set.forEach(item => {
-            catalogo_usuario_ruta.forEach(el => {
-                if (el.id_ruta_manana === item) {
-                    usuarios.add({
-                        id_usuario: parseInt(el.id_usuario),
-                        id_alumno: parseInt(el.id_alumno),
-                        id_ruta_manana: parseInt(el.id_ruta_manana)
-                    });
-                }
-            });
-        });
-        return Array.from(usuarios);
-    }
-
-    function coleccion_nivel() {
-        set_nivel_grado_grupo.forEach(item => {
-            if (item.id_nivel === 0) {
-                set_nivel_grado_grupo.delete(item);
-            }
-        })
-        return Array.from(set_nivel_grado_grupo)
-    }
-
-    //pendiente por cambiar lo copiado
-    function add_camiones_tarde() {
-        let set = new Set($("#id_select_camiones_tarde").val());
-        let tabla = $("#add_camiones_tarde_table").DataTable();
-        tabla.clear().draw();
-        set_camiones_tarde.clear();
-        set.forEach(item_select => {
-            set_rutas_tarde.forEach(item_ruta => {
-                if (item_ruta.id_ruta_h_s === item_select) {
-                    let ruta = `Camión: ${item_ruta.camion} | Ruta: ${item_ruta.nombre_ruta.toUpperCase()}`;
-                    tabla.row.add([
-                        ruta,
-                        `<button type="button" class="btn btn-warning text-white btn-squared btn-sm ml-5"
-                                onclick="remove_ruta_tarde(this, ${item_ruta.id_ruta_h_s});">
-                            X
-                        </button>`
-                    ]).draw().node();
-                    set_camiones_tarde.forEach(item => {
-                        if (item.id_ruta === item_select) {
-                            set_camiones_tarde.delete(item);
-                        }
-                    });
-                    set_camiones_tarde.add({id_ruta: item_ruta.id_ruta_h_s, nombre_ruta: item_ruta.nombre_ruta});
-                }
-            });
-        });
-    }
-
-    function remove_ruta_tarde(el, id_ruta) {
-        set_camiones_tarde.forEach(item => {
-            if (parseInt(item.id_ruta) === id_ruta) {
-                set_camiones_tarde.delete(item);
-                $("#add_camiones_tarde_table").DataTable().row($(el).parents('tr')).remove().draw();
-                let set = new Set($("#id_select_camiones_tarde").val());
-                set.forEach(element => {
-                    if (parseInt(element) === id_ruta) {
-                        set.delete(element);
-                    }
-                });
-                $("#id_select_camiones_tarde").val(Array.from(set));
-                $("#id_select_camiones_tarde").selectpicker('refresh');
-            }
-        });
-    }
-
-    function coleccion_usuarios_tarde() {
-        let set = new Set($("#id_select_camiones_tarde").val());
-        let usuarios = new Set();
-        set.forEach(item => {
-            catalogo_usuario_ruta.forEach(el => {
-                if (el.id_ruta_tarde === item) {
-                    usuarios.add({
-                        id_usuario: parseInt(el.id_usuario),
-                        id_alumno: parseInt(el.id_alumno),
-                        id_ruta_tarde: parseInt(el.id_ruta_tarde)
-                    });
-                }
-            });
-        });
-        return Array.from(usuarios);
     }
 </script>
 </body>

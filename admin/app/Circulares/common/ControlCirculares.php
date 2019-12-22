@@ -74,8 +74,9 @@ class ControlCirculares
 
     public function nueva_circular($titulo, $contenido, $descripcion, $envia_todos, $estatus,
                                    $usuarios, $grupos_especiales, $grupos_administrativos, $coleccion_nivel_grado_grupo,
-                                   $fecha_programada, $coleccion_padres_camiones, $coleccion_padres_camiones_tarde, $id_ciclo_escolar,
-                                   $adjunto, $tema_ics, $fecha_ics, $hora_inicial_ics, $hora_final_ics, $ubicacion_ics, $hora_programada)
+                                   $fecha_programada, $id_ciclo_escolar, $adjunto, $tema_ics, $fecha_ics,
+                                   $hora_inicial_ics, $hora_final_ics, $ubicacion_ics, $hora_programada,
+                                   $coleccion_usuarios_ruta_manana, $coleccion_usuarios_ruta_tarde)
     {
         try {
             mysqli_autocommit($this->conexion, false);
@@ -233,28 +234,44 @@ class ControlCirculares
                 }
             }
 
-            foreach ($coleccion_padres_camiones as $value) {
-                $sql_insert_padre_camion = "INSERT INTO `App_usuarios_circulares` "
-                    . "(`id_circular`, `id_usuario`, `id_alumno`, `turno`) "
-                    . "VALUES ({$id_app_circulares}, {$value['id_alumno']}, {$value['id_papa']}, 1);";
-                $sql_insert_ruta_manana = "INSERT INTO `App_nivel_grado_grupo_circulares` 
-                                            (`id_circular`, `turno`, `id_ruta`) 
-                                            VALUES ({$id_app_circulares},1 , {$value['id_ruta']});";
-                if (!mysqli_query($this->conexion, $sql_insert_padre_camion) ||
-                    !mysqli_query($this->conexion, $sql_insert_ruta_manana)) {
+            foreach ($coleccion_usuarios_ruta_manana as $usuario_ruta) {
+                $fecha_actual = date("Y-m-d");
+                $sql_insert_ruta = "INSERT IGNORE INTO App_nivel_grado_grupo_circulares
+                                    (id_circular, turno, id_ruta, fecha_ruta, fecha_turno_ruta_circular) VALUES 
+                                    ({$id_app_circulares}, 
+                                    {$usuario_ruta['turno']}, 
+                                    {$usuario_ruta['id_ruta_manana']}, 
+                                    '{$fecha_actual}', 
+                                    '{$fecha_actual}_{$usuario_ruta['turno']}_{$usuario_ruta['id_ruta_manana']}_{$id_app_circulares}');";
+                $sql_insert_usuario_ruta = "INSERT INTO App_usuarios_circulares 
+                                            (id_circular, id_usuario, id_alumno, turno) 
+                                            VALUES ({$id_app_circulares}, 
+                                            {$usuario_ruta['id_usuario']}, 
+                                            {$usuario_ruta['id_alumno']}, 
+                                            {$usuario_ruta['turno']});";
+                if (!mysqli_query($this->conexion, $sql_insert_ruta) ||
+                    !mysqli_query($this->conexion, $sql_insert_usuario_ruta)) {
                     throw new Exception(mysqli_error($this->conexion));
                 }
             }
 
-            foreach ($coleccion_padres_camiones_tarde as $value) {
-                $sql_insert_padre_camion_tarde = "INSERT INTO `App_usuarios_circulares` "
-                    . "(`id_circular`, `id_usuario`, `id_alumno`, `turno`) "
-                    . "VALUES ({$id_app_circulares}, {$value['id_alumno']}, {$value['id_papa']}, 2);";
-                $sql_insert_ruta_tarde = "INSERT INTO `App_nivel_grado_grupo_circulares` 
-                                            (`id_circular`, `turno`, `id_ruta`) 
-                                            VALUES ({$id_app_circulares},2 , {$value['id_ruta']});";
-                if (!mysqli_query($this->conexion, $sql_insert_padre_camion_tarde) ||
-                    !mysqli_query($this->conexion, $sql_insert_ruta_tarde)) {
+            foreach ($coleccion_usuarios_ruta_tarde as $usuario_ruta) {
+                $fecha_actual = date("Y-m-d");
+                $sql_insert_ruta = "INSERT IGNORE INTO App_nivel_grado_grupo_circulares
+                                    (id_circular, turno, id_ruta, fecha_ruta, fecha_turno_ruta_circular) VALUES 
+                                    ({$id_app_circulares}, 
+                                    {$usuario_ruta['turno']}, 
+                                    {$usuario_ruta['id_ruta_tarde']}, 
+                                    '{$fecha_actual}', 
+                                    '{$fecha_actual}_{$usuario_ruta['turno']}_{$usuario_ruta['id_ruta_tarde']}_{$id_app_circulares}');";
+                $sql_insert_usuario_ruta = "INSERT INTO App_usuarios_circulares 
+                                            (id_circular, id_usuario, id_alumno, turno) 
+                                            VALUES ({$id_app_circulares}, 
+                                            {$usuario_ruta['id_usuario']}, 
+                                            {$usuario_ruta['id_alumno']}, 
+                                            {$usuario_ruta['turno']});";
+                if (!mysqli_query($this->conexion, $sql_insert_ruta) ||
+                    !mysqli_query($this->conexion, $sql_insert_usuario_ruta)) {
                     throw new Exception(mysqli_error($this->conexion));
                 }
             }
@@ -297,53 +314,6 @@ class ControlCirculares
             . "INNER JOIN usuarios c ON c.id = a.id_usuario "
             . "WHERE a.id_circular = $id_circular AND a.id_alumno IS NOT NULL "
             . "GROUP BY a.id_usuario ORDER BY a.id;";
-        mysqli_set_charset($this->conexion, "utf8");
-        return mysqli_query($this->conexion, $sql);
-    }
-
-    //rutas de la mañana
-    public function select_camiones($fecha)
-    {
-        $sql = "SELECT a.id_ruta_h, a.camion, a.nombre_ruta
-                FROM rutas_historica a
-                WHERE a.fecha = '{$fecha}' AND a.id_ruta_h > 0 AND a.id_ruta_h != 999 AND a.turno = 1";
-        mysqli_set_charset($this->conexion, "utf8");
-        return mysqli_query($this->conexion, $sql);
-    }
-
-    //rutas de la tarde
-    public function select_camiones_tarde($fecha)
-    {
-        $sql = "SELECT a.id_ruta_h as id_ruta_h_s, a.camion, a.nombre_ruta
-                FROM rutas_historica a
-                WHERE a.fecha = '{$fecha}' AND a.id_ruta_h > 0 AND a.id_ruta_h != 999 AND a.turno = 2";
-        mysqli_set_charset($this->conexion, "utf8");
-        return mysqli_query($this->conexion, $sql);
-    }
-
-    //alumnos incluidos en la ruta de la mañana
-    public function select_alumnos_ruta($fecha)
-    {
-        $sql = "SELECT a.id_ruta_h, a.id_alumno, c.id AS id_papa, d.camion, d.nombre_ruta "
-            . "FROM rutas_historica_alumnos a "
-            . "INNER JOIN alumnoschmd b ON b.id = a.id_alumno "
-            . "INNER JOIN usuarios c ON c.numero = b.idfamilia "
-            . "INNER JOIN rutas_historica d ON d.id_ruta_h = a.id_ruta_h "
-            . "WHERE a.fecha = '$fecha' AND a.id_ruta_h != 999 AND a.id_ruta_h != 0 GROUP BY c.id ORDER BY d.camion;";
-        mysqli_set_charset($this->conexion, "utf8");
-        return mysqli_query($this->conexion, $sql);
-    }
-
-    //alumnos incluidos en la ruta de la tarde
-    public function select_alumnos_ruta_tarde($fecha)
-    {
-        $sql = "SELECT a.id_ruta_h_s, a.id_alumno, c.id AS id_papa, d.camion, d.nombre_ruta "
-            . "FROM rutas_historica_alumnos a "
-            . "INNER JOIN alumnoschmd b ON b.id = a.id_alumno "
-            . "INNER JOIN usuarios c ON c.numero = b.idfamilia "
-            . "INNER JOIN rutas_historica d ON d.id_ruta_h = a.id_ruta_h_s "
-            . "WHERE a.fecha = '$fecha' AND a.id_ruta_h_s != 999 AND a.id_ruta_h_s != 0 "
-            . "GROUP BY c.id, a.id_ruta_h_s ORDER BY d.camion;";
         mysqli_set_charset($this->conexion, "utf8");
         return mysqli_query($this->conexion, $sql);
     }
@@ -424,8 +394,7 @@ class ControlCirculares
 
     public function update_circular($titulo, $descripcion, $contenido, $tema_ics, $fecha_ics, $hora_inicial_ics,
                                     $hora_final_ics, $ubicacion_ics, $adjunto, $id_circular, $niveles,
-                                    $grp_especiales, $grp_administrativos, $usuarios, $coleccion_usuarios_manana,
-                                    $coleccion_usuarios_tarde)
+                                    $grp_especiales, $grp_administrativos, $usuarios)
     {
         try {
             mysqli_autocommit($this->conexion, false);
@@ -594,49 +563,6 @@ class ControlCirculares
                     throw new Exception(mysqli_error($this->conexion));
                 }
             }
-            //actualizacion de usuarios por camiones
-            //ruta de manana
-            $sql_delete_ruta_manana = "DELETE FROM App_nivel_grado_grupo_circulares  WHERE id_circular = {$id_circular} AND turno = 1";
-            $sql_delete_usuarios_manana = "DELETE FROM App_usuarios_circulares WHERE id_circular = {$id_circular} AND turno = 1";
-
-            if (!mysqli_query($this->conexion, $sql_delete_ruta_manana) ||
-                !mysqli_query($this->conexion, $sql_delete_usuarios_manana)) {
-                throw new Exception(mysqli_error($this->conexion));
-            }
-            foreach ($coleccion_usuarios_manana as $usuario) {
-                $sql_insert_ruta = "INSERT INTO `App_nivel_grado_grupo_circulares` 
-                                                (`id_circular`, `turno`, `id_ruta`) 
-                                                VALUES ({$id_circular}, 1, {$usuario['id_ruta_manana']});";
-                $sql_insert_usuario_manana = "INSERT INTO App_usuarios_circulares 
-                                                (`id_circular`, `id_usuario`, `id_alumno`, `turno`) 
-                                                VALUES ({$id_circular}, {$usuario['id_usuario']}, {$usuario['id_alumno']},1);";
-
-                if (!mysqli_query($this->conexion, $sql_insert_ruta) ||
-                    !mysqli_query($this->conexion, $sql_insert_usuario_manana)) {
-                    throw new Exception(mysqli_error($this->conexion));
-                }
-            }
-            //ruta de tarde
-            $sql_delete_ruta_tarde = "DELETE FROM App_nivel_grado_grupo_circulares  WHERE id_circular = {$id_circular} AND turno = 2";
-            $sql_delete_usuarios_tarde = "DELETE FROM App_usuarios_circulares WHERE id_circular = {$id_circular} AND turno = 2";
-
-            if (!mysqli_query($this->conexion, $sql_delete_ruta_tarde) ||
-                !mysqli_query($this->conexion, $sql_delete_usuarios_tarde)) {
-                throw new Exception(mysqli_error($this->conexion));
-            }
-            foreach ($coleccion_usuarios_tarde as $usuario) {
-                $sql_insert_ruta_tarde = "INSERT INTO `App_nivel_grado_grupo_circulares` 
-                                                (`id_circular`, `turno`, `id_ruta`) 
-                                                VALUES ({$id_circular}, 2, {$usuario['id_ruta_tarde']});";
-                $sql_insert_usuario_tarde = "INSERT INTO App_usuarios_circulares 
-                                                (`id_circular`, `id_usuario`, `id_alumno`, `turno`) 
-                                                VALUES ({$id_circular}, {$usuario['id_usuario']}, {$usuario['id_alumno']},2);";
-
-                if (!mysqli_query($this->conexion, $sql_insert_ruta_tarde) ||
-                    !mysqli_query($this->conexion, $sql_insert_usuario_tarde)) {
-                    throw new Exception(mysqli_error($this->conexion));
-                }
-            }
 
         } catch (Exception $ex) {
             mysqli_rollback($this->conexion);
@@ -678,42 +604,75 @@ class ControlCirculares
         return mysqli_query($this->conexion, $sql);
     }
 
-    //manejo de camiones
-    //manana
-    public function select_ruta_manana_x_circular($id_circular)
+    public function select_ruta_manana($fecha)
     {
-        $fecha_actual = date("Y-m-d");
-        $sql = "SELECT DISTINCT a.id_ruta, b.nombre_ruta, b.camion
-                FROM App_nivel_grado_grupo_circulares a
-                INNER JOIN rutas_historica b ON b.id_ruta_h = a.id_ruta
-                WHERE a.id_circular = {$id_circular} AND b.turno = 1 AND b.fecha = '{$fecha_actual}'";
-        mysqli_set_charset($this->conexion, "utf8");
-        return mysqli_query($this->conexion, $sql);
-    }
-
-    public function select_usuarios_rutas()
-    {
-        $fecha_actual = date("Y-m-d");
-        $sql = "SELECT a.id_ruta_h AS id_ruta_manana, a.id_ruta_h_s AS id_ruta_tarde, a.id_alumno, c.id AS id_usuario
+        $sql = "SELECT a.id_ruta_h AS id_ruta_manana, b.nombre_ruta, LPAD(b.camion,3,0) AS camion
                 FROM rutas_historica_alumnos a
-                INNER JOIN alumnoschmd b ON b.id = a.id_alumno
-                INNER JOIN usuarios c ON c.numero = b.idfamilia
-                WHERE a.fecha = '{$fecha_actual}' AND (a.id_ruta_h !=0 AND a.id_ruta_h != 999) 
-                AND (a.id_ruta_h_s !=0 AND a.id_ruta_h_s != 999)
-                GROUP BY c.id";
+                LEFT JOIN rutas_historica b ON b.fecha = a.fecha AND b.id_ruta_h = a.id_ruta_h
+                WHERE a.fecha = '{$fecha}' AND b.id_ruta_h != 0 GROUP BY b.nombre_ruta";
         mysqli_set_charset($this->conexion, "utf8");
         return mysqli_query($this->conexion, $sql);
     }
 
-    //tarde
-    public function select_ruta_tarde_x_circular($id_circular)
+    public function select_ruta_tarde($fecha)
     {
-        $fecha_actual = date("Y-m-d");
-        $sql = "SELECT DISTINCT a.id_ruta, b.nombre_ruta, b.camion
-                FROM App_nivel_grado_grupo_circulares a
-                INNER JOIN rutas_historica b ON b.id_ruta_h = a.id_ruta
-                WHERE a.id_circular = {$id_circular} AND b.turno = 2 AND b.fecha = '{$fecha_actual}'";
+        $sql = "SELECT a.id_ruta_h_s AS id_ruta_tarde, b.nombre_ruta, LPAD(b.camion,3,0) AS camion
+                FROM rutas_historica_alumnos a
+                LEFT JOIN rutas_historica b ON b.fecha = a.fecha AND b.id_ruta_h = a.id_ruta_h_s
+                WHERE a.fecha = '{$fecha}' AND b.id_ruta_h != 0 GROUP BY b.nombre_ruta";
         mysqli_set_charset($this->conexion, "utf8");
         return mysqli_query($this->conexion, $sql);
+    }
+
+    public function select_usuarios_ruta_manana($fecha)
+    {
+        $sql = "SELECT d.id AS id_usuario, a.id_alumno, a.id_ruta_h AS id_ruta_manana, b.nombre_ruta, 
+                LPAD(b.camion,3,0) AS camion, b.turno
+                FROM rutas_historica_alumnos a
+                LEFT JOIN rutas_historica b ON b.fecha = a.fecha AND b.id_ruta_h = a.id_ruta_h
+                INNER JOIN alumnoschmd c ON c.id = a.id_alumno
+                INNER JOIN usuarios d ON d.numero = c.idfamilia
+                WHERE a.fecha = '{$fecha}' AND b.id_ruta_h != 0
+                GROUP BY d.id;";
+        mysqli_set_charset($this->conexion, "utf8");
+        $usuarios_ruta_manana = array();
+        $consulta = mysqli_query($this->conexion, $sql);
+        while ($row = mysqli_fetch_assoc($consulta)) {
+            array_push($usuarios_ruta_manana, [
+                "id_usuario" => $row['id_usuario'],
+                "id_alumno" => $row['id_alumno'],
+                "id_ruta_manana" => $row['id_ruta_manana'],
+                "nombre_ruta" => $row['nombre_ruta'],
+                "camion" => $row['camion'],
+                "turno" => $row['turno']
+            ]);
+        }
+        return $usuarios_ruta_manana;
+    }
+
+    public function select_usuarios_ruta_tarde($fecha)
+    {
+        $sql = "SELECT d.id AS id_usuario, a.id_alumno, a.id_ruta_h_s AS id_ruta_tarde, b.nombre_ruta, 
+                LPAD(b.camion,3,0) AS camion, b.turno
+                FROM rutas_historica_alumnos a
+                LEFT JOIN rutas_historica b ON b.fecha = a.fecha AND b.id_ruta_h = a.id_ruta_h_s
+                INNER JOIN alumnoschmd c ON c.id = a.id_alumno
+                INNER JOIN usuarios d ON d.numero = c.idfamilia
+                WHERE a.fecha = '{$fecha}' AND b.id_ruta_h != 0
+                GROUP BY d.id;";
+        mysqli_set_charset($this->conexion, "utf8");
+        $usuarios_ruta_tarde = array();
+        $consulta = mysqli_query($this->conexion, $sql);
+        while ($row = mysqli_fetch_assoc($consulta)) {
+            array_push($usuarios_ruta_tarde, [
+                "id_usuario" => $row['id_usuario'],
+                "id_alumno" => $row['id_alumno'],
+                "id_ruta_tarde" => $row['id_ruta_tarde'],
+                "nombre_ruta" => $row['nombre_ruta'],
+                "camion" => $row['camion'],
+                "turno" => $row['turno']
+            ]);
+        }
+        return $usuarios_ruta_tarde;
     }
 }
