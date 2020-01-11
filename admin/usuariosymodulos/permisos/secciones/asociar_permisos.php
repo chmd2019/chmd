@@ -113,6 +113,6 @@ $select_perfiles = $control_permisos->select_perfiles();
     }
 
     function guardar_permisos(id_perfil) {
-
+        console.log(id_perfil);
     }
 </script>
